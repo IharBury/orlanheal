@@ -40,11 +40,13 @@ function OrlanHeal:Initialize(configName)
 	self.PlayerHeight = 20 * self.Scale;
 	self.GroupOuterSpacing = 2 * self.Scale;
 	self.PlayerInnerSpacing = 2 * self.Scale;
-	self.GroupWidth = self.PlayerWidth + self.GroupOuterSpacing * 2;
-	self.GroupHeight = self.PlayerHeight * 5 + self.GroupOuterSpacing * 2 + self.PlayerInnerSpacing * 4;
+	self.GroupWidth = self.PlayerWidth + self.PetSpacing + self.PetWidth + self.GroupOuterSpacing * 2;
+	self.GroupHeight = math.max(self.PlayerHeight, self.PetHeight) * 5 + 
+		self.GroupOuterSpacing * 2 + 
+		self.PlayerInnerSpacing * 4;
 	self.RaidOuterSpacing = 6 * self.Scale;
 	self.GroupInnerSpacing = 4 * self.Scale;
-	self.RaidWidth = (self.GroupWidth + self.PetSpacing + self.PetWidth) * self.MaxHorizontalGroupCount + 
+	self.RaidWidth = self.GroupWidth * self.MaxHorizontalGroupCount + 
 		self.RaidOuterSpacing * 2 + 
 		self.GroupInnerSpacing * (self.MaxHorizontalGroupCount - 1);
 	self.RaidHeight = self.GroupHeight * self.MaxVerticalGroupCount + 
@@ -111,7 +113,7 @@ function OrlanHeal:CreateRaidWindow()
 		raidWindow.Groups[groupIndex] = self:CreateGroupWindow(raidWindow, true);
 		raidWindow.Groups[groupIndex]:SetPoint(
 			"TOPLEFT", 
-			self.RaidOuterSpacing + self.GroupWidth + self.PetSpacing + self.PetWidth + self.GroupInnerSpacing, 
+			self.RaidOuterSpacing + self.GroupWidth + self.GroupInnerSpacing, 
 			-self.RaidOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * (groupIndex - 1) / 2);
 	end;
 
@@ -140,7 +142,7 @@ function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
 	});
 	groupWindow:SetBackdropColor(1, 1, 1, self.GroupAlpha);
 	groupWindow:SetHeight(self.GroupHeight);
-	groupWindow:SetWidth(self.GroupWidth + self.PetSpacing + self.PetWidth);
+	groupWindow:SetWidth(self.GroupWidth);
 	groupWindow:EnableKeyboard(true);
 
 	groupWindow.Players = {};
