@@ -38,17 +38,17 @@ function OrlanHeal:Initialize(configName)
 	self.PetSpacing = 3 * self.Scale;
 	self.PlayerWidth = 130 * self.Scale;
 	self.PlayerHeight = 20 * self.Scale;
-	self.PlayerOuterSpacing = 2 * self.Scale;
+	self.GroupOuterSpacing = 2 * self.Scale;
 	self.PlayerInnerSpacing = 2 * self.Scale;
-	self.GroupWidth = self.PlayerWidth + self.PlayerOuterSpacing * 2;
-	self.GroupHeight = self.PlayerHeight * 5 + self.PlayerOuterSpacing * 2 + self.PlayerInnerSpacing * 4;
-	self.GroupOuterSpacing = 6 * self.Scale;
+	self.GroupWidth = self.PlayerWidth + self.GroupOuterSpacing * 2;
+	self.GroupHeight = self.PlayerHeight * 5 + self.GroupOuterSpacing * 2 + self.PlayerInnerSpacing * 4;
+	self.RaidOuterSpacing = 6 * self.Scale;
 	self.GroupInnerSpacing = 4 * self.Scale;
-	self.RaidWidth = self.GroupWidth * self.MaxHorizontalGroupCount + 
-		self.GroupOuterSpacing * 2 + 
+	self.RaidWidth = (self.GroupWidth + self.PetSpacing + self.PetWidth) * self.MaxHorizontalGroupCount + 
+		self.RaidOuterSpacing * 2 + 
 		self.GroupInnerSpacing * (self.MaxHorizontalGroupCount - 1);
 	self.RaidHeight = self.GroupHeight * self.MaxVerticalGroupCount + 
-		self.GroupOuterSpacing * 2 + 
+		self.RaidOuterSpacing * 2 + 
 		self.GroupInnerSpacing * (self.MaxVerticalGroupCount - 1);
 
 	self.RaidAlpha = 0.2;
@@ -104,15 +104,15 @@ function OrlanHeal:CreateRaidWindow()
 		raidWindow.Groups[groupIndex] = self:CreateGroupWindow(raidWindow, false);
 		raidWindow.Groups[groupIndex]:SetPoint(
 			"TOPLEFT", 
-			self.GroupOuterSpacing, 
-			-self.GroupOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * groupIndex / 2);
+			self.RaidOuterSpacing, 
+			-self.RaidOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * groupIndex / 2);
 	end;
 	for groupIndex = 1, self.MaxGroupCount - 1, 2 do
 		raidWindow.Groups[groupIndex] = self:CreateGroupWindow(raidWindow, true);
 		raidWindow.Groups[groupIndex]:SetPoint(
 			"TOPLEFT", 
-			self.GroupOuterSpacing + self.GroupWidth + self.GroupInnerSpacing, 
-			-self.GroupOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * (groupIndex - 1) / 2);
+			self.RaidOuterSpacing + self.GroupWidth + self.PetSpacing + self.PetWidth + self.GroupInnerSpacing, 
+			-self.RaidOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * (groupIndex - 1) / 2);
 	end;
 
 	return raidWindow;
@@ -140,16 +140,23 @@ function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
 	});
 	groupWindow:SetBackdropColor(1, 1, 1, self.GroupAlpha);
 	groupWindow:SetHeight(self.GroupHeight);
-	groupWindow:SetWidth(self.GroupWidth);
+	groupWindow:SetWidth(self.GroupWidth + self.PetSpacing + self.PetWidth);
 	groupWindow:EnableKeyboard(true);
 
 	groupWindow.Players = {};
 	for playerIndex = 0, 4 do
 		groupWindow.Players[playerIndex] = self:CreatePlayerWindow(groupWindow, isOnTheRight);
-		groupWindow.Players[playerIndex]:SetPoint(
-			"TOPLEFT", 
-			self.PlayerOuterSpacing, 
-			-self.PlayerOuterSpacing - (self.PlayerHeight + self.PlayerInnerSpacing) * playerIndex);
+		if isOnTheRight then
+			groupWindow.Players[playerIndex]:SetPoint(
+				"TOPLEFT", 
+				self.GroupOuterSpacing, 
+				-self.GroupOuterSpacing - (self.PlayerHeight + self.PlayerInnerSpacing) * playerIndex);
+		else
+			groupWindow.Players[playerIndex]:SetPoint(
+				"TOPLEFT", 
+				self.GroupOuterSpacing + self.PetWidth + self.PetSpacing, 
+				-self.GroupOuterSpacing - (self.PlayerHeight + self.PlayerInnerSpacing) * playerIndex);
+		end;
 	end;
 
 	return groupWindow;
@@ -158,7 +165,6 @@ end;
 function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	local playerWindow = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
 
-	playerWindow:ClearAllPoints();
 	playerWindow:SetFrameStrata(self.RaidWindowStrata);
 	playerWindow:SetHeight(self.PlayerHeight);
 	playerWindow:SetWidth(self.PlayerWidth);
@@ -172,12 +178,12 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	if isOnTheRight then
 		playerWindow.Pet:SetPoint(
 			"TOPRIGHT",
-			self.PetWidth + self.PetSpacing + self.GroupOuterSpacing + self.PlayerOuterSpacing,
+			self.PetWidth + self.PetSpacing,
 			0);
 	else
 		playerWindow.Pet:SetPoint(
 			"TOPLEFT",
-			-self.PetWidth - self.PetSpacing - self.GroupOuterSpacing - self.PlayerOuterSpacing,
+			-self.PetWidth - self.PetSpacing,
 			0);
 	end;
 
