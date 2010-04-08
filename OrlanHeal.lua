@@ -1,5 +1,14 @@
 OrlanHeal = {};
 
+SLASH_ORLANHEAL1 = "/orlanheal";
+function SlashCmdList.ORLANHEAL(message, editbox)
+	if message == "show" then
+		OrlanHeal:Show();
+	elseif message == "hide" then
+		OrlanHeal:Hide();
+	end;
+end;
+
 function OrlanHeal:Initialize(configName)
 	local orlanHeal = self;
 
@@ -15,6 +24,14 @@ function OrlanHeal:Initialize(configName)
 	self.EventFrame:RegisterEvent("ADDON_LOADED");
 	self.EventFrame:SetScript("OnEvent", self.EventFrame.HandleEvent);
 
+	self.MaxGroupCount = 8;
+	self.MaxVerticalGroupCount = math.floor((self.MaxGroupCount + 1) / 2);
+	if self.MaxGroupCount == 1 then
+		self.MaxHorizontalGroupCount = 1;
+	else
+		self.MaxHorizontalGroupCount = 2;
+	end;
+
 	self.Scale = 0.8;
 	self.PetWidth = 81 * self.Scale;
 	self.PetHeight = 20 * self.Scale;
@@ -27,8 +44,12 @@ function OrlanHeal:Initialize(configName)
 	self.GroupHeight = self.PlayerHeight * 5 + self.PlayerOuterSpacing * 2 + self.PlayerInnerSpacing * 4;
 	self.GroupOuterSpacing = 6 * self.Scale;
 	self.GroupInnerSpacing = 4 * self.Scale;
-	self.RaidWidth = self.GroupWidth * 2 + self.GroupOuterSpacing * 2 + self.GroupInnerSpacing;
-	self.RaidHeight = self.GroupHeight * 4 + self.GroupOuterSpacing * 2 + self.GroupInnerSpacing * 3;
+	self.RaidWidth = self.GroupWidth * self.MaxHorizontalGroupCount + 
+		self.GroupOuterSpacing * 2 + 
+		self.GroupInnerSpacing * (self.MaxHorizontalGroupCount - 1);
+	self.RaidHeight = self.GroupHeight * self.MaxVerticalGroupCount + 
+		self.GroupOuterSpacing * 2 + 
+		self.GroupInnerSpacing * (self.MaxVerticalGroupCount - 1);
 
 	self.RaidAlpha = 0.2;
 	self.GroupAlpha = 0.2;
@@ -78,46 +99,21 @@ function OrlanHeal:CreateRaidWindow()
 	raidWindow:SetScript("OnDragStop", raidWindow.HandleDragStop);
 
 	raidWindow.Groups = {};
-	raidWindow.Groups[1] = self:CreateGroupWindow(raidWindow, false);
-	raidWindow.Groups[1]:SetPoint(
-		"TOPLEFT", 
-		self.GroupOuterSpacing, 
-		-self.GroupOuterSpacing);
-	raidWindow.Groups[2] = self:CreateGroupWindow(raidWindow, true);
-	raidWindow.Groups[2]:SetPoint(
-		"TOPLEFT", 
-		self.GroupOuterSpacing + self.GroupWidth + self.GroupInnerSpacing, 
-		-self.GroupOuterSpacing);
-	raidWindow.Groups[3] = self:CreateGroupWindow(raidWindow, false);
-	raidWindow.Groups[3]:SetPoint(
-		"TOPLEFT", 
-		self.GroupOuterSpacing, 
-		-self.GroupOuterSpacing - self.GroupHeight - self.GroupInnerSpacing);
-	raidWindow.Groups[4] = self:CreateGroupWindow(raidWindow, true);
-	raidWindow.Groups[4]:SetPoint(
-		"TOPLEFT", 
-		self.GroupOuterSpacing + self.GroupWidth + self.GroupInnerSpacing, 
-		-self.GroupOuterSpacing - self.GroupHeight - self.GroupInnerSpacing);
-	raidWindow.Groups[5] = self:CreateGroupWindow(raidWindow, false);
-	raidWindow.Groups[5]:SetPoint(
-		"TOPLEFT", 
-		self.GroupOuterSpacing, 
-		-self.GroupOuterSpacing - self.GroupHeight * 2 - self.GroupInnerSpacing * 2);
-	raidWindow.Groups[6] = self:CreateGroupWindow(raidWindow, true);
-	raidWindow.Groups[6]:SetPoint(
-		"TOPLEFT", 
-		self.GroupOuterSpacing + self.GroupWidth + self.GroupInnerSpacing, 
-		-self.GroupOuterSpacing - self.GroupHeight * 2 - self.GroupInnerSpacing * 2);
-	raidWindow.Groups[7] = self:CreateGroupWindow(raidWindow, false);
-	raidWindow.Groups[7]:SetPoint(
-		"TOPLEFT", 
-		self.GroupOuterSpacing, 
-		-self.GroupOuterSpacing - self.GroupHeight * 3 - self.GroupInnerSpacing * 3);
-	raidWindow.Groups[8] = self:CreateGroupWindow(raidWindow, true);
-	raidWindow.Groups[8]:SetPoint(
-		"TOPLEFT", 
-		self.GroupOuterSpacing + self.GroupWidth + self.GroupInnerSpacing, 
-		-self.GroupOuterSpacing - self.GroupHeight * 3 - self.GroupInnerSpacing * 3);
+
+	for groupIndex = 0, self.MaxGroupCount - 1, 2 do
+		raidWindow.Groups[groupIndex] = self:CreateGroupWindow(raidWindow, false);
+		raidWindow.Groups[groupIndex]:SetPoint(
+			"TOPLEFT", 
+			self.GroupOuterSpacing, 
+			-self.GroupOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * groupIndex / 2);
+	end;
+	for groupIndex = 1, self.MaxGroupCount - 1, 2 do
+		raidWindow.Groups[groupIndex] = self:CreateGroupWindow(raidWindow, true);
+		raidWindow.Groups[groupIndex]:SetPoint(
+			"TOPLEFT", 
+			self.GroupOuterSpacing + self.GroupWidth + self.GroupInnerSpacing, 
+			-self.GroupOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * (groupIndex - 1) / 2);
+	end;
 
 	return raidWindow;
 end;
@@ -148,31 +144,13 @@ function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
 	groupWindow:EnableKeyboard(true);
 
 	groupWindow.Players = {};
-	groupWindow.Players[1] = self:CreatePlayerWindow(groupWindow, isOnTheRight);
-	groupWindow.Players[1]:SetPoint(
-		"TOPLEFT", 
-		self.PlayerOuterSpacing, 
-		-self.PlayerOuterSpacing);
-	groupWindow.Players[2] = self:CreatePlayerWindow(groupWindow, isOnTheRight);
-	groupWindow.Players[2]:SetPoint(
-		"TOPLEFT", 
-		self.PlayerOuterSpacing, 
-		-self.PlayerOuterSpacing - self.PlayerHeight - self.PlayerInnerSpacing);
-	groupWindow.Players[3] = self:CreatePlayerWindow(groupWindow, isOnTheRight);
-	groupWindow.Players[3]:SetPoint(
-		"TOPLEFT", 
-		self.PlayerOuterSpacing, 
-		-self.PlayerOuterSpacing - self.PlayerHeight * 2 - self.PlayerInnerSpacing * 2);
-	groupWindow.Players[4] = self:CreatePlayerWindow(groupWindow, isOnTheRight);
-	groupWindow.Players[4]:SetPoint(
-		"TOPLEFT", 
-		self.PlayerOuterSpacing, 
-		-self.PlayerOuterSpacing - self.PlayerHeight * 3 - self.PlayerInnerSpacing * 3);
-	groupWindow.Players[5] = self:CreatePlayerWindow(groupWindow, isOnTheRight);
-	groupWindow.Players[5]:SetPoint(
-		"TOPLEFT", 
-		self.PlayerOuterSpacing, 
-		-self.PlayerOuterSpacing - self.PlayerHeight * 4 - self.PlayerInnerSpacing * 4);
+	for playerIndex = 0, 4 do
+		groupWindow.Players[playerIndex] = self:CreatePlayerWindow(groupWindow, isOnTheRight);
+		groupWindow.Players[playerIndex]:SetPoint(
+			"TOPLEFT", 
+			self.PlayerOuterSpacing, 
+			-self.PlayerOuterSpacing - (self.PlayerHeight + self.PlayerInnerSpacing) * playerIndex);
+	end;
 
 	return groupWindow;
 end;
@@ -286,6 +264,27 @@ function OrlanHeal:HandleLoaded()
 	};
 
 	self.RaidWindow = self:CreateRaidWindow();
+end;
+
+function OrlanHeal:Show()
+	if self:RequestNonCombat() then
+		self.RaidWindow:Show();
+	end;
+end;
+
+function OrlanHeal:Hide()
+	if self:RequestNonCombat() then
+		self.RaidWindow:Hide();
+	end;
+end;
+
+function OrlanHeal:RequestNonCombat()
+	if InCombatLockdown() then
+		print("OrlanHeal: Невозможно выполнить в бою");
+		return false;
+	else
+		return true;
+	end;
 end;
 
 OrlanHeal:Initialize("OrlanHealConfig");
