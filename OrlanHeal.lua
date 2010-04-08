@@ -6,6 +6,14 @@ function SlashCmdList.ORLANHEAL(message, editbox)
 		OrlanHeal:Show();
 	elseif message == "hide" then
 		OrlanHeal:Hide();
+	elseif message == "40" then
+		OrlanHeal:SetGroupCount(8);
+	elseif message == "25" then
+		OrlanHeal:SetGroupCount(5);
+	elseif message == "10" then
+		OrlanHeal:SetGroupCount(2);
+	elseif message == "5" then
+		OrlanHeal:SetGroupCount(1);
 	end;
 end;
 
@@ -57,6 +65,8 @@ function OrlanHeal:Initialize(configName)
 	self.GroupAlpha = 0.2;
 
 	self.RaidWindowStrata = "LOW";
+
+	self.GroupCount = 8;
 end;
 
 function OrlanHeal:CreateRaidWindow()
@@ -272,6 +282,8 @@ function OrlanHeal:HandleLoaded()
 	};
 
 	self.RaidWindow = self:CreateRaidWindow();
+
+	self:UpdateVisibleGroupCount();
 end;
 
 function OrlanHeal:Show()
@@ -292,6 +304,40 @@ function OrlanHeal:RequestNonCombat()
 		return false;
 	else
 		return true;
+	end;
+end;
+
+function OrlanHeal:UpdateVisibleGroupCount()
+	for groupIndex = 0, self.MaxGroupCount - 1 do
+		if groupIndex < self.GroupCount then
+			self.RaidWindow.Groups[groupIndex]:Show();
+		else
+			self.RaidWindow.Groups[groupIndex]:Hide();
+		end;
+	end;
+
+	local verticalGroupCount = math.floor((self.GroupCount + 1) / 2);
+	self.RaidWindow:SetHeight(
+		self.GroupHeight * verticalGroupCount + 
+		self.RaidOuterSpacing * 2 + 
+		self.GroupInnerSpacing * (verticalGroupCount - 1));
+
+	local horizontalGroupCount;
+	if self.GroupCount == 1 then
+		horizontalGroupCount = 1;
+	else
+		horizontalGroupCount = 2;
+	end;
+	self.RaidWindow:SetWidth(
+		self.GroupWidth * horizontalGroupCount + 
+		self.RaidOuterSpacing * 2 + 
+		self.GroupInnerSpacing * (horizontalGroupCount - 1));
+end;
+
+function OrlanHeal:SetGroupCount(newGroupCount)
+	if self:RequestNonCombat() then
+		self.GroupCount = newGroupCount;
+		self:UpdateVisibleGroupCount();
 	end;
 end;
 
