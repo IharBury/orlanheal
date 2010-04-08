@@ -26,6 +26,15 @@ function OrlanHeal:Initialize(configName)
 	function self.EventFrame:HandleEvent(event, arg1)
 		if (event == "ADDON_LOADED") and (arg1 == "OrlanHeal") then
 			orlanHeal:HandleLoaded();
+		elseif (event == "RAID_ROSTER_UPDATE") or
+			(event == "PARTY_MEMBERS_CHANGED") or
+			(event == "ZONE_CHANGED_NEW_AREA") or
+			(event == "PLAYER_REGEN_ENABLED") or
+			(event == "PLAYER_ENTERING_BATTLEGROUND") or
+			(event == "PLAYER_ENTERING_WORLD") then
+			if not InCombatLockdown() then
+				orlanHeal:UpdateUnits();
+			end;
 		end;
 	end;
 
@@ -200,7 +209,6 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	end;
 
 	self:SetupSpells(playerWindow);
-	playerWindow:SetAttribute("unit", "player");
 
 	return playerWindow;
 end;
@@ -220,7 +228,6 @@ function OrlanHeal:CreatePetWindow(parent)
 	petWindow.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
 
 	self:SetupSpells(petWindow);
-	petWindow:SetAttribute("unit", "player");
 
 	return petWindow;
 end;
@@ -284,11 +291,20 @@ function OrlanHeal:HandleLoaded()
 	self.RaidWindow = self:CreateRaidWindow();
 
 	self:UpdateVisibleGroupCount();
+	self:Show();
+
+	self.EventFrame:RegisterEvent("RAID_ROSTER_UPDATE");
+	self.EventFrame:RegisterEvent("PARTY_MEMBERS_CHANGED");
+	self.EventFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
+	self.EventFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
+	self.EventFrame:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND");
+	self.EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 end;
 
 function OrlanHeal:Show()
 	if self:RequestNonCombat() then
 		self.RaidWindow:Show();
+		self:UpdateUnits();
 	end;
 end;
 
@@ -338,6 +354,74 @@ function OrlanHeal:SetGroupCount(newGroupCount)
 	if self:RequestNonCombat() then
 		self.GroupCount = newGroupCount;
 		self:UpdateVisibleGroupCount();
+	end;
+end;
+
+function OrlanHeal:SetPlayerTarget(groupNumber, groupPlayerNumber, playerUnit, petUnit)
+	self.RaidWindow.Groups[groupNumber - 1].Players[groupPlayerNumber - 1]:SetAttribute("unit", playerUnit);
+	self.RaidWindow.Groups[groupNumber - 1].Players[groupPlayerNumber - 1].Pet:SetAttribute("unit", petUnit);
+end;
+
+function OrlanHeal:UpdateUnits()
+	local groupPlayerCounts = {};
+	for groupNumber = 1, self.GroupCount do
+		groupPlayerCounts[groupNumber] = 0;
+	end;
+
+	if UnitInRaid("player") ~= nil then
+		for unitNumber = 1, self.GroupCount * 5 do
+			if unitNumber <= GetNumRaidMembers() then
+				local _, _, groupNumber = GetRaidRosterInfo(unitNumber);
+				groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
+				self:SetPlayerTarget(
+					groupNumber, 
+					groupPlayerCounts[groupNumber], 
+					"raid" .. unitNumber, 
+					"raidpet" .. unitNumber);
+			else
+				for groupNumber = 1, self.GroupCount do
+					if groupPlayerCounts[groupNumber] < 5 then
+						groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
+						self:SetPlayerTarget(
+							groupNumber, 
+							groupPlayerCounts[groupNumber], 
+							"raid" .. unitNumber, 
+							"raidpet" .. unitNumber);
+						break;
+					end;
+				end;
+			end;
+		end;
+	elseif UnitInParty("player") ~= nil then
+		self:SetPlayerTarget(1, 1, "player", "pet");
+		for unitNumber = 1, 4 do
+			self:SetPlayerTarget(1, unitNumber + 1, "party" .. unitNumber, "partypet" .. unitNumber);
+		end;
+		for groupNumber = 2, self.GroupCount do
+			for groupPlayerNumber = 1, 5 do
+				self:SetPlayerTarget(groupNumber, groupPlayerNumber, "", "");
+			end;
+		end;
+	else
+		self:SetPlayerTarget(1, 1, "player", "pet");
+		for groupPlayerNumber = 2, 5 do
+			self:SetPlayerTarget(1, groupPlayerNumber, "", "");
+		end;
+		for groupNumber = 2, self.GroupCount do
+			for groupPlayerNumber = 1, 5 do
+				self:SetPlayerTarget(groupNumber, groupPlayerNumber, "", "");
+			end;
+		end;
+	end;
+end;
+
+function OrlanHeal:UpdateStatus()
+	for groupIndex = 0, self.GroupCount - 1 do
+		for groupPlayerIndex = 0, 4 do
+			local player = self.RaidWindow.Groups[groupIndex].Players[groupPlayerIndex];
+			UpdateUnitStatus(player);
+			UpdateUnitStatus(player.Pet);
+		end;
 	end;
 end;
 
