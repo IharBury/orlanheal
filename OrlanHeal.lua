@@ -239,7 +239,7 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specif
 			parent.SpecificBuffs[buffIndex] = self:CreateBuff(
 				parent, 
 				"TOPRIGHT", 
-				(otherBuffCount + specificBuffCount - 1 - buffIndex) * self.BuffSize);
+				-(otherBuffCount + specificBuffCount - 1 - buffIndex) * self.BuffSize);
 		end;
 	end;
 
@@ -249,7 +249,7 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specif
 		parent.OtherBuffs[buffIndex] = self:CreateBuff(
 			parent, 
 			"TOPRIGHT", 
-			(otherBuffCount - 1 - buffIndex) * self.BuffSize);
+			-(otherBuffCount - 1 - buffIndex) * self.BuffSize);
 	end;
 
 	if specificDebuffCount > 0 then
@@ -259,7 +259,7 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specif
 			parent.SpecificDebuffs[buffIndex] = self:CreateBuff(
 				parent, 
 				"BOTTOMRIGHT", 
-				(otherDebuffCount + specificDebuffCount - 1 - buffIndex) * self.BuffSize);
+				-(otherDebuffCount + specificDebuffCount - 1 - buffIndex) * self.BuffSize);
 		end;
 	end;
 
@@ -269,7 +269,7 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specif
 		parent.OtherDebuffs[buffIndex] = self:CreateBuff(
 			parent, 
 			"BOTTOMRIGHT", 
-			(otherDebuffCount - 1 - buffIndex) * self.BuffSize);
+			-(otherDebuffCount - 1 - buffIndex) * self.BuffSize);
 	end;
 end;
 
@@ -637,6 +637,7 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		self:UpdateHealth(window.Canvas.HealthBar, unit);
 		self:UpdateMana(window.Canvas.ManaBar, unit);
 		self:UpdateName(window.Canvas.NameBar, unit, displayedGroup);
+		self:UpdateBuffs(window.Canvas, unit);
 	end;
 end;
 
@@ -713,6 +714,93 @@ function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 		classColor = { r = 0.4, g = 0.4, b = 0.4 };
 	end;
 	nameBar.Text:SetTextColor(classColor.r, classColor.g, classColor.b, 1);
+end;
+
+function OrlanHeal:UpdateBuffs(canvas, unit)
+	local goodBuffCount = 0;
+	local goodBuffs = {};
+	local buffIndex = 1;
+	while true do
+		local name, _, icon, count, dispelType, duration, expires, caster, _, shouldConsolidate = 
+			UnitAura(unit, buffIndex, "HELPFUL");
+		if name == nil then break; end;
+
+		local buffKind;
+		if name == "Священный щит" then
+			buffKind = 1;
+		elseif (name == "Вспышка Света") and (UnitIsUnit(caster, "player") == 1) then
+			buffKind = 2;
+		elseif name == "Вспышка Света" then
+			buffKind = 3;
+		elseif (name == "Частица Света") and (UnitIsUnit(caster, "player") == 1) then
+			buffKind = 4;
+		elseif string.sub(name, 1, 9) == "Аура " then
+			buffKind = nil;
+		elseif shouldConsolidate ~= 1 then
+			buffKind = 5;
+		end;
+
+		if buffKind ~= nil then
+			goodBuffCount = goodBuffCount + 1;
+			goodBuffs[goodBuffCount] =
+			{
+				Icon = icon,
+				Count = count,
+				Duration = duration,
+				Expires = expires,
+				Kind = buffKind
+			};
+		end;
+
+		buffIndex = buffIndex + 1;
+	end;
+
+	if canvas.SpecificBuffs ~= nil then
+		if canvas.SpecificBuffs[0] ~= nill then
+			self:ShowBuff(canvas.SpecificBuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 1));
+		end;
+
+		if canvas.SpecificBuffs[1] ~= nill then
+			self:ShowBuff(canvas.SpecificBuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 2));
+		end;
+
+		if canvas.SpecificBuffs[2] ~= nill then
+			self:ShowBuff(canvas.SpecificBuffs[2], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 3));
+		end;
+
+		if canvas.SpecificBuffs[3] ~= nill then
+			self:ShowBuff(canvas.SpecificBuffs[3], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 4));
+		end;
+	end;
+
+	if canvas.OtherBuffs[0] ~= nill then
+		self:ShowBuff(canvas.OtherBuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
+	end;
+
+	if canvas.OtherBuffs[1] ~= nill then
+		self:ShowBuff(canvas.OtherBuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
+	end;
+end;
+
+function OrlanHeal:GetLastBuffOfKind(buffs, buffCount, kind)
+	for index = buffCount, 1, -1 do
+		if (buffs[index] ~= nil) and ((kind == nil) or (buffs[index].Kind == kind)) then
+			local result = buffs[index];
+			buffs[index] = nil;
+			return result;
+		end;
+	end;
+
+	return nil;
+end;
+
+function OrlanHeal:ShowBuff(window, buff)
+	if buff == nil then
+		window:Hide();
+	else
+		window:Show();
+		window.Texture:SetTexture(buff.Icon);
+	end;
 end;
 
 OrlanHeal:Initialize("OrlanHealConfig");
