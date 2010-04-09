@@ -638,6 +638,7 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		self:UpdateMana(window.Canvas.ManaBar, unit);
 		self:UpdateName(window.Canvas.NameBar, unit, displayedGroup);
 		self:UpdateBuffs(window.Canvas, unit);
+		self:UpdateDebuffs(window.Canvas, unit);
 	end;
 end;
 
@@ -721,7 +722,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	local goodBuffs = {};
 	local buffIndex = 1;
 	while true do
-		local name, _, icon, count, dispelType, duration, expires, caster, _, shouldConsolidate = 
+		local name, _, icon, count, _, duration, expires, caster, _, shouldConsolidate = 
 			UnitAura(unit, buffIndex, "HELPFUL");
 		if name == nil then break; end;
 
@@ -779,6 +780,61 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 
 	if canvas.OtherBuffs[1] ~= nill then
 		self:ShowBuff(canvas.OtherBuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
+	end;
+end;
+
+function OrlanHeal:UpdateDebuffs(canvas, unit)
+	local goodBuffCount = 0;
+	local goodBuffs = {};
+	local buffIndex = 1;
+	while true do
+		local name, _, icon, count, dispelType, duration, expires, _, _, _ = UnitAura(unit, buffIndex, "HARMFUL");
+		if name == nil then break; end;
+
+		local buffKind;
+		if (dispelType == "Disease") or (dispelType == "Magic") or (dispelType == "Poison") then
+			buffKind = 1;
+		elseif dispelType == "Curse" then
+			buffKind = 2;
+		else
+			buffKind = 3;
+		end;
+
+		if buffKind ~= nil then
+			goodBuffCount = goodBuffCount + 1;
+			goodBuffs[goodBuffCount] =
+			{
+				Icon = icon,
+				Count = count,
+				Duration = duration,
+				Expires = expires,
+				Kind = buffKind
+			};
+		end;
+
+		buffIndex = buffIndex + 1;
+	end;
+
+	if canvas.SpecificDebuffs ~= nil then
+		if canvas.SpecificDebuffs[0] ~= nill then
+			self:ShowBuff(canvas.SpecificDebuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 1));
+		end;
+
+		if canvas.SpecificDebuffs[1] ~= nill then
+			self:ShowBuff(canvas.SpecificDebuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 2));
+		end;
+	end;
+
+	if canvas.OtherDebuffs[0] ~= nill then
+		self:ShowBuff(canvas.OtherDebuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
+	end;
+
+	if canvas.OtherDebuffs[1] ~= nill then
+		self:ShowBuff(canvas.OtherDebuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
+	end;
+
+	if canvas.OtherDebuffs[2] ~= nill then
+		self:ShowBuff(canvas.OtherDebuffs[2], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
 	end;
 end;
 
