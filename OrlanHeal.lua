@@ -41,10 +41,12 @@ function OrlanHeal:Initialize(configName)
 
 	self.ElapsedAfterUpdate = 0;
 	function self.EventFrame:HandleUpdate(elapsed)
-		orlanHeal.ElapsedAfterUpdate = orlanHeal.ElapsedAfterUpdate + elapsed;
-		if orlanHeal.ElapsedAfterUpdate > 0.1 then
-			orlanHeal:UpdateStatus();
-			orlanHeal.ElapsedAfterUpdate = 0;
+		if orlanHeal.RaidWindow:IsShown() then
+			orlanHeal.ElapsedAfterUpdate = orlanHeal.ElapsedAfterUpdate + elapsed;
+			if orlanHeal.ElapsedAfterUpdate > 0.1 then
+				orlanHeal:UpdateStatus();
+				orlanHeal.ElapsedAfterUpdate = 0;
+			end;
 		end;
 	end;
 
@@ -65,6 +67,7 @@ function OrlanHeal:Initialize(configName)
 	self.PetSpacing = 3 * self.Scale;
 	self.PlayerWidth = 130 * self.Scale;
 	self.PlayerHeight = 20 * self.Scale;
+	self.BuffSize = self.PlayerHeight / 2;
 	self.GroupOuterSpacing = 2 * self.Scale;
 	self.PlayerInnerSpacing = 2 * self.Scale;
 	self.GroupWidth = self.PlayerWidth + self.PetSpacing + self.PetWidth + self.GroupOuterSpacing * 2;
@@ -80,8 +83,8 @@ function OrlanHeal:Initialize(configName)
 		self.RaidOuterSpacing * 2 + 
 		self.GroupInnerSpacing * (self.MaxVerticalGroupCount - 1);
 	self.RangeWidth = 5 * self.Scale;
-	self.PlayerStatusWidth = 80 * self.Scale;
-	self.PetStatusWidth = 50 * self.Scale;
+	self.PlayerStatusWidth = self.PlayerWidth - self.RangeWidth - self.BuffSize * 5;
+	self.PetStatusWidth = self.PetWidth - self.RangeWidth - self.BuffSize * 2;
 	self.HealthHeight = 4 * self.Scale;
 	self.ManaHeight = 4 * self.Scale;
 	self.NameHeight = self.PlayerHeight - self.ManaHeight - self.HealthHeight;
@@ -210,6 +213,7 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateHealthBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateManaBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
+	self:CreateBuffs(playerWindow.Canvas, 4, 1, 2, 3);
 
 	playerWindow.Pet = self:CreatePetWindow(playerWindow);
 	if isOnTheRight then
@@ -225,6 +229,67 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	end;
 
 	return playerWindow;
+end;
+
+function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specificDebuffCount, otherDebuffCount)
+	if specificBuffCount > 0 then
+		parent.SpecificBuffs = {};
+
+		for buffIndex = 0, specificBuffCount - 1 do
+			parent.SpecificBuffs[buffIndex] = self:CreateBuff(
+				parent, 
+				"TOPRIGHT", 
+				(otherBuffCount + specificBuffCount - 1 - buffIndex) * self.BuffSize);
+		end;
+	end;
+
+	parent.OtherBuffs = {};
+
+	for buffIndex = 0, otherBuffCount - 1 do
+		parent.OtherBuffs[buffIndex] = self:CreateBuff(
+			parent, 
+			"TOPRIGHT", 
+			(otherBuffCount - 1 - buffIndex) * self.BuffSize);
+	end;
+
+	if specificDebuffCount > 0 then
+		parent.SpecificDebuffs = {};
+
+		for buffIndex = 0, specificDebuffCount - 1 do
+			parent.SpecificDebuffs[buffIndex] = self:CreateBuff(
+				parent, 
+				"BOTTOMRIGHT", 
+				(otherDebuffCount + specificDebuffCount - 1 - buffIndex) * self.BuffSize);
+		end;
+	end;
+
+	parent.OtherDebuffs = {};
+
+	for buffIndex = 0, otherDebuffCount - 1 do
+		parent.OtherDebuffs[buffIndex] = self:CreateBuff(
+			parent, 
+			"BOTTOMRIGHT", 
+			(otherDebuffCount - 1 - buffIndex) * self.BuffSize);
+	end;
+end;
+
+function OrlanHeal:CreateBuff(parent, point, x)
+	local buff = CreateFrame("Frame", nil, parent);
+	buff:SetHeight(self.BuffSize);
+	buff:SetWidth(self.BuffSize);
+	buff:SetPoint(point, x, 0);
+
+	buff.Texture = buff:CreateTexture();
+	buff.Texture:SetHeight(self.BuffSize);
+	buff.Texture:SetWidth(self.BuffSize);
+	buff.Texture:SetPoint("TOPLEFT", 0, 0);
+
+	buff.Cooldown = CreateFrame("Cooldown", nill, buff);
+	buff.Cooldown:SetHeight(self.BuffSize);
+	buff.Cooldown:SetWidth(self.BuffSize);
+	buff.Cooldown:SetPoint("TOPLEFT", 0, 0);
+
+	return buff;
 end;
 
 function OrlanHeal:CreateBlankCanvas(parent)
@@ -343,6 +408,7 @@ function OrlanHeal:CreatePetWindow(parent)
 	self:CreateHealthBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateManaBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateNameBar(petWindow.Canvas, self.PetStatusWidth);
+	self:CreateBuffs(petWindow.Canvas, 0, 2, 1, 1);
 
 	return petWindow;
 end;
@@ -488,7 +554,7 @@ function OrlanHeal:UpdateUnits()
 		for unitNumber = 1, self.GroupCount * 5 do
 			if unitNumber <= GetNumRaidMembers() then
 				local _, _, groupNumber = GetRaidRosterInfo(unitNumber);
-				if groupNumber <= self.GroupCount then
+				if (groupNumber ~= nil) and (groupNumber ~= 0) and (groupNumber <= self.GroupCount) then
 					groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
 					self:SetPlayerTarget(
 						groupNumber, 
