@@ -1,6 +1,7 @@
 OrlanHeal = {};
 
 SLASH_ORLANHEAL1 = "/orlanheal";
+SLASH_ORLANHEAL2 = "/oh";
 function SlashCmdList.ORLANHEAL(message, editbox)
 	if message == "show" then
 		OrlanHeal:Show();
@@ -38,8 +39,18 @@ function OrlanHeal:Initialize(configName)
 		end;
 	end;
 
+	self.ElapsedAfterUpdate = 0;
+	function self.EventFrame:HandleUpdate(elapsed)
+		orlanHeal.ElapsedAfterUpdate = orlanHeal.ElapsedAfterUpdate + elapsed;
+		if orlanHeal.ElapsedAfterUpdate > 0.1 then
+			orlanHeal:UpdateStatus();
+			orlanHeal.ElapsedAfterUpdate = 0;
+		end;
+	end;
+
 	self.EventFrame:RegisterEvent("ADDON_LOADED");
 	self.EventFrame:SetScript("OnEvent", self.EventFrame.HandleEvent);
+	self.EventFrame:SetScript("OnUpdate", self.EventFrame.HandleUpdate);
 
 	self.MaxGroupCount = 8;
 	self.MaxVerticalGroupCount = math.floor((self.MaxGroupCount + 1) / 2);
@@ -69,11 +80,17 @@ function OrlanHeal:Initialize(configName)
 	self.RaidHeight = self.GroupHeight * self.MaxVerticalGroupCount + 
 		self.RaidOuterSpacing * 2 + 
 		self.GroupInnerSpacing * (self.MaxVerticalGroupCount - 1);
+	self.RangeWidth = 5 * self.Scale;
+	self.PlayerStatusWidth = 80 * self.Scale;
+	self.PetStatusWidth = 50 * self.Scale;
+	self.HealthHeight = 4 * self.Scale;
+	self.ManaHeight = 4 * self.Scale;
 
 	self.RaidAlpha = 0.2;
 	self.GroupAlpha = 0.2;
 
 	self.RaidWindowStrata = "LOW";
+	self.RaidWindowName = "OrlanHeal_RaidWindow";
 
 	self.GroupCount = 8;
 end;
@@ -184,16 +201,16 @@ function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
 end;
 
 function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
-	local playerWindow = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
+	local playerWindow = CreateFrame("Frame", nil, parent);
 
 	playerWindow:SetFrameStrata(self.RaidWindowStrata);
 	playerWindow:SetHeight(self.PlayerHeight);
 	playerWindow:SetWidth(self.PlayerWidth);
-	playerWindow.BackgroundTexture = playerWindow:CreateTexture(nil, "BACKGROUND");
-	playerWindow.BackgroundTexture:SetTexture(0.5, 0.5, 0.5, 1);
-	playerWindow.BackgroundTexture:SetHeight(self.PlayerHeight);
-	playerWindow.BackgroundTexture:SetWidth(self.PlayerWidth);
-	playerWindow.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
+
+	self:CreateUnitButton(playerWindow);
+	self:CreateBlankCanvas(playerWindow);
+	self:CreateRangeBar(playerWindow.Canvas);
+	self:CreateHealthBar(playerWindow.Canvas, self.PlayerStatusWidth);
 
 	playerWindow.Pet = self:CreatePetWindow(playerWindow);
 	if isOnTheRight then
@@ -208,74 +225,123 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 			0);
 	end;
 
-	self:SetupSpells(playerWindow);
-
 	return playerWindow;
 end;
 
-function OrlanHeal:CreatePetWindow(parent)
-	local petWindow = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
+function OrlanHeal:CreateBlankCanvas(parent)
+	local canvas = CreateFrame("Frame", nil, parent);
 
-	petWindow:ClearAllPoints();
+	canvas:SetFrameStrata(self.RaidWindowStrata);
+	canvas:SetHeight(parent:GetHeight());
+	canvas:SetWidth(parent:GetWidth());
+	canvas:SetPoint("TOPLEFT", 0, 0);
+
+	canvas.BackgroundTexture = canvas:CreateTexture(nil, "BACKGROUND");
+	canvas.BackgroundTexture:SetTexture(0.2, 0.2, 0.2, 1);
+	canvas.BackgroundTexture:SetHeight(parent:GetHeight());
+	canvas.BackgroundTexture:SetWidth(parent:GetWidth());
+	canvas.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
+
+	parent.Canvas = canvas;
+end;
+
+function OrlanHeal:CreateRangeBar(parent)
+	local rangeBar = CreateFrame("Frame", nil, parent);
+
+	rangeBar:SetFrameStrata(self.RaidWindowStrata);
+	rangeBar:SetHeight(parent:GetHeight());
+	rangeBar:SetWidth(self.RangeWidth);
+	rangeBar:SetPoint("TOPLEFT", 0, 0);
+
+	rangeBar.BackgroundTexture = rangeBar:CreateTexture();
+	rangeBar.BackgroundTexture:SetTexture(0, 0, 1, 1);
+	rangeBar.BackgroundTexture:SetHeight(parent:GetHeight());
+	rangeBar.BackgroundTexture:SetWidth(self.RangeWidth);
+	rangeBar.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
+
+	parent.RangeBar = rangeBar;
+end;
+
+function OrlanHeal:CreateHealthBar(parent, width)
+	parent.HealthBar = CreateFrame("StatusBar", nil, parent);
+
+	parent.HealthBar:SetFrameStrata(self.RaidWindowStrata);
+	parent.HealthBar:SetHeight(self.HealthHeight);
+	parent.HealthBar:SetWidth(width);
+	parent.HealthBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
+	parent.HealthBar:SetMinMaxValues(0, 100);
+	parent.HealthBar:SetValue(100);
+end;
+
+function OrlanHeal:CreateUnitButton(parent)
+	parent.Button = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
+	parent.Button:SetFrameStrata(self.RaidWindowStrata);
+	parent.Button:SetHeight(parent:GetHeight());
+	parent.Button:SetWidth(parent:GetWidth());
+	parent.Button:SetPoint("TOPLEFT", 0, 0);
+
+	self:SetupSpells(parent.Button);
+end;
+
+function OrlanHeal:CreatePetWindow(parent)
+	local petWindow = CreateFrame("Frame", nil, parent);
+
 	petWindow:SetFrameStrata(self.RaidWindowStrata);
 	petWindow:SetHeight(self.PetHeight);
 	petWindow:SetWidth(self.PetWidth);
 
-	petWindow.BackgroundTexture = petWindow:CreateTexture(nil, "BACKGROUND");
-	petWindow.BackgroundTexture:SetTexture(0.5, 0.5, 0.5, 1);
-	petWindow.BackgroundTexture:SetHeight(self.PetHeight);
-	petWindow.BackgroundTexture:SetWidth(self.PetWidth);
-	petWindow.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
-
-	self:SetupSpells(petWindow);
+	self:CreateUnitButton(petWindow);
+	self:CreateBlankCanvas(petWindow);
+	self:CreateRangeBar(petWindow.Canvas);
+	self:CreateHealthBar(petWindow.Canvas, self.PetStatusWidth);
 
 	return petWindow;
 end;
 
-function OrlanHeal:SetupSpells(window)
-	window:RegisterForClicks("AnyDown");
+function OrlanHeal:SetupSpells(button)
+	button:RegisterForClicks("AnyDown");
 
-	window:SetAttribute("*helpbutton1", "help1");
-	window:SetAttribute("*helpbutton2", "help2");
-	window:SetAttribute("*helpbutton3", "help3");
+	button:SetAttribute("*helpbutton1", "help1");
+	button:SetAttribute("*helpbutton2", "help2");
+	button:SetAttribute("*helpbutton3", "help3");
 
-	window:SetAttribute("type-help1", "spell");
-	window:SetAttribute("spell-help1", "Вспышка Света");
+	button:SetAttribute("type-help1", "spell");
+	button:SetAttribute("spell-help1", "Вспышка Света");
 
-	window:SetAttribute("type-help2", "spell");
-	window:SetAttribute("spell-help2", "Свет Небес");
+	button:SetAttribute("type-help2", "spell");
+	button:SetAttribute("spell-help2", "Свет Небес");
 
-	window:SetAttribute("type-help3", "spell");
-	window:SetAttribute("spell-help3", "Длань защиты");
+	button:SetAttribute("type-help3", "spell");
+	button:SetAttribute("spell-help3", "Длань защиты");
 
-	window:SetAttribute("shift-type1", "target");
-	window:SetAttribute("shift-type-help1", "target");
+	button:SetAttribute("shift-type1", "target");
+	button:SetAttribute("shift-type-help1", "target");
 
-	window:SetAttribute("shift-type-help2", "spell");
-	window:SetAttribute("shift-spell-help2", "Частица Света");
+	button:SetAttribute("shift-type-help2", "spell");
+	button:SetAttribute("shift-spell-help2", "Частица Света");
 
-	window:SetAttribute("shift-type-help3", "spell");
-	window:SetAttribute("shift-spell-help3", "Длань спасения");
+	button:SetAttribute("shift-type-help3", "spell");
+	button:SetAttribute("shift-spell-help3", "Длань спасения");
 
-	window:SetAttribute("ctrl-type-help1", "spell");
-	window:SetAttribute("ctrl-spell-help1", "Длань жертвенности");
+	button:SetAttribute("ctrl-type-help1", "spell");
+	button:SetAttribute("ctrl-spell-help1", "Длань жертвенности");
 
-	window:SetAttribute("ctrl-type-help2", "spell");
-	window:SetAttribute("ctrl-spell-help2", "Возложение рук");
+	button:SetAttribute("ctrl-type-help2", "spell");
+	button:SetAttribute("ctrl-spell-help2", "Возложение рук");
 
-	window:SetAttribute("ctrl-type3", "spell");
-	window:SetAttribute("ctrl-type-help3", "spell");
-	window:SetAttribute("ctrl-spell3", "Божественное вмешательство");
-	window:SetAttribute("ctrl-spell-help3", "Божественное вмешательство");
+	button:SetAttribute("ctrl-type3", "spell");
+	button:SetAttribute("ctrl-type-help3", "spell");
+	button:SetAttribute("ctrl-spell3", "Божественное вмешательство");
+	button:SetAttribute("ctrl-spell-help3", "Божественное вмешательство");
 
-	window:SetAttribute("alt-type-help1", "spell");
-	window:SetAttribute("alt-spell-help1", "Очищение");
+	button:SetAttribute("alt-type-help1", "spell");
+	button:SetAttribute("alt-spell-help1", "Очищение");
 
-	window:SetAttribute("alt-type-help2", "spell");
-	window:SetAttribute("alt-spell-help2", "Шок небес");
+	button:SetAttribute("alt-type-help2", "spell");
+	button:SetAttribute("alt-spell-help2", "Шок небес");
 	
-	window:SetAttribute("alt-type-help3", "spell");
-	window:SetAttribute("alt-spell-help3", "Священный щит");
+	button:SetAttribute("alt-type-help3", "spell");
+	button:SetAttribute("alt-spell-help3", "Священный щит");
 end;
 
 function OrlanHeal:HandleLoaded()
@@ -358,8 +424,8 @@ function OrlanHeal:SetGroupCount(newGroupCount)
 end;
 
 function OrlanHeal:SetPlayerTarget(groupNumber, groupPlayerNumber, playerUnit, petUnit)
-	self.RaidWindow.Groups[groupNumber - 1].Players[groupPlayerNumber - 1]:SetAttribute("unit", playerUnit);
-	self.RaidWindow.Groups[groupNumber - 1].Players[groupPlayerNumber - 1].Pet:SetAttribute("unit", petUnit);
+	self.RaidWindow.Groups[groupNumber - 1].Players[groupPlayerNumber - 1].Button:SetAttribute("unit", playerUnit);
+	self.RaidWindow.Groups[groupNumber - 1].Players[groupPlayerNumber - 1].Pet.Button:SetAttribute("unit", petUnit);
 end;
 
 function OrlanHeal:UpdateUnits()
@@ -419,9 +485,38 @@ function OrlanHeal:UpdateStatus()
 	for groupIndex = 0, self.GroupCount - 1 do
 		for groupPlayerIndex = 0, 4 do
 			local player = self.RaidWindow.Groups[groupIndex].Players[groupPlayerIndex];
-			UpdateUnitStatus(player);
-			UpdateUnitStatus(player.Pet);
+			self:UpdateUnitStatus(player);
+			self:UpdateUnitStatus(player.Pet);
 		end;
+	end;
+end;
+
+function OrlanHeal:UpdateUnitStatus(window)
+	local unit = window.Button:GetAttribute("unit");
+	if (unit == nil) or (unit == "") or not UnitExists(unit) then
+		window.Canvas:Hide();
+	else
+		window.Canvas:Show();
+
+		self:UpdateRange(window.Canvas.RangeBar, unit);
+	end;
+end;
+
+function OrlanHeal:UpdateRange(rangeBar, unit)
+	if UnitIsConnected(unit) ~= 1 then
+		rangeBar.BackgroundTexture:SetTexture(0, 0, 0, 1);
+	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
+		rangeBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
+	elseif IsSpellInRange("Частица Света", unit) ~= 1 then
+		rangeBar.BackgroundTexture:SetTexture(0.2, 0.2, 0.75, 1);
+	elseif IsSpellInRange("Вспышка Света", unit) ~= 1 then
+		rangeBar.BackgroundTexture:SetTexture(0.75, 0.2, 0.2, 1);
+	elseif IsSpellInRange("Длань Спасения", unit) ~= 1 then
+		rangeBar.BackgroundTexture:SetTexture(0.75, 0.45, 0.2, 1);
+	elseif CheckInteractDistance(unit, 2) ~= 1 then
+		rangeBar.BackgroundTexture:SetTexture(0.75, 0.75, 0.2, 1);
+	else
+		rangeBar.BackgroundTexture:SetTexture(0.2, 0.75, 0.2, 1);
 	end;
 end;
 
