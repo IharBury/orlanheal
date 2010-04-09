@@ -62,14 +62,13 @@ function OrlanHeal:Initialize(configName)
 
 	self.Scale = 0.8;
 	self.PetWidth = 81 * self.Scale;
-	self.PetHeight = 20 * self.Scale;
 	self.PetSpacing = 3 * self.Scale;
 	self.PlayerWidth = 130 * self.Scale;
 	self.PlayerHeight = 20 * self.Scale;
 	self.GroupOuterSpacing = 2 * self.Scale;
 	self.PlayerInnerSpacing = 2 * self.Scale;
 	self.GroupWidth = self.PlayerWidth + self.PetSpacing + self.PetWidth + self.GroupOuterSpacing * 2;
-	self.GroupHeight = math.max(self.PlayerHeight, self.PetHeight) * 5 + 
+	self.GroupHeight = self.PlayerHeight * 5 + 
 		self.GroupOuterSpacing * 2 + 
 		self.PlayerInnerSpacing * 4;
 	self.RaidOuterSpacing = 6 * self.Scale;
@@ -85,6 +84,8 @@ function OrlanHeal:Initialize(configName)
 	self.PetStatusWidth = 50 * self.Scale;
 	self.HealthHeight = 4 * self.Scale;
 	self.ManaHeight = 4 * self.Scale;
+	self.NameHeight = self.PlayerHeight - self.ManaHeight - self.HealthHeight;
+	self.NameFontHeight = self.NameHeight * 0.8;
 
 	self.RaidAlpha = 0.2;
 	self.GroupAlpha = 0.2;
@@ -97,19 +98,14 @@ end;
 
 function OrlanHeal:CreateRaidWindow()
 	local orlanHeal = self;
-	local raidWindow = CreateFrame("Frame", nil, UIParent);
+	local raidWindow = CreateFrame("Frame", self.RaidWindowName, UIParent);
 
 	function raidWindow:HandleDragStop()
-		orlanHeal.Config.RaidWindowPosition =
-		{
-			x = self:GetLeft(),
-			y = self:GetBottom()
-		};
 		self:StopMovingOrSizing();
 	end;
 
 	raidWindow:ClearAllPoints();
-	raidWindow:SetPoint("BOTTOMLEFT", orlanHeal.Config.RaidWindowPosition.x, orlanHeal.Config.RaidWindowPosition.y);
+	raidWindow:SetPoint("BOTTOMLEFT", 0, 0);
 	raidWindow:SetFrameStrata(self.RaidWindowStrata);
 	raidWindow:SetBackdrop(
 	{
@@ -135,6 +131,7 @@ function OrlanHeal:CreateRaidWindow()
 	raidWindow:RegisterForDrag("LeftButton");
 	raidWindow:SetScript("OnDragStart", raidWindow.StartMoving);
 	raidWindow:SetScript("OnDragStop", raidWindow.HandleDragStop);
+	raidWindow:SetUserPlaced(true);
 
 	raidWindow.Groups = {};
 
@@ -211,6 +208,8 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateBlankCanvas(playerWindow);
 	self:CreateRangeBar(playerWindow.Canvas);
 	self:CreateHealthBar(playerWindow.Canvas, self.PlayerStatusWidth);
+	self:CreateManaBar(playerWindow.Canvas, self.PlayerStatusWidth);
+	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
 
 	playerWindow.Pet = self:CreatePetWindow(playerWindow);
 	if isOnTheRight then
@@ -254,12 +253,29 @@ function OrlanHeal:CreateRangeBar(parent)
 	rangeBar:SetPoint("TOPLEFT", 0, 0);
 
 	rangeBar.BackgroundTexture = rangeBar:CreateTexture();
-	rangeBar.BackgroundTexture:SetTexture(0, 0, 1, 1);
+	rangeBar.BackgroundTexture:SetTexture(0.2, 0.2, 0.75, 1);
 	rangeBar.BackgroundTexture:SetHeight(parent:GetHeight());
 	rangeBar.BackgroundTexture:SetWidth(self.RangeWidth);
 	rangeBar.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
 
 	parent.RangeBar = rangeBar;
+end;
+
+function OrlanHeal:CreateNameBar(parent, width)
+	parent.NameBar = CreateFrame("Frame", nil, parent);
+
+	parent.NameBar:SetFrameStrata(self.RaidWindowStrata);
+	parent.NameBar:SetHeight(self.NameHeight);
+	parent.NameBar:SetWidth(width);
+	parent.NameBar:SetPoint("TOPLEFT", self.RangeWidth, 0);
+
+	parent.NameBar.Text = parent.NameBar:CreateFontString(nil, nil, "GameFontNormal");
+	parent.NameBar.Text:SetHeight(self.NameHeight);
+	parent.NameBar.Text:SetWidth(width);
+	parent.NameBar.Text:SetPoint("TOPLEFT", 0, 0);
+	parent.NameBar.Text:SetJustifyH("LEFT");
+	parent.NameBar.Text:SetWordWrap(false);
+	parent.NameBar.Text:SetTextHeight(self.NameFontHeight);
 end;
 
 function OrlanHeal:CreateHealthBar(parent, width)
@@ -271,6 +287,37 @@ function OrlanHeal:CreateHealthBar(parent, width)
 	parent.HealthBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
 	parent.HealthBar:SetMinMaxValues(0, 100);
 	parent.HealthBar:SetValue(100);
+
+	parent.HealthBar.Texture = parent.HealthBar:CreateTexture();
+	parent.HealthBar.Texture:SetTexture(0.2, 0.75, 0.2, 1);
+	parent.HealthBar:SetStatusBarTexture(parent.HealthBar.Texture, "OVERLAY");
+
+	parent.HealthBar.BackgroundTexture = parent.HealthBar:CreateTexture("BACKGROUND");
+	parent.HealthBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
+	parent.HealthBar.BackgroundTexture:SetHeight(self.HealthHeight);
+	parent.HealthBar.BackgroundTexture:SetWidth(width);
+	parent.HealthBar.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
+end;
+
+function OrlanHeal:CreateManaBar(parent, width)
+	parent.ManaBar = CreateFrame("StatusBar", nil, parent);
+
+	parent.ManaBar:SetFrameStrata(self.RaidWindowStrata);
+	parent.ManaBar:SetHeight(self.ManaHeight);
+	parent.ManaBar:SetWidth(width);
+	parent.ManaBar:SetPoint("BOTTOMLEFT", self.RangeWidth, 0);
+	parent.ManaBar:SetMinMaxValues(0, 100);
+	parent.ManaBar:SetValue(100);
+
+	parent.ManaBar.Texture = parent.ManaBar:CreateTexture();
+	parent.ManaBar.Texture:SetTexture(0.2, 0.2, 0.75, 1);
+	parent.ManaBar:SetStatusBarTexture(parent.ManaBar.Texture, "OVERLAY");
+
+	parent.ManaBar.BackgroundTexture = parent.ManaBar:CreateTexture("BACKGROUND");
+	parent.ManaBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
+	parent.ManaBar.BackgroundTexture:SetHeight(self.ManaHeight);
+	parent.ManaBar.BackgroundTexture:SetWidth(width);
+	parent.ManaBar.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
 end;
 
 function OrlanHeal:CreateUnitButton(parent)
@@ -287,13 +334,15 @@ function OrlanHeal:CreatePetWindow(parent)
 	local petWindow = CreateFrame("Frame", nil, parent);
 
 	petWindow:SetFrameStrata(self.RaidWindowStrata);
-	petWindow:SetHeight(self.PetHeight);
+	petWindow:SetHeight(self.PlayerHeight);
 	petWindow:SetWidth(self.PetWidth);
 
 	self:CreateUnitButton(petWindow);
 	self:CreateBlankCanvas(petWindow);
 	self:CreateRangeBar(petWindow.Canvas);
 	self:CreateHealthBar(petWindow.Canvas, self.PetStatusWidth);
+	self:CreateManaBar(petWindow.Canvas, self.PetStatusWidth);
+	self:CreateNameBar(petWindow.Canvas, self.PetStatusWidth);
 
 	return petWindow;
 end;
@@ -420,6 +469,7 @@ function OrlanHeal:SetGroupCount(newGroupCount)
 	if self:RequestNonCombat() then
 		self.GroupCount = newGroupCount;
 		self:UpdateVisibleGroupCount();
+		self:UpdateUnits();
 	end;
 end;
 
@@ -438,13 +488,31 @@ function OrlanHeal:UpdateUnits()
 		for unitNumber = 1, self.GroupCount * 5 do
 			if unitNumber <= GetNumRaidMembers() then
 				local _, _, groupNumber = GetRaidRosterInfo(unitNumber);
-				groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
-				self:SetPlayerTarget(
-					groupNumber, 
-					groupPlayerCounts[groupNumber], 
-					"raid" .. unitNumber, 
-					"raidpet" .. unitNumber);
+				if groupNumber <= self.GroupCount then
+					groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
+					self:SetPlayerTarget(
+						groupNumber, 
+						groupPlayerCounts[groupNumber], 
+						"raid" .. unitNumber, 
+						"raidpet" .. unitNumber);
+				end;
 			else
+				for groupNumber = 1, self.GroupCount do
+					if groupPlayerCounts[groupNumber] < 5 then
+						groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
+						self:SetPlayerTarget(
+							groupNumber, 
+							groupPlayerCounts[groupNumber], 
+							"raid" .. unitNumber, 
+							"raidpet" .. unitNumber);
+						break;
+					end;
+				end;
+			end;
+		end;
+		for unitNumber = 1, GetNumRaidMembers() do
+			local _, _, realGroupNumber = GetRaidRosterInfo(unitNumber);
+			if realGroupNumber > self.GroupCount then
 				for groupNumber = 1, self.GroupCount do
 					if groupPlayerCounts[groupNumber] < 5 then
 						groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
@@ -485,20 +553,32 @@ function OrlanHeal:UpdateStatus()
 	for groupIndex = 0, self.GroupCount - 1 do
 		for groupPlayerIndex = 0, 4 do
 			local player = self.RaidWindow.Groups[groupIndex].Players[groupPlayerIndex];
-			self:UpdateUnitStatus(player);
-			self:UpdateUnitStatus(player.Pet);
+			self:UpdateUnitStatus(player, groupIndex + 1);
+			self:UpdateUnitStatus(player.Pet, nil);
 		end;
 	end;
 end;
 
-function OrlanHeal:UpdateUnitStatus(window)
+function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 	local unit = window.Button:GetAttribute("unit");
 	if (unit == nil) or (unit == "") or not UnitExists(unit) then
 		window.Canvas:Hide();
 	else
 		window.Canvas:Show();
 
+		self:UpdateBackground(window.Canvas.BackgroundTexture, unit);
 		self:UpdateRange(window.Canvas.RangeBar, unit);
+		self:UpdateHealth(window.Canvas.HealthBar, unit);
+		self:UpdateMana(window.Canvas.ManaBar, unit);
+		self:UpdateName(window.Canvas.NameBar, unit, displayedGroup);
+	end;
+end;
+
+function OrlanHeal:UpdateBackground(background, unit)
+	if UnitIsConnected(unit) ~= 1 then
+		background:SetTexture(0, 0, 0, 1);
+	else
+		background:SetTexture(0.2, 0.2, 0.2, 1);
 	end;
 end;
 
@@ -518,6 +598,55 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 	else
 		rangeBar.BackgroundTexture:SetTexture(0.2, 0.75, 0.2, 1);
 	end;
+end;
+
+function OrlanHeal:UpdateHealth(healthBar, unit)
+	local health = UnitHealth(unit);
+	local maxHealth = UnitHealthMax(unit);
+
+	healthBar:SetMinMaxValues(0, maxHealth);
+	healthBar:SetValue(health);
+
+	if UnitIsConnected(unit) ~= 1 then
+		healthBar.Texture:SetTexture(0, 0, 0, 1);
+	elseif health / maxHealth < 0.5 then
+		healthBar.Texture:SetTexture(0.75, 0.2, 0.2, 1);
+	elseif health / maxHealth < 0.75 then
+		healthBar.Texture:SetTexture(0.75, 0.45, 0.2, 1);
+	elseif health / maxHealth < 0.9 then
+		healthBar.Texture:SetTexture(0.75, 0.75, 0.2, 1);
+	else
+		healthBar.Texture:SetTexture(0.2, 0.75, 0.2, 1);
+	end;
+end;
+
+function OrlanHeal:UpdateMana(manaBar, unit)
+	if (UnitPowerType(unit) == 0) and (UnitIsConnected(unit) == 1) then
+		manaBar:Show();
+		manaBar:SetMinMaxValues(0, UnitPowerMax(unit, 0));
+		manaBar:SetValue(UnitPower(unit, 0));
+	else
+		manaBar:Hide();
+	end;
+end;
+
+function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
+	local text = GetUnitName(unit, false);
+
+	if (displayedGroup ~= nil) and (string.sub(unit, 1, 4) == "raid") then
+		local _, _, groupNumber = GetRaidRosterInfo(string.sub(unit, 5));
+		if displayedGroup ~= groupNumber then
+			text = "[" .. groupNumber .. "] " .. text;
+		end;
+	end;
+
+	nameBar.Text:SetText(text);
+	local _, class = UnitClassBase(unit);
+	local classColor = RAID_CLASS_COLORS[class];
+	if classColor == nil then
+		classColor = { r = 0.4, g = 0.4, b = 0.4 };
+	end;
+	nameBar.Text:SetTextColor(classColor.r, classColor.g, classColor.b, 1);
 end;
 
 OrlanHeal:Initialize("OrlanHealConfig");
