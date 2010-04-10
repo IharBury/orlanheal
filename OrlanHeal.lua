@@ -284,11 +284,6 @@ function OrlanHeal:CreateBuff(parent, point, x)
 	buff.Texture:SetWidth(self.BuffSize);
 	buff.Texture:SetPoint("TOPLEFT", 0, 0);
 
-	buff.Cooldown = CreateFrame("Cooldown", nill, buff);
-	buff.Cooldown:SetHeight(self.BuffSize);
-	buff.Cooldown:SetWidth(self.BuffSize);
-	buff.Cooldown:SetPoint("TOPLEFT", 0, 0);
-
 	return buff;
 end;
 
@@ -854,13 +849,6 @@ function OrlanHeal:ShowBuff(window, buff)
 	else
 		window:Show();
 		window.Texture:SetTexture(buff.Icon);
-		
-		if buff.Duration == 0 then
-			window.Cooldown:Hide();
-		else
-			window.Cooldown:Show();
-			window.Cooldown:SetCooldown(buff.Expires - GetTime(), buff.Duration);
-		end;
 	end;
 end;
 
