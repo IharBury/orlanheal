@@ -213,7 +213,7 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateHealthBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateManaBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
-	self:CreateBuffs(playerWindow.Canvas, 4, 1, 2, 3);
+	self:CreateBuffs(playerWindow.Canvas, 4, 1, 3, 2);
 
 	playerWindow.Pet = self:CreatePetWindow(playerWindow);
 	if isOnTheRight then
@@ -661,7 +661,7 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 		rangeBar.BackgroundTexture:SetTexture(0, 0, 0, 1);
 	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
 		rangeBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
-	elseif IsSpellInRange("Частица Света", unit) ~= 1 then
+	elseif (IsSpellInRange("Частица Света", unit) ~= 1) or (UnitCanAssist("player", unit) ~= 1) then
 		rangeBar.BackgroundTexture:SetTexture(0.2, 0.2, 0.75, 1);
 	elseif IsSpellInRange("Вспышка Света", unit) ~= 1 then
 		rangeBar.BackgroundTexture:SetTexture(0.75, 0.2, 0.2, 1);
@@ -821,7 +821,11 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 		end;
 
 		if canvas.SpecificDebuffs[1] ~= nill then
-			self:ShowBuff(canvas.SpecificDebuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 2));
+			self:ShowBuff(canvas.SpecificDebuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 1));
+		end;
+
+		if canvas.SpecificDebuffs[2] ~= nill then
+			self:ShowBuff(canvas.SpecificDebuffs[2], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 2));
 		end;
 	end;
 
