@@ -735,10 +735,8 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 			buffKind = 3;
 		elseif (name == "Частица Света") and (UnitIsUnit(caster, "player") == 1) then
 			buffKind = 4;
-		elseif string.sub(name, 1, 9) == "Аура " then
+		elseif shouldConsolidate == 1 then
 			buffKind = nil;
-		elseif shouldConsolidate ~= 1 then
-			buffKind = 5;
 		end;
 
 		if buffKind ~= nil then
@@ -825,16 +823,16 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 		end;
 	end;
 
-	if canvas.OtherDebuffs[0] ~= nill then
-		self:ShowBuff(canvas.OtherDebuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
+	if canvas.OtherDebuffs[2] ~= nill then
+		self:ShowBuff(canvas.OtherDebuffs[2], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
 	end;
 
 	if canvas.OtherDebuffs[1] ~= nill then
 		self:ShowBuff(canvas.OtherDebuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
 	end;
 
-	if canvas.OtherDebuffs[2] ~= nill then
-		self:ShowBuff(canvas.OtherDebuffs[2], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
+	if canvas.OtherDebuffs[0] ~= nill then
+		self:ShowBuff(canvas.OtherDebuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
 	end;
 end;
 
@@ -856,6 +854,13 @@ function OrlanHeal:ShowBuff(window, buff)
 	else
 		window:Show();
 		window.Texture:SetTexture(buff.Icon);
+		
+		if buff.Duration == 0 then
+			window.Cooldown:Hide();
+		else
+			window.Cooldown:Show();
+			window.Cooldown:SetCooldown(buff.Expires - GetTime(), buff.Duration);
+		end;
 	end;
 end;
 
