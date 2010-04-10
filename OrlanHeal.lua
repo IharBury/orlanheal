@@ -641,7 +641,18 @@ function OrlanHeal:UpdateBackground(background, unit)
 	if UnitIsConnected(unit) ~= 1 then
 		background:SetTexture(0, 0, 0, 1);
 	else
-		background:SetTexture(0.2, 0.2, 0.2, 1);
+		local health = UnitHealth(unit);
+		local maxHealth = UnitHealthMax(unit);
+
+		if health / maxHealth < 0.5 then
+			background:SetTexture(0.6, 0.2, 0.2, 1);
+		elseif health / maxHealth < 0.75 then
+			background:SetTexture(0.6, 0.4, 0.2, 1);
+		elseif health / maxHealth < 0.9 then
+			background:SetTexture(0.4, 0.4, 0.2, 1);
+		else
+			background:SetTexture(0.2, 0.2, 0.2, 1);
+		end;
 	end;
 end;
 
@@ -672,12 +683,6 @@ function OrlanHeal:UpdateHealth(healthBar, unit)
 
 	if UnitIsConnected(unit) ~= 1 then
 		healthBar.Texture:SetTexture(0, 0, 0, 1);
-	elseif health / maxHealth < 0.5 then
-		healthBar.Texture:SetTexture(0.75, 0.2, 0.2, 1);
-	elseif health / maxHealth < 0.75 then
-		healthBar.Texture:SetTexture(0.75, 0.45, 0.2, 1);
-	elseif health / maxHealth < 0.9 then
-		healthBar.Texture:SetTexture(0.75, 0.75, 0.2, 1);
 	else
 		healthBar.Texture:SetTexture(0.2, 0.75, 0.2, 1);
 	end;
@@ -717,18 +722,18 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	local goodBuffs = {};
 	local buffIndex = 1;
 	while true do
-		local name, _, icon, count, _, duration, expires, caster, _, shouldConsolidate = 
+		local name, _, icon, count, _, duration, expires, caster, _, shouldConsolidate, spellId = 
 			UnitAura(unit, buffIndex, "HELPFUL");
 		if name == nil then break; end;
 
 		local buffKind;
-		if name == "Священный щит" then
+		if spellId == 53601 then
 			buffKind = 1;
-		elseif (name == "Вспышка Света") and (UnitIsUnit(caster, "player") == 1) then
+		elseif (name == "Вспышка Света") and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then
 			buffKind = 2;
 		elseif name == "Вспышка Света" then
 			buffKind = 3;
-		elseif (name == "Частица Света") and (UnitIsUnit(caster, "player") == 1) then
+		elseif (name == "Частица Света") and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then
 			buffKind = 4;
 		elseif shouldConsolidate == 1 then
 			buffKind = nil;
@@ -789,6 +794,8 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 			buffKind = 1;
 		elseif dispelType == "Curse" then
 			buffKind = 2;
+		elseif name == "Тело наблюдателя" then
+			buffKind = nil;
 		else
 			buffKind = 3;
 		end;
