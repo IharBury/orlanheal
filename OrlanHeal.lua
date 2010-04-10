@@ -731,7 +731,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 			buffKind = 1;
 		elseif (name == "Вспышка Света") and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then
 			buffKind = 2;
-		elseif name == "Вспышка Света" then
+		elseif (name == "Вспышка Света") or (name == "Священный щит") then
 			buffKind = 3;
 		elseif (name == "Частица Света") and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then
 			buffKind = 4;
