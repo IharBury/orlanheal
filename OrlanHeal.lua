@@ -571,22 +571,6 @@ function OrlanHeal:UpdateUnits()
 				end;
 			end;
 		end;
-		for unitNumber = 1, GetNumRaidMembers() do
-			local _, _, realGroupNumber = GetRaidRosterInfo(unitNumber);
-			if realGroupNumber > self.GroupCount then
-				for groupNumber = 1, self.GroupCount do
-					if groupPlayerCounts[groupNumber] < 5 then
-						groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
-						self:SetPlayerTarget(
-							groupNumber, 
-							groupPlayerCounts[groupNumber], 
-							"raid" .. unitNumber, 
-							"raidpet" .. unitNumber);
-						break;
-					end;
-				end;
-			end;
-		end;
 	elseif UnitInParty("player") ~= nil then
 		self:SetPlayerTarget(1, 1, "player", "pet");
 		for unitNumber = 1, 4 do
@@ -802,18 +786,19 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 	local goodBuffCount = 0;
 	local goodBuffs = {};
 	local buffIndex = 1;
+	local canAssist = UnitCanAssist("player", unit) == 1;
 	while true do
 		local name, _, icon, count, dispelType, duration, expires, _, _, _ = UnitAura(unit, buffIndex, "HARMFUL");
 		if name == nil then break; end;
 
 		local buffKind;
-		if (dispelType == "Disease") or (dispelType == "Magic") or (dispelType == "Poison") then
+		if ((dispelType == "Disease") or (dispelType == "Magic") or (dispelType == "Poison")) and canAssist then
 			buffKind = 1;
-		elseif dispelType == "Curse" then
+		elseif (dispelType == "Curse") and canAssist then
 			buffKind = 2;
 		elseif (name == "Тело наблюдателя") or (name == "Холод Трона") then
 			buffKind = nil;
-		else
+		elseif canAssist then
 			buffKind = 3;
 		end;
 
