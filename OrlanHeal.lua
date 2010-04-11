@@ -640,6 +640,8 @@ end;
 function OrlanHeal:UpdateBackground(background, unit)
 	if UnitIsConnected(unit) ~= 1 then
 		background:SetTexture(0, 0, 0, 1);
+	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
+		background:SetTexture(0.1, 0.1, 0.1, 1);
 	else
 		local health = UnitHealth(unit);
 		local maxHealth = UnitHealthMax(unit);
@@ -731,9 +733,24 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 			buffKind = 1;
 		elseif (name == "Вспышка Света") and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then
 			buffKind = 2;
-		elseif (name == "Вспышка Света") or (name == "Священный щит") then
+		elseif (name == "Вспышка Света") or 
+			(name == "Священный щит") or
+			(name == "Омоложение") or
+			(name == "Жизнецвет") or
+			(name == "Буйный рост") or
+			(name == "Слово силы: Щит") or
+			(name == "Исповедь") or
+			(name == "Обновление") or
+			(name == "Благословенное исцеление") or
+			(name == "Молитва восстановления") or
+			(name == "Тотем исцеляющего потока") or
+			(name == "Щит земли") or
+			(name == "Быстрина") or
+			(name == "Дар наару") then
 			buffKind = 3;
-		elseif (name == "Частица Света") and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then
+		elseif (name == "Частица Света") and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or
+			(name == "Длань защиты") or
+			(name == "Длань спасения") then
 			buffKind = 4;
 		elseif shouldConsolidate == 1 then
 			buffKind = nil;
@@ -794,7 +811,7 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 			buffKind = 1;
 		elseif dispelType == "Curse" then
 			buffKind = 2;
-		elseif name == "Тело наблюдателя" then
+		elseif (name == "Тело наблюдателя") or (name == "Холод Трона") then
 			buffKind = nil;
 		else
 			buffKind = 3;
