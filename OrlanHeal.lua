@@ -15,6 +15,14 @@ function SlashCmdList.ORLANHEAL(message, editbox)
 		OrlanHeal:SetGroupCount(2);
 	elseif message == "5" then
 		OrlanHeal:SetGroupCount(1);
+	elseif message == "v40" then
+		OrlanHeal.VisibleGroupCount = 8;
+	elseif message == "v25" then
+		OrlanHeal.VisibleGroupCount = 5;
+	elseif message == "v10" then
+		OrlanHeal.VisibleGroupCount = 2;
+	elseif message == "v5" then
+		OrlanHeal.VisibleGroupCount = 1;
 	end;
 end;
 
@@ -97,6 +105,7 @@ function OrlanHeal:Initialize(configName)
 	self.RaidWindowName = "OrlanHeal_RaidWindow";
 
 	self.GroupCount = 8;
+	self.VisibleGroupCount = 8;
 end;
 
 function OrlanHeal:CreateRaidWindow()
@@ -529,6 +538,7 @@ end;
 function OrlanHeal:SetGroupCount(newGroupCount)
 	if self:RequestNonCombat() then
 		self.GroupCount = newGroupCount;
+		self.VisibleGroupCount = newGroupCount;
 		self:UpdateVisibleGroupCount();
 		self:UpdateUnits();
 	end;
@@ -549,7 +559,10 @@ function OrlanHeal:UpdateUnits()
 		for unitNumber = 1, self.GroupCount * 5 do
 			if unitNumber <= GetNumRaidMembers() then
 				local _, _, groupNumber = GetRaidRosterInfo(unitNumber);
-				if (groupNumber ~= nil) and (groupNumber ~= 0) and (groupNumber <= self.GroupCount) then
+				if (groupNumber ~= nil) and 
+						(groupNumber ~= 0) and 
+						(groupNumber <= self.GroupCount) and 
+						(groupPlayerCounts[groupNumber] < 5) then
 					groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
 					self:SetPlayerTarget(
 						groupNumber, 
@@ -609,6 +622,20 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 	if (unit == nil) or (unit == "") or not UnitExists(unit) then
 		window.Canvas:Hide();
 	else
+		if (displayedGroup ~= nil) and (string.sub(unit, 1, 4) == "raid") then
+			local _, _, groupNumber = GetRaidRosterInfo(string.sub(unit, 5));
+			if groupNumber > self.VisibleGroupCount then
+				window.Canvas:Hide();
+				return;
+			end;
+		elseif (string.sub(unit, 1, 7) == "raidpet") then
+			local _, _, groupNumber = GetRaidRosterInfo(string.sub(unit, 8));
+			if groupNumber > self.VisibleGroupCount then
+				window.Canvas:Hide();
+				return;
+			end;
+		end;
+
 		window.Canvas:Show();
 
 		self:UpdateBackground(window.Canvas.BackgroundTexture, unit);
@@ -796,7 +823,7 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 			buffKind = 1;
 		elseif (dispelType == "Curse") and canAssist then
 			buffKind = 2;
-		elseif (name == "Тело наблюдателя") or (name == "Холод Трона") then
+		elseif (name == "Тело наблюдателя") or (name == "Холод Трона") or (string.sub(name, 1, 20) == "Победа над ") then
 			buffKind = nil;
 		elseif canAssist then
 			buffKind = 3;
