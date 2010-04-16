@@ -823,7 +823,11 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 			buffKind = 1;
 		elseif (dispelType == "Curse") and canAssist then
 			buffKind = 2;
-		elseif (name == "Тело наблюдателя") or (name == "Холод Трона") or (string.sub(name, 1, 20) == "Победа над ") then
+		elseif (name == "Тело наблюдателя") or 
+				(name == "Холод Трона") or 
+				(string.sub(name, 1, 20) == "Победа над ") or
+				(name == "Шлейф оранжевой заразы") or
+				(name == "Шлейф зеленой заразы") then
 			buffKind = nil;
 		elseif canAssist then
 			buffKind = 3;
