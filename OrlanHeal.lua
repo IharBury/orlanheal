@@ -634,7 +634,18 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 				window.Canvas:Hide();
 				return;
 			end;
-		end;
+        end;
+
+		if UnitInBattleground("player") ~= nil then
+	        if (UnitIsConnected(unit) ~= 1) or
+                    (UnitIsCorpse(unit) == 1) or 
+                    (UnitIsDeadOrGhost(unit) == 1) or
+                    (IsSpellInRange("Частица Света", unit) ~= 1) or 
+                    (UnitCanAssist("player", unit) ~= 1) then
+                window.Canvas:Hide();
+                return;
+            end;
+        end;
 
 		window.Canvas:Show();
 
