@@ -904,6 +904,14 @@ function OrlanHeal:ShowBuff(window, buff)
 	else
 		window:Show();
 		window.Texture:SetTexture(buff.Icon);
+
+        if buff.Expires <= GetTime() + 3 then
+            window.Texture:SetVertexColor(1, 0.5, 0.5, 0.5);
+        elseif buff.Expires <= GetTime() + 6 then
+            window.Texture:SetVertexColor(1, 1, 0.5, 0.75);
+        else
+            window.Texture:SetVertexColor(1, 1, 1, 1);
+        end;
 	end;
 end;
 
