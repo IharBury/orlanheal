@@ -1,4 +1,4 @@
-OrlanHeal = {};
+﻿OrlanHeal = {};
 
 SLASH_ORLANHEAL1 = "/orlanheal";
 SLASH_ORLANHEAL2 = "/oh";
@@ -62,7 +62,7 @@ function OrlanHeal:Initialize(configName)
 	self.EventFrame:SetScript("OnEvent", self.EventFrame.HandleEvent);
 	self.EventFrame:SetScript("OnUpdate", self.EventFrame.HandleUpdate);
 
-	self.MaxGroupCount = 8;
+	self.MaxGroupCount = 10;
 	self.MaxVerticalGroupCount = math.floor((self.MaxGroupCount + 1) / 2);
 	if self.MaxGroupCount == 1 then
 		self.MaxHorizontalGroupCount = 1;
@@ -104,8 +104,9 @@ function OrlanHeal:Initialize(configName)
 	self.RaidWindowStrata = "LOW";
 	self.RaidWindowName = "OrlanHeal_RaidWindow";
 
-	self.GroupCount = 8;
-	self.VisibleGroupCount = 8;
+	self.GroupCount = 9;
+	self.VisibleGroupCount = 9;
+	self.IsInStartUpMode = true;
 end;
 
 function OrlanHeal:CreateRaidWindow()
@@ -539,6 +540,7 @@ function OrlanHeal:SetGroupCount(newGroupCount)
 	if self:RequestNonCombat() then
 		self.GroupCount = newGroupCount;
 		self.VisibleGroupCount = newGroupCount;
+		self.IsInStartUpMode = false;
 		self:UpdateVisibleGroupCount();
 		self:UpdateUnits();
 	end;
@@ -555,33 +557,20 @@ function OrlanHeal:UpdateUnits()
 		groupPlayerCounts[groupNumber] = 0;
 	end;
 
-	if UnitInRaid("player") ~= nil then
+	if self.IsInStartUpMode then
+		for groupNumber = 1, (self.GroupCount - 1) * 5 do
+			for unitNumber = (groupNumber - 1) * 5 + 1, (groupNumber - 1) * 5 + 5 do
+				self:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts);
+			end;
+		end;
+		self:SetupParty(self.GroupCount);
+	elseif UnitInRaid("player") ~= nil then
 		for unitNumber = 1, self.GroupCount * 5 do
 			if unitNumber <= GetNumRaidMembers() then
 				local _, _, groupNumber = GetRaidRosterInfo(unitNumber);
-				if (groupNumber ~= nil) and 
-						(groupNumber ~= 0) and 
-						(groupNumber <= self.GroupCount) and 
-						(groupPlayerCounts[groupNumber] < 5) then
-					groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
-					self:SetPlayerTarget(
-						groupNumber, 
-						groupPlayerCounts[groupNumber], 
-						"raid" .. unitNumber, 
-						"raidpet" .. unitNumber);
-				end;
+				self:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts);
 			else
-				for groupNumber = 1, self.GroupCount do
-					if groupPlayerCounts[groupNumber] < 5 then
-						groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
-						self:SetPlayerTarget(
-							groupNumber, 
-							groupPlayerCounts[groupNumber], 
-							"raid" .. unitNumber, 
-							"raidpet" .. unitNumber);
-						break;
-					end;
-				end;
+				self:SetupFreeRaidSlot(unitNumber, groupPlayerCounts);
 			end;
 		end;
 	elseif UnitInParty("player") ~= nil then
@@ -595,15 +584,51 @@ function OrlanHeal:UpdateUnits()
 			end;
 		end;
 	else
-		self:SetPlayerTarget(1, 1, "player", "pet");
-		for groupPlayerNumber = 2, 5 do
-			self:SetPlayerTarget(1, groupPlayerNumber, "", "");
-		end;
+		self:SetupParty(1);
 		for groupNumber = 2, self.GroupCount do
-			for groupPlayerNumber = 1, 5 do
-				self:SetPlayerTarget(groupNumber, groupPlayerNumber, "", "");
-			end;
+			self:SetupEmptyGroup(groupNumber);
 		end;
+	end;
+end;
+
+function OrlanHeal:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts)
+	if (groupNumber ~= nil) and 
+			(groupNumber ~= 0) and 
+			(groupNumber <= self.GroupCount) and 
+			(groupPlayerCounts[groupNumber] < 5) then
+		groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
+		self:SetPlayerTarget(
+			groupNumber, 
+			groupPlayerCounts[groupNumber], 
+			"raid" .. unitNumber, 
+			"raidpet" .. unitNumber);
+	end;
+end;
+
+function OrlanHeal:SetupFreeRaidSlot(unitNumber, groupPlayerCounts)
+	for groupNumber = 1, self.GroupCount do
+		if groupPlayerCounts[groupNumber] < 5 then
+			groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
+			self:SetPlayerTarget(
+				groupNumber, 
+				groupPlayerCounts[groupNumber], 
+				"raid" .. unitNumber, 
+				"raidpet" .. unitNumber);
+			break;
+		end;
+	end;
+end;
+
+function OrlanHeal:SetupParty(groupNumber)
+	self:SetPlayerTarget(groupNumber, 1, "player", "pet");
+	for unitNumber = 1, 4 do
+		self:SetPlayerTarget(groupNumber, unitNumber + 1, "party" .. unitNumber, "partypet" .. unitNumber);
+	end;
+end;
+
+function OrlanHeal:SetupEmptyGroup(groupNumber)
+	for groupPlayerNumber = 1, 5 do
+		self:SetPlayerTarget(groupNumber, groupPlayerNumber, "", "");
 	end;
 end;
 
