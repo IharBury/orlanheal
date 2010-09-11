@@ -665,7 +665,7 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 	        if (UnitIsConnected(unit) ~= 1) or
                     (UnitIsCorpse(unit) == 1) or 
                     (UnitIsDeadOrGhost(unit) == 1) or
-                    (IsSpellInRange("Частица Света", unit) ~= 1) or 
+                    (IsSpellInRange(53563, unit) ~= 1) or -- Частица Света
                     (UnitCanAssist("player", unit) ~= 1) then
                 window.Canvas:Hide();
                 return;
@@ -710,11 +710,11 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 		rangeBar.BackgroundTexture:SetTexture(0, 0, 0, 1);
 	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
 		rangeBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
-	elseif (IsSpellInRange("Частица Света", unit) ~= 1) or (UnitCanAssist("player", unit) ~= 1) then
+	elseif (IsSpellInRange(53563, unit) ~= 1) or (UnitCanAssist("player", unit) ~= 1) then -- Частица Света
 		rangeBar.BackgroundTexture:SetTexture(0.2, 0.2, 0.75, 1);
-	elseif IsSpellInRange("Вспышка Света", unit) ~= 1 then
+	elseif IsSpellInRange(48785, unit) ~= 1 then -- Вспышка Света
 		rangeBar.BackgroundTexture:SetTexture(0.75, 0.2, 0.2, 1);
-	elseif IsSpellInRange("Длань Спасения", unit) ~= 1 then
+	elseif IsSpellInRange(1038, unit) ~= 1 then -- Длань Спасения
 		rangeBar.BackgroundTexture:SetTexture(0.75, 0.45, 0.2, 1);
 	elseif CheckInteractDistance(unit, 2) ~= 1 then
 		rangeBar.BackgroundTexture:SetTexture(0.75, 0.75, 0.2, 1);
