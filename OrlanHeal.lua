@@ -107,6 +107,95 @@ function OrlanHeal:Initialize(configName)
 	self.GroupCount = 9;
 	self.VisibleGroupCount = 9;
 	self.IsInStartUpMode = true;
+
+	self.HealingBuffs = {};
+	self.HealingBuffs[66922] = true; -- чужая Вспышка Света
+	self.HealingBuffs[774] = true; -- Омоложение
+	self.HealingBuffs[1058] = true; -- Омоложение
+	self.HealingBuffs[1430] = true; -- Омоложение
+	self.HealingBuffs[2090] = true; -- Омоложение
+	self.HealingBuffs[2091] = true; -- Омоложение
+	self.HealingBuffs[3627] = true; -- Омоложение
+	self.HealingBuffs[8910] = true; -- Омоложение
+	self.HealingBuffs[9839] = true; -- Омоложение
+	self.HealingBuffs[9840] = true; -- Омоложение
+	self.HealingBuffs[9841] = true; -- Омоложение
+	self.HealingBuffs[25299] = true; -- Омоложение
+	self.HealingBuffs[26981] = true; -- Омоложение
+	self.HealingBuffs[26982] = true; -- Омоложение
+	self.HealingBuffs[48440] = true; -- Омоложение
+	self.HealingBuffs[48441] = true; -- Омоложение
+	self.HealingBuffs[33763] = true; -- Жизнецвет
+	self.HealingBuffs[48450] = true; -- Жизнецвет
+	self.HealingBuffs[48451] = true; -- Жизнецвет
+	self.HealingBuffs[48438] = true; -- Буйный рост
+	self.HealingBuffs[53248] = true; -- Буйный рост
+	self.HealingBuffs[53249] = true; -- Буйный рост
+	self.HealingBuffs[53251] = true; -- Буйный рост
+	self.HealingBuffs[17] = true; -- Слово силы: Щит
+	self.HealingBuffs[592] = true; -- Слово силы: Щит
+	self.HealingBuffs[600] = true; -- Слово силы: Щит
+	self.HealingBuffs[3747] = true; -- Слово силы: Щит
+	self.HealingBuffs[6065] = true; -- Слово силы: Щит
+	self.HealingBuffs[6066] = true; -- Слово силы: Щит
+	self.HealingBuffs[10898] = true; -- Слово силы: Щит
+	self.HealingBuffs[10899] = true; -- Слово силы: Щит
+	self.HealingBuffs[10900] = true; -- Слово силы: Щит
+	self.HealingBuffs[10901] = true; -- Слово силы: Щит
+	self.HealingBuffs[25217] = true; -- Слово силы: Щит
+	self.HealingBuffs[25218] = true; -- Слово силы: Щит
+	self.HealingBuffs[48065] = true; -- Слово силы: Щит
+	self.HealingBuffs[48066] = true; -- Слово силы: Щит
+	self.HealingBuffs[47540] = true; -- Исповедь
+	self.HealingBuffs[53005] = true; -- Исповедь
+	self.HealingBuffs[53006] = true; -- Исповедь
+	self.HealingBuffs[53007] = true; -- Исповедь
+	self.HealingBuffs[139] = true; -- Обновление
+	self.HealingBuffs[6074] = true; -- Обновление
+	self.HealingBuffs[6075] = true; -- Обновление
+	self.HealingBuffs[6076] = true; -- Обновление
+	self.HealingBuffs[6077] = true; -- Обновление
+	self.HealingBuffs[6078] = true; -- Обновление
+	self.HealingBuffs[10927] = true; -- Обновление
+	self.HealingBuffs[10928] = true; -- Обновление
+	self.HealingBuffs[10929] = true; -- Обновление
+	self.HealingBuffs[25315] = true; -- Обновление
+	self.HealingBuffs[25221] = true; -- Обновление
+	self.HealingBuffs[25222] = true; -- Обновление
+	self.HealingBuffs[48067] = true; -- Обновление
+	self.HealingBuffs[48068] = true; -- Обновление
+	self.HealingBuffs[70772] = true; -- Благословенное исцеление
+	self.HealingBuffs[41637] = true; -- Молитва восстановления
+	self.HealingBuffs[41635] = true; -- Молитва восстановления
+	self.HealingBuffs[48110] = true; -- Молитва восстановления
+	self.HealingBuffs[48111] = true; -- Молитва восстановления
+	self.HealingBuffs[44586] = true; -- Молитва восстановления
+	self.HealingBuffs[974] = true; -- Щит земли
+	self.HealingBuffs[32593] = true; -- Щит земли
+	self.HealingBuffs[32594] = true; -- Щит земли
+	self.HealingBuffs[49283] = true; -- Щит земли
+	self.HealingBuffs[49284] = true; -- Щит земли
+	self.HealingBuffs[61295] = true; -- Быстрина
+	self.HealingBuffs[61299] = true; -- Быстрина
+	self.HealingBuffs[61300] = true; -- Быстрина
+	self.HealingBuffs[61301] = true; -- Быстрина
+	self.HealingBuffs[28880] = true; -- Дар наару
+
+	self.IgnoredDebuffs = {};
+	self.IgnoredDebuffs[58539] = true; -- Тело наблюдателя
+	self.IgnoredDebuffs[69127] = true; -- Холод Трона
+	self.IgnoredDebuffs[64816] = true; -- Победа над нежитью
+	self.IgnoredDebuffs[64815] = true; -- Победа над тауреном
+	self.IgnoredDebuffs[64814] = true; -- Победа над человеком
+	self.IgnoredDebuffs[64813] = true; -- Победа над эльфом крови
+	self.IgnoredDebuffs[64812] = true; -- Победа над троллем
+	self.IgnoredDebuffs[64811] = true; -- Победа над орком
+	self.IgnoredDebuffs[64810] = true; -- Победа над дворфом
+	self.IgnoredDebuffs[64809] = true; -- Победа над гномом
+	self.IgnoredDebuffs[64808] = true; -- Победа над дренеем
+	self.IgnoredDebuffs[64805] = true; -- Победа над эльфом
+	self.IgnoredDebuffs[72144] = true; -- Шлейф оранжевой заразы
+	self.IgnoredDebuffs[72145] = true; -- Шлейф зеленой заразы
 end;
 
 function OrlanHeal:CreateRaidWindow()
@@ -780,78 +869,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 			buffKind = 1;
 		elseif (spellId == 66922) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- своя Вспышка Света
 			buffKind = 2;
-		elseif (spellId == 66922) or -- чужая Вспышка Света
-			(spellId == 774) or -- Омоложение
-			(spellId == 1058) or -- Омоложение
-			(spellId == 1430) or -- Омоложение
-			(spellId == 2090) or -- Омоложение
-			(spellId == 2091) or -- Омоложение
-			(spellId == 3627) or -- Омоложение
-			(spellId == 8910) or -- Омоложение
-			(spellId == 9839) or -- Омоложение
-			(spellId == 9840) or -- Омоложение
-			(spellId == 9841) or -- Омоложение
-			(spellId == 25299) or -- Омоложение
-			(spellId == 26981) or -- Омоложение
-			(spellId == 26982) or -- Омоложение
-			(spellId == 48440) or -- Омоложение
-			(spellId == 48441) or -- Омоложение
-			(spellId == 33763) or -- Жизнецвет
-			(spellId == 48450) or -- Жизнецвет
-			(spellId == 48451) or -- Жизнецвет
-			(spellId == 48438) or -- Буйный рост
-			(spellId == 53248) or -- Буйный рост
-			(spellId == 53249) or -- Буйный рост
-			(spellId == 53251) or -- Буйный рост
-			(spellId == 17) or -- Слово силы: Щит
-			(spellId == 592) or -- Слово силы: Щит
-			(spellId == 600) or -- Слово силы: Щит
-			(spellId == 3747) or -- Слово силы: Щит
-			(spellId == 6065) or -- Слово силы: Щит
-			(spellId == 6066) or -- Слово силы: Щит
-			(spellId == 10898) or -- Слово силы: Щит
-			(spellId == 10899) or -- Слово силы: Щит
-			(spellId == 10900) or -- Слово силы: Щит
-			(spellId == 10901) or -- Слово силы: Щит
-			(spellId == 25217) or -- Слово силы: Щит
-			(spellId == 25218) or -- Слово силы: Щит
-			(spellId == 48065) or -- Слово силы: Щит
-			(spellId == 48066) or -- Слово силы: Щит
-			(spellId == 47540) or -- Исповедь
-			(spellId == 53005) or -- Исповедь
-			(spellId == 53006) or -- Исповедь
-			(spellId == 53007) or -- Исповедь
-			(spellId == 139) or -- Обновление
-			(spellId == 6074) or -- Обновление
-			(spellId == 6075) or -- Обновление
-			(spellId == 6076) or -- Обновление
-			(spellId == 6077) or -- Обновление
-			(spellId == 6078) or -- Обновление
-			(spellId == 10927) or -- Обновление
-			(spellId == 10928) or -- Обновление
-			(spellId == 10929) or -- Обновление
-			(spellId == 25315) or -- Обновление
-			(spellId == 25221) or -- Обновление
-			(spellId == 25222) or -- Обновление
-			(spellId == 48067) or -- Обновление
-			(spellId == 48068) or -- Обновление
-			(spellId == 70772) or -- Благословенное исцеление
-			(spellId == 41637) or -- Молитва восстановления
-			(spellId == 41635) or -- Молитва восстановления
-			(spellId == 48110) or -- Молитва восстановления
-			(spellId == 48111) or -- Молитва восстановления
-			(spellId == 44586) or -- Молитва восстановления
-			(spellId == 974) or -- Щит земли
-			(spellId == 32593) or -- Щит земли
-			(spellId == 32594) or -- Щит земли
-			(spellId == 49283) or -- Щит земли
-			(spellId == 49284) or -- Щит земли
-			(spellId == 61295) or -- Быстрина
-			(spellId == 61299) or -- Быстрина
-			(spellId == 61300) or -- Быстрина
-			(spellId == 61301) or -- Быстрина
-			(spellId == 28880) -- Дар наару
-			then
+		elseif (self.HealingBuffs[spellId]) then
 			buffKind = 3;
 		elseif (spellId == 53563) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- своя Частица Света
 			(spellId == 1022) or -- Длань защиты
@@ -921,20 +939,7 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 			buffKind = 1;
 		elseif (dispelType == "Curse") and canAssist then
 			buffKind = 2;
-		elseif (spellId == 58539) or -- Тело наблюдателя
-				(spellId == 69127) or -- Холод Трона
-				(spellId == 64816) or -- Победа над нежитью
-				(spellId == 64815) or -- Победа над тауреном
-				(spellId == 64814) or -- Победа над человеком
-				(spellId == 64813) or -- Победа над эльфом крови
-				(spellId == 64812) or -- Победа над троллем
-				(spellId == 64811) or -- Победа над орком
-				(spellId == 64810) or -- Победа над дворфом
-				(spellId == 64809) or -- Победа над гномом
-				(spellId == 64808) or -- Победа над дренеем
-				(spellId == 64805) or -- Победа над эльфом
-				(spellId == 72144) or -- Шлейф оранжевой заразы
-				(spellId == 72145) then -- Шлейф зеленой заразы
+		elseif (self.IgnoredDebuffs[spellId]) then
 			buffKind = nil;
 		elseif canAssist then
 			buffKind = 3;
