@@ -251,77 +251,18 @@ function OrlanHeal:CreateSetupWindow()
 	setupWindow:SetWidth(450);
 	setupWindow:Hide();
 
-	local label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -8);
-	label:SetText("LEFT");
-	setupWindow.Spell1Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "Spell1", "1");
-	setupWindow.Spell1Window:SetPoint("TOPLEFT", 100, 0);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -33);
-	label:SetText("RIGHT");
-	setupWindow.Spell2Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "Spell2", "2");
-	setupWindow.Spell2Window:SetPoint("TOPLEFT", 100, -25);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -58);
-	label:SetText("MIDDLE");
-	setupWindow.Spell3Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "Spell3", "3");
-	setupWindow.Spell3Window:SetPoint("TOPLEFT", 100, -50);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -83);
-	label:SetText("ALT LEFT");
-	setupWindow.AltSpell1Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "AltSpell1", "alt1");
-	setupWindow.AltSpell1Window:SetPoint("TOPLEFT", 100, -75);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -108);
-	label:SetText("ALT RIGHT");
-	setupWindow.AltSpell2Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "AltSpell2", "alt2");
-	setupWindow.AltSpell2Window:SetPoint("TOPLEFT", 100, -100);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -133);
-	label:SetText("ALT MIDDLE");
-	setupWindow.AltSpell3Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "AltSpell3", "alt3");
-	setupWindow.AltSpell3Window:SetPoint("TOPLEFT", 100, -125);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -158);
-	label:SetText("SHIFT LEFT");
-	setupWindow.ShiftSpell1Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ShiftSpell1", "shift1");
-	setupWindow.ShiftSpell1Window:SetPoint("TOPLEFT", 100, -150);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -183);
-	label:SetText("SHIFT RIGHT");
-	setupWindow.ShiftSpell2Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ShiftSpell2", "shift2");
-	setupWindow.ShiftSpell2Window:SetPoint("TOPLEFT", 100, -175);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -208);
-	label:SetText("SHIFT MIDDLE");
-	setupWindow.ShiftSpell3Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ShiftSpell3", "shift3");
-	setupWindow.ShiftSpell3Window:SetPoint("TOPLEFT", 100, -200);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -233);
-	label:SetText("CONTROL LEFT");
-	setupWindow.ControlSpell1Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ControlSpell1", "control1");
-	setupWindow.ControlSpell1Window:SetPoint("TOPLEFT", 100, -225);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -258);
-	label:SetText("CONTROL RIGHT");
-	setupWindow.ControlSpell2Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ControlSpell2", "control2");
-	setupWindow.ControlSpell2Window:SetPoint("TOPLEFT", 100, -250);
-
-	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -283);
-	label:SetText("CONTROL MIDDLE");
-	setupWindow.ControlSpell3Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ControlSpell3", "control3");
-	setupWindow.ControlSpell3Window:SetPoint("TOPLEFT", 100, -275);
+	setupWindow.Spell1Window = self:CreateSpellSelectWindow(setupWindow, "Spell1", "1", 0, "LEFT");
+	setupWindow.Spell2Window = self:CreateSpellSelectWindow(setupWindow, "Spell2", "2", 1, "RIGHT");
+	setupWindow.Spell3Window = self:CreateSpellSelectWindow(setupWindow, "Spell3", "3", 2, "MIDDLE");
+	setupWindow.AltSpell1Window = self:CreateSpellSelectWindow(setupWindow, "AltSpell1", "alt1", 3, "ALT LEFT");
+	setupWindow.AltSpell2Window = self:CreateSpellSelectWindow(setupWindow, "AltSpell2", "alt2", 4, "ALT RIGHT");
+	setupWindow.AltSpell3Window = self:CreateSpellSelectWindow(setupWindow, "AltSpell3", "alt3", 5, "ALT MIDDLE");
+	setupWindow.ShiftSpell1Window = self:CreateSpellSelectWindow(setupWindow, "ShiftSpell1", "shift1", 6, "SHIFT LEFT");
+	setupWindow.ShiftSpell2Window = self:CreateSpellSelectWindow(setupWindow, "ShiftSpell2", "shift2", 7, "SHIFT RIGHT");
+	setupWindow.ShiftSpell3Window = self:CreateSpellSelectWindow(setupWindow, "ShiftSpell3", "shift3", 8, "SHIFT MIDDLE");
+	setupWindow.ControlSpell1Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell1", "control1", 9, "CONTROL LEFT");
+	setupWindow.ControlSpell2Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell2", "control2", 10, "CONTROL RIGHT");
+	setupWindow.ControlSpell3Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell3", "control3", 11, "CONTROL MIDDLE");
 
 	local okButton = CreateFrame("Button", nil, setupWindow, "UIPanelButtonTemplate");
 	okButton:SetText("OK");
@@ -348,11 +289,16 @@ function OrlanHeal:CreateSetupWindow()
 	return setupWindow;
 end;
 
-function OrlanHeal:CreateSpellSelectWindow(parent, name, button)
-	local spellSelectWindow = CreateFrame("Frame", name, parent, "UIDropDownMenuTemplate");
+function OrlanHeal:CreateSpellSelectWindow(parent, nameSuffix, button, index, caption)
+	local label = parent:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -8 - index * 25);
+	label:SetText(caption);
+
+	local spellSelectWindow = CreateFrame("Frame", self.SetupWindowName .. "_" .. nameSuffix, parent, "UIDropDownMenuTemplate");
 	UIDropDownMenu_SetWidth(spellSelectWindow, 300);
 	spellSelectWindow.OrlanHeal = self;
 	spellSelectWindow.button = button;
+	spellSelectWindow:SetPoint("TOPLEFT", 100, -index * 25);
 
 	return spellSelectWindow;
 end;
