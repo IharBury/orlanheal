@@ -23,6 +23,8 @@ function SlashCmdList.ORLANHEAL(message, editbox)
 		OrlanHeal.VisibleGroupCount = 2;
 	elseif message == "v5" then
 		OrlanHeal.VisibleGroupCount = 1;
+	elseif message == "setup" then
+		OrlanHeal:Setup();
 	end;
 end;
 
@@ -103,6 +105,7 @@ function OrlanHeal:Initialize(configName)
 
 	self.RaidWindowStrata = "LOW";
 	self.RaidWindowName = "OrlanHeal_RaidWindow";
+	self.SetupWindowName = "OrlanHeal_SetupWindow";
 
 	self.GroupCount = 9;
 	self.VisibleGroupCount = 9;
@@ -196,6 +199,269 @@ function OrlanHeal:Initialize(configName)
 	self.IgnoredDebuffs[64805] = true; -- Победа над эльфом
 	self.IgnoredDebuffs[72144] = true; -- Шлейф оранжевой заразы
 	self.IgnoredDebuffs[72145] = true; -- Шлейф зеленой заразы
+
+	self.AvailableSpells = 
+	{
+		48932, -- Благословение могущества
+		48934, -- Великое благословение могущества
+		19752, -- Божественное вмешательство
+		20217, -- Благословение королей
+		25898, -- Великое благословение королей
+		6940, -- Длань жертвенности
+		10278, -- Длань защиты
+		1044, -- Длань свободы
+		1038, -- Длань спасения
+		31789, -- Праведная защита
+		48936, -- Благословение мудрости
+		48938, -- Великое благословение мудрости
+		48788, -- Возложение рук
+		48785, -- Вспышка Света
+		48950, -- Искупление
+		4987, -- Очищение
+		48782, -- Свет Небес
+		53601, -- Священный щит
+		53563, -- Частица Света
+		48825 -- Шок небес
+	};
+end;
+
+function OrlanHeal:CreateSetupWindow()
+	local orlanHeal = self;
+
+	local setupWindow = CreateFrame("Frame", self.SetupWindowName, UIParent);
+	setupWindow:ClearAllPoints();
+	setupWindow:SetPoint("CENTER", 0, 0);
+	setupWindow:SetFrameStrata("DIALOG");
+	setupWindow:SetBackdrop(
+	{
+		bgFile = "Interface\\Tooltips\\ChatBubble-Background",
+		edgeFile = "Interface\Tooltips\UI-Tooltip-Border",
+		tile = false,
+		tileSize = 0,
+		edgeSize = 5,
+		insets =
+		{
+			left = 1,
+			right = 1,
+			top = 1,
+			bottom = 1
+		}
+	});
+	setupWindow:SetHeight(340);
+	setupWindow:SetWidth(450);
+	setupWindow:Hide();
+
+	local label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -8);
+	label:SetText("LEFT");
+	setupWindow.Spell1Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "Spell1", "1");
+	setupWindow.Spell1Window:SetPoint("TOPLEFT", 100, 0);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -33);
+	label:SetText("RIGHT");
+	setupWindow.Spell2Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "Spell2", "2");
+	setupWindow.Spell2Window:SetPoint("TOPLEFT", 100, -25);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -58);
+	label:SetText("MIDDLE");
+	setupWindow.Spell3Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "Spell3", "3");
+	setupWindow.Spell3Window:SetPoint("TOPLEFT", 100, -50);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -83);
+	label:SetText("ALT LEFT");
+	setupWindow.AltSpell1Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "AltSpell1", "alt1");
+	setupWindow.AltSpell1Window:SetPoint("TOPLEFT", 100, -75);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -108);
+	label:SetText("ALT RIGHT");
+	setupWindow.AltSpell2Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "AltSpell2", "alt2");
+	setupWindow.AltSpell2Window:SetPoint("TOPLEFT", 100, -100);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -133);
+	label:SetText("ALT MIDDLE");
+	setupWindow.AltSpell3Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "AltSpell3", "alt3");
+	setupWindow.AltSpell3Window:SetPoint("TOPLEFT", 100, -125);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -158);
+	label:SetText("SHIFT LEFT");
+	setupWindow.ShiftSpell1Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ShiftSpell1", "shift1");
+	setupWindow.ShiftSpell1Window:SetPoint("TOPLEFT", 100, -150);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -183);
+	label:SetText("SHIFT RIGHT");
+	setupWindow.ShiftSpell2Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ShiftSpell2", "shift2");
+	setupWindow.ShiftSpell2Window:SetPoint("TOPLEFT", 100, -175);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -208);
+	label:SetText("SHIFT MIDDLE");
+	setupWindow.ShiftSpell3Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ShiftSpell3", "shift3");
+	setupWindow.ShiftSpell3Window:SetPoint("TOPLEFT", 100, -200);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -233);
+	label:SetText("CONTROL LEFT");
+	setupWindow.ControlSpell1Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ControlSpell1", "control1");
+	setupWindow.ControlSpell1Window:SetPoint("TOPLEFT", 100, -225);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -258);
+	label:SetText("CONTROL RIGHT");
+	setupWindow.ControlSpell2Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ControlSpell2", "control2");
+	setupWindow.ControlSpell2Window:SetPoint("TOPLEFT", 100, -250);
+
+	label = setupWindow:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -283);
+	label:SetText("CONTROL MIDDLE");
+	setupWindow.ControlSpell3Window = self:CreateSpellSelectWindow(setupWindow, self.SetupWindowName .. "_" .. "ControlSpell3", "control3");
+	setupWindow.ControlSpell3Window:SetPoint("TOPLEFT", 100, -275);
+
+	local okButton = CreateFrame("Button", nil, setupWindow, "UIPanelButtonTemplate");
+	okButton:SetText("OK");
+	okButton:SetWidth(150);
+	okButton:SetHeight(25);
+	okButton:SetPoint("TOPLEFT", 50, -310);
+	okButton:SetScript(
+		"OnClick",
+		function()
+			orlanHeal:SaveSetup();
+		end);
+
+	local cancelButton = CreateFrame("Button", nil, setupWindow, "UIPanelButtonTemplate");
+	cancelButton:SetText("Cancel");
+	cancelButton:SetWidth(150);	
+	cancelButton:SetHeight(25);
+	cancelButton:SetPoint("TOPLEFT", 250, -310);
+	cancelButton:SetScript(
+		"OnClick",
+		function()
+			orlanHeal:CancelSetup();
+		end);
+
+	return setupWindow;
+end;
+
+function OrlanHeal:CreateSpellSelectWindow(parent, name, button)
+	local spellSelectWindow = CreateFrame("Frame", name, parent, "UIDropDownMenuTemplate");
+	UIDropDownMenu_SetWidth(spellSelectWindow, 300);
+	spellSelectWindow.OrlanHeal = self;
+	spellSelectWindow.button = button;
+
+	return spellSelectWindow;
+end;
+
+function OrlanHeal:InitializeSpellSelectWindow(spellSelectWindow)
+	UIDropDownMenu_Initialize(spellSelectWindow, self.HandleSpellInit);
+end;
+
+function OrlanHeal:HandleSpellInit(level)
+	local info = {};
+	info["func"] = self.OrlanHeal.HandleSpellSelect;
+	info["arg1"] = self;
+
+	info["text"] = "";
+	info["value"] = "";
+	info["arg2"] = "";
+	UIDropDownMenu_AddButton(info, level);
+
+	info["text"] = "Set as target";
+	info["value"] = "target";
+	info["arg2"] = "target";
+	UIDropDownMenu_AddButton(info, level);
+
+	local spellIndex = 1;
+	while true do
+		local spellId = self.OrlanHeal.AvailableSpells[spellIndex];
+		if (not spellId) then
+			break;
+		end;
+
+		local spellName = GetSpellInfo(spellId);
+
+		info["text"] = spellName;
+		info["value"] = spellId;
+		info["arg2"] = spellId;
+
+		UIDropDownMenu_AddButton(info, level);
+
+		spellIndex = spellIndex + 1;
+	end;
+
+	UIDropDownMenu_SetSelectedValue(self, self.OrlanHeal.PendingConfig[self.button]);
+end;
+
+function OrlanHeal:HandleSpellSelect(spellWindow, value)
+	spellWindow.OrlanHeal.PendingConfig[spellWindow.button] = value;
+	UIDropDownMenu_SetSelectedValue(spellWindow, value);	
+end;
+
+function OrlanHeal:LoadSetup()
+	self.Config["1"] = self.Config["1"] or 48785; -- Вспышка Света
+	self.Config["2"] = self.Config["2"] or 48782; -- Свет Небес
+	self.Config["3"] = self.Config["3"] or 10278; -- Длань защиты
+	self.Config["shift1"] = self.Config["shift1"] or "target";
+	self.Config["shift2"] = self.Config["shift2"] or 53563; -- Частица Света
+	self.Config["shift3"] = self.Config["shift3"] or 1038; -- Длань спасения
+	self.Config["control1"] = self.Config["control1"] or 6940; -- Длань жертвенности
+	self.Config["control2"] = self.Config["control2"] or 48788; -- Возложение рук
+	self.Config["control3"] = self.Config["control3"] or 19752; -- Божественное вмешательство
+	self.Config["alt1"] = self.Config["alt1"] or 4987; -- Очищение
+	self.Config["alt2"] = self.Config["alt2"] or 48825; -- Шок небес
+	self.Config["alt3"] = self.Config["alt3"] or 53601; -- Священный щит
+end;
+
+function OrlanHeal:Setup()
+	self.PendingConfig = {};
+	for key, value in pairs(self.Config) do
+		self.PendingConfig[key] = value;
+	end;
+
+	self:InitializeSpellSelectWindow(self.SetupWindow.Spell1Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.Spell2Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.Spell3Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.AltSpell1Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.AltSpell2Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.AltSpell3Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.ShiftSpell1Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.ShiftSpell2Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.ShiftSpell3Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell1Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell2Window);
+	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell3Window);
+
+	self.SetupWindow:Show();
+end;
+
+function OrlanHeal:CancelSetup()
+	self.SetupWindow:Hide();
+end;
+
+function OrlanHeal:SaveSetup()
+	if self:RequestNonCombat() then
+		for key, value in pairs(self.PendingConfig) do
+			self.Config[key] = value;
+		end;
+
+		self.SetupWindow:Hide();
+
+		self:UpdateSpells();
+	end;
+end;
+
+function OrlanHeal:UpdateSpells()
+	for groupIndex = 0, self.MaxGroupCount - 1 do
+		for playerIndex = 0, 4 do
+			self:SetupSpells(self.RaidWindow.Groups[groupIndex].Players[playerIndex].Button);
+			self:SetupSpells(self.RaidWindow.Groups[groupIndex].Players[playerIndex].Pet.Button);
+		end;
+	end;
 end;
 
 function OrlanHeal:CreateRaidWindow()
@@ -514,56 +780,39 @@ function OrlanHeal:SetupSpells(button)
 	button:SetAttribute("*helpbutton2", "help2");
 	button:SetAttribute("*helpbutton3", "help3");
 
-	button:SetAttribute("type-help1", "spell");
-	button:SetAttribute("spell-help1", 48785); -- Вспышка Света
+	self:SetAction(button, "", "1", self.Config["1"]);
+	self:SetAction(button, "", "2", self.Config["2"]);
+	self:SetAction(button, "", "3", self.Config["3"]);
+	self:SetAction(button, "alt-", "1", self.Config["alt1"]);
+	self:SetAction(button, "alt-", "2", self.Config["alt2"]);
+	self:SetAction(button, "alt-", "3", self.Config["alt3"]);
+	self:SetAction(button, "shift-", "1", self.Config["shift1"]);
+	self:SetAction(button, "shift-", "2", self.Config["shift2"]);
+	self:SetAction(button, "shift-", "3", self.Config["shift3"]);
+	self:SetAction(button, "ctrl-", "1", self.Config["control1"]);
+	self:SetAction(button, "ctrl-", "2", self.Config["control2"]);
+	self:SetAction(button, "ctrl-", "3", self.Config["control3"]);
+end;
 
-	button:SetAttribute("type-help2", "spell");
-	button:SetAttribute("spell-help2", 48782); -- Свет Небес
-
-	button:SetAttribute("type-help3", "spell");
-	button:SetAttribute("spell-help3", 10278); -- Длань защиты
-
-	button:SetAttribute("shift-type1", "target");
-	button:SetAttribute("shift-type-help1", "target");
-
-	button:SetAttribute("shift-type-help2", "spell");
-	button:SetAttribute("shift-spell-help2", 53563); -- Частица Света
-
-	button:SetAttribute("shift-type-help3", "spell");
-	button:SetAttribute("shift-spell-help3", 1038); -- Длань спасения
-
-	button:SetAttribute("ctrl-type-help1", "spell");
-	button:SetAttribute("ctrl-spell-help1", 6940); -- Длань жертвенности
-
-	button:SetAttribute("ctrl-type-help2", "spell");
-	button:SetAttribute("ctrl-spell-help2", 48788); -- Возложение рук
-
-	button:SetAttribute("ctrl-type3", "spell");
-	button:SetAttribute("ctrl-type-help3", "spell");
-	button:SetAttribute("ctrl-spell3", 19752); -- Божественное вмешательство
-	button:SetAttribute("ctrl-spell-help3", 19752); -- Божественное вмешательство
-
-	button:SetAttribute("alt-type-help1", "spell");
-	button:SetAttribute("alt-spell-help1", 4987); -- Очищение
-
-	button:SetAttribute("alt-type-help2", "spell");
-	button:SetAttribute("alt-spell-help2", 48825); -- Шок небес
-	
-	button:SetAttribute("alt-type-help3", "spell");
-	button:SetAttribute("alt-spell-help3", 53601); -- Священный щит
+function OrlanHeal:SetAction(button, prefix, mouseButton, action)
+	if ((action == "") or (action == "target")) then
+		button:SetAttribute(prefix .. "type" .. mouseButton, action);
+		button:SetAttribute(prefix .. "type-help" .. mouseButton, action);
+	else
+		button:SetAttribute(prefix .. "type" .. mouseButton, "");
+		button:SetAttribute(prefix .. "type-help" .. mouseButton, "spell");
+		button:SetAttribute(prefix .. "spell-help" .. mouseButton, action);
+	end;
 end;
 
 function OrlanHeal:HandleLoaded()
 	_G[self.ConfigName] = _G[self.ConfigName] or {};
 	self.Config = _G[self.ConfigName];
 
-	self.Config.RaidWindowPosition = self.Config.RaidWindowPosition or
-	{
-		x = 0,
-		y = 0
-	};
+	self:LoadSetup();
 
 	self.RaidWindow = self:CreateRaidWindow();
+	self.SetupWindow = self:CreateSetupWindow();
 
 	self:UpdateVisibleGroupCount();
 	self:Show();
