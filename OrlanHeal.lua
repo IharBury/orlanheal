@@ -426,42 +426,42 @@ function OrlanHeal:SetupSpells(button)
 	button:SetAttribute("*helpbutton3", "help3");
 
 	button:SetAttribute("type-help1", "spell");
-	button:SetAttribute("spell-help1", "Вспышка Света");
+	button:SetAttribute("spell-help1", 48785); -- Вспышка Света
 
 	button:SetAttribute("type-help2", "spell");
-	button:SetAttribute("spell-help2", "Свет Небес");
+	button:SetAttribute("spell-help2", 48782); -- Свет Небес
 
 	button:SetAttribute("type-help3", "spell");
-	button:SetAttribute("spell-help3", "Длань защиты");
+	button:SetAttribute("spell-help3", 10278); -- Длань защиты
 
 	button:SetAttribute("shift-type1", "target");
 	button:SetAttribute("shift-type-help1", "target");
 
 	button:SetAttribute("shift-type-help2", "spell");
-	button:SetAttribute("shift-spell-help2", "Частица Света");
+	button:SetAttribute("shift-spell-help2", 53563); -- Частица Света
 
 	button:SetAttribute("shift-type-help3", "spell");
-	button:SetAttribute("shift-spell-help3", "Длань спасения");
+	button:SetAttribute("shift-spell-help3", 1038); -- Длань спасения
 
 	button:SetAttribute("ctrl-type-help1", "spell");
-	button:SetAttribute("ctrl-spell-help1", "Длань жертвенности");
+	button:SetAttribute("ctrl-spell-help1", 6940); -- Длань жертвенности
 
 	button:SetAttribute("ctrl-type-help2", "spell");
-	button:SetAttribute("ctrl-spell-help2", "Возложение рук");
+	button:SetAttribute("ctrl-spell-help2", 48788); -- Возложение рук
 
 	button:SetAttribute("ctrl-type3", "spell");
 	button:SetAttribute("ctrl-type-help3", "spell");
-	button:SetAttribute("ctrl-spell3", "Божественное вмешательство");
-	button:SetAttribute("ctrl-spell-help3", "Божественное вмешательство");
+	button:SetAttribute("ctrl-spell3", 19752); -- Божественное вмешательство
+	button:SetAttribute("ctrl-spell-help3", 19752); -- Божественное вмешательство
 
 	button:SetAttribute("alt-type-help1", "spell");
-	button:SetAttribute("alt-spell-help1", "Очищение");
+	button:SetAttribute("alt-spell-help1", 4987); -- Очищение
 
 	button:SetAttribute("alt-type-help2", "spell");
-	button:SetAttribute("alt-spell-help2", "Шок небес");
+	button:SetAttribute("alt-spell-help2", 48825); -- Шок небес
 	
 	button:SetAttribute("alt-type-help3", "spell");
-	button:SetAttribute("alt-spell-help3", "Священный щит");
+	button:SetAttribute("alt-spell-help3", 53601); -- Священный щит
 end;
 
 function OrlanHeal:HandleLoaded()
@@ -502,7 +502,7 @@ end;
 
 function OrlanHeal:RequestNonCombat()
 	if InCombatLockdown() then
-		print("OrlanHeal: Cannot be done in combat.");
+		print("OrlanHeal: Cannot be done in combat.buff");
 		return false;
 	else
 		return true;
