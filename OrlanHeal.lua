@@ -112,7 +112,7 @@ function OrlanHeal:Initialize(configName)
 	self.IsInStartUpMode = true;
 
 	self.HealingBuffs = {};
-	self.HealingBuffs[66922] = true; -- чужая Вспышка Света
+	self.HealingBuffs[66922] = true; -- Вспышка Света
 	self.HealingBuffs[774] = true; -- Омоложение
 	self.HealingBuffs[1058] = true; -- Омоложение
 	self.HealingBuffs[1430] = true; -- Омоложение
