@@ -1,7 +1,7 @@
 ## Interface: 30300
 ## X-Compatible-With: 40000
-## Title: OrlanHeal (1.0.1)
-## Version: 1.0.1
+## Title: OrlanHeal (1.1.1)
+## Version: 1.1.1
 ## Notes: 
 ## SavedVariablesPerCharacter: OrlanHealConfig
 OrlanHeal.lua
