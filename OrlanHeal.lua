@@ -31,6 +31,8 @@ end;
 function OrlanHeal:Initialize(configName)
 	local orlanHeal = self;
 
+	local _, _, _, tocversion = GetBuildInfo();
+	self.IsCataclysm = tocversion >= 40000;
 	self.ConfigName = configName;
 	self.EventFrame = CreateFrame("Frame");
 
@@ -200,30 +202,52 @@ function OrlanHeal:Initialize(configName)
 	self.IgnoredDebuffs[72144] = true; -- Шлейф оранжевой заразы
 	self.IgnoredDebuffs[72145] = true; -- Шлейф зеленой заразы
 
-	self.AvailableSpells = 
-	{
-		48785, -- Вспышка Света
-		48782, -- Свет Небес
-		10278, -- Длань защиты
-		4987, -- Очищение
-		48825, -- Шок небес
-		53601, -- Священный щит
-		53563, -- Частица Света
-		1038, -- Длань спасения
-		6940, -- Длань жертвенности
-		48788, -- Возложение рук
-		19752, -- Божественное вмешательство
-		1044, -- Длань свободы
-		48950, -- Искупление
-		28880, -- Дар наауру
-		25898, -- Великое благословение королей
-		48938, -- Великое благословение мудрости
-		48934, -- Великое благословение могущества
-		20217, -- Благословение королей
-		48936, -- Благословение мудрости
-		48932, -- Благословение могущества
-		31789 -- Праведная защита
-	};
+	if (self.IsCataclysm) then
+		self.AvailableSpells =
+		{
+			635, -- Holy Light
+			19750, -- Flash of Light
+			1022, -- Hand of Protection
+			4987, -- Cleanse
+			20473, -- Holy Shock
+			633, -- Lay on Hands
+			85673, -- Word of Glory
+			1038, -- Hand of Salvation
+			82326, -- Divine Light
+			53563, -- Beacon of Light
+			6940, -- Hand of Sacrifice
+			1044, -- Hand of Freedom
+			20217, -- Blessing of Kings
+			7328, -- Redemption
+			31789, -- Righteous Defense
+			19740 -- Blessing of Might
+		};
+	else
+		self.AvailableSpells = 
+		{
+			48785, -- Вспышка Света
+			48782, -- Свет Небес
+			10278, -- Длань защиты
+			4987, -- Очищение
+			48825, -- Шок небес
+			53601, -- Священный щит
+			53563, -- Частица Света
+			1038, -- Длань спасения
+			6940, -- Длань жертвенности
+			48788, -- Возложение рук
+			19752, -- Божественное вмешательство
+			1044, -- Длань свободы
+			48950, -- Искупление
+			28880, -- Дар наауру
+			25898, -- Великое благословение королей
+			48938, -- Великое благословение мудрости
+			48934, -- Великое благословение могущества
+			20217, -- Благословение королей
+			48936, -- Благословение мудрости
+			48932, -- Благословение могущества
+			31789 -- Праведная защита
+		};
+	end;
 end;
 
 function OrlanHeal:CreateSetupWindow()
@@ -350,18 +374,33 @@ function OrlanHeal:HandleSpellSelect(spellWindow, value)
 end;
 
 function OrlanHeal:LoadSetup()
-	self.Config["1"] = self.Config["1"] or 48785; -- Вспышка Света
-	self.Config["2"] = self.Config["2"] or 48782; -- Свет Небес
-	self.Config["3"] = self.Config["3"] or 10278; -- Длань защиты
-	self.Config["shift1"] = self.Config["shift1"] or "target";
-	self.Config["shift2"] = self.Config["shift2"] or 53563; -- Частица Света
-	self.Config["shift3"] = self.Config["shift3"] or 1038; -- Длань спасения
-	self.Config["control1"] = self.Config["control1"] or 6940; -- Длань жертвенности
-	self.Config["control2"] = self.Config["control2"] or 48788; -- Возложение рук
-	self.Config["control3"] = self.Config["control3"] or 19752; -- Божественное вмешательство
-	self.Config["alt1"] = self.Config["alt1"] or 4987; -- Очищение
-	self.Config["alt2"] = self.Config["alt2"] or 48825; -- Шок небес
-	self.Config["alt3"] = self.Config["alt3"] or 53601; -- Священный щит
+	if (self.IsCataclysm) then
+		self.Config["1"] = self.Config["1"] or 635; -- Holy Light
+		self.Config["2"] = self.Config["2"] or 19750; -- Flash of Light
+		self.Config["3"] = self.Config["3"] or 1022; -- Hand of Protection
+		self.Config["shift1"] = self.Config["shift1"] or "target";
+		self.Config["shift2"] = self.Config["shift2"] or 53563; -- Beacon of Light
+		self.Config["shift3"] = self.Config["shift3"] or 1038; -- Hand of Salvation
+		self.Config["control1"] = self.Config["control1"] or 82326; -- Divine Light
+		self.Config["control2"] = self.Config["control2"] or 85673; -- Word of Glory
+		self.Config["control3"] = self.Config["control3"] or 6940; -- Hand of Sacrifice
+		self.Config["alt1"] = self.Config["alt1"] or 4987; -- Cleanse
+		self.Config["alt2"] = self.Config["alt2"] or 20473; -- Holy Shock
+		self.Config["alt3"] = self.Config["alt3"] or 633; -- Lay on Hands
+	else
+		self.Config["1"] = self.Config["1"] or 48785; -- Вспышка Света
+		self.Config["2"] = self.Config["2"] or 48782; -- Свет Небес
+		self.Config["3"] = self.Config["3"] or 10278; -- Длань защиты
+		self.Config["shift1"] = self.Config["shift1"] or "target";
+		self.Config["shift2"] = self.Config["shift2"] or 53563; -- Частица Света
+		self.Config["shift3"] = self.Config["shift3"] or 1038; -- Длань спасения
+		self.Config["control1"] = self.Config["control1"] or 6940; -- Длань жертвенности
+		self.Config["control2"] = self.Config["control2"] or 48788; -- Возложение рук
+		self.Config["control3"] = self.Config["control3"] or 19752; -- Божественное вмешательство
+		self.Config["alt1"] = self.Config["alt1"] or 4987; -- Очищение
+		self.Config["alt2"] = self.Config["alt2"] or 48825; -- Шок небес
+		self.Config["alt3"] = self.Config["alt3"] or 53601; -- Священный щит
+	end
 end;
 
 function OrlanHeal:Setup()
@@ -990,16 +1029,33 @@ function OrlanHeal:UpdateBackground(background, unit)
 	end;
 end;
 
+function OrlanHeal:IsInRedRangeOrCloser(unit)
+	return (IsSpellInRange(GetSpellInfo(53563), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(53563), unit) == 1); -- Частица Света
+end;
+
+function OrlanHeal:IsInOrangeRangeOrCloser(unit)
+	local spellId = 48785; -- Вспышка Света
+	if (self.IsCataclysm) then
+		spellId = 635; -- Holy Light
+	end;
+
+	return (IsSpellInRange(GetSpellInfo(spellId), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(spellId), unit) == 1);
+end;
+
+function OrlanHeal:IsInYellowRangeOrCloser(unit)
+	return (IsSpellInRange(GetSpellInfo(1022), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(1022), unit) == 1); -- Hand of Protection
+end;
+
 function OrlanHeal:UpdateRange(rangeBar, unit)
 	if UnitIsConnected(unit) ~= 1 then
 		rangeBar.BackgroundTexture:SetTexture(0, 0, 0, 1);
 	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
 		rangeBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
-	elseif (IsSpellInRange(GetSpellInfo(53563), unit) ~= 1) or (UnitCanAssist("player", unit) ~= 1) then -- Частица Света
+	elseif (not self:IsInRedRangeOrCloser(unit)) or (UnitCanAssist("player", unit) ~= 1) then
 		rangeBar.BackgroundTexture:SetTexture(0.2, 0.2, 0.75, 1);
-	elseif IsSpellInRange(GetSpellInfo(48785), unit) ~= 1 then -- Вспышка Света
+	elseif not self:IsInOrangeRangeOrCloser(unit) then
 		rangeBar.BackgroundTexture:SetTexture(0.75, 0.2, 0.2, 1);
-	elseif IsSpellInRange(GetSpellInfo(1038), unit) ~= 1 then -- Длань Спасения
+	elseif not self:IsInYellowRangeOrCloser(unit) then -- Длань Спасения
 		rangeBar.BackgroundTexture:SetTexture(0.75, 0.45, 0.2, 1);
 	elseif CheckInteractDistance(unit, 2) ~= 1 then
 		rangeBar.BackgroundTexture:SetTexture(0.75, 0.75, 0.2, 1);
