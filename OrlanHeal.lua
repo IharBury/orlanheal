@@ -504,6 +504,26 @@ function OrlanHeal:CreateRaidWindow()
 			-self.RaidOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * (groupIndex - 1) / 2);
 	end;
 
+	raidWindow.TopBorder = self:CreateBorderBar(raidWindow);
+	raidWindow.TopBorder:SetPoint("TOPLEFT", 0, 0);
+	raidWindow.TopBorder:SetPoint("TOPRIGHT", 0, 0);
+	raidWindow.TopBorder:SetHeight(3);
+
+	raidWindow.BottomBorder = self:CreateBorderBar(raidWindow);
+	raidWindow.BottomBorder:SetPoint("BOTTOMLEFT", 0, 0);
+	raidWindow.BottomBorder:SetPoint("BOTTOMRIGHT", 0, 0);
+	raidWindow.BottomBorder:SetHeight(3);
+
+	raidWindow.LeftBorder = self:CreateBorderBar(raidWindow);
+	raidWindow.LeftBorder:SetPoint("TOPLEFT", 0, -3);
+	raidWindow.LeftBorder:SetPoint("BOTTOMLEFT", 0, 3);
+	raidWindow.LeftBorder:SetWidth(3);
+
+	raidWindow.RightBorder = self:CreateBorderBar(raidWindow);
+	raidWindow.RightBorder:SetPoint("TOPRIGHT", 0, -3);
+	raidWindow.RightBorder:SetPoint("BOTTOMRIGHT", 0, 3);
+	raidWindow.RightBorder:SetWidth(3);
+
 	return raidWindow;
 end;
 
@@ -653,6 +673,18 @@ function OrlanHeal:CreateBlankCanvas(parent)
 	canvas.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
 
 	parent.Canvas = canvas;
+end;
+
+function OrlanHeal:CreateBorderBar(parent)
+	local bar = CreateFrame("Frame", nil, parent);
+
+	bar:SetFrameStrata(self.RaidWindowStrata);
+	bar.BackgroundTexture = bar:CreateTexture();
+	bar.BackgroundTexture:SetTexture(1, 0, 0, 0.3);
+	bar.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
+	bar.BackgroundTexture:SetPoint("BOTTOMRIGHT", 0, 0);
+
+	return bar;
 end;
 
 function OrlanHeal:CreateRangeBar(parent)
@@ -963,6 +995,51 @@ function OrlanHeal:UpdateStatus()
 			self:UpdateUnitStatus(player, groupIndex + 1);
 			self:UpdateUnitStatus(player.Pet, nil);
 		end;
+	end;
+
+	self:UpdateRaidBorder();
+end;
+
+function OrlanHeal:IsSpellReady(spellId)
+	local result = false;
+
+	if IsUsableSpell(GetSpellInfo(spellId)) then
+		local start, duration = GetSpellCooldown(spellId);
+		result = not ((start > 0) and (duration > 0));
+	end;
+
+	return result;
+end;
+
+function OrlanHeal:UpdateRaidBorder()
+	local mode = 0;
+	if self.IsCataclysm 
+			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
+			and self:IsSpellReady(85673) then -- Word of Glory
+		mode = 3;
+	elseif self:IsSpellReady(20473) then -- Holy Shock
+		mode = 2;
+	elseif self.IsCataclysm 
+			and (UnitPower("player", SPELL_POWER_HOLY_POWER) > 0)
+			and self:IsSpellReady(85673) then -- Word of Glory
+		mode = 1;
+	end;
+
+	self:SetBorderMode(self.RaidWindow.TopBorder, mode);
+	self:SetBorderMode(self.RaidWindow.BottomBorder, mode);
+	self:SetBorderMode(self.RaidWindow.LeftBorder, mode);
+	self:SetBorderMode(self.RaidWindow.RightBorder, mode);
+end;
+
+function OrlanHeal:SetBorderMode(border, mode)
+	if mode == 0 then
+		border.BackgroundTexture:SetTexture(0, 0, 0, 0);
+	elseif mode == 1 then
+		border.BackgroundTexture:SetTexture(1, 0, 0, 0.3);
+	elseif mode == 2 then
+		border.BackgroundTexture:SetTexture(1, 1, 0, 0.3);
+	elseif mode == 3 then
+		border.BackgroundTexture:SetTexture(0, 1, 0, 0.3);
 	end;
 end;
 
