@@ -217,6 +217,7 @@ function OrlanHeal:Initialize(configName)
 			53563, -- Beacon of Light
 			6940, -- Hand of Sacrifice
 			1044, -- Hand of Freedom
+			28880, -- Дар наауру
 			20217, -- Blessing of Kings
 			7328, -- Redemption
 			31789, -- Righteous Defense
