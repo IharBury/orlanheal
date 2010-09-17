@@ -36,6 +36,8 @@ function OrlanHeal:Initialize(configName)
 	self.ConfigName = configName;
 	self.EventFrame = CreateFrame("Frame");
 
+	self.FrameRate = 20.0;
+
 	function self.EventFrame:HandleEvent(event, arg1)
 		if (event == "ADDON_LOADED") and (arg1 == "OrlanHeal") then
 			orlanHeal:HandleLoaded();
@@ -55,7 +57,7 @@ function OrlanHeal:Initialize(configName)
 	function self.EventFrame:HandleUpdate(elapsed)
 		if orlanHeal.RaidWindow:IsShown() then
 			orlanHeal.ElapsedAfterUpdate = orlanHeal.ElapsedAfterUpdate + elapsed;
-			if orlanHeal.ElapsedAfterUpdate > 0.1 then
+			if orlanHeal.ElapsedAfterUpdate > 1.0 / orlanHeal.FrameRate then
 				orlanHeal:UpdateStatus();
 				orlanHeal.ElapsedAfterUpdate = 0;
 			end;
@@ -104,6 +106,7 @@ function OrlanHeal:Initialize(configName)
 
 	self.RaidAlpha = 0.2;
 	self.GroupAlpha = 0.2;
+	self.RaidBorderAlpha = 0.4;
 
 	self.RaidWindowStrata = "LOW";
 	self.RaidWindowName = "OrlanHeal_RaidWindow";
@@ -255,24 +258,14 @@ function OrlanHeal:CreateSetupWindow()
 	local orlanHeal = self;
 
 	local setupWindow = CreateFrame("Frame", self.SetupWindowName, UIParent);
-	setupWindow:ClearAllPoints();
 	setupWindow:SetPoint("CENTER", 0, 0);
 	setupWindow:SetFrameStrata("DIALOG");
-	setupWindow:SetBackdrop(
-	{
-		bgFile = "Interface\\Tooltips\\ChatBubble-Background",
-		edgeFile = "Interface\Tooltips\UI-Tooltip-Border",
-		tile = false,
-		tileSize = 0,
-		edgeSize = 5,
-		insets =
-		{
-			left = 1,
-			right = 1,
-			top = 1,
-			bottom = 1
-		}
-	});
+
+	local background = setupWindow:CreateTexture();
+	background:SetPoint("TOPLEFT", 0, 0);
+	background:SetPoint("BOTTOMRIGHT", 0, 0);
+	background:SetTexture(0, 0, 0, 0.6);
+
 	setupWindow:SetHeight(340);
 	setupWindow:SetWidth(450);
 	setupWindow:Hide();
@@ -459,25 +452,13 @@ function OrlanHeal:CreateRaidWindow()
 		self:StopMovingOrSizing();
 	end;
 
-	raidWindow:ClearAllPoints();
+	local background = raidWindow:CreateTexture();
+	background:SetPoint("TOPLEFT", 3, -3);
+	background:SetPoint("BOTTOMRIGHT", -3, 3);
+	background:SetTexture(0, 0, 0, self.RaidAlpha);
+
 	raidWindow:SetPoint("BOTTOMLEFT", 0, 0);
 	raidWindow:SetFrameStrata(self.RaidWindowStrata);
-	raidWindow:SetBackdrop(
-	{
-		bgFile = "Interface\\Tooltips\\ChatBubble-Background",
-		edgeFile = "Interface\Tooltips\UI-Tooltip-Border",
-		tile = false,
-		tileSize = 0,
-		edgeSize = 5,
-		insets =
-		{
-			left = 1,
-			right = 1,
-			top = 1,
-			bottom = 1
-		}
-	});
-	raidWindow:SetBackdropColor(1, 1, 1, self.RaidAlpha);
 	raidWindow:SetHeight(self.RaidHeight);
 	raidWindow:SetWidth(self.RaidWidth);
 	raidWindow:EnableMouse(true);
@@ -505,22 +486,22 @@ function OrlanHeal:CreateRaidWindow()
 			-self.RaidOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * (groupIndex - 1) / 2);
 	end;
 
-	raidWindow.TopBorder = self:CreateBorderBar(raidWindow);
+	raidWindow.TopBorder = raidWindow:CreateTexture();
 	raidWindow.TopBorder:SetPoint("TOPLEFT", 0, 0);
 	raidWindow.TopBorder:SetPoint("TOPRIGHT", 0, 0);
 	raidWindow.TopBorder:SetHeight(3);
 
-	raidWindow.BottomBorder = self:CreateBorderBar(raidWindow);
+	raidWindow.BottomBorder = raidWindow:CreateTexture();
 	raidWindow.BottomBorder:SetPoint("BOTTOMLEFT", 0, 0);
 	raidWindow.BottomBorder:SetPoint("BOTTOMRIGHT", 0, 0);
 	raidWindow.BottomBorder:SetHeight(3);
 
-	raidWindow.LeftBorder = self:CreateBorderBar(raidWindow);
+	raidWindow.LeftBorder = raidWindow:CreateTexture();
 	raidWindow.LeftBorder:SetPoint("TOPLEFT", 0, -3);
 	raidWindow.LeftBorder:SetPoint("BOTTOMLEFT", 0, 3);
 	raidWindow.LeftBorder:SetWidth(3);
 
-	raidWindow.RightBorder = self:CreateBorderBar(raidWindow);
+	raidWindow.RightBorder = raidWindow:CreateTexture();
 	raidWindow.RightBorder:SetPoint("TOPRIGHT", 0, -3);
 	raidWindow.RightBorder:SetPoint("BOTTOMRIGHT", 0, 3);
 	raidWindow.RightBorder:SetWidth(3);
@@ -531,24 +512,11 @@ end;
 function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
 	local groupWindow = CreateFrame("Frame", nil, parent);
 
-	groupWindow:ClearAllPoints();
-	groupWindow:SetFrameStrata(self.RaidWindowStrata);
-	groupWindow:SetBackdrop(
-	{
-		bgFile = "Interface\\Tooltips\\ChatBubble-Background",
-		edgeFile = "Interface\Tooltips\UI-Tooltip-Border",
-		tile = false,
-		tileSize = 0,
-		edgeSize = 10,
-		insets =
-		{
-			left = 0,
-			right = 0,
-			top = 0,
-			bottom = 0
-		}
-	});
-	groupWindow:SetBackdropColor(1, 1, 1, self.GroupAlpha);
+	local background = groupWindow:CreateTexture();
+	background:SetPoint("TOPLEFT", 0, 0);
+	background:SetPoint("BOTTOMRIGHT", 0, 0);
+	background:SetTexture(0, 0, 0, self.GroupAlpha);
+
 	groupWindow:SetHeight(self.GroupHeight);
 	groupWindow:SetWidth(self.GroupWidth);
 	groupWindow:EnableKeyboard(true);
@@ -608,54 +576,51 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specif
 		parent.SpecificBuffs = {};
 
 		for buffIndex = 0, specificBuffCount - 1 do
-			parent.SpecificBuffs[buffIndex] = self:CreateBuff(
-				parent, 
+			parent.SpecificBuffs[buffIndex] = self:CreateBuff(parent);
+			parent.SpecificBuffs[buffIndex]:SetPoint(
 				"TOPRIGHT", 
-				-(otherBuffCount + specificBuffCount - 1 - buffIndex) * self.BuffSize);
+				-(otherBuffCount + specificBuffCount - 1 - buffIndex) * self.BuffSize,
+				0);
 		end;
 	end;
 
 	parent.OtherBuffs = {};
 
 	for buffIndex = 0, otherBuffCount - 1 do
-		parent.OtherBuffs[buffIndex] = self:CreateBuff(
-			parent, 
+		parent.OtherBuffs[buffIndex] = self:CreateBuff(parent);
+		parent.OtherBuffs[buffIndex]:SetPoint(
 			"TOPRIGHT", 
-			-(otherBuffCount - 1 - buffIndex) * self.BuffSize);
+			-(otherBuffCount - 1 - buffIndex) * self.BuffSize,
+			0);
 	end;
 
 	if specificDebuffCount > 0 then
 		parent.SpecificDebuffs = {};
 
 		for buffIndex = 0, specificDebuffCount - 1 do
-			parent.SpecificDebuffs[buffIndex] = self:CreateBuff(
-				parent, 
+			parent.SpecificDebuffs[buffIndex] = self:CreateBuff(parent);
+			parent.SpecificDebuffs[buffIndex]:SetPoint(
 				"BOTTOMRIGHT", 
-				-(otherDebuffCount + specificDebuffCount - 1 - buffIndex) * self.BuffSize);
+				-(otherDebuffCount + specificDebuffCount - 1 - buffIndex) * self.BuffSize,
+				0);
 		end;
 	end;
 
 	parent.OtherDebuffs = {};
 
 	for buffIndex = 0, otherDebuffCount - 1 do
-		parent.OtherDebuffs[buffIndex] = self:CreateBuff(
-			parent, 
+		parent.OtherDebuffs[buffIndex] = self:CreateBuff(parent);
+		parent.OtherDebuffs[buffIndex]:SetPoint(
 			"BOTTOMRIGHT", 
-			-(otherDebuffCount - 1 - buffIndex) * self.BuffSize);
+			-(otherDebuffCount - 1 - buffIndex) * self.BuffSize,
+			0);
 	end;
 end;
 
-function OrlanHeal:CreateBuff(parent, point, x)
-	local buff = CreateFrame("Frame", nil, parent);
+function OrlanHeal:CreateBuff(parent)
+	local buff = parent:CreateTexture();
 	buff:SetHeight(self.BuffSize);
 	buff:SetWidth(self.BuffSize);
-	buff:SetPoint(point, x, 0);
-
-	buff.Texture = buff:CreateTexture();
-	buff.Texture:SetHeight(self.BuffSize);
-	buff.Texture:SetWidth(self.BuffSize);
-	buff.Texture:SetPoint("TOPLEFT", 0, 0);
-
 	return buff;
 end;
 
@@ -674,18 +639,6 @@ function OrlanHeal:CreateBlankCanvas(parent)
 	canvas.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
 
 	parent.Canvas = canvas;
-end;
-
-function OrlanHeal:CreateBorderBar(parent)
-	local bar = CreateFrame("Frame", nil, parent);
-
-	bar:SetFrameStrata(self.RaidWindowStrata);
-	bar.BackgroundTexture = bar:CreateTexture();
-	bar.BackgroundTexture:SetTexture(1, 0, 0, 0.3);
-	bar.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
-	bar.BackgroundTexture:SetPoint("BOTTOMRIGHT", 0, 0);
-
-	return bar;
 end;
 
 function OrlanHeal:CreateRangeBar(parent)
@@ -859,7 +812,7 @@ end;
 
 function OrlanHeal:RequestNonCombat()
 	if InCombatLockdown() then
-		print("OrlanHeal: Cannot be done in combat.buff");
+		print("OrlanHeal: Cannot be done in combat.");
 		return false;
 	else
 		return true;
@@ -1006,7 +959,7 @@ function OrlanHeal:IsSpellReady(spellId)
 
 	if IsUsableSpell(GetSpellInfo(spellId)) then
 		local start, duration = GetSpellCooldown(spellId);
-		result = not ((start > 0) and (duration > 0));
+		result = not ((start > 0) and (duration > 1.5)); -- cooldowns less than GCD are ignored (latency + queueing)
 	end;
 
 	return result;
@@ -1017,11 +970,15 @@ function OrlanHeal:UpdateRaidBorder()
 	if self.IsCataclysm 
 			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
 			and self:IsSpellReady(85673) then -- Word of Glory
-		mode = 3;
+		mode = 4;
 	elseif self:IsSpellReady(20473) then -- Holy Shock
+		mode = 3;
+	elseif self.IsCataclysm 
+			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 2)
+			and self:IsSpellReady(85673) then -- Word of Glory
 		mode = 2;
 	elseif self.IsCataclysm 
-			and (UnitPower("player", SPELL_POWER_HOLY_POWER) > 0)
+			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 1)
 			and self:IsSpellReady(85673) then -- Word of Glory
 		mode = 1;
 	end;
@@ -1034,13 +991,15 @@ end;
 
 function OrlanHeal:SetBorderMode(border, mode)
 	if mode == 0 then
-		border.BackgroundTexture:SetTexture(0, 0, 0, 0);
+		border:SetTexture(0, 0, 0, 0);
 	elseif mode == 1 then
-		border.BackgroundTexture:SetTexture(1, 0, 0, 0.3);
+		border:SetTexture(1, 0, 0, self.RaidBorderAlpha);
 	elseif mode == 2 then
-		border.BackgroundTexture:SetTexture(1, 1, 0, 0.3);
+		border:SetTexture(1, 0.5, 0, self.RaidBorderAlpha);
 	elseif mode == 3 then
-		border.BackgroundTexture:SetTexture(0, 1, 0, 0.3);
+		border:SetTexture(1, 1, 0, self.RaidBorderAlpha);
+	elseif mode == 4 then
+		border:SetTexture(0, 1, 0, self.RaidBorderAlpha);
 	end;
 end;
 
@@ -1329,20 +1288,20 @@ function OrlanHeal:GetLastBuffOfKind(buffs, buffCount, kind)
 	return nil;
 end;
 
-function OrlanHeal:ShowBuff(window, buff)
+function OrlanHeal:ShowBuff(texture, buff)
 	if buff == nil then
-		window:Hide();
+		texture:SetTexture(0, 0, 0, 0);
+		texture:SetVertexColor(0, 0, 0, 0);
 	else
-		window:Show();
-		window.Texture:SetTexture(buff.Icon);
+		texture:SetTexture(buff.Icon);
 
-        if buff.Expires <= GetTime() + 3 then
-            window.Texture:SetVertexColor(1, 0.5, 0.5, 0.5);
-        elseif buff.Expires <= GetTime() + 6 then
-            window.Texture:SetVertexColor(1, 1, 0.5, 0.75);
-        else
-            window.Texture:SetVertexColor(1, 1, 1, 1);
-        end;
+		if buff.Expires <= GetTime() + 3 then
+			texture:SetVertexColor(1, 0.5, 0.5, 0.5);
+		elseif buff.Expires <= GetTime() + 6 then
+			texture:SetVertexColor(1, 1, 0.5, 0.75);
+		else
+			texture:SetVertexColor(1, 1, 1, 1);
+		end;
 	end;
 end;
 
