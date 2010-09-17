@@ -262,8 +262,7 @@ function OrlanHeal:CreateSetupWindow()
 	setupWindow:SetFrameStrata("DIALOG");
 
 	local background = setupWindow:CreateTexture();
-	background:SetPoint("TOPLEFT", 0, 0);
-	background:SetPoint("BOTTOMRIGHT", 0, 0);
+	background:SetAllPoints();
 	background:SetTexture(0, 0, 0, 0.6);
 
 	setupWindow:SetHeight(340);
@@ -457,7 +456,7 @@ function OrlanHeal:CreateRaidWindow()
 	background:SetPoint("BOTTOMRIGHT", -3, 3);
 	background:SetTexture(0, 0, 0, self.RaidAlpha);
 
-	raidWindow:SetPoint("BOTTOMLEFT", 0, 0);
+	raidWindow:SetPoint("CENTER", 0, 0);
 	raidWindow:SetFrameStrata(self.RaidWindowStrata);
 	raidWindow:SetHeight(self.RaidHeight);
 	raidWindow:SetWidth(self.RaidWidth);
@@ -513,8 +512,7 @@ function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
 	local groupWindow = CreateFrame("Frame", nil, parent);
 
 	local background = groupWindow:CreateTexture();
-	background:SetPoint("TOPLEFT", 0, 0);
-	background:SetPoint("BOTTOMRIGHT", 0, 0);
+	background:SetAllPoints();
 	background:SetTexture(0, 0, 0, self.GroupAlpha);
 
 	groupWindow:SetHeight(self.GroupHeight);
@@ -543,7 +541,6 @@ end;
 function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	local playerWindow = CreateFrame("Frame", nil, parent);
 
-	playerWindow:SetFrameStrata(self.RaidWindowStrata);
 	playerWindow:SetHeight(self.PlayerHeight);
 	playerWindow:SetWidth(self.PlayerWidth);
 
@@ -625,35 +622,23 @@ function OrlanHeal:CreateBuff(parent)
 end;
 
 function OrlanHeal:CreateBlankCanvas(parent)
-	local canvas = CreateFrame("Frame", nil, parent);
-
-	canvas:SetFrameStrata(self.RaidWindowStrata);
-	canvas:SetHeight(parent:GetHeight());
-	canvas:SetWidth(parent:GetWidth());
-	canvas:SetPoint("TOPLEFT", 0, 0);
-
-	canvas.BackgroundTexture = canvas:CreateTexture(nil, "BACKGROUND");
-	canvas.BackgroundTexture:SetTexture(0.2, 0.2, 0.2, 1);
-	canvas.BackgroundTexture:SetHeight(parent:GetHeight());
-	canvas.BackgroundTexture:SetWidth(parent:GetWidth());
-	canvas.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
-
-	parent.Canvas = canvas;
+	parent.Canvas = CreateFrame("Frame", nil, parent);
+	parent.Canvas:SetAllPoints();
+	parent.Canvas.BackgroundTexture = parent.Canvas:CreateTexture(nil, "BACKGROUND");
+	parent.Canvas.BackgroundTexture:SetTexture(0.2, 0.2, 0.2, 1);
+	parent.Canvas.BackgroundTexture:SetAllPoints();
 end;
 
 function OrlanHeal:CreateRangeBar(parent)
 	local rangeBar = CreateFrame("Frame", nil, parent);
 
-	rangeBar:SetFrameStrata(self.RaidWindowStrata);
-	rangeBar:SetHeight(parent:GetHeight());
 	rangeBar:SetWidth(self.RangeWidth);
 	rangeBar:SetPoint("TOPLEFT", 0, 0);
+	rangeBar:SetPoint("BOTTOMLEFT", 0, 0);
 
 	rangeBar.BackgroundTexture = rangeBar:CreateTexture();
 	rangeBar.BackgroundTexture:SetTexture(0.2, 0.2, 0.75, 1);
-	rangeBar.BackgroundTexture:SetHeight(parent:GetHeight());
-	rangeBar.BackgroundTexture:SetWidth(self.RangeWidth);
-	rangeBar.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
+	rangeBar.BackgroundTexture:SetAllPoints();
 
 	parent.RangeBar = rangeBar;
 end;
@@ -661,7 +646,6 @@ end;
 function OrlanHeal:CreateNameBar(parent, width)
 	parent.NameBar = CreateFrame("Frame", nil, parent);
 
-	parent.NameBar:SetFrameStrata(self.RaidWindowStrata);
 	parent.NameBar:SetHeight(self.NameHeight);
 	parent.NameBar:SetWidth(width);
 	parent.NameBar:SetPoint("TOPLEFT", self.RangeWidth, 0);
@@ -678,7 +662,6 @@ end;
 function OrlanHeal:CreateHealthBar(parent, width)
 	parent.HealthBar = CreateFrame("StatusBar", nil, parent);
 
-	parent.HealthBar:SetFrameStrata(self.RaidWindowStrata);
 	parent.HealthBar:SetHeight(self.HealthHeight);
 	parent.HealthBar:SetWidth(width);
 	parent.HealthBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
@@ -699,7 +682,6 @@ end;
 function OrlanHeal:CreateManaBar(parent, width)
 	parent.ManaBar = CreateFrame("StatusBar", nil, parent);
 
-	parent.ManaBar:SetFrameStrata(self.RaidWindowStrata);
 	parent.ManaBar:SetHeight(self.ManaHeight);
 	parent.ManaBar:SetWidth(width);
 	parent.ManaBar:SetPoint("BOTTOMLEFT", self.RangeWidth, 0);
@@ -719,10 +701,7 @@ end;
 
 function OrlanHeal:CreateUnitButton(parent)
 	parent.Button = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
-	parent.Button:SetFrameStrata(self.RaidWindowStrata);
-	parent.Button:SetHeight(parent:GetHeight());
-	parent.Button:SetWidth(parent:GetWidth());
-	parent.Button:SetPoint("TOPLEFT", 0, 0);
+	parent.Button:SetAllPoints();
 
 	self:SetupSpells(parent.Button);
 end;
@@ -730,7 +709,6 @@ end;
 function OrlanHeal:CreatePetWindow(parent)
 	local petWindow = CreateFrame("Frame", nil, parent);
 
-	petWindow:SetFrameStrata(self.RaidWindowStrata);
 	petWindow:SetHeight(self.PlayerHeight);
 	petWindow:SetWidth(self.PetWidth);
 
