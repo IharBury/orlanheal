@@ -740,7 +740,7 @@ function OrlanHeal:CreateHealthBar(parent, width)
 		{ r = 0.75, g = 0.5, b = 0.2 },
 		{ r = 0.75, g = 0.75, b = 0.2 },
 		{ r = 1, g = 0.2, b = 0.2 },
-		2);
+		3);
 	parent.HealthBar:SetHeight(self.HealthHeight);
 	parent.HealthBar:SetWidth(width);
 	parent.HealthBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
