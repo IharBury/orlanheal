@@ -630,33 +630,20 @@ function OrlanHeal:CreateBlankCanvas(parent)
 end;
 
 function OrlanHeal:CreateRangeBar(parent)
-	local rangeBar = CreateFrame("Frame", nil, parent);
-
-	rangeBar:SetWidth(self.RangeWidth);
-	rangeBar:SetPoint("TOPLEFT", 0, 0);
-	rangeBar:SetPoint("BOTTOMLEFT", 0, 0);
-
-	rangeBar.BackgroundTexture = rangeBar:CreateTexture();
-	rangeBar.BackgroundTexture:SetTexture(0.2, 0.2, 0.75, 1);
-	rangeBar.BackgroundTexture:SetAllPoints();
-
-	parent.RangeBar = rangeBar;
+	parent.RangeBar = parent:CreateTexture();
+	parent.RangeBar:SetWidth(self.RangeWidth);
+	parent.RangeBar:SetPoint("TOPLEFT", 0, 0);
+	parent.RangeBar:SetPoint("BOTTOMLEFT", 0, 0);
 end;
 
 function OrlanHeal:CreateNameBar(parent, width)
-	parent.NameBar = CreateFrame("Frame", nil, parent);
-
+	parent.NameBar = parent:CreateFontString(nil, nil, "GameFontNormal");
 	parent.NameBar:SetHeight(self.NameHeight);
 	parent.NameBar:SetWidth(width);
 	parent.NameBar:SetPoint("TOPLEFT", self.RangeWidth, 0);
-
-	parent.NameBar.Text = parent.NameBar:CreateFontString(nil, nil, "GameFontNormal");
-	parent.NameBar.Text:SetHeight(self.NameHeight);
-	parent.NameBar.Text:SetWidth(width);
-	parent.NameBar.Text:SetPoint("TOPLEFT", 0, 0);
-	parent.NameBar.Text:SetJustifyH("LEFT");
-	parent.NameBar.Text:SetWordWrap(false);
-	parent.NameBar.Text:SetTextHeight(self.NameFontHeight);
+	parent.NameBar:SetJustifyH("LEFT");
+	parent.NameBar:SetWordWrap(false);
+	parent.NameBar:SetTextHeight(self.NameFontHeight);
 end;
 
 function OrlanHeal:CreateHealthBar(parent, width)
@@ -665,18 +652,14 @@ function OrlanHeal:CreateHealthBar(parent, width)
 	parent.HealthBar:SetHeight(self.HealthHeight);
 	parent.HealthBar:SetWidth(width);
 	parent.HealthBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
-	parent.HealthBar:SetMinMaxValues(0, 100);
-	parent.HealthBar:SetValue(100);
 
 	parent.HealthBar.Texture = parent.HealthBar:CreateTexture();
 	parent.HealthBar.Texture:SetTexture(0.2, 0.75, 0.2, 1);
-	parent.HealthBar:SetStatusBarTexture(parent.HealthBar.Texture, "OVERLAY");
+	parent.HealthBar:SetStatusBarTexture(parent.HealthBar.Texture);
 
-	parent.HealthBar.BackgroundTexture = parent.HealthBar:CreateTexture("BACKGROUND");
+	parent.HealthBar.BackgroundTexture = parent.HealthBar:CreateTexture(nil, "BACKGROUND");
 	parent.HealthBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
-	parent.HealthBar.BackgroundTexture:SetHeight(self.HealthHeight);
-	parent.HealthBar.BackgroundTexture:SetWidth(width);
-	parent.HealthBar.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
+	parent.HealthBar.BackgroundTexture:SetAllPoints();
 end;
 
 function OrlanHeal:CreateManaBar(parent, width)
@@ -685,18 +668,14 @@ function OrlanHeal:CreateManaBar(parent, width)
 	parent.ManaBar:SetHeight(self.ManaHeight);
 	parent.ManaBar:SetWidth(width);
 	parent.ManaBar:SetPoint("BOTTOMLEFT", self.RangeWidth, 0);
-	parent.ManaBar:SetMinMaxValues(0, 100);
-	parent.ManaBar:SetValue(100);
 
 	parent.ManaBar.Texture = parent.ManaBar:CreateTexture();
 	parent.ManaBar.Texture:SetTexture(0.2, 0.2, 0.75, 1);
-	parent.ManaBar:SetStatusBarTexture(parent.ManaBar.Texture, "OVERLAY");
+	parent.ManaBar:SetStatusBarTexture(parent.ManaBar.Texture);
 
-	parent.ManaBar.BackgroundTexture = parent.ManaBar:CreateTexture("BACKGROUND");
+	parent.ManaBar.BackgroundTexture = parent.ManaBar:CreateTexture(nil, "BACKGROUND");
 	parent.ManaBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
-	parent.ManaBar.BackgroundTexture:SetHeight(self.ManaHeight);
-	parent.ManaBar.BackgroundTexture:SetWidth(width);
-	parent.ManaBar.BackgroundTexture:SetPoint("TOPLEFT", 0, 0);
+	parent.ManaBar.BackgroundTexture:SetAllPoints();
 end;
 
 function OrlanHeal:CreateUnitButton(parent)
@@ -1063,19 +1042,19 @@ end;
 
 function OrlanHeal:UpdateRange(rangeBar, unit)
 	if UnitIsConnected(unit) ~= 1 then
-		rangeBar.BackgroundTexture:SetTexture(0, 0, 0, 1);
+		rangeBar:SetTexture(0, 0, 0, 1);
 	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
-		rangeBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
+		rangeBar:SetTexture(0.4, 0.4, 0.4, 1);
 	elseif (not self:IsInRedRangeOrCloser(unit)) or (UnitCanAssist("player", unit) ~= 1) then
-		rangeBar.BackgroundTexture:SetTexture(0.2, 0.2, 0.75, 1);
+		rangeBar:SetTexture(0.2, 0.2, 0.75, 1);
 	elseif not self:IsInOrangeRangeOrCloser(unit) then
-		rangeBar.BackgroundTexture:SetTexture(0.75, 0.2, 0.2, 1);
+		rangeBar:SetTexture(0.75, 0.2, 0.2, 1);
 	elseif not self:IsInYellowRangeOrCloser(unit) then -- Длань Спасения
-		rangeBar.BackgroundTexture:SetTexture(0.75, 0.45, 0.2, 1);
+		rangeBar:SetTexture(0.75, 0.45, 0.2, 1);
 	elseif CheckInteractDistance(unit, 2) ~= 1 then
-		rangeBar.BackgroundTexture:SetTexture(0.75, 0.75, 0.2, 1);
+		rangeBar:SetTexture(0.75, 0.75, 0.2, 1);
 	else
-		rangeBar.BackgroundTexture:SetTexture(0.2, 0.75, 0.2, 1);
+		rangeBar:SetTexture(0.2, 0.75, 0.2, 1);
 	end;
 end;
 
@@ -1113,13 +1092,13 @@ function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 		end;
 	end;
 
-	nameBar.Text:SetText(text);
+	nameBar:SetText(text);
 	local _, class = UnitClassBase(unit);
 	local classColor = RAID_CLASS_COLORS[class];
 	if classColor == nil then
 		classColor = { r = 0.4, g = 0.4, b = 0.4 };
 	end;
-	nameBar.Text:SetTextColor(classColor.r, classColor.g, classColor.b, 1);
+	nameBar:SetTextColor(classColor.r, classColor.g, classColor.b, 1);
 end;
 
 function OrlanHeal:UpdateBuffs(canvas, unit)
