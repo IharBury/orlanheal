@@ -1093,11 +1093,12 @@ end;
 
 function OrlanHeal:UpdateThreat(canvas, unit)
 	local situation = UnitThreatSituation(unit)
-	if situation == nil then
-		self:SetBorderColor(canvas, 0, 0, 0, 0);
+	if situation == 1 then
+		self:SetBorderColor(canvas, 1, 0.6, 0, 1);
+	elseif (situation == 2) or (situation == 3) then
+		self:SetBorderColor(canvas, 1, 0, 0, 1);
 	else
-		local r, g, b = GetThreatStatusColor(situation);
-		self:SetBorderColor(canvas, r, g, b, 1);
+		self:SetBorderColor(canvas, 0, 0, 0, 0);
 	end;
 end;
 
