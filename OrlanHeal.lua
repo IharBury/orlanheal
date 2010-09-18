@@ -646,36 +646,114 @@ function OrlanHeal:CreateNameBar(parent, width)
 	parent.NameBar:SetTextHeight(self.NameFontHeight);
 end;
 
-function OrlanHeal:CreateHealthBar(parent, width)
-	parent.HealthBar = CreateFrame("StatusBar", nil, parent);
+function OrlanHeal:CreateStatusBar(parent, backgroundColor, currentColor, incomingColor, yourIncomingColor, overincomingColor, overincomingWidth)
+	incomingColor = incomingColor or { r = 0, g = 0, b = 0 };
+	yourIncomingColor = yourIncomingColor or { r = 0, g = 0, b = 0 };
+	overincomingColor = overincomingColor or { r = 0, g = 0, b = 0 };
+	overincomingWidth = overincomingWidth or 1;
 
+	local bar = CreateFrame("Frame", nil, parent);
+
+	bar.Background = bar:CreateTexture(nil, "BACKGROUND");
+	bar.Background:SetAllPoints();
+	bar.Background:SetTexture(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1);
+
+	bar.Current = bar:CreateTexture();
+	bar.Current:SetPoint("TOPLEFT", 0, 0);
+	bar.Current:SetPoint("BOTTOMLEFT", 0, 0);
+	self:SetStatusBarCurrentColor(bar, currentColor);
+
+	bar.Incoming = bar:CreateTexture();
+	bar.Incoming:SetTexture(incomingColor.r, incomingColor.g, incomingColor.b, 1);
+
+	bar.YourIncoming = bar:CreateTexture();
+	bar.YourIncoming:SetTexture(yourIncomingColor.r, yourIncomingColor.g, yourIncomingColor.b, 1);
+
+	bar.Overincoming = bar:CreateTexture();
+	bar.Overincoming:SetPoint("TOPRIGHT", overincomingWidth, 0);
+	bar.Overincoming:SetPoint("BOTTOMRIGHT", overincomingWidth, 0);
+	bar.Overincoming:SetWidth(overincomingWidth);
+	bar.Overincoming:SetTexture(overincomingColor.r, overincomingColor.g, overincomingColor.b, 1);
+
+	return bar;
+end;
+
+function OrlanHeal:SetStatusBarCurrentColor(bar, currentColor)
+	bar.Current:SetTexture(currentColor.r, currentColor.g, currentColor.b, 1);
+end;
+
+function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue, incomingValue, yourIncomingValue)
+	local width = bar:GetWidth();
+
+	currentValue = currentValue or 0;
+	maxValue = maxValue or 1;
+	incomingValue = incomingValue or 0;
+	yourIncomingValue = yourIncomingValue or 0;
+	if (currentValue > maxValue) then
+		currentValue = maxValue;
+	end;
+	local isOverincoming = false;
+	if (currentValue + incomingValue > maxValue) then
+		incomingValue = maxValue - currentValue;
+		isOverincoming = true;
+	end;
+	if yourIncomingValue > incomingValue then
+		yourIncomingValue = incomingValue;
+	end;
+
+	local currentPosition = currentValue * width / maxValue;
+	local incomingPosition = (currentValue + incomingValue - yourIncomingValue) * width / maxValue;
+	local yourIncomingPosition = (currentValue + incomingValue) * width / maxValue;
+	
+	bar.Current:SetWidth(currentPosition);
+
+	bar.Incoming:SetPoint("TOPLEFT", currentPosition, 0);
+	bar.Incoming:SetPoint("BOTTOMLEFT", currentPosition, 0);
+	bar.Incoming:SetWidth(incomingPosition - currentPosition);
+	if (incomingPosition - currentPosition == 0) then
+		bar.Incoming:SetVertexColor(1, 1, 1, 0);
+	else
+		bar.Incoming:SetVertexColor(1, 1, 1, 1);
+	end;
+	
+	bar.YourIncoming:SetPoint("TOPLEFT", incomingPosition, 0);
+	bar.YourIncoming:SetPoint("BOTTOMLEFT", incomingPosition, 0);
+	bar.YourIncoming:SetWidth(yourIncomingPosition - incomingPosition);
+	if (yourIncomingPosition - incomingPosition == 0) then
+		bar.YourIncoming:SetVertexColor(1, 1, 1, 0);
+	else
+		bar.YourIncoming:SetVertexColor(1, 1, 1, 1);
+	end;
+
+	if isOverincoming then
+		bar.Overincoming:SetVertexColor(1, 1, 1, 1);
+	else
+		bar.Overincoming:SetVertexColor(1, 1, 1, 0);
+	end;
+end;
+
+function OrlanHeal:CreateHealthBar(parent, width)
+	parent.HealthBar = self:CreateStatusBar(
+		parent,
+		{ r = 0.4, g = 0.4, b = 0.4 },
+		{ r = 0.2, g = 0.75, b = 0.2 },
+		{ r = 0.75, g = 0.5, b = 0.2 },
+		{ r = 0.75, g = 0.75, b = 0.2 },
+		{ r = 1, g = 0.2, b = 0.2 },
+		2);
 	parent.HealthBar:SetHeight(self.HealthHeight);
 	parent.HealthBar:SetWidth(width);
 	parent.HealthBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
-
-	parent.HealthBar.Texture = parent.HealthBar:CreateTexture();
-	parent.HealthBar.Texture:SetTexture(0.2, 0.75, 0.2, 1);
-	parent.HealthBar:SetStatusBarTexture(parent.HealthBar.Texture);
-
-	parent.HealthBar.BackgroundTexture = parent.HealthBar:CreateTexture(nil, "BACKGROUND");
-	parent.HealthBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
-	parent.HealthBar.BackgroundTexture:SetAllPoints();
 end;
 
 function OrlanHeal:CreateManaBar(parent, width)
-	parent.ManaBar = CreateFrame("StatusBar", nil, parent);
-
+	parent.ManaBar = self:CreateStatusBar(
+		parent,
+		{ r = 0.4, g = 0.4, b = 0.4 },
+		{ r = 0.2, g = 0.2, b = 0.75 });
 	parent.ManaBar:SetHeight(self.ManaHeight);
 	parent.ManaBar:SetWidth(width);
 	parent.ManaBar:SetPoint("BOTTOMLEFT", self.RangeWidth, 0);
-
-	parent.ManaBar.Texture = parent.ManaBar:CreateTexture();
-	parent.ManaBar.Texture:SetTexture(0.2, 0.2, 0.75, 1);
-	parent.ManaBar:SetStatusBarTexture(parent.ManaBar.Texture);
-
-	parent.ManaBar.BackgroundTexture = parent.ManaBar:CreateTexture(nil, "BACKGROUND");
-	parent.ManaBar.BackgroundTexture:SetTexture(0.4, 0.4, 0.4, 1);
-	parent.ManaBar.BackgroundTexture:SetAllPoints();
 end;
 
 function OrlanHeal:CreateUnitButton(parent)
@@ -1059,24 +1137,19 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 end;
 
 function OrlanHeal:UpdateHealth(healthBar, unit)
-	local health = UnitHealth(unit);
-	local maxHealth = UnitHealthMax(unit);
-
-	healthBar:SetMinMaxValues(0, maxHealth);
-	healthBar:SetValue(health);
+	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit), 0, 0);
 
 	if UnitIsConnected(unit) ~= 1 then
-		healthBar.Texture:SetTexture(0, 0, 0, 1);
+		self:SetStatusBarCurrentColor(healthBar, { r = 0, g = 0, b = 0 });
 	else
-		healthBar.Texture:SetTexture(0.2, 0.75, 0.2, 1);
+		self:SetStatusBarCurrentColor(healthBar, { r = 0.2, g = 0.75, b = 0.2 });
 	end;
 end;
 
 function OrlanHeal:UpdateMana(manaBar, unit)
-	if (UnitPowerType(unit) == 0) and (UnitIsConnected(unit) == 1) then
+	if (UnitPowerType(unit) == SPELL_POWER_MANA) and (UnitIsConnected(unit) == 1) then
 		manaBar:Show();
-		manaBar:SetMinMaxValues(0, UnitPowerMax(unit, 0));
-		manaBar:SetValue(UnitPower(unit, 0));
+		self:UpdateStatusBar(manaBar, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA));
 	else
 		manaBar:Hide();
 	end;
