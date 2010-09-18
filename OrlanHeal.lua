@@ -566,6 +566,7 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateBuffs(playerWindow.Canvas, 4, 1, 3, 2);
 	self:CreateBorder(playerWindow.Canvas, 1, 1);
 	self:CreateRoleIcon(playerWindow.Canvas);
+	self:CreateTargetIcon(playerWindow.Canvas, self.PlayerStatusWidth);
 
 	playerWindow.Pet = self:CreatePetWindow(playerWindow);
 	if isOnTheRight then
@@ -587,7 +588,14 @@ function OrlanHeal:CreateRoleIcon(canvas)
 	canvas.Role = canvas:CreateTexture(nil, "OVERLAY");
 	canvas.Role:SetHeight(self.NameHeight);
 	canvas.Role:SetWidth(self.NameHeight);
-	canvas.Role:SetPoint("TOPLEFT", self.RangeWidth + self.PlayerStatusWidth - self.NameHeight, 0);
+	canvas.Role:SetPoint("TOPLEFT", self.RangeWidth + self.PlayerStatusWidth - self.NameHeight * 2, 0);
+end;
+
+function OrlanHeal:CreateTargetIcon(canvas, statusWidth)
+	canvas.Target = canvas:CreateTexture(nil, "OVERLAY");
+	canvas.Target:SetHeight(self.NameHeight);
+	canvas.Target:SetWidth(self.NameHeight);
+	canvas.Target:SetPoint("TOPLEFT", self.RangeWidth + statusWidth - self.NameHeight, 0);
 end;
 
 function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specificDebuffCount, otherDebuffCount)
@@ -799,6 +807,7 @@ function OrlanHeal:CreatePetWindow(parent)
 	self:CreateNameBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateBuffs(petWindow.Canvas, 0, 2, 1, 1);
 	self:CreateBorder(petWindow.Canvas, 1, 1);
+	self:CreateTargetIcon(petWindow.Canvas, self.PetStatusWidth);
 
 	return petWindow;
 end;
@@ -1055,6 +1064,20 @@ function OrlanHeal:UpdatePlayerRoleIcon(player)
 	end;
 end;
 
+function OrlanHeal:UpdateTargetIcon(canvas, unit)
+	local target = GetRaidTargetIndex(unit);
+	if target then
+		canvas.Target:SetTexture("Interface\\TARGETINGFRAME\\UI-RaidTargetingIcons");
+		local left = mod(target - 1, 4) / 4;
+		local right = left + 1 / 4;
+		local top = floor((target - 1) / 4) / 4;
+		local bottom = top + 1 / 4;
+		canvas.Target:SetTexCoord(left, right, top, bottom);
+	else
+		canvas.Target:SetTexture(0, 0, 0, 0);
+	end;
+end;
+
 function OrlanHeal:IsSpellReady(spellId)
 	local result = false;
 
@@ -1118,18 +1141,18 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 				window.Canvas:Hide();
 				return;
 			end;
-        end;
+	        end;
 
 		if UnitInBattleground("player") ~= nil then
-	        if (UnitIsConnected(unit) ~= 1) or
-                    (UnitIsCorpse(unit) == 1) or 
-                    (UnitIsDeadOrGhost(unit) == 1) or
-                    (IsSpellInRange(GetSpellInfo(53563), unit) ~= 1) or -- Частица Света
-                    (UnitCanAssist("player", unit) ~= 1) then
-                window.Canvas:Hide();
-                return;
-            end;
-        end;
+			if (UnitIsConnected(unit) ~= 1) or
+					(UnitIsCorpse(unit) == 1) or 
+					(UnitIsDeadOrGhost(unit) == 1) or
+					(IsSpellInRange(GetSpellInfo(53563), unit) ~= 1) or -- Частица Света
+					(UnitCanAssist("player", unit) ~= 1) then
+		                window.Canvas:Hide();
+        		        return;
+			end;
+		end;
 
 		window.Canvas:Show();
 
@@ -1141,6 +1164,7 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		self:UpdateBuffs(window.Canvas, unit);
 		self:UpdateDebuffs(window.Canvas, unit);
 		self:UpdateThreat(window.Canvas, unit);
+		self:UpdateTargetIcon(window.Canvas, unit);
 	end;
 end;
 
