@@ -116,6 +116,8 @@ function OrlanHeal:Initialize(configName)
 	self.VisibleGroupCount = 9;
 	self.IsInStartUpMode = true;
 
+	self.RaidRoles = {};
+
 	self.HealingBuffs = {};
 	self.HealingBuffs[66922] = true; -- Вспышка Света
 	self.HealingBuffs[774] = true; -- Омоложение
@@ -563,6 +565,7 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateBuffs(playerWindow.Canvas, 4, 1, 3, 2);
 	self:CreateBorder(playerWindow.Canvas, 1, 1);
+	self:CreateRoleIcon(playerWindow.Canvas);
 
 	playerWindow.Pet = self:CreatePetWindow(playerWindow);
 	if isOnTheRight then
@@ -578,6 +581,13 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	end;
 
 	return playerWindow;
+end;
+
+function OrlanHeal:CreateRoleIcon(canvas)
+	canvas.Role = canvas:CreateTexture(nil, "OVERLAY");
+	canvas.Role:SetHeight(self.NameHeight);
+	canvas.Role:SetWidth(self.NameHeight);
+	canvas.Role:SetPoint("TOPLEFT", self.RangeWidth + self.PlayerStatusWidth - self.NameHeight, 0);
 end;
 
 function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specificDebuffCount, otherDebuffCount)
@@ -915,6 +925,8 @@ function OrlanHeal:UpdateUnits()
 		groupPlayerCounts[groupNumber] = 0;
 	end;
 
+	self.RaidRoles = {};
+
 	if self.IsInStartUpMode then
 		for groupNumber = 1, (self.GroupCount - 1) * 5 do
 			for unitNumber = (groupNumber - 1) * 5 + 1, (groupNumber - 1) * 5 + 5 do
@@ -960,6 +972,9 @@ function OrlanHeal:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts)
 			groupPlayerCounts[groupNumber], 
 			"raid" .. unitNumber, 
 			"raidpet" .. unitNumber);
+
+		local _, _, _, _, _, _, _, _, _, role = GetRaidRosterInfo(unitNumber);
+		self.RaidRoles["raid" .. unitNumber] = role;
 	end;
 end;
 
@@ -996,10 +1011,48 @@ function OrlanHeal:UpdateStatus()
 			local player = self.RaidWindow.Groups[groupIndex].Players[groupPlayerIndex];
 			self:UpdateUnitStatus(player, groupIndex + 1);
 			self:UpdateUnitStatus(player.Pet, nil);
+			self:UpdatePlayerRoleIcon(player);
 		end;
 	end;
 
 	self:UpdateRaidBorder();
+end;
+
+function OrlanHeal:UpdatePlayerRoleIcon(player)
+	local unit = player.Button:GetAttribute("unit");
+	local role = self.RaidRoles[unit];
+	if role == "MAINTANK" then
+		player.Canvas.Role:SetTexture("Interface\\GroupFrame\\UI-Group-MainTankIcon");
+		player.Canvas.Role:SetTexCoord(0, 1, 0, 1);
+	elseif role == "MAINASSIST" then
+		player.Canvas.Role:SetTexture("Interface\\GroupFrame\\UI-Group-MainAssistIcon");
+		player.Canvas.Role:SetTexCoord(0, 1, 0, 1);
+	else
+		local isTank = false;
+		local isHeal = false;
+		local isDPS = false;
+		if self.IsCataclysm then
+			role = UnitGroupRolesAssigned(unit);
+			isTank = role == "TANK";
+			isHeal = role == "HEALER";
+			isDPS = role == "DAMAGER";
+		else
+			isTank, isHeal, isDPS = UnitGroupRolesAssigned(unit);
+		end;
+
+		if isTank then
+			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
+			player.Canvas.Role:SetTexCoord(0, 19/64, 22/64, 41/64);
+		elseif isHeal then
+			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
+			player.Canvas.Role:SetTexCoord(20/64, 39/64, 1/64, 20/64);
+		elseif isDPS then
+			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
+			player.Canvas.Role:SetTexCoord(20/64, 39/64, 22/64, 41/64);
+		else
+			player.Canvas.Role:SetTexture(0, 0, 0, 0);
+		end;
+	end;
 end;
 
 function OrlanHeal:IsSpellReady(spellId)
