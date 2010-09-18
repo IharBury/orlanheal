@@ -1137,7 +1137,14 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 end;
 
 function OrlanHeal:UpdateHealth(healthBar, unit)
-	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit), 0, 0);
+	local incoming = 0;
+	local yourIncoming = 0;
+	if self.IsCataclysm then
+		incoming = UnitGetIncomingHeals(unit);
+		yourIncoming = UnitGetIncomingHeals(unit, "player");
+	end;
+
+	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit), incoming, yourIncoming);
 
 	if UnitIsConnected(unit) ~= 1 then
 		self:SetStatusBarCurrentColor(healthBar, { r = 0, g = 0, b = 0 });
