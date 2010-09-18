@@ -1263,6 +1263,13 @@ end;
 
 function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 	local text = GetUnitName(unit, false);
+	
+	if UnitIsAFK(unit) then
+		text = "afk " .. text;
+	end;
+	if UnitIsDND(unit) then
+		text = "dnd " .. text;
+	end;
 
 	if (displayedGroup ~= nil) and (string.sub(unit, 1, 4) == "raid") then
 		local _, _, groupNumber = GetRaidRosterInfo(string.sub(unit, 5));
