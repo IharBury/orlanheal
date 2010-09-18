@@ -485,27 +485,38 @@ function OrlanHeal:CreateRaidWindow()
 			-self.RaidOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * (groupIndex - 1) / 2);
 	end;
 
-	raidWindow.TopBorder = raidWindow:CreateTexture();
-	raidWindow.TopBorder:SetPoint("TOPLEFT", 0, 0);
-	raidWindow.TopBorder:SetPoint("TOPRIGHT", 0, 0);
-	raidWindow.TopBorder:SetHeight(3);
-
-	raidWindow.BottomBorder = raidWindow:CreateTexture();
-	raidWindow.BottomBorder:SetPoint("BOTTOMLEFT", 0, 0);
-	raidWindow.BottomBorder:SetPoint("BOTTOMRIGHT", 0, 0);
-	raidWindow.BottomBorder:SetHeight(3);
-
-	raidWindow.LeftBorder = raidWindow:CreateTexture();
-	raidWindow.LeftBorder:SetPoint("TOPLEFT", 0, -3);
-	raidWindow.LeftBorder:SetPoint("BOTTOMLEFT", 0, 3);
-	raidWindow.LeftBorder:SetWidth(3);
-
-	raidWindow.RightBorder = raidWindow:CreateTexture();
-	raidWindow.RightBorder:SetPoint("TOPRIGHT", 0, -3);
-	raidWindow.RightBorder:SetPoint("BOTTOMRIGHT", 0, 3);
-	raidWindow.RightBorder:SetWidth(3);
+	self:CreateBorder(raidWindow, 3, 0);
 
 	return raidWindow;
+end;
+
+function OrlanHeal:CreateBorder(window, thickness, offset)
+	window.TopBorder = window:CreateTexture();
+	window.TopBorder:SetPoint("TOPLEFT", -offset, offset);
+	window.TopBorder:SetPoint("TOPRIGHT", offset, offset);
+	window.TopBorder:SetHeight(thickness);
+
+	window.BottomBorder = window:CreateTexture();
+	window.BottomBorder:SetPoint("BOTTOMLEFT", -offset, -offset);
+	window.BottomBorder:SetPoint("BOTTOMRIGHT", offset, -offset);
+	window.BottomBorder:SetHeight(thickness);
+
+	window.LeftBorder = window:CreateTexture();
+	window.LeftBorder:SetPoint("TOPLEFT", -offset, offset - thickness);
+	window.LeftBorder:SetPoint("BOTTOMLEFT", -offset, -offset + thickness);
+	window.LeftBorder:SetWidth(thickness);
+
+	window.RightBorder = window:CreateTexture();
+	window.RightBorder:SetPoint("TOPRIGHT", offset, offset - thickness);
+	window.RightBorder:SetPoint("BOTTOMRIGHT", offset, -offset + thickness);
+	window.RightBorder:SetWidth(thickness);
+end;
+
+function OrlanHeal:SetBorderColor(window, r, g, b, a)
+	window.TopBorder:SetTexture(r, g, b, a);
+	window.BottomBorder:SetTexture(r, g, b, a);
+	window.LeftBorder:SetTexture(r, g, b, a);
+	window.RightBorder:SetTexture(r, g, b, a);
 end;
 
 function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
@@ -551,6 +562,7 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateManaBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateBuffs(playerWindow.Canvas, 4, 1, 3, 2);
+	self:CreateBorder(playerWindow.Canvas, 1, 1);
 
 	playerWindow.Pet = self:CreatePetWindow(playerWindow);
 	if isOnTheRight then
@@ -776,6 +788,7 @@ function OrlanHeal:CreatePetWindow(parent)
 	self:CreateManaBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateNameBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateBuffs(petWindow.Canvas, 0, 2, 1, 1);
+	self:CreateBorder(petWindow.Canvas, 1, 1);
 
 	return petWindow;
 end;
@@ -1018,23 +1031,20 @@ function OrlanHeal:UpdateRaidBorder()
 		mode = 1;
 	end;
 
-	self:SetBorderMode(self.RaidWindow.TopBorder, mode);
-	self:SetBorderMode(self.RaidWindow.BottomBorder, mode);
-	self:SetBorderMode(self.RaidWindow.LeftBorder, mode);
-	self:SetBorderMode(self.RaidWindow.RightBorder, mode);
+	self:SetBorderMode(self.RaidWindow, mode);
 end;
 
-function OrlanHeal:SetBorderMode(border, mode)
+function OrlanHeal:SetBorderMode(window, mode)
 	if mode == 0 then
-		border:SetTexture(0, 0, 0, 0);
+		self:SetBorderColor(window, 0, 0, 0, 0);
 	elseif mode == 1 then
-		border:SetTexture(1, 0, 0, self.RaidBorderAlpha);
+		self:SetBorderColor(window, 1, 0, 0, self.RaidBorderAlpha);
 	elseif mode == 2 then
-		border:SetTexture(1, 0.5, 0, self.RaidBorderAlpha);
+		self:SetBorderColor(window, 1, 0.5, 0, self.RaidBorderAlpha);
 	elseif mode == 3 then
-		border:SetTexture(1, 1, 0, self.RaidBorderAlpha);
+		self:SetBorderColor(window, 1, 1, 0, self.RaidBorderAlpha);
 	elseif mode == 4 then
-		border:SetTexture(0, 1, 0, self.RaidBorderAlpha);
+		self:SetBorderColor(window, 0, 1, 0, self.RaidBorderAlpha);
 	end;
 end;
 
@@ -1077,6 +1087,17 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		self:UpdateName(window.Canvas.NameBar, unit, displayedGroup);
 		self:UpdateBuffs(window.Canvas, unit);
 		self:UpdateDebuffs(window.Canvas, unit);
+		self:UpdateThreat(window.Canvas, unit);
+	end;
+end;
+
+function OrlanHeal:UpdateThreat(canvas, unit)
+	local situation = UnitThreatSituation(unit)
+	if situation == nil then
+		self:SetBorderColor(canvas, 0, 0, 0, 0);
+	else
+		local r, g, b = GetThreatStatusColor(situation);
+		self:SetBorderColor(canvas, r, g, b, 1);
 	end;
 end;
 
