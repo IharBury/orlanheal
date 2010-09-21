@@ -190,6 +190,12 @@ function OrlanHeal:Initialize(configName)
 	self.HealingBuffs[61300] = true; -- Быстрина
 	self.HealingBuffs[61301] = true; -- Быстрина
 	self.HealingBuffs[28880] = true; -- Дар наару
+	self.HealingBuffs[59542] = true; -- Дар наару
+	self.HealingBuffs[59545] = true; -- Дар наару
+	self.HealingBuffs[59543] = true; -- Дар наару
+	self.HealingBuffs[59548] = true; -- Дар наару
+	self.HealingBuffs[59544] = true; -- Дар наару
+	self.HealingBuffs[59547] = true; -- Дар наару
 
 	self.IgnoredDebuffs = {};
 	self.IgnoredDebuffs[58539] = true; -- Тело наблюдателя
@@ -222,7 +228,7 @@ function OrlanHeal:Initialize(configName)
 			53563, -- Beacon of Light
 			6940, -- Hand of Sacrifice
 			1044, -- Hand of Freedom
-			28880, -- Дар наауру
+			59542, -- Дар наауру
 			20217, -- Blessing of Kings
 			7328, -- Redemption
 			31789, -- Righteous Defense
@@ -244,7 +250,7 @@ function OrlanHeal:Initialize(configName)
 			19752, -- Божественное вмешательство
 			1044, -- Длань свободы
 			48950, -- Искупление
-			28880, -- Дар наауру
+			59542, -- Дар наауру
 			25898, -- Великое благословение королей
 			48938, -- Великое благословение мудрости
 			48934, -- Великое благословение могущества
