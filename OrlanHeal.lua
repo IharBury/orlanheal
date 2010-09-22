@@ -1096,37 +1096,29 @@ function OrlanHeal:IsSpellReady(spellId)
 end;
 
 function OrlanHeal:UpdateRaidBorder()
-	local mode = 0;
-	if self.IsCataclysm 
+	if self.IsCataclysm
+			and UnitBuff("player", GetSpellInfo(54149)) then -- Infusion of Light
+		self:SetBorderColor(self.RaidWindow, 0, 0, 1, self.RaidBorderAlpha);
+	elseif self.IsCataclysm
+			and UnitBuff("player", GetSpellInfo(88819)) -- Daybreak
+			and self:IsSpellReady(20473) then -- Holy Shock
+		self:SetBorderColor(self.RaidWindow, 1, 1, 1, self.RaidBorderAlpha);
+	elseif self.IsCataclysm 
 			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
 			and self:IsSpellReady(85673) then -- Word of Glory
-		mode = 4;
+		self:SetBorderColor(self.RaidWindow, 0, 1, 0, self.RaidBorderAlpha);
 	elseif self:IsSpellReady(20473) then -- Holy Shock
-		mode = 3;
+		self:SetBorderColor(self.RaidWindow, 1, 1, 0, self.RaidBorderAlpha);
 	elseif self.IsCataclysm 
 			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 2)
 			and self:IsSpellReady(85673) then -- Word of Glory
-		mode = 2;
+		self:SetBorderColor(self.RaidWindow, 1, 0.5, 0, self.RaidBorderAlpha);
 	elseif self.IsCataclysm 
 			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 1)
 			and self:IsSpellReady(85673) then -- Word of Glory
-		mode = 1;
-	end;
-
-	self:SetBorderMode(self.RaidWindow, mode);
-end;
-
-function OrlanHeal:SetBorderMode(window, mode)
-	if mode == 0 then
-		self:SetBorderColor(window, 0, 0, 0, 0);
-	elseif mode == 1 then
-		self:SetBorderColor(window, 1, 0, 0, self.RaidBorderAlpha);
-	elseif mode == 2 then
-		self:SetBorderColor(window, 1, 0.5, 0, self.RaidBorderAlpha);
-	elseif mode == 3 then
-		self:SetBorderColor(window, 1, 1, 0, self.RaidBorderAlpha);
-	elseif mode == 4 then
-		self:SetBorderColor(window, 0, 1, 0, self.RaidBorderAlpha);
+		self:SetBorderColor(self.RaidWindow, 1, 0, 0, self.RaidBorderAlpha);
+	else
+		self:SetBorderColor(self.RaidWindow, 0, 0, 0, 0);
 	end;
 end;
 
