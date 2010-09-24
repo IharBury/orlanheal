@@ -756,6 +756,7 @@ function OrlanHeal:Initialize(configName)
 		[75494] = true, -- Twilight Renewal
 		[75940] = true, -- Tranquility
 		[76314] = true, -- Blazing Twilight Shield
+		[77485] = true, -- Echo of Light
 		[77489] = true, -- Echo of Light
 		[77912] = true, -- Remedy
 		[78125] = true, -- Blazing Shield
