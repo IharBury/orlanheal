@@ -116,6 +116,14 @@ function OrlanHeal:Initialize(configName)
 	self.VisibleGroupCount = 9;
 	self.IsInStartUpMode = true;
 
+	if self.IsCataclysm then
+		self.PlayerSpecificBuffCount = 1;
+		self.PlayerOtherBuffCount = 4;
+	else
+		self.PlayerSpecificBuffCount = 3;
+		self.PlayerOtherBuffCount = 2;
+	end;
+
 	self.RaidRoles = {};
 
 	self.SavingAbilities =
@@ -1160,7 +1168,7 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateHealthBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateManaBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
-	self:CreateBuffs(playerWindow.Canvas, 4, 1, 3, 2);
+	self:CreateBuffs(playerWindow.Canvas, self.PlayerSpecificBuffCount, self.PlayerOtherBuffCount, 3, 2);
 	self:CreateBorder(playerWindow.Canvas, 1, 1);
 	self:CreateRoleIcon(playerWindow.Canvas);
 	self:CreateTargetIcon(playerWindow.Canvas, self.PlayerStatusWidth);
@@ -1886,22 +1894,26 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 		if name == nil then break; end;
 
 		local buffKind;
-		if spellId == 53601 then -- Священный щит
+		if spellId == 53601 and not self.IsCataclysm then -- Священный щит
 			buffKind = 1;
-		elseif (spellId == 66922) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- своя Вспышка Света
+		elseif (spellId == 66922) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) and not self.IsCataclysm then -- своя Вспышка Света
 			buffKind = 2;
-		elseif (self.HealingBuffs[spellId] or self.ShieldAbilities[spellId] or self.SavingAbilities[spellId]) then
-			buffKind = 3;
 		elseif (spellId == 53563) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- своя Частица Света
 			(spellId == 1022) or -- Длань защиты
 			(spellId == 5599) or -- Длань защиты
 			(spellId == 10278) or -- Длань защиты
 			(spellId == 1038) then -- Длань спасения
-			buffKind = 4;
-		elseif (spellId == 53563) then -- чужая Частица Света
-			buffKind = 3;
-		elseif shouldConsolidate == 1 then
-			buffKind = nil;
+			if self.IsCataclysm then
+				buffKind = 1;
+			else
+				buffKind = 3;
+			end;
+		elseif (self.SavingAbilities[spellId]) then
+			buffKind = -1;
+		elseif (self.ShieldAbilities[spellId]) then
+			buffKind = -2;
+		elseif (self.HealingBuffs[spellId]) then
+			buffKind = -3;
 		end;
 
 		if buffKind ~= nil then
@@ -1920,29 +1932,19 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	end;
 
 	if canvas.SpecificBuffs ~= nil then
-		if canvas.SpecificBuffs[0] ~= nill then
-			self:ShowBuff(canvas.SpecificBuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 1));
-		end;
-
-		if canvas.SpecificBuffs[1] ~= nill then
-			self:ShowBuff(canvas.SpecificBuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 2));
-		end;
-
-		if canvas.SpecificBuffs[2] ~= nill then
-			self:ShowBuff(canvas.SpecificBuffs[2], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 3));
-		end;
-
-		if canvas.SpecificBuffs[3] ~= nill then
-			self:ShowBuff(canvas.SpecificBuffs[3], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 4));
+		for buffIndex = 0, 4 do
+			if canvas.SpecificBuffs[buffIndex] ~= nill then
+				self:ShowBuff(canvas.SpecificBuffs[buffIndex], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, buffIndex + 1));
+			end;
 		end;
 	end;
 
-	if canvas.OtherBuffs[0] ~= nill then
-		self:ShowBuff(canvas.OtherBuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
-	end;
-
-	if canvas.OtherBuffs[1] ~= nill then
-		self:ShowBuff(canvas.OtherBuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
+	if canvas.OtherBuffs ~= nil then
+		for buffIndex = 0, 4 do
+			if canvas.OtherBuffs[buffIndex] ~= nill then
+				self:ShowBuff(canvas.OtherBuffs[buffIndex], self:GetLastUsualBuff(goodBuffs, goodBuffCount));
+			end;
+		end;
 	end;
 end;
 
@@ -2018,6 +2020,17 @@ function OrlanHeal:GetLastBuffOfKind(buffs, buffCount, kind)
 	end;
 
 	return nil;
+end;
+
+function OrlanHeal:GetLastUsualBuff(buffs, buffCount)
+	local buff = self:GetLastBuffOfKind(buffs, buffCount, -1);
+	if not buff then
+		buff = self:GetLastBuffOfKind(buffs, buffCount, -2);
+	end;
+	if not buff then
+		buff = self:GetLastBuffOfKind(buffs, buffCount, -3);
+	end;
+	return buff;
 end;
 
 function OrlanHeal:ShowBuff(texture, buff)
