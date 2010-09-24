@@ -504,6 +504,7 @@ function OrlanHeal:Initialize(configName)
 		[6077] = true, -- Обновление
 		[6078] = true, -- Обновление
 		[6410] = true, -- Food
+		[7001] = true, -- Lightwell Renew
 		[7144] = true, -- Stone Slumber
 		[7331] = true, -- Healing Aura (TEST)
 		[7927] = true, -- First Aid
@@ -676,6 +677,7 @@ function OrlanHeal:Initialize(configName)
 		[59547] = true, -- Gift of the Naaru
 		[59548] = true, -- Gift of the Naaru
 		[60004] = true, -- Renew
+		[60123] = true, -- Lightwell Renew
 		[60530] = true, -- Forethought Talisman
 		[61295] = true, -- Riptide
 		[61299] = true, -- Быстрина
