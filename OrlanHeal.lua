@@ -1255,16 +1255,23 @@ end;
 function OrlanHeal:CreateBuff(parent, point, x, y)
 	local buff = {};
 
-	buff.Image = parent:CreateTexture();
+	buff.Image = parent:CreateTexture(nil, "BORDER");
 	buff.Image:SetHeight(self.BuffSize);
 	buff.Image:SetWidth(self.BuffSize);
 	buff.Image:SetPoint("TOPLEFT", parent, point, x, y);
 
+	buff.Time = parent:CreateTexture(nil, "OVERLAY");
+	buff.Time:SetHeight(self.BuffSize);
+	buff.Time:SetWidth(self.BuffSize);
+	buff.Time:SetPoint("TOPLEFT", parent, point, x, y);
+
 	local buffCountSize = self.BuffSize;
-	buff.Count = parent:CreateFontString(nil, "OVERLAY", "GameFontNormal");
+	buff.Count = parent:CreateFontString(nil, "ARTWORK", "GameFontNormal");
 	buff.Count:SetHeight(buffCountSize);
 	buff.Count:SetWidth(buffCountSize);
-	buff.Count:SetTextColor(0, 0, 0, 1);
+	buff.Count:SetTextColor(1, 1, 1, 1);
+	buff.Count:SetShadowColor(0, 0, 0, 1);
+	buff.Count:SetShadowOffset(-1, -1);
 	buff.Count:SetTextHeight(buffCountSize);
 	buff.Count:SetPoint("TOPLEFT", parent, point, x + 2, y - 2);
 
@@ -2051,17 +2058,17 @@ end;
 function OrlanHeal:ShowBuff(texture, buff)
 	if buff == nil then
 		texture.Image:SetTexture(0, 0, 0, 0);
-		texture.Image:SetVertexColor(0, 0, 0, 0);
+		texture.Time:SetTexture(0, 0, 0, 0);
 		texture.Count:SetText("");
 	else
 		texture.Image:SetTexture(buff.Icon);
 
 		if buff.Expires <= GetTime() + 3 then
-			texture.Image:SetVertexColor(1, 0.5, 0.5, 0.5);
+			texture.Time:SetTexture(1, 0, 0, 0.3);
 		elseif buff.Expires <= GetTime() + 6 then
-			texture.Image:SetVertexColor(1, 1, 0.5, 0.75);
+			texture.Time:SetTexture(1, 1, 0, 0.3);
 		else
-			texture.Image:SetVertexColor(1, 1, 1, 1);
+			texture.Time:SetTexture(0, 0, 0, 0);
 		end;
 
 		if (buff.Count > 1) then
