@@ -36,7 +36,7 @@ function OrlanHeal:Initialize(configName)
 	self.ConfigName = configName;
 	self.EventFrame = CreateFrame("Frame");
 
-	self.FrameRate = 20.0;
+	self.FrameRate = 10.0;
 
 	function self.EventFrame:HandleEvent(event, arg1)
 		if (event == "ADDON_LOADED") and (arg1 == "OrlanHeal") then
@@ -123,6 +123,9 @@ function OrlanHeal:Initialize(configName)
 		self.PlayerSpecificBuffCount = 3;
 		self.PlayerOtherBuffCount = 2;
 	end;
+
+	self.CooldownCount = 2;
+	self.CooldownSize = 32;
 
 	self.RaidRoles = {};
 
@@ -1097,7 +1100,32 @@ function OrlanHeal:CreateRaidWindow()
 
 	self:CreateBorder(raidWindow, 3, 0);
 
+	raidWindow.Cooldowns = {};
+
+	for cooldownIndex = 0, self.CooldownCount - 1 do
+		raidWindow.Cooldowns[cooldownIndex] = self:CreateCooldown(raidWindow, cooldownIndex);
+	end;
+
 	return raidWindow;
+end;
+
+function OrlanHeal:CreateCooldown(parent, index)
+	local cooldown = CreateFrame("Cooldown", nil, parent, "CooldownFrameTemplate");
+	cooldown:ClearAllPoints();
+	cooldown:SetPoint(
+		"BOTTOMLEFT", 
+		parent, 
+		"TOPLEFT", 
+		self.RaidOuterSpacing + self.GroupOuterSpacing + self.PetWidth + self.PetSpacing + index * self.CooldownSize * (1 + 1 / 8), 
+		self.RaidOuterSpacing);
+	cooldown:SetHeight(self.CooldownSize);
+	cooldown:SetWidth(self.CooldownSize);
+
+	cooldown.Background = parent:CreateTexture(nil, "BACKGROUND");
+	cooldown.Background:SetAllPoints(cooldown);
+	cooldown.Background:SetAlpha(0.5);
+
+	return cooldown;
 end;
 
 function OrlanHeal:CreateBorder(window, thickness, offset)
@@ -1652,6 +1680,94 @@ function OrlanHeal:UpdateStatus()
 	end;
 
 	self:UpdateRaidBorder();
+	self:UpdateCooldowns();
+end;
+
+function OrlanHeal:UpdateCooldowns()
+	self:UpdatePlayerBuffCooldown(self.RaidWindow.Cooldowns[0], 53655); -- Judgements of the Pure
+	self:UpdateRaidBuffCooldown(self.RaidWindow.Cooldowns[1], 53563); -- Beacon of Light
+end;
+
+function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
+	local name, _, icon = GetSpellInfo(spellId);
+	cooldown.Background:SetTexture(icon);
+	cooldown:SetReverse(true);
+
+	local _, _, _, _, _, duration, expirationTime = UnitBuff("player", name);
+	self:UpdateCooldown(cooldown, duration, expirationTime);
+end;
+
+function OrlanHeal:UpdateRaidBuffCooldown(cooldown, spellId)
+	local _, _, icon = GetSpellInfo(spellId);
+	cooldown.Background:SetTexture(icon);
+	cooldown:SetReverse(true);
+
+	local duration, expirationTime = self:GetRaidBuffCooldown(spellId);
+	self:UpdateCooldown(cooldown, duration, expirationTime);
+end;
+
+function OrlanHeal:GetRaidBuffCooldown(spellId)
+	local duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("player", spellId);
+	if duration then
+		return duration, expirationTime;
+	end;
+
+	duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("pet", spellId);
+	if duration then
+		return duration, expirationTime;
+	end;
+
+	for i = 1, 4 do
+		duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("party" .. i, spellId);
+		if duration then
+			return duration, expirationTime;
+		end;
+
+		duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("partypet" .. i, spellId);
+		if duration then
+			return duration, expirationTime;
+		end;
+	end;
+
+	for i = 1, 40 do
+		duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("raid" .. i, spellId);
+		if duration then
+			return duration, expirationTime;
+		end;
+
+		duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("raidpet" .. i, spellId);
+		if duration then
+			return duration, expirationTime;
+		end;
+	end;
+end;
+
+function OrlanHeal:GetPlayerCastUnitBuffCooldown(unit, spellId)
+	local i = 1;
+	while true do
+		local _, _, _, _, _, duration, expirationTime, _, _, _, buffId = UnitBuff(unit, i, "PLAYER");
+		if not buffId then
+			return;
+		end;
+
+		if buffId == spellId then
+			return duration, expirationTime;
+		end;
+
+		i = i + 1;
+	end;
+end;
+
+function OrlanHeal:UpdateCooldown(cooldown, duration, expirationTime)
+	expirationTime = expirationTime or 0;
+	if expirationTime ~= cooldown.Off then
+		cooldown.Off = expirationTime;
+		if (duration) then
+			cooldown:SetCooldown(expirationTime - duration, duration);
+		else
+			cooldown:SetCooldown(0, 10);
+		end;
+	end;
 end;
 
 function OrlanHeal:UpdatePlayerRoleIcon(player)
