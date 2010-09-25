@@ -1211,10 +1211,10 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specif
 		parent.SpecificBuffs = {};
 
 		for buffIndex = 0, specificBuffCount - 1 do
-			parent.SpecificBuffs[buffIndex] = self:CreateBuff(parent);
-			parent.SpecificBuffs[buffIndex]:SetPoint(
+			parent.SpecificBuffs[buffIndex] = self:CreateBuff(
+				parent, 
 				"TOPRIGHT", 
-				-(otherBuffCount + specificBuffCount - 1 - buffIndex) * self.BuffSize,
+				-(otherBuffCount + specificBuffCount - buffIndex) * self.BuffSize,
 				0);
 		end;
 	end;
@@ -1222,10 +1222,10 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specif
 	parent.OtherBuffs = {};
 
 	for buffIndex = 0, otherBuffCount - 1 do
-		parent.OtherBuffs[buffIndex] = self:CreateBuff(parent);
-		parent.OtherBuffs[buffIndex]:SetPoint(
+		parent.OtherBuffs[buffIndex] = self:CreateBuff(
+			parent,
 			"TOPRIGHT", 
-			-(otherBuffCount - 1 - buffIndex) * self.BuffSize,
+			-(otherBuffCount - buffIndex) * self.BuffSize,
 			0);
 	end;
 
@@ -1233,29 +1233,41 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specif
 		parent.SpecificDebuffs = {};
 
 		for buffIndex = 0, specificDebuffCount - 1 do
-			parent.SpecificDebuffs[buffIndex] = self:CreateBuff(parent);
-			parent.SpecificDebuffs[buffIndex]:SetPoint(
+			parent.SpecificDebuffs[buffIndex] = self:CreateBuff(
+				parent,
 				"BOTTOMRIGHT", 
-				-(otherDebuffCount + specificDebuffCount - 1 - buffIndex) * self.BuffSize,
-				0);
+				-(otherDebuffCount + specificDebuffCount - buffIndex) * self.BuffSize,
+				self.BuffSize);
 		end;
 	end;
 
 	parent.OtherDebuffs = {};
 
 	for buffIndex = 0, otherDebuffCount - 1 do
-		parent.OtherDebuffs[buffIndex] = self:CreateBuff(parent);
-		parent.OtherDebuffs[buffIndex]:SetPoint(
+		parent.OtherDebuffs[buffIndex] = self:CreateBuff(
+			parent,
 			"BOTTOMRIGHT", 
-			-(otherDebuffCount - 1 - buffIndex) * self.BuffSize,
-			0);
+			-(otherDebuffCount - buffIndex) * self.BuffSize,
+			self.BuffSize);
 	end;
 end;
 
-function OrlanHeal:CreateBuff(parent)
-	local buff = parent:CreateTexture();
-	buff:SetHeight(self.BuffSize);
-	buff:SetWidth(self.BuffSize);
+function OrlanHeal:CreateBuff(parent, point, x, y)
+	local buff = {};
+
+	buff.Image = parent:CreateTexture();
+	buff.Image:SetHeight(self.BuffSize);
+	buff.Image:SetWidth(self.BuffSize);
+	buff.Image:SetPoint("TOPLEFT", parent, point, x, y);
+
+	local buffCountSize = self.BuffSize;
+	buff.Count = parent:CreateFontString(nil, "OVERLAY", "GameFontNormal");
+	buff.Count:SetHeight(buffCountSize);
+	buff.Count:SetWidth(buffCountSize);
+	buff.Count:SetTextColor(0, 0, 0, 1);
+	buff.Count:SetTextHeight(buffCountSize);
+	buff.Count:SetPoint("TOPLEFT", parent, point, x + 2, y - 2);
+
 	return buff;
 end;
 
@@ -2038,17 +2050,24 @@ end;
 
 function OrlanHeal:ShowBuff(texture, buff)
 	if buff == nil then
-		texture:SetTexture(0, 0, 0, 0);
-		texture:SetVertexColor(0, 0, 0, 0);
+		texture.Image:SetTexture(0, 0, 0, 0);
+		texture.Image:SetVertexColor(0, 0, 0, 0);
+		texture.Count:SetText("");
 	else
-		texture:SetTexture(buff.Icon);
+		texture.Image:SetTexture(buff.Icon);
 
 		if buff.Expires <= GetTime() + 3 then
-			texture:SetVertexColor(1, 0.5, 0.5, 0.5);
+			texture.Image:SetVertexColor(1, 0.5, 0.5, 0.5);
 		elseif buff.Expires <= GetTime() + 6 then
-			texture:SetVertexColor(1, 1, 0.5, 0.75);
+			texture.Image:SetVertexColor(1, 1, 0.5, 0.75);
 		else
-			texture:SetVertexColor(1, 1, 1, 1);
+			texture.Image:SetVertexColor(1, 1, 1, 1);
+		end;
+
+		if (buff.Count > 1) then
+			texture.Count:SetText(buff.Count);
+		else
+			texture.Count:SetText("");
 		end;
 	end;
 end;
