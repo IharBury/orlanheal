@@ -1762,7 +1762,7 @@ function OrlanHeal:UpdateCooldown(cooldown, duration, expirationTime)
 	expirationTime = expirationTime or 0;
 	if expirationTime ~= cooldown.Off then
 		cooldown.Off = expirationTime;
-		if (duration) then
+		if duration and expirationTime then
 			cooldown:SetCooldown(expirationTime - duration, duration);
 		else
 			cooldown:SetCooldown(0, 10);
@@ -1836,14 +1836,14 @@ function OrlanHeal:UpdateRaidBorder()
 	if self.IsCataclysm
 			and UnitBuff("player", GetSpellInfo(54149)) then -- Infusion of Light
 		self:SetBorderColor(self.RaidWindow, 0, 0, 1, self.RaidBorderAlpha);
-	elseif self.IsCataclysm
-			and UnitBuff("player", GetSpellInfo(88819)) -- Daybreak
-			and self:IsSpellReady(20473) then -- Holy Shock
-		self:SetBorderColor(self.RaidWindow, 1, 1, 1, self.RaidBorderAlpha);
 	elseif self.IsCataclysm 
 			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
 			and self:IsSpellReady(85673) then -- Word of Glory
 		self:SetBorderColor(self.RaidWindow, 0, 1, 0, self.RaidBorderAlpha);
+	elseif self.IsCataclysm
+			and UnitBuff("player", GetSpellInfo(88819)) -- Daybreak
+			and self:IsSpellReady(20473) then -- Holy Shock
+		self:SetBorderColor(self.RaidWindow, 1, 1, 1, self.RaidBorderAlpha);
 	elseif self:IsSpellReady(20473) then -- Holy Shock
 		self:SetBorderColor(self.RaidWindow, 1, 1, 0, self.RaidBorderAlpha);
 	elseif self.IsCataclysm 
