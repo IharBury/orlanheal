@@ -124,7 +124,11 @@ function OrlanHeal:Initialize(configName)
 		self.PlayerOtherBuffCount = 2;
 	end;
 
-	self.CooldownCount = 2;
+	if self.IsCataclysm then
+		self.CooldownCount = 4;
+	else
+		self.CooldownCount = 2;
+	end;
 	self.CooldownSize = 32;
 
 	self.RaidRoles = {};
@@ -1206,7 +1210,7 @@ function OrlanHeal:CreateCooldown(parent, index)
 		"BOTTOMLEFT", 
 		parent, 
 		"TOPLEFT", 
-		self.RaidOuterSpacing + self.GroupOuterSpacing + self.PetWidth + self.PetSpacing + index * self.CooldownSize * (1 + 1 / 8), 
+		self.RaidOuterSpacing + self.GroupOuterSpacing + index * self.CooldownSize * (1 + 1 / 8), 
 		self.RaidOuterSpacing);
 	cooldown:SetHeight(self.CooldownSize);
 	cooldown:SetWidth(self.CooldownSize);
@@ -1776,6 +1780,11 @@ end;
 function OrlanHeal:UpdateCooldowns()
 	self:UpdatePlayerBuffCooldown(self.RaidWindow.Cooldowns[0], 53655); -- Judgements of the Pure
 	self:UpdateRaidBuffCooldown(self.RaidWindow.Cooldowns[1], 53563); -- Beacon of Light
+
+	if self.IsCataclysm then
+		self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[2], 82327); -- Holy Radiance
+		self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[3], 85222); -- Light of Dawn
+	end;
 end;
 
 function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
@@ -1784,6 +1793,22 @@ function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
 	cooldown:SetReverse(true);
 
 	local _, _, _, _, _, duration, expirationTime = UnitBuff("player", name);
+	self:UpdateCooldown(cooldown, duration, expirationTime);
+end;
+
+function OrlanHeal:UpdateAbilityCooldown(cooldown, spellId)
+	local name, _, icon = GetSpellInfo(spellId);
+	cooldown.Background:SetTexture(icon);
+
+	local start, duration, enabled = GetSpellCooldown(spellId);
+	local expirationTime;
+	if enabled then
+		expirationTime = start + duration;
+	else
+		start = nil;
+		duration = nil;
+		expirationTime = nil;
+	end;
 	self:UpdateCooldown(cooldown, duration, expirationTime);
 end;
 
