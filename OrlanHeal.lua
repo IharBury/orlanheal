@@ -815,7 +815,97 @@ function OrlanHeal:Initialize(configName)
 		[64808] = true, -- Победа над дренеем
 		[64805] = true, -- Победа над эльфом
 		[72144] = true, -- Шлейф оранжевой заразы
-		[72145] = true -- Шлейф зеленой заразы
+		[72145] = true, -- Шлейф зеленой заразы
+		[71041] = true, -- Dungeon Deserter
+		[80354] = true, -- Temporal Displacement
+		[57723] = true, -- Exhaustion
+		[57724] = true, -- Sated
+	};
+
+	self.CriticalDebuffs =
+	{
+		[74326] = true, -- Harvest Soul
+		[74327] = true, -- Harvest Soul
+		[67051] = true, -- Incinerate Flesh
+		[67050] = true, -- Incinerate Flesh
+		[67049] = true, -- Incinerate Flesh
+		[66237] = true, -- Incinerate Flesh
+		[73787] = true, -- Necrotic Plague
+		[73786] = true, -- Necrotic Plague
+		[73785] = true, -- Necrotic Plague
+		[70338] = true, -- Necrotic Plague
+		[73914] = true, -- Necrotic Plague
+		[73913] = true, -- Necrotic Plague
+		[73912] = true, -- Necrotic Plague
+		[70337] = true, -- Necrotic Plague
+		[70911] = true, -- Unbound Plague
+		[72854] = true, -- Unbound Plague
+		[72856] = true, -- Unbound Plague
+		[72855] = true, -- Unbound Plague
+		[69410] = true, -- Soul Reaper
+		[73799] = true, -- Soul Reaper
+		[73798] = true, -- Soul Reaper
+		[73797] = true, -- Soul Reaper
+		[69409] = true, -- Soul Reaper
+		[72280] = true, -- Mark of the Fallen Champion
+		[72444] = true, -- Mark of the Fallen Champion
+		[72445] = true, -- Mark of the Fallen Champion
+		[72446] = true, -- Mark of the Fallen Champion
+		[72254] = true, -- Mark of the Fallen Champion
+		[72279] = true, -- Mark of the Fallen Champion
+		[72255] = true, -- Mark of the Fallen Champion
+		[72278] = true, -- Mark of the Fallen Champion
+		[72256] = true, -- Mark of the Fallen Champion
+		[72260] = true, -- Mark of the Fallen Champion
+		[72293] = true, -- Mark of the Fallen Champion
+		[73143] = true, -- Bone Spike Graveyard
+		[73142] = true, -- Bone Spike Graveyard
+		[73144] = true, -- Bone Spike Graveyard
+		[73145] = true, -- Bone Spike Graveyard
+		[72089] = true, -- Bone Spike Graveyard
+		[72088] = true, -- Bone Spike Graveyard
+		[70826] = true, -- Bone Spike Graveyard
+		[69057] = true, -- Bone Spike Graveyard
+		[72858] = true, -- Gaseous Bloat
+		[72859] = true, -- Gaseous Bloat
+		[72860] = true, -- Gaseous Bloat
+		[72833] = true, -- Gaseous Bloat
+		[70672] = true, -- Gaseous Bloat
+		[72455] = true, -- Gaseous Bloat
+		[70215] = true, -- Gaseous Bloat
+		[72832] = true, -- Gaseous Bloat
+		[72838] = true, -- Volatile Ooze Adhesive
+		[72837] = true, -- Volatile Ooze Adhesive
+		[72836] = true, -- Volatile Ooze Adhesive
+		[70447] = true, -- Volatile Ooze Adhesive
+		[71224] = true, -- Mutated Infection
+		[73022] = true, -- Mutated Infection
+		[73023] = true, -- Mutated Infection
+		[69674] = true, -- Mutated Infection
+		[71264] = true, -- Swarming Shadows
+		[72890] = true, -- Swarming Shadows
+		[71266] = true, -- Swarming Shadows
+		[71265] = true, -- Swarming Shadows
+		[72640] = true, -- Swarming Shadows
+		[72639] = true, -- Swarming Shadows
+		[72638] = true, -- Swarming Shadows
+		[71277] = true, -- Swarming Shadows
+		[71861] = true, -- Swarming Shadows
+		[71336] = true, -- Pact of the Darkfallen
+		[71340] = true, -- Pact of the Darkfallen
+		[71341] = true, -- Pact of the Darkfallen
+		[71390] = true, -- Pact of the Darkfallen
+		[74562] = true, -- Fiery Combustion
+		[74792] = true, -- Soul Consumption
+		[67574] = true, -- Pursued by Anub'arak
+		[67614] = true, -- Paralytic Bite
+		[67613] = true, -- Paralytic Bite
+		[67612] = true, -- Paralytic Bite
+		[66824] = true, -- Paralytic Bite
+		[67626] = true, -- Burning Bite
+		[67625] = true, -- Burning Bite
+		[67624] = true, -- Burning Bite
+		[66879] = true -- Burning Bite
 	};
 
 	if (self.IsCataclysm) then
@@ -1898,19 +1988,38 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		self:UpdateName(window.Canvas.NameBar, unit, displayedGroup);
 		self:UpdateBuffs(window.Canvas, unit);
 		self:UpdateDebuffs(window.Canvas, unit);
-		self:UpdateThreat(window.Canvas, unit);
+		self:UpdateUnitBorder(window.Canvas, unit);
 		self:UpdateTargetIcon(window.Canvas, unit);
 	end;
 end;
 
-function OrlanHeal:UpdateThreat(canvas, unit)
-	local situation = UnitThreatSituation(unit)
-	if situation == 1 then
-		self:SetBorderColor(canvas, 1, 0.6, 0, 1);
-	elseif (situation == 2) or (situation == 3) then
-		self:SetBorderColor(canvas, 1, 0, 0, 1);
+function OrlanHeal:UpdateUnitBorder(canvas, unit)
+	local buffIndex = 1;
+	local hasCriticalDebuff = false;
+
+	while true do
+		local _, _, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
+		if spellId == nil then break; end;
+
+		if self.CriticalDebuffs[spellId] then
+			hasCriticalDebuff = true;
+			break;
+		end;
+
+		buffIndex = buffIndex + 1;
+	end;
+
+	if hasCriticalDebuff then
+		self:SetBorderColor(canvas, 1, 1, 1, 1);
 	else
-		self:SetBorderColor(canvas, 0, 0, 0, 0);
+		local situation = UnitThreatSituation(unit)
+		if situation == 1 then
+			self:SetBorderColor(canvas, 1, 0.6, 0, 1);
+		elseif (situation == 2) or (situation == 3) then
+			self:SetBorderColor(canvas, 1, 0, 0, 1);
+		else
+			self:SetBorderColor(canvas, 0, 0, 0, 0);
+		end;
 	end;
 end;
 
