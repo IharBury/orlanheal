@@ -1226,7 +1226,7 @@ function OrlanHeal:CreateRaidWindow()
 end;
 
 function OrlanHeal:CreateGroupCountSwitch(raidWindow, size, index)
-	local button = CreateFrame("Button", nil, raidWindow, "UIPanelButtonTemplate");
+	local button = CreateFrame("Button", nil, raidWindow);
 	button:SetPoint(
 		"TOPLEFT", 
 		raidWindow, 
@@ -1239,6 +1239,11 @@ function OrlanHeal:CreateGroupCountSwitch(raidWindow, size, index)
 	button:SetText(size);
 	button:SetAlpha(self.RaidAlpha);
 
+	local normalTexture = button:CreateTexture();
+	normalTexture:SetAllPoints();
+	normalTexture:SetTexture(0, 0, 0, 1);
+	button:SetNormalTexture(normalTexture);
+
 	local orlanHeal = self;
 	button:SetScript(
 		"OnClick",
@@ -1250,7 +1255,7 @@ function OrlanHeal:CreateGroupCountSwitch(raidWindow, size, index)
 end;
 
 function OrlanHeal:CreateVisibleGroupCountSwitch(raidWindow, size, index)
-	local button = CreateFrame("Button", nil, raidWindow, "UIPanelButtonTemplate");
+	local button = CreateFrame("Button", nil, raidWindow);
 	button:SetPoint(
 		"TOPLEFT", 
 		raidWindow, 
@@ -1263,6 +1268,11 @@ function OrlanHeal:CreateVisibleGroupCountSwitch(raidWindow, size, index)
 	button:SetText(size);
 	button:SetAlpha(self.RaidAlpha);
 	button:Hide();
+
+	local normalTexture = button:CreateTexture();
+	normalTexture:SetAllPoints();
+	normalTexture:SetTexture(0, 0, 0, 1);
+	button:SetNormalTexture(normalTexture);
 
 	local orlanHeal = self;
 	button:SetScript(
@@ -1751,26 +1761,24 @@ end;
 
 function OrlanHeal:UpdateGroupCountSwitches()
 	for size = 5, 40, 5 do
-		local groupCountSwitchState;
+		local groupCountTexture = self.RaidWindow.GroupCountSwitches[size]:GetNormalTexture();
 		if self.GroupCount == size / 5 then
-			groupCountSwitchState = "PUSHED";
+			groupCountTexture:SetTexture(0.5, 1, 0.5, 1);
 		else
-			groupCountSwitchState = "NORMAL";
+			groupCountTexture:SetTexture(0, 0, 0, 1);
 		end;
-		self.RaidWindow.GroupCountSwitches[size]:SetButtonState(groupCountSwitchState);
 
 		if size > self.GroupCount * 5 then
 			self.RaidWindow.VisibleGroupCountSwitches[size]:Hide();
 		else
 			self.RaidWindow.VisibleGroupCountSwitches[size]:Show();
 
-			local visibleGroupCountSwitchState;
+			local visibleGroupCountTexture = self.RaidWindow.VisibleGroupCountSwitches[size]:GetNormalTexture();
 			if self.VisibleGroupCount == size / 5 then
-				visibleGroupCountSwitchState = "PUSHED";
+				visibleGroupCountTexture:SetTexture(1, 0.5, 0.5, 1);
 			else
-				visibleGroupCountSwitchState = "NORMAL";
+				visibleGroupCountTexture:SetTexture(0, 0, 0, 1);
 			end;
-			self.RaidWindow.VisibleGroupCountSwitches[size]:SetButtonState(visibleGroupCountSwitchState);
 		end;
 	end;
 end;
