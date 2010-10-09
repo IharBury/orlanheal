@@ -16,13 +16,13 @@ function SlashCmdList.ORLANHEAL(message, editbox)
 	elseif message == "5" then
 		OrlanHeal:SetGroupCount(1);
 	elseif message == "v40" then
-		OrlanHeal.VisibleGroupCount = 8;
+		OrlanHeal:SetVisibleGroupCount(8);
 	elseif message == "v25" then
-		OrlanHeal.VisibleGroupCount = 5;
+		OrlanHeal:SetVisibleGroupCount(5);
 	elseif message == "v10" then
-		OrlanHeal.VisibleGroupCount = 2;
+		OrlanHeal:SetVisibleGroupCount(2);
 	elseif message == "v5" then
-		OrlanHeal.VisibleGroupCount = 1;
+		OrlanHeal:SetVisibleGroupCount(1);
 	elseif message == "setup" then
 		OrlanHeal:Setup();
 	end;
@@ -103,6 +103,11 @@ function OrlanHeal:Initialize(configName)
 	self.ManaHeight = 4 * self.Scale;
 	self.NameHeight = self.PlayerHeight - self.ManaHeight - self.HealthHeight;
 	self.NameFontHeight = self.NameHeight * 0.8;
+
+	self.GroupCountSwitchHeight = 13;
+	self.GroupCountSwitchWidth = 17;
+	self.GroupCountSwitchHorizontalSpacing = 3;
+	self.GroupCountSwitchVerticalSpacing = 1;
 
 	self.RaidAlpha = 0.2;
 	self.GroupAlpha = 0.2;
@@ -1208,7 +1213,65 @@ function OrlanHeal:CreateRaidWindow()
 		raidWindow.Cooldowns[cooldownIndex] = self:CreateCooldown(raidWindow, cooldownIndex);
 	end;
 
+	raidWindow.GroupCountSwitches = {};
+	raidWindow.VisibleGroupCountSwitches = {};
+	local index = 0;
+	for size = 5, 40, 5 do
+		raidWindow.GroupCountSwitches[size] = self:CreateGroupCountSwitch(raidWindow, size, index);
+		raidWindow.VisibleGroupCountSwitches[size] = self:CreateVisibleGroupCountSwitch(raidWindow, size, index);
+		index = index + 1;
+	end;
+
 	return raidWindow;
+end;
+
+function OrlanHeal:CreateGroupCountSwitch(raidWindow, size, index)
+	local button = CreateFrame("Button", nil, raidWindow, "UIPanelButtonTemplate");
+	button:SetPoint(
+		"TOPLEFT", 
+		raidWindow, 
+		"BOTTOMLEFT", 
+		index * (self.GroupCountSwitchWidth + self.GroupCountSwitchHorizontalSpacing), 
+		-self.GroupCountSwitchVerticalSpacing);
+	button:SetHeight(self.GroupCountSwitchHeight);
+	button:SetWidth(self.GroupCountSwitchWidth);
+	button:SetNormalFontObject("GameFontNormalSmall");
+	button:SetText(size);
+	button:SetAlpha(self.RaidAlpha);
+
+	local orlanHeal = self;
+	button:SetScript(
+		"OnClick",
+		function()
+			orlanHeal:SetGroupCount(size / 5);
+		end);
+
+	return button;
+end;
+
+function OrlanHeal:CreateVisibleGroupCountSwitch(raidWindow, size, index)
+	local button = CreateFrame("Button", nil, raidWindow, "UIPanelButtonTemplate");
+	button:SetPoint(
+		"TOPLEFT", 
+		raidWindow, 
+		"BOTTOMLEFT", 
+		index * (self.GroupCountSwitchWidth + self.GroupCountSwitchHorizontalSpacing), 
+		-self.GroupCountSwitchHeight - 2 * self.GroupCountSwitchVerticalSpacing);
+	button:SetHeight(self.GroupCountSwitchHeight);
+	button:SetWidth(self.GroupCountSwitchWidth);
+	button:SetNormalFontObject("GameFontNormalSmall");
+	button:SetText(size);
+	button:SetAlpha(self.RaidAlpha);
+	button:Hide();
+
+	local orlanHeal = self;
+	button:SetScript(
+		"OnClick",
+		function()
+			orlanHeal:SetVisibleGroupCount(size / 5);
+		end);
+
+	return button;
 end;
 
 function OrlanHeal:CreateCooldown(parent, index)
@@ -1677,6 +1740,38 @@ function OrlanHeal:SetGroupCount(newGroupCount)
 		self.IsInStartUpMode = false;
 		self:UpdateVisibleGroupCount();
 		self:UpdateUnits();
+		self:UpdateGroupCountSwitches();
+	end;
+end;
+
+function OrlanHeal:SetVisibleGroupCount(newVisibleGroupCount)
+	self.VisibleGroupCount = newVisibleGroupCount;
+	self:UpdateGroupCountSwitches();
+end;
+
+function OrlanHeal:UpdateGroupCountSwitches()
+	for size = 5, 40, 5 do
+		local groupCountSwitchState;
+		if self.GroupCount == size / 5 then
+			groupCountSwitchState = "PUSHED";
+		else
+			groupCountSwitchState = "NORMAL";
+		end;
+		self.RaidWindow.GroupCountSwitches[size]:SetButtonState(groupCountSwitchState);
+
+		if size > self.GroupCount * 5 then
+			self.RaidWindow.VisibleGroupCountSwitches[size]:Hide();
+		else
+			self.RaidWindow.VisibleGroupCountSwitches[size]:Show();
+
+			local visibleGroupCountSwitchState;
+			if self.VisibleGroupCount == size / 5 then
+				visibleGroupCountSwitchState = "PUSHED";
+			else
+				visibleGroupCountSwitchState = "NORMAL";
+			end;
+			self.RaidWindow.VisibleGroupCountSwitches[size]:SetButtonState(visibleGroupCountSwitchState);
+		end;
 	end;
 end;
 
