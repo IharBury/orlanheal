@@ -824,6 +824,13 @@ function OrlanHeal:Initialize(configName)
 		[80354] = true, -- Temporal Displacement
 		[57723] = true, -- Exhaustion
 		[57724] = true, -- Sated
+		[28531] = true, -- Frost Aura
+		[55799] = true, -- Frost Aura
+		[71387] = true, -- Frost Aura
+		[71052] = true, -- Frost Aura
+		[71051] = true, -- Frost Aura
+		[71050] = true, -- Frost Aura
+		[70084] = true -- Frost Aura
 	};
 
 	self.CriticalDebuffs =
@@ -909,7 +916,8 @@ function OrlanHeal:Initialize(configName)
 		[67626] = true, -- Burning Bite
 		[67625] = true, -- Burning Bite
 		[67624] = true, -- Burning Bite
-		[66879] = true -- Burning Bite
+		[66879] = true, -- Burning Bite
+		[70126] = true -- Frost Beacon
 	};
 
 	if (self.IsCataclysm) then
