@@ -840,8 +840,10 @@ function OrlanHeal:Initialize(configName)
 
 	self.CriticalDebuffs =
 	{
+		[74325] = true, -- Harvest Soul
 		[74326] = true, -- Harvest Soul
 		[74327] = true, -- Harvest Soul
+		[68980] = true, -- Harvest Soul
 		[67051] = true, -- Incinerate Flesh
 		[67050] = true, -- Incinerate Flesh
 		[67049] = true, -- Incinerate Flesh
