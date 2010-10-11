@@ -32,7 +32,6 @@ function OrlanHeal:Initialize(configName)
 	local orlanHeal = self;
 
 	local _, _, _, tocversion = GetBuildInfo();
-	self.IsCataclysm = tocversion >= 40000;
 	self.ConfigName = configName;
 	self.EventFrame = CreateFrame("Frame");
 
@@ -121,19 +120,10 @@ function OrlanHeal:Initialize(configName)
 	self.VisibleGroupCount = 9;
 	self.IsInStartUpMode = true;
 
-	if self.IsCataclysm then
-		self.PlayerSpecificBuffCount = 1;
-		self.PlayerOtherBuffCount = 4;
-	else
-		self.PlayerSpecificBuffCount = 3;
-		self.PlayerOtherBuffCount = 2;
-	end;
+	self.PlayerSpecificBuffCount = 1;
+	self.PlayerOtherBuffCount = 4;
 
-	if self.IsCataclysm then
-		self.CooldownCount = 4;
-	else
-		self.CooldownCount = 2;
-	end;
+	self.CooldownCount = 4;
 	self.CooldownSize = 32;
 
 	self.RaidRoles = {};
@@ -927,53 +917,26 @@ function OrlanHeal:Initialize(configName)
 		[70126] = true -- Frost Beacon
 	};
 
-	if (self.IsCataclysm) then
-		self.AvailableSpells =
-		{
-			635, -- Holy Light
-			19750, -- Flash of Light
-			1022, -- Hand of Protection
-			4987, -- Cleanse
-			20473, -- Holy Shock
-			633, -- Lay on Hands
-			85673, -- Word of Glory
-			1038, -- Hand of Salvation
-			82326, -- Divine Light
-			53563, -- Beacon of Light
-			6940, -- Hand of Sacrifice
-			1044, -- Hand of Freedom
-			59542, -- Дар наауру
-			20217, -- Blessing of Kings
-			7328, -- Redemption
-			31789, -- Righteous Defense
-			19740 -- Blessing of Might
-		};
-	else
-		self.AvailableSpells = 
-		{
-			48785, -- Вспышка Света
-			48782, -- Свет Небес
-			10278, -- Длань защиты
-			4987, -- Очищение
-			48825, -- Шок небес
-			53601, -- Священный щит
-			53563, -- Частица Света
-			1038, -- Длань спасения
-			6940, -- Длань жертвенности
-			48788, -- Возложение рук
-			19752, -- Божественное вмешательство
-			1044, -- Длань свободы
-			48950, -- Искупление
-			59542, -- Дар наауру
-			25898, -- Великое благословение королей
-			48938, -- Великое благословение мудрости
-			48934, -- Великое благословение могущества
-			20217, -- Благословение королей
-			48936, -- Благословение мудрости
-			48932, -- Благословение могущества
-			31789 -- Праведная защита
-		};
-	end;
+	self.AvailableSpells =
+	{
+		635, -- Holy Light
+		19750, -- Flash of Light
+		1022, -- Hand of Protection
+		4987, -- Cleanse
+		20473, -- Holy Shock
+		633, -- Lay on Hands
+		85673, -- Word of Glory
+		1038, -- Hand of Salvation
+		82326, -- Divine Light
+		53563, -- Beacon of Light
+		6940, -- Hand of Sacrifice
+		1044, -- Hand of Freedom
+		59542, -- Дар наауру
+		20217, -- Blessing of Kings
+		7328, -- Redemption
+		31789, -- Righteous Defense
+		19740 -- Blessing of Might
+	};
 end;
 
 function OrlanHeal:CreateSetupWindow()
@@ -1089,33 +1052,18 @@ function OrlanHeal:HandleSpellSelect(spellWindow, value)
 end;
 
 function OrlanHeal:LoadSetup()
-	if (self.IsCataclysm) then
-		self.Config["1"] = self.Config["1"] or 635; -- Holy Light
-		self.Config["2"] = self.Config["2"] or 19750; -- Flash of Light
-		self.Config["3"] = self.Config["3"] or 1022; -- Hand of Protection
-		self.Config["shift1"] = self.Config["shift1"] or "target";
-		self.Config["shift2"] = self.Config["shift2"] or 53563; -- Beacon of Light
-		self.Config["shift3"] = self.Config["shift3"] or 1038; -- Hand of Salvation
-		self.Config["control1"] = self.Config["control1"] or 82326; -- Divine Light
-		self.Config["control2"] = self.Config["control2"] or 85673; -- Word of Glory
-		self.Config["control3"] = self.Config["control3"] or 6940; -- Hand of Sacrifice
-		self.Config["alt1"] = self.Config["alt1"] or 4987; -- Cleanse
-		self.Config["alt2"] = self.Config["alt2"] or 20473; -- Holy Shock
-		self.Config["alt3"] = self.Config["alt3"] or 633; -- Lay on Hands
-	else
-		self.Config["1"] = self.Config["1"] or 48785; -- Вспышка Света
-		self.Config["2"] = self.Config["2"] or 48782; -- Свет Небес
-		self.Config["3"] = self.Config["3"] or 10278; -- Длань защиты
-		self.Config["shift1"] = self.Config["shift1"] or "target";
-		self.Config["shift2"] = self.Config["shift2"] or 53563; -- Частица Света
-		self.Config["shift3"] = self.Config["shift3"] or 1038; -- Длань спасения
-		self.Config["control1"] = self.Config["control1"] or 6940; -- Длань жертвенности
-		self.Config["control2"] = self.Config["control2"] or 48788; -- Возложение рук
-		self.Config["control3"] = self.Config["control3"] or 19752; -- Божественное вмешательство
-		self.Config["alt1"] = self.Config["alt1"] or 4987; -- Очищение
-		self.Config["alt2"] = self.Config["alt2"] or 48825; -- Шок небес
-		self.Config["alt3"] = self.Config["alt3"] or 53601; -- Священный щит
-	end
+	self.Config["1"] = self.Config["1"] or 635; -- Holy Light
+	self.Config["2"] = self.Config["2"] or 19750; -- Flash of Light
+	self.Config["3"] = self.Config["3"] or 1022; -- Hand of Protection
+	self.Config["shift1"] = self.Config["shift1"] or "target";
+	self.Config["shift2"] = self.Config["shift2"] or 53563; -- Beacon of Light
+	self.Config["shift3"] = self.Config["shift3"] or 1038; -- Hand of Salvation
+	self.Config["control1"] = self.Config["control1"] or 82326; -- Divine Light
+	self.Config["control2"] = self.Config["control2"] or 85673; -- Word of Glory
+	self.Config["control3"] = self.Config["control3"] or 6940; -- Hand of Sacrifice
+	self.Config["alt1"] = self.Config["alt1"] or 4987; -- Cleanse
+	self.Config["alt2"] = self.Config["alt2"] or 20473; -- Holy Shock
+	self.Config["alt3"] = self.Config["alt3"] or 633; -- Lay on Hands
 end;
 
 function OrlanHeal:Setup()
@@ -1893,11 +1841,8 @@ end;
 function OrlanHeal:UpdateCooldowns()
 	self:UpdatePlayerBuffCooldown(self.RaidWindow.Cooldowns[0], 53655); -- Judgements of the Pure
 	self:UpdateRaidBuffCooldown(self.RaidWindow.Cooldowns[1], 53563); -- Beacon of Light
-
-	if self.IsCataclysm then
-		self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[2], 82327); -- Holy Radiance
-		self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[3], 85222); -- Light of Dawn
-	end;
+	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[2], 82327); -- Holy Radiance
+	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[3], 85222); -- Light of Dawn
 end;
 
 function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
@@ -2008,25 +1953,14 @@ function OrlanHeal:UpdatePlayerRoleIcon(player)
 		player.Canvas.Role:SetTexture("Interface\\GroupFrame\\UI-Group-MainAssistIcon");
 		player.Canvas.Role:SetTexCoord(0, 1, 0, 1);
 	else
-		local isTank = false;
-		local isHeal = false;
-		local isDPS = false;
-		if self.IsCataclysm then
-			role = UnitGroupRolesAssigned(unit);
-			isTank = role == "TANK";
-			isHeal = role == "HEALER";
-			isDPS = role == "DAMAGER";
-		else
-			isTank, isHeal, isDPS = UnitGroupRolesAssigned(unit);
-		end;
-
-		if isTank then
+		role = UnitGroupRolesAssigned(unit);
+		if role == "TANK" then
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
 			player.Canvas.Role:SetTexCoord(0, 19/64, 22/64, 41/64);
-		elseif isHeal then
+		elseif role == "HEALER" then
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
 			player.Canvas.Role:SetTexCoord(20/64, 39/64, 1/64, 20/64);
-		elseif isDPS then
+		elseif role == "DAMAGER" then
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
 			player.Canvas.Role:SetTexCoord(20/64, 39/64, 22/64, 41/64);
 		else
@@ -2061,25 +1995,20 @@ function OrlanHeal:IsSpellReady(spellId)
 end;
 
 function OrlanHeal:UpdateRaidBorder()
-	if self.IsCataclysm
-			and UnitBuff("player", GetSpellInfo(54149)) then -- Infusion of Light
+	if UnitBuff("player", GetSpellInfo(54149)) then -- Infusion of Light
 		self:SetBorderColor(self.RaidWindow, 0, 0, 1, self.RaidBorderAlpha);
-	elseif self.IsCataclysm 
-			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
+	elseif (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
 			and self:IsSpellReady(85673) then -- Word of Glory
 		self:SetBorderColor(self.RaidWindow, 0, 1, 0, self.RaidBorderAlpha);
-	elseif self.IsCataclysm
-			and UnitBuff("player", GetSpellInfo(88819)) -- Daybreak
+	elseif UnitBuff("player", GetSpellInfo(88819)) -- Daybreak
 			and self:IsSpellReady(20473) then -- Holy Shock
 		self:SetBorderColor(self.RaidWindow, 1, 1, 1, self.RaidBorderAlpha);
 	elseif self:IsSpellReady(20473) then -- Holy Shock
 		self:SetBorderColor(self.RaidWindow, 1, 1, 0, self.RaidBorderAlpha);
-	elseif self.IsCataclysm 
-			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 2)
+	elseif (UnitPower("player", SPELL_POWER_HOLY_POWER) == 2)
 			and self:IsSpellReady(85673) then -- Word of Glory
 		self:SetBorderColor(self.RaidWindow, 1, 0.5, 0, self.RaidBorderAlpha);
-	elseif self.IsCataclysm 
-			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 1)
+	elseif (UnitPower("player", SPELL_POWER_HOLY_POWER) == 1)
 			and self:IsSpellReady(85673) then -- Word of Glory
 		self:SetBorderColor(self.RaidWindow, 1, 0, 0, self.RaidBorderAlpha);
 	else
@@ -2187,12 +2116,7 @@ function OrlanHeal:IsInRedRangeOrCloser(unit)
 end;
 
 function OrlanHeal:IsInOrangeRangeOrCloser(unit)
-	local spellId = 48785; -- Вспышка Света
-	if (self.IsCataclysm) then
-		spellId = 635; -- Holy Light
-	end;
-
-	return (IsSpellInRange(GetSpellInfo(spellId), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(spellId), unit) == 1);
+	return (IsSpellInRange(GetSpellInfo(635), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(635), unit) == 1); -- Holy Light
 end;
 
 function OrlanHeal:IsInYellowRangeOrCloser(unit)
@@ -2218,14 +2142,7 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 end;
 
 function OrlanHeal:UpdateHealth(healthBar, unit)
-	local incoming = 0;
-	local yourIncoming = 0;
-	if self.IsCataclysm then
-		incoming = UnitGetIncomingHeals(unit);
-		yourIncoming = UnitGetIncomingHeals(unit, "player");
-	end;
-
-	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit), incoming, yourIncoming);
+	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit), UnitGetIncomingHeals(unit), UnitGetIncomingHeals(unit, "player"));
 
 	if UnitIsConnected(unit) ~= 1 then
 		self:SetStatusBarCurrentColor(healthBar, { r = 0, g = 0, b = 0 });
@@ -2279,20 +2196,12 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 		if name == nil then break; end;
 
 		local buffKind;
-		if spellId == 53601 and not self.IsCataclysm then -- Священный щит
+		if (spellId == 53563) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- своя Частица Света
+				(spellId == 1022) or -- Длань защиты
+				(spellId == 5599) or -- Длань защиты
+				(spellId == 10278) or -- Длань защиты
+				(spellId == 1038) then -- Длань спасения
 			buffKind = 1;
-		elseif (spellId == 66922) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) and not self.IsCataclysm then -- своя Вспышка Света
-			buffKind = 2;
-		elseif (spellId == 53563) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- своя Частица Света
-			(spellId == 1022) or -- Длань защиты
-			(spellId == 5599) or -- Длань защиты
-			(spellId == 10278) or -- Длань защиты
-			(spellId == 1038) then -- Длань спасения
-			if self.IsCataclysm then
-				buffKind = 1;
-			else
-				buffKind = 3;
-			end;
 		elseif (self.SavingAbilities[spellId]) then
 			buffKind = -1;
 		elseif (self.ShieldAbilities[spellId]) then
