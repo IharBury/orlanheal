@@ -1995,11 +1995,11 @@ function OrlanHeal:IsSpellReady(spellId)
 end;
 
 function OrlanHeal:UpdateRaidBorder()
-	if UnitBuff("player", GetSpellInfo(54149)) then -- Infusion of Light
-		self:SetBorderColor(self.RaidWindow, 0, 0, 1, self.RaidBorderAlpha);
-	elseif (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
+	if (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
 			and self:IsSpellReady(85673) then -- Word of Glory
 		self:SetBorderColor(self.RaidWindow, 0, 1, 0, self.RaidBorderAlpha);
+	elseif UnitBuff("player", GetSpellInfo(54149)) then -- Infusion of Light
+		self:SetBorderColor(self.RaidWindow, 0, 0, 1, self.RaidBorderAlpha);
 	elseif UnitBuff("player", GetSpellInfo(88819)) -- Daybreak
 			and self:IsSpellReady(20473) then -- Holy Shock
 		self:SetBorderColor(self.RaidWindow, 1, 1, 1, self.RaidBorderAlpha);
