@@ -1232,23 +1232,54 @@ end;
 function OrlanHeal:CreateCooldowns(parent)
 	local cooldowns = {};
 
-	cooldowns[0] = self:CreateCooldown(parent, 0, 53655, 20271, true); -- Judgements of the Pure
-	cooldowns[1] = self:CreateCooldown(parent, 1, 53563, 53563, true); -- Beacon of Light
-	cooldowns[2] = self:CreateCooldown(parent, 2, 82327, 82327, false); -- Holy Radiance
-	cooldowns[3] = self:CreateCooldown(parent, 3, 85222, 85222, false); -- Light of Dawn
+	cooldowns.Frames = {};
+	cooldowns.Frames[0] = self:CreateCooldownFrame(parent);
+	cooldowns.Frames[0]:SetPoint(
+		"BOTTOMLEFT",
+		parent,
+		"TOPLEFT",
+		self.RaidOuterSpacing,
+		self.RaidOuterSpacing);
+	cooldowns.Frames[1] = self:CreateCooldownFrame(parent);
+
+	cooldowns[0] = self:CreateCooldown(cooldowns.Frames[0], 0, 53655, 20271, true); -- Judgements of the Pure
+	cooldowns[1] = self:CreateCooldown(cooldowns.Frames[0], 1, 53563, 53563, true); -- Beacon of Light
+	cooldowns[2] = self:CreateCooldown(cooldowns.Frames[0], 2, 82327, 82327, false); -- Holy Radiance
+	cooldowns[3] = self:CreateCooldown(cooldowns.Frames[0], 3, 85222, 85222, false); -- Light of Dawn
+	cooldowns[4] = self:CreateCooldown(cooldowns.Frames[0], 4, 633, 633, false); -- Lay on Hands
+	cooldowns[5] = self:CreateCooldown(cooldowns.Frames[1], 0, 31884, 31884, false); -- Avenging Wrath
+	cooldowns[6] = self:CreateCooldown(cooldowns.Frames[1], 1, 31842, 31842, false); -- Divine Favor
+	cooldowns[7] = self:CreateCooldown(cooldowns.Frames[1], 2, 86150, 86150, false); -- Guardian of Ancient Kings
+	cooldowns[8] = self:CreateCooldown(cooldowns.Frames[1], 3, 31821, 31821, false); -- Aura Mastery
+	cooldowns[9] = self:CreateCooldown(cooldowns.Frames[1], 4, 54428, 54428, false); -- Divine Plea
 
 	return cooldowns;
+end;
+
+function OrlanHeal:UpdateCooldowns()
+	self:UpdatePlayerBuffCooldown(self.RaidWindow.Cooldowns[0], 53655); -- Judgements of the Pure
+	self:UpdateRaidBuffCooldown(self.RaidWindow.Cooldowns[1], 53563); -- Beacon of Light
+	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[2], 82327); -- Holy Radiance
+	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[3], 85222); -- Light of Dawn
+	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[4], 633); -- Lay on Hands
+	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[5], 31884); -- Avenging Wrath
+	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[6], 31842); -- Divine Favor
+	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[7], 86150); -- Guardian of Ancient Kings
+	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[8], 31821); -- Aura Mastery
+	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[9], 54428); -- Divine Plea
+end;
+
+function OrlanHeal:CreateCooldownFrame(parent)
+	local frame = CreateFrame("Frame", nil, parent);
+	frame:SetHeight(self.CooldownSize);
+	frame:SetWidth(self.CooldownSize * (5 + 1 / 8 * 4));
+	return frame;
 end;
 
 function OrlanHeal:CreateCooldown(parent, index, imageSpellId, castSpellId, isReverse)
 	local cooldown = CreateFrame("Cooldown", nil, parent, "CooldownFrameTemplate");
 	cooldown:ClearAllPoints();
-	cooldown:SetPoint(
-		"BOTTOMLEFT", 
-		parent, 
-		"TOPLEFT", 
-		self.RaidOuterSpacing + self.GroupOuterSpacing + index * self.CooldownSize * (1 + 1 / 8), 
-		self.RaidOuterSpacing);
+	cooldown:SetPoint("TOPLEFT", index * self.CooldownSize * (1 + 1 / 8), 0);
 	cooldown:SetHeight(self.CooldownSize);
 	cooldown:SetWidth(self.CooldownSize);
 
@@ -1652,6 +1683,7 @@ function OrlanHeal:HandleLoaded()
 	self.SetupWindow = self:CreateSetupWindow();
 
 	self:UpdateVisibleGroupCount();
+	self:UpdateCooldownFrames();
 	self:Show();
 
 	self.EventFrame:RegisterEvent("RAID_ROSTER_UPDATE");
@@ -1719,6 +1751,26 @@ function OrlanHeal:SetGroupCount(newGroupCount)
 		self:UpdateVisibleGroupCount();
 		self:UpdateUnits();
 		self:UpdateGroupCountSwitches();
+		self:UpdateCooldownFrames();
+	end;
+end;
+
+function OrlanHeal:UpdateCooldownFrames()
+	self.RaidWindow.Cooldowns.Frames[1]:ClearAllPoints();
+	if self.IsInStartUpMode or (self.GroupCount > 1) then
+		self.RaidWindow.Cooldowns.Frames[1]:SetPoint(
+			"BOTTOMLEFT",
+			self.RaidWindow,
+			"TOPLEFt",
+			self.RaidOuterSpacing + 5 * self.CooldownSize * (1 + 1 / 8),
+			self.RaidOuterSpacing);
+	else
+		self.RaidWindow.Cooldowns.Frames[1]:SetPoint(
+			"BOTTOMLEFT",
+			self.RaidWindow,
+			"TOPLEFT",
+			self.RaidOuterSpacing,
+			self.RaidOuterSpacing + self.CooldownSize * (1 + 1 / 8));
 	end;
 end;
 
@@ -1854,13 +1906,6 @@ function OrlanHeal:UpdateStatus()
 
 	self:UpdateRaidBorder();
 	self:UpdateCooldowns();
-end;
-
-function OrlanHeal:UpdateCooldowns()
-	self:UpdatePlayerBuffCooldown(self.RaidWindow.Cooldowns[0], 53655); -- Judgements of the Pure
-	self:UpdateRaidBuffCooldown(self.RaidWindow.Cooldowns[1], 53563); -- Beacon of Light
-	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[2], 82327); -- Holy Radiance
-	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[3], 85222); -- Light of Dawn
 end;
 
 function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
