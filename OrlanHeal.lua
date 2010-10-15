@@ -123,7 +123,6 @@ function OrlanHeal:Initialize(configName)
 	self.PlayerSpecificBuffCount = 1;
 	self.PlayerOtherBuffCount = 4;
 
-	self.CooldownCount = 4;
 	self.CooldownSize = 32;
 
 	self.RaidRoles = {};
@@ -1157,11 +1156,7 @@ function OrlanHeal:CreateRaidWindow()
 
 	self:CreateBorder(raidWindow, 3, 0);
 
-	raidWindow.Cooldowns = {};
-
-	for cooldownIndex = 0, self.CooldownCount - 1 do
-		raidWindow.Cooldowns[cooldownIndex] = self:CreateCooldown(raidWindow, cooldownIndex);
-	end;
+	raidWindow.Cooldowns = self:CreateCooldowns(raidWindow);
 
 	raidWindow.GroupCountSwitches = {};
 	raidWindow.VisibleGroupCountSwitches = {};
@@ -1234,7 +1229,18 @@ function OrlanHeal:CreateVisibleGroupCountSwitch(raidWindow, size, index)
 	return button;
 end;
 
-function OrlanHeal:CreateCooldown(parent, index)
+function OrlanHeal:CreateCooldowns(parent)
+	local cooldowns = {};
+
+	cooldowns[0] = self:CreateCooldown(parent, 0, 53655, 20271, true); -- Judgements of the Pure
+	cooldowns[1] = self:CreateCooldown(parent, 1, 53563, 53563, true); -- Beacon of Light
+	cooldowns[2] = self:CreateCooldown(parent, 2, 82327, 82327, false); -- Holy Radiance
+	cooldowns[3] = self:CreateCooldown(parent, 3, 85222, 85222, false); -- Light of Dawn
+
+	return cooldowns;
+end;
+
+function OrlanHeal:CreateCooldown(parent, index, imageSpellId, castSpellId, isReverse)
 	local cooldown = CreateFrame("Cooldown", nil, parent, "CooldownFrameTemplate");
 	cooldown:ClearAllPoints();
 	cooldown:SetPoint(
@@ -1249,6 +1255,18 @@ function OrlanHeal:CreateCooldown(parent, index)
 	cooldown.Background = parent:CreateTexture(nil, "BACKGROUND");
 	cooldown.Background:SetAllPoints(cooldown);
 	cooldown.Background:SetAlpha(0.5);
+
+	local _, _, icon = GetSpellInfo(imageSpellId);
+	cooldown.Background:SetTexture(icon);
+	cooldown:SetReverse(isReverse);
+
+	if castSpellId then
+		cooldown.Button = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
+		cooldown.Button:SetAllPoints(cooldown);
+		cooldown.Button:RegisterForClicks("LeftButtonDown");
+		cooldown.Button:SetAttribute("type", "spell");
+		cooldown.Button:SetAttribute("spell", castSpellId);
+	end;
 
 	return cooldown;
 end;
@@ -1846,18 +1864,11 @@ function OrlanHeal:UpdateCooldowns()
 end;
 
 function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
-	local name, _, icon = GetSpellInfo(spellId);
-	cooldown.Background:SetTexture(icon);
-	cooldown:SetReverse(true);
-
-	local _, _, _, _, _, duration, expirationTime = UnitBuff("player", name);
+	local _, _, _, _, _, duration, expirationTime = UnitBuff("player", GetSpellInfo(spellId));
 	self:UpdateCooldown(cooldown, duration, expirationTime);
 end;
 
 function OrlanHeal:UpdateAbilityCooldown(cooldown, spellId)
-	local name, _, icon = GetSpellInfo(spellId);
-	cooldown.Background:SetTexture(icon);
-
 	local start, duration, enabled = GetSpellCooldown(spellId);
 	local expirationTime;
 	if enabled then
@@ -1871,10 +1882,6 @@ function OrlanHeal:UpdateAbilityCooldown(cooldown, spellId)
 end;
 
 function OrlanHeal:UpdateRaidBuffCooldown(cooldown, spellId)
-	local _, _, icon = GetSpellInfo(spellId);
-	cooldown.Background:SetTexture(icon);
-	cooldown:SetReverse(true);
-
 	local duration, expirationTime = self:GetRaidBuffCooldown(spellId);
 	self:UpdateCooldown(cooldown, duration, expirationTime);
 end;
