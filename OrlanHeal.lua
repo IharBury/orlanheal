@@ -41,6 +41,8 @@ function OrlanHeal:Initialize(configName)
 		if (event == "ADDON_LOADED") and (arg1 == "OrlanHeal") then
 			orlanHeal:HandleLoaded();
 		elseif (event == "RAID_ROSTER_UPDATE") or
+			(event == "PARTY_CONVERTED_TO_RAID") or
+			(event == "PARTY_LEADER_CHANGED") or
 			(event == "PARTY_MEMBERS_CHANGED") or
 			(event == "ZONE_CHANGED_NEW_AREA") or
 			(event == "PLAYER_REGEN_ENABLED") or
@@ -1278,6 +1280,9 @@ end;
 
 function OrlanHeal:CreateCooldown(parent, index, imageSpellId, castSpellId, isReverse)
 	local cooldown = CreateFrame("Cooldown", nil, parent, "CooldownFrameTemplate");
+	cooldown.IsReverse = isReverse;
+	cooldown.CastSpellId = castSpellId;
+
 	cooldown:ClearAllPoints();
 	cooldown:SetPoint("TOPLEFT", index * self.CooldownSize * (1 + 1 / 8), 0);
 	cooldown:SetHeight(self.CooldownSize);
@@ -1290,6 +1295,7 @@ function OrlanHeal:CreateCooldown(parent, index, imageSpellId, castSpellId, isRe
 	local _, _, icon = GetSpellInfo(imageSpellId);
 	cooldown.Background:SetTexture(icon);
 	cooldown:SetReverse(isReverse);
+	
 
 	if castSpellId then
 		cooldown.Button = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
@@ -1297,10 +1303,6 @@ function OrlanHeal:CreateCooldown(parent, index, imageSpellId, castSpellId, isRe
 		cooldown.Button:RegisterForClicks("LeftButtonDown");
 		cooldown.Button:SetAttribute("type", "spell");
 		cooldown.Button:SetAttribute("spell", castSpellId);
-
-		if not FindSpellBookSlotBySpellID(castSpellId) then
-			cooldown:SetReverse(true);
-		end;
 	end;
 
 	return cooldown;
@@ -1998,6 +2000,12 @@ function OrlanHeal:UpdateCooldown(cooldown, duration, expirationTime)
 		else
 			cooldown:SetCooldown(0, 10);
 		end;
+	end;
+
+	if FindSpellBookSlotBySpellID(cooldown.CastSpellId) then
+		cooldown:SetReverse(cooldown.IsReverse);
+	else
+		cooldown:SetReverse(true);
 	end;
 end;
 
