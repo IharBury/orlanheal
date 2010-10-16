@@ -1989,10 +1989,11 @@ function OrlanHeal:GetPlayerCastUnitBuffCooldown(unit, spellId)
 end;
 
 function OrlanHeal:UpdateCooldown(cooldown, duration, expirationTime)
+	duration = duration or 0;
 	expirationTime = expirationTime or 0;
 	if expirationTime ~= cooldown.Off then
 		cooldown.Off = expirationTime;
-		if duration and (duration ~= 0) and expirationTime and (expirationTime ~= 0) then
+		if (duration ~= 0) and (expirationTime ~= 0) then
 			cooldown:SetCooldown(expirationTime - duration, duration);
 		else
 			cooldown:SetCooldown(0, 10);
