@@ -1992,7 +1992,7 @@ function OrlanHeal:UpdateCooldown(cooldown, duration, expirationTime)
 	expirationTime = expirationTime or 0;
 	if expirationTime ~= cooldown.Off then
 		cooldown.Off = expirationTime;
-		if duration and expirationTime then
+		if duration and (duration ~= 0) and expirationTime and (expirationTime ~= 0) then
 			cooldown:SetCooldown(expirationTime - duration, duration);
 		else
 			cooldown:SetCooldown(0, 10);
