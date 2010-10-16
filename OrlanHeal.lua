@@ -1909,7 +1909,8 @@ function OrlanHeal:UpdateStatus()
 end;
 
 function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
-	local _, _, _, _, _, duration, expirationTime = UnitBuff("player", GetSpellInfo(spellId));
+	local spellName = GetSpellInfo(spellId);
+	local _, _, _, _, _, duration, expirationTime = UnitBuff("player", spellName);
 	self:UpdateCooldown(cooldown, duration, expirationTime);
 end;
 
@@ -2038,7 +2039,8 @@ end;
 function OrlanHeal:IsSpellReady(spellId)
 	local result = false;
 
-	if IsUsableSpell(GetSpellInfo(spellId)) then
+	local spellName = GetSpellInfo(spellId);
+	if IsUsableSpell(spellName) then
 		local start, duration = GetSpellCooldown(spellId);
 		result = not ((start > 0) and (duration > 1.5)); -- cooldowns less than GCD are ignored (latency + queueing)
 	end;
@@ -2047,12 +2049,15 @@ function OrlanHeal:IsSpellReady(spellId)
 end;
 
 function OrlanHeal:UpdateRaidBorder()
+	local infusionOfLightSpellName = GetSpellInfo(54149);
+	local daybreakSpellName = GetSpellInfo(88819);
+
 	if (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
 			and self:IsSpellReady(85673) then -- Word of Glory
 		self:SetBorderColor(self.RaidWindow, 0, 1, 0, self.RaidBorderAlpha);
-	elseif UnitBuff("player", GetSpellInfo(54149)) then -- Infusion of Light
+	elseif UnitBuff("player", infusionOfLightSpellName) then -- Infusion of Light
 		self:SetBorderColor(self.RaidWindow, 0, 0, 1, self.RaidBorderAlpha);
-	elseif UnitBuff("player", GetSpellInfo(88819)) -- Daybreak
+	elseif UnitBuff("player", daybreakSpellName) -- Daybreak
 			and self:IsSpellReady(20473) then -- Holy Shock
 		self:SetBorderColor(self.RaidWindow, 1, 1, 1, self.RaidBorderAlpha);
 	elseif self:IsSpellReady(20473) then -- Holy Shock
@@ -2087,11 +2092,12 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 			end;
 	        end;
 
+		local beaconOfLightSpellName = GetSpellInfo(53563);
 		if UnitInBattleground("player") ~= nil then
 			if (UnitIsConnected(unit) ~= 1) or
 					(UnitIsCorpse(unit) == 1) or 
 					(UnitIsDeadOrGhost(unit) == 1) or
-					(IsSpellInRange(GetSpellInfo(53563), unit) ~= 1) or -- Частица Света
+					(IsSpellInRange(beaconOfLightSpellName, unit) ~= 1) or -- Частица Света
 					(UnitCanAssist("player", unit) ~= 1) then
 		                window.Canvas:Hide();
         		        return;
@@ -2164,15 +2170,18 @@ function OrlanHeal:UpdateBackground(background, unit)
 end;
 
 function OrlanHeal:IsInRedRangeOrCloser(unit)
-	return (IsSpellInRange(GetSpellInfo(53563), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(53563), unit) == 1); -- Частица Света
+	local beaconOfLightSpellName = GetSpellInfo(53563);
+	return (IsSpellInRange(beaconOfLightSpellName, "player") ~= 1) or (IsSpellInRange(beaconOfLightSpellName, unit) == 1); -- Частица Света
 end;
 
 function OrlanHeal:IsInOrangeRangeOrCloser(unit)
-	return (IsSpellInRange(GetSpellInfo(635), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(635), unit) == 1); -- Holy Light
+	local holyLightSpellName = GetSpellInfo(635);
+	return (IsSpellInRange(holyLightSpellName, "player") ~= 1) or (IsSpellInRange(holyLightSpellName, unit) == 1); -- Holy Light
 end;
 
 function OrlanHeal:IsInYellowRangeOrCloser(unit)
-	return (IsSpellInRange(GetSpellInfo(1022), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(1022), unit) == 1); -- Hand of Protection
+	local handOfProtectionSpellName = GetSpellInfo(1022);
+	return (IsSpellInRange(handOfProtectionSpellName, "player") ~= 1) or (IsSpellInRange(handOfProtectionSpellName, unit) == 1); -- Hand of Protection
 end;
 
 function OrlanHeal:UpdateRange(rangeBar, unit)
