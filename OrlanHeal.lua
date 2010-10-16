@@ -1297,6 +1297,10 @@ function OrlanHeal:CreateCooldown(parent, index, imageSpellId, castSpellId, isRe
 		cooldown.Button:RegisterForClicks("LeftButtonDown");
 		cooldown.Button:SetAttribute("type", "spell");
 		cooldown.Button:SetAttribute("spell", castSpellId);
+
+		if not FindSpellBookSlotBySpellID(castSpellId) then
+			cooldown:SetReverse(true);
+		end;
 	end;
 
 	return cooldown;
