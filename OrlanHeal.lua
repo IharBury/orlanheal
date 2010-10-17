@@ -66,6 +66,14 @@ function OrlanHeal:Initialize(configName)
 	end;
 
 	self.EventFrame:RegisterEvent("ADDON_LOADED");
+	self.EventFrame:RegisterEvent("RAID_ROSTER_UPDATE");
+	self.EventFrame:RegisterEvent("PARTY_CONVERTED_TO_RAID");
+	self.EventFrame:RegisterEvent("PARTY_LEADER_CHANGED");
+	self.EventFrame:RegisterEvent("PARTY_MEMBERS_CHANGED");
+	self.EventFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
+	self.EventFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
+	self.EventFrame:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND");
+	self.EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 	self.EventFrame:SetScript("OnEvent", self.EventFrame.HandleEvent);
 	self.EventFrame:SetScript("OnUpdate", self.EventFrame.HandleUpdate);
 
