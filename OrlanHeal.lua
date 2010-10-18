@@ -802,6 +802,7 @@ function OrlanHeal:Initialize(configName)
 
 	self.IgnoredDebuffs = 
 	{
+		[24755] = true, -- Tricked or Treated
 		[58539] = true, -- Тело наблюдателя
 		[69127] = true, -- Холод Трона
 		[64816] = true, -- Победа над нежитью
@@ -1925,7 +1926,7 @@ end;
 function OrlanHeal:UpdateAbilityCooldown(cooldown, spellId)
 	local start, duration, enabled = GetSpellCooldown(spellId);
 	local expirationTime;
-	if enabled then
+	if start and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
 	else
 		start = nil;
