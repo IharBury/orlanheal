@@ -952,7 +952,7 @@ function OrlanHeal:CreateSetupWindow()
 	background:SetAllPoints();
 	background:SetTexture(0, 0, 0, 0.6);
 
-	setupWindow:SetHeight(340);
+	setupWindow:SetHeight(360);
 	setupWindow:SetWidth(450);
 	setupWindow:Hide();
 
@@ -968,12 +968,13 @@ function OrlanHeal:CreateSetupWindow()
 	setupWindow.ControlSpell1Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell1", "control1", 9, "CONTROL LEFT");
 	setupWindow.ControlSpell2Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell2", "control2", 10, "CONTROL RIGHT");
 	setupWindow.ControlSpell3Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell3", "control3", 11, "CONTROL MIDDLE");
+	setupWindow.SizeWindow = self:CreateSizeSelectWindow(setupWindow, 12);
 
 	local okButton = CreateFrame("Button", nil, setupWindow, "UIPanelButtonTemplate");
 	okButton:SetText("OK");
 	okButton:SetWidth(150);
 	okButton:SetHeight(25);
-	okButton:SetPoint("TOPLEFT", 50, -310);
+	okButton:SetPoint("TOPLEFT", 50, -330);
 	okButton:SetScript(
 		"OnClick",
 		function()
@@ -984,7 +985,7 @@ function OrlanHeal:CreateSetupWindow()
 	cancelButton:SetText("Cancel");
 	cancelButton:SetWidth(150);	
 	cancelButton:SetHeight(25);
-	cancelButton:SetPoint("TOPLEFT", 250, -310);
+	cancelButton:SetPoint("TOPLEFT", 250, -330);
 	cancelButton:SetScript(
 		"OnClick",
 		function()
@@ -1006,6 +1007,22 @@ function OrlanHeal:CreateSpellSelectWindow(parent, nameSuffix, button, index, ca
 	spellSelectWindow:SetPoint("TOPLEFT", 100, -index * 25);
 
 	return spellSelectWindow;
+end;
+
+function OrlanHeal:CreateSizeSelectWindow(parent, index)
+	local label = parent:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPLEFT", 5, -8 - index * 25);
+	label:SetText("SIZE");
+
+	local sizeSelectWindow = CreateFrame("Slider", self.SetupWindowName .. "_Size", parent, "OptionsSliderTemplate");
+	sizeSelectWindow:SetWidth(300);
+	sizeSelectWindow:SetHeight(20);
+	sizeSelectWindow:SetOrientation('HORIZONTAL');
+	sizeSelectWindow:SetMinMaxValues(500, 2000);
+	sizeSelectWindow.OrlanHeal = self;
+	sizeSelectWindow:SetPoint("TOPLEFT", 125, -index * 25);
+
+	return sizeSelectWindow;
 end;
 
 function OrlanHeal:InitializeSpellSelectWindow(spellSelectWindow)
@@ -1066,6 +1083,7 @@ function OrlanHeal:LoadSetup()
 	self.Config["alt1"] = self.Config["alt1"] or 4987; -- Cleanse
 	self.Config["alt2"] = self.Config["alt2"] or 20473; -- Holy Shock
 	self.Config["alt3"] = self.Config["alt3"] or 633; -- Lay on Hands
+	self.Config.Size = self.Config.Size or 1;
 end;
 
 function OrlanHeal:Setup()
@@ -1086,6 +1104,7 @@ function OrlanHeal:Setup()
 	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell1Window);
 	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell2Window);
 	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell3Window);
+	self.SetupWindow.SizeWindow:SetValue(self.RaidWindow:GetScale() * 1000);
 
 	self.SetupWindow:Show();
 end;
@@ -1099,6 +1118,9 @@ function OrlanHeal:SaveSetup()
 		for key, value in pairs(self.PendingConfig) do
 			self.Config[key] = value;
 		end;
+
+		self.Config.Size = self.SetupWindow.SizeWindow:GetValue() / 1000;
+		self.RaidWindow:SetScale(self.Config.Size);
 
 		self.SetupWindow:Hide();
 
@@ -1118,6 +1140,7 @@ end;
 function OrlanHeal:CreateRaidWindow()
 	local orlanHeal = self;
 	local raidWindow = CreateFrame("Frame", self.RaidWindowName, UIParent);
+	raidWindow:SetScale(self.Config.Size);
 
 	function raidWindow:HandleDragStop()
 		self:StopMovingOrSizing();
