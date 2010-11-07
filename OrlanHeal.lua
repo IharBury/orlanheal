@@ -2044,23 +2044,27 @@ end;
 function OrlanHeal:SetupParty(groupNumber)
 	self:SetPlayerTarget(groupNumber, 1, "player", "pet");
 
-	local playerRole = UnitGroupRolesAssigned("player");
-	if playerRole == "TANK" then
-		self:SetupTank("player");
+	if self.IsTankWindowVisible then
+		local playerRole = UnitGroupRolesAssigned("player");
+		if playerRole == "TANK" then
+			self:SetupTank("player");
+		end;
 	end;
 
 	for unitNumber = 1, 4 do
 		self:SetPlayerTarget(groupNumber, unitNumber + 1, "party" .. unitNumber, "partypet" .. unitNumber);
-		local role = UnitGroupRolesAssigned("party" .. unitNumber);
-		if role == "TANK" then
-			local name, realm = UnitName("party" .. unitNumber);
-			local fullName;
-			if realm then
-				fullName = name .. "-" .. realm;
-			else
-				fullName = name;
+		if self.IsTankWindowVisible then
+			local role = UnitGroupRolesAssigned("party" .. unitNumber);
+			if role == "TANK" then
+				local name, realm = UnitName("party" .. unitNumber);
+				local fullName;
+				if realm then
+					fullName = name .. "-" .. realm;
+				else
+					fullName = name;
+				end;
+				self:SetupTank(fullName);
 			end;
-			self:SetupTank(fullName);
 		end;
 	end;
 end;
