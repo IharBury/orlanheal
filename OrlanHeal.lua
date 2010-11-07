@@ -23,8 +23,20 @@ function SlashCmdList.ORLANHEAL(message, editbox)
 		OrlanHeal:SetVisibleGroupCount(2);
 	elseif message == "v5" then
 		OrlanHeal:SetVisibleGroupCount(1);
+	elseif message == "tanks" then
+		OrlanHeal:ToggleTanks();
 	elseif message == "setup" then
 		OrlanHeal:Setup();
+	else
+		print("OrlanHeal: Unknown command");
+	end;
+end;
+
+function OrlanHeal:ToggleTanks()
+	if self.IsTankWindowVisible then
+		self:HideTanks();
+	else
+		self:ShowTanks();
 	end;
 end;
 
@@ -41,13 +53,16 @@ function OrlanHeal:Initialize(configName)
 		if (event == "ADDON_LOADED") and (arg1 == "OrlanHeal") then
 			orlanHeal:HandleLoaded();
 		elseif (event == "RAID_ROSTER_UPDATE") or
-			(event == "PARTY_CONVERTED_TO_RAID") or
-			(event == "PARTY_LEADER_CHANGED") or
-			(event == "PARTY_MEMBERS_CHANGED") or
-			(event == "ZONE_CHANGED_NEW_AREA") or
-			(event == "PLAYER_REGEN_ENABLED") or
-			(event == "PLAYER_ENTERING_BATTLEGROUND") or
-			(event == "PLAYER_ENTERING_WORLD") then
+				(event == "PARTY_CONVERTED_TO_RAID") or
+				(event == "PARTY_LEADER_CHANGED") or
+				(event == "PARTY_MEMBERS_CHANGED") or
+				(event == "ZONE_CHANGED_NEW_AREA") or
+				(event == "PLAYER_REGEN_ENABLED") or
+				(event == "PLAYER_ENTERING_BATTLEGROUND") or
+				(event == "PLAYER_ENTERING_WORLD") or
+				(event == "LFG_ROLE_UPDATE") or
+				(event == "PLAYER_ROLES_ASSIGNED") or
+				(event == "ROLE_CHANGED_INFORM") then
 			if not InCombatLockdown() then
 				orlanHeal:UpdateUnits();
 			end;
@@ -121,6 +136,7 @@ function OrlanHeal:Initialize(configName)
 	self.GroupCount = 9;
 	self.VisibleGroupCount = 9;
 	self.IsInStartUpMode = true;
+	self.IsTankWindowVisible = false;
 
 	self.PlayerSpecificBuffCount = 1;
 	self.PlayerOtherBuffCount = 4;
@@ -1193,7 +1209,40 @@ function OrlanHeal:CreateRaidWindow()
 		index = index + 1;
 	end;
 
+	raidWindow.TankSwitch = self:CreateTankSwitch(raidWindow);
+
 	return raidWindow;
+end;
+
+function OrlanHeal:CreateTankSwitch(raidWindow)
+	local button = CreateFrame("Button", nil, raidWindow);
+	button:SetPoint(
+		"TOPLEFT", 
+		raidWindow, 
+		"BOTTOMLEFT", 
+		8 * (self.GroupCountSwitchWidth + self.GroupCountSwitchHorizontalSpacing), 
+		-self.GroupCountSwitchVerticalSpacing);
+	button:SetHeight(self.GroupCountSwitchHeight);
+	button:SetWidth(self.GroupCountSwitchWidth);
+	button:SetNormalFontObject("GameFontNormalSmall");
+	button:SetText("MT");
+	button:SetAlpha(self.RaidAlpha);
+
+	local normalTexture = button:CreateTexture();
+	normalTexture:SetAllPoints();
+	normalTexture:SetTexture(0, 0, 0, 1);
+	button:SetNormalTexture(normalTexture);
+
+	local orlanHeal = self;
+	button:SetScript(
+		"OnClick",
+		function()
+			orlanHeal:ToggleTanks();
+		end);
+
+	button:Hide();
+
+	return button;
 end;
 
 function OrlanHeal:CreateGroupCountSwitch(raidWindow, size, index)
@@ -1724,6 +1773,9 @@ function OrlanHeal:HandleLoaded()
 	self.EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
 	self.EventFrame:RegisterEvent("PARTY_CONVERTED_TO_RAID");
 	self.EventFrame:RegisterEvent("PARTY_LEADER_CHANGED");
+	self.EventFrame:RegisterEvent("LFG_ROLE_UPDATE");
+	self.EventFrame:RegisterEvent("PLAYER_ROLES_ASSIGNED");
+	self.EventFrame:RegisterEvent("ROLE_CHANGED_INFORM");
 end;
 
 function OrlanHeal:Show()
@@ -1748,23 +1800,43 @@ function OrlanHeal:RequestNonCombat()
 	end;
 end;
 
+function OrlanHeal:GetGroupCountWithTanks()
+	local groupCountWithTanks;
+	if self.IsTankWindowVisible then
+		groupCountWithTanks = self.GroupCount + 1;
+	else
+		groupCountWithTanks = self.GroupCount;
+	end;
+	return groupCountWithTanks;
+end;
+
+function OrlanHeal:GetExtraGroupAtStartCount()
+	local extraGroupAtStartCount;
+	if self.IsTankWindowVisible then
+		extraGroupAtStartCount = 1;
+	else
+		extraGroupAtStartCount = 0;
+	end;
+	return extraGroupAtStartCount;
+end;
+
 function OrlanHeal:UpdateVisibleGroupCount()
 	for groupIndex = 0, self.MaxGroupCount - 1 do
-		if groupIndex < self.GroupCount then
+		if groupIndex < self:GetGroupCountWithTanks() then
 			self.RaidWindow.Groups[groupIndex]:Show();
 		else
 			self.RaidWindow.Groups[groupIndex]:Hide();
 		end;
 	end;
 
-	local verticalGroupCount = math.floor((self.GroupCount + 1) / 2);
+	local verticalGroupCount = math.floor((self:GetGroupCountWithTanks() + 1) / 2);
 	self.RaidWindow:SetHeight(
 		self.GroupHeight * verticalGroupCount + 
 		self.RaidOuterSpacing * 2 + 
 		self.GroupInnerSpacing * (verticalGroupCount - 1));
 
 	local horizontalGroupCount;
-	if self.GroupCount == 1 then
+	if self:GetGroupCountWithTanks() == 1 then
 		horizontalGroupCount = 1;
 	else
 		horizontalGroupCount = 2;
@@ -1782,14 +1854,34 @@ function OrlanHeal:SetGroupCount(newGroupCount)
 		self.IsInStartUpMode = false;
 		self:UpdateVisibleGroupCount();
 		self:UpdateUnits();
-		self:UpdateGroupCountSwitches();
+		self:UpdateSwitches();
+		self:UpdateCooldownFrames();
+	end;
+end;
+
+function OrlanHeal:ShowTanks()
+	if self:RequestNonCombat() then
+		self.IsTankWindowVisible = true;
+		self:UpdateVisibleGroupCount();
+		self:UpdateUnits();
+		self:UpdateTankSwitch();
+		self:UpdateCooldownFrames();
+	end;
+end;
+
+function OrlanHeal:HideTanks()
+	if self:RequestNonCombat() then
+		self.IsTankWindowVisible = false;
+		self:UpdateVisibleGroupCount();
+		self:UpdateUnits();
+		self:UpdateTankSwitch();
 		self:UpdateCooldownFrames();
 	end;
 end;
 
 function OrlanHeal:UpdateCooldownFrames()
 	self.RaidWindow.Cooldowns.Frames[1]:ClearAllPoints();
-	if self.IsInStartUpMode or (self.GroupCount > 1) then
+	if self.IsInStartUpMode or (self:GetGroupCountWithTanks() > 1) then
 		self.RaidWindow.Cooldowns.Frames[1]:SetPoint(
 			"BOTTOMLEFT",
 			self.RaidWindow,
@@ -1809,6 +1901,11 @@ end;
 function OrlanHeal:SetVisibleGroupCount(newVisibleGroupCount)
 	self.VisibleGroupCount = newVisibleGroupCount;
 	self:UpdateGroupCountSwitches();
+end;
+
+function OrlanHeal:UpdateSwitches()
+	self:UpdateGroupCountSwitches();
+	self:UpdateTankSwitch();
 end;
 
 function OrlanHeal:UpdateGroupCountSwitches()
@@ -1835,9 +1932,21 @@ function OrlanHeal:UpdateGroupCountSwitches()
 	end;
 end;
 
+function OrlanHeal:UpdateTankSwitch()
+	self.RaidWindow.TankSwitch:Show();
+
+	local texture = self.RaidWindow.TankSwitch:GetNormalTexture();
+	if self.IsTankWindowVisible then
+		texture:SetTexture(0.5, 1, 0.5, 1);
+	else
+		texture:SetTexture(0, 0, 0, 1);
+	end;
+end;
+
 function OrlanHeal:SetPlayerTarget(groupNumber, groupPlayerNumber, playerUnit, petUnit)
-	self.RaidWindow.Groups[groupNumber - 1].Players[groupPlayerNumber - 1].Button:SetAttribute("unit", playerUnit);
-	self.RaidWindow.Groups[groupNumber - 1].Players[groupPlayerNumber - 1].Pet.Button:SetAttribute("unit", petUnit);
+	local visibleGroupIndex = groupNumber + self:GetExtraGroupAtStartCount() - 1;
+	self.RaidWindow.Groups[visibleGroupIndex].Players[groupPlayerNumber - 1].Button:SetAttribute("unit", playerUnit);
+	self.RaidWindow.Groups[visibleGroupIndex].Players[groupPlayerNumber - 1].Pet.Button:SetAttribute("unit", petUnit);
 end;
 
 function OrlanHeal:UpdateUnits()
@@ -1847,6 +1956,7 @@ function OrlanHeal:UpdateUnits()
 	end;
 
 	self.RaidRoles = {};
+	self.TankCount = 0;
 
 	if self.IsInStartUpMode then
 		for groupNumber = 1, (self.GroupCount - 1) * 5 do
@@ -1864,21 +1974,30 @@ function OrlanHeal:UpdateUnits()
 				self:SetupFreeRaidSlot(unitNumber, groupPlayerCounts);
 			end;
 		end;
-	elseif UnitInParty("player") ~= nil then
-		self:SetPlayerTarget(1, 1, "player", "pet");
-		for unitNumber = 1, 4 do
-			self:SetPlayerTarget(1, unitNumber + 1, "party" .. unitNumber, "partypet" .. unitNumber);
-		end;
-		for groupNumber = 2, self.GroupCount do
-			for groupPlayerNumber = 1, 5 do
-				self:SetPlayerTarget(groupNumber, groupPlayerNumber, "", "");
-			end;
-		end;
 	else
 		self:SetupParty(1);
 		for groupNumber = 2, self.GroupCount do
 			self:SetupEmptyGroup(groupNumber);
 		end;
+	end;
+
+	if self.IsTankWindowVisible then
+		self:FinishTankSetup();
+	end;
+end;
+
+function OrlanHeal:SetupTank(name)
+	if self.TankCount < 5 then
+		self.RaidWindow.Groups[0].Players[self.TankCount].Button:SetAttribute("unit", name);
+		self.RaidWindow.Groups[0].Players[self.TankCount].Pet.Button:SetAttribute("unit", "");
+		self.TankCount = self.TankCount + 1;
+	end;
+end;
+
+function OrlanHeal:FinishTankSetup()
+	for playerIndex = self.TankCount, 4 do
+		self.RaidWindow.Groups[0].Players[playerIndex].Button:SetAttribute("unit", "");
+		self.RaidWindow.Groups[0].Players[playerIndex].Pet.Button:SetAttribute("unit", "");
 	end;
 end;
 
@@ -1894,8 +2013,17 @@ function OrlanHeal:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts)
 			"raid" .. unitNumber, 
 			"raidpet" .. unitNumber);
 
-		local _, _, _, _, _, _, _, _, _, role = GetRaidRosterInfo(unitNumber);
+		local name, _, _, _, _, _, _, _, _, role = GetRaidRosterInfo(unitNumber);
 		self.RaidRoles["raid" .. unitNumber] = role;
+		if name then
+			self.RaidRoles[name] = role;
+		end;
+		if self.IsTankWindowVisible then
+			local role2 = UnitGroupRolesAssigned("raid" .. unitNumber);
+			if (role == "MAINTANK") or (role2 == "TANK") then
+				self:SetupTank(name);
+			end;
+		end;
 	end;
 end;
 
@@ -1915,8 +2043,25 @@ end;
 
 function OrlanHeal:SetupParty(groupNumber)
 	self:SetPlayerTarget(groupNumber, 1, "player", "pet");
+
+	local playerRole = UnitGroupRolesAssigned("player");
+	if playerRole == "TANK" then
+		self:SetupTank("player");
+	end;
+
 	for unitNumber = 1, 4 do
 		self:SetPlayerTarget(groupNumber, unitNumber + 1, "party" .. unitNumber, "partypet" .. unitNumber);
+		local role = UnitGroupRolesAssigned("party" .. unitNumber);
+		if role == "TANK" then
+			local name, realm = UnitName("party" .. unitNumber);
+			local fullName;
+			if realm then
+				fullName = name .. "-" .. realm;
+			else
+				fullName = name;
+			end;
+			self:SetupTank(fullName);
+		end;
 	end;
 end;
 
@@ -1927,10 +2072,14 @@ function OrlanHeal:SetupEmptyGroup(groupNumber)
 end;
 
 function OrlanHeal:UpdateStatus()
-	for groupIndex = 0, self.GroupCount - 1 do
+	for groupIndex = 0, self:GetGroupCountWithTanks() - 1 do
 		for groupPlayerIndex = 0, 4 do
 			local player = self.RaidWindow.Groups[groupIndex].Players[groupPlayerIndex];
-			self:UpdateUnitStatus(player, groupIndex + 1);
+			local raidGroupNumber;
+			if groupIndex >= self:GetExtraGroupAtStartCount() then
+				raidGroupNumber = groupIndex - self:GetExtraGroupAtStartCount() + 1;
+			end;
+			self:UpdateUnitStatus(player, raidGroupNumber);
 			self:UpdateUnitStatus(player.Pet, nil);
 			self:UpdatePlayerRoleIcon(player);
 		end;
