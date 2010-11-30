@@ -93,37 +93,37 @@ function OrlanHeal:Initialize(configName)
 	end;
 
 	self.Scale = 0.8;
-	self.PetWidth = 81 * self.Scale;
-	self.PetSpacing = 3 * self.Scale;
-	self.PlayerWidth = 130 * self.Scale;
-	self.PlayerHeight = 20 * self.Scale;
+	self.PetWidth = 81;
+	self.PetSpacing = 3;
+	self.PlayerWidth = 130;
+	self.PlayerHeight = 20;
 	self.BuffSize = self.PlayerHeight / 2;
-	self.GroupOuterSpacing = 2 * self.Scale;
-	self.PlayerInnerSpacing = 2 * self.Scale;
+	self.GroupOuterSpacing = 2;
+	self.PlayerInnerSpacing = 2;
 	self.GroupWidth = self.PlayerWidth + self.PetSpacing + self.PetWidth + self.GroupOuterSpacing * 2;
 	self.GroupHeight = self.PlayerHeight * 5 + 
 		self.GroupOuterSpacing * 2 + 
 		self.PlayerInnerSpacing * 4;
-	self.RaidOuterSpacing = 6 * self.Scale;
-	self.GroupInnerSpacing = 4 * self.Scale;
+	self.RaidOuterSpacing = 6;
+	self.GroupInnerSpacing = 4;
 	self.RaidWidth = self.GroupWidth * self.MaxHorizontalGroupCount + 
 		self.RaidOuterSpacing * 2 + 
 		self.GroupInnerSpacing * (self.MaxHorizontalGroupCount - 1);
 	self.RaidHeight = self.GroupHeight * self.MaxVerticalGroupCount + 
 		self.RaidOuterSpacing * 2 + 
 		self.GroupInnerSpacing * (self.MaxVerticalGroupCount - 1);
-	self.RangeWidth = 5 * self.Scale;
+	self.RangeWidth = 5;
 	self.PlayerStatusWidth = self.PlayerWidth - self.RangeWidth - self.BuffSize * 5;
 	self.PetStatusWidth = self.PetWidth - self.RangeWidth - self.BuffSize * 2;
-	self.HealthHeight = 4 * self.Scale;
-	self.ManaHeight = 4 * self.Scale;
+	self.HealthHeight = 4;
+	self.ManaHeight = 4;
 	self.NameHeight = self.PlayerHeight - self.ManaHeight - self.HealthHeight;
 	self.NameFontHeight = self.NameHeight * 0.8;
 
-	self.GroupCountSwitchHeight = 13;
-	self.GroupCountSwitchWidth = 17;
+	self.GroupCountSwitchHeight = 16;
+	self.GroupCountSwitchWidth = 21;
 	self.GroupCountSwitchHorizontalSpacing = 3;
-	self.GroupCountSwitchVerticalSpacing = 1;
+	self.GroupCountSwitchVerticalSpacing = 2;
 
 	self.RaidAlpha = 0.2;
 	self.GroupAlpha = 0.2;
@@ -141,7 +141,7 @@ function OrlanHeal:Initialize(configName)
 	self.PlayerSpecificBuffCount = 1;
 	self.PlayerOtherBuffCount = 4;
 
-	self.CooldownSize = 32;
+	self.CooldownSize = 40;
 
 	self.RaidRoles = {};
 
@@ -1120,7 +1120,7 @@ function OrlanHeal:Setup()
 	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell1Window);
 	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell2Window);
 	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell3Window);
-	self.SetupWindow.SizeWindow:SetValue(self.RaidWindow:GetScale() * 1000);
+	self.SetupWindow.SizeWindow:SetValue(self.RaidWindow:GetScale() / self.Scale * 1000);
 
 	self.SetupWindow:Show();
 end;
@@ -1136,7 +1136,7 @@ function OrlanHeal:SaveSetup()
 		end;
 
 		self.Config.Size = self.SetupWindow.SizeWindow:GetValue() / 1000;
-		self.RaidWindow:SetScale(self.Config.Size);
+		self.RaidWindow:SetScale(self.Config.Size * self.Scale);
 
 		self.SetupWindow:Hide();
 
@@ -1156,7 +1156,7 @@ end;
 function OrlanHeal:CreateRaidWindow()
 	local orlanHeal = self;
 	local raidWindow = CreateFrame("Frame", self.RaidWindowName, UIParent);
-	raidWindow:SetScale(self.Config.Size);
+	raidWindow:SetScale(self.Config.Size * self.Scale);
 
 	function raidWindow:HandleDragStop()
 		self:StopMovingOrSizing();
