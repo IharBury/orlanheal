@@ -69,6 +69,16 @@ function OrlanHeal:Initialize(configName)
 		end;
 	end;
 
+	local className, class = UnitClass("player");
+	if class == "PALADIN" then
+		self.Class = self.Paladin;
+	elseif class == "PRIEST" then
+		self.Class = self.Priest;
+	else
+		self.Class = self.Paladin;
+		print("OrlanHeal: " .. className .. " class is not supported.");
+	end;
+
 	self.ElapsedAfterUpdate = 0;
 	function self.EventFrame:HandleUpdate(elapsed)
 		if orlanHeal.RaidWindow:IsShown() then
@@ -138,8 +148,7 @@ function OrlanHeal:Initialize(configName)
 	self.IsInStartUpMode = true;
 	self.IsTankWindowVisible = false;
 
-	self.PlayerSpecificBuffCount = 1;
-	self.PlayerOtherBuffCount = 4;
+	self.PlayerBuffCount = 5;
 
 	self.CooldownSize = 40;
 
@@ -934,27 +943,6 @@ function OrlanHeal:Initialize(configName)
 		[66879] = true, -- Burning Bite
 		[70126] = true -- Frost Beacon
 	};
-
-	self.AvailableSpells =
-	{
-		635, -- Holy Light
-		19750, -- Flash of Light
-		1022, -- Hand of Protection
-		4987, -- Cleanse
-		20473, -- Holy Shock
-		633, -- Lay on Hands
-		85673, -- Word of Glory
-		1038, -- Hand of Salvation
-		82326, -- Divine Light
-		53563, -- Beacon of Light
-		6940, -- Hand of Sacrifice
-		1044, -- Hand of Freedom
-		59542, -- Дар наауру
-		20217, -- Blessing of Kings
-		7328, -- Redemption
-		31789, -- Righteous Defense
-		19740 -- Blessing of Might
-	};
 end;
 
 function OrlanHeal:CreateSetupWindow()
@@ -1062,7 +1050,7 @@ function OrlanHeal:HandleSpellInit(level)
 
 	local spellIndex = 1;
 	while true do
-		local spellId = self.OrlanHeal.AvailableSpells[spellIndex];
+		local spellId = self.OrlanHeal.Class.AvailableSpells[spellIndex];
 		if (not spellId) then
 			break;
 		end;
@@ -1317,31 +1305,9 @@ function OrlanHeal:CreateCooldowns(parent)
 		self.RaidOuterSpacing);
 	cooldowns.Frames[1] = self:CreateCooldownFrame(parent);
 
-	cooldowns[0] = self:CreateCooldown(cooldowns.Frames[0], 0, 53655, 20271, true); -- Judgements of the Pure
-	cooldowns[1] = self:CreateCooldown(cooldowns.Frames[0], 1, 53563, 53563, true); -- Beacon of Light
-	cooldowns[2] = self:CreateCooldown(cooldowns.Frames[0], 2, 82327, 82327, false); -- Holy Radiance
-	cooldowns[3] = self:CreateCooldown(cooldowns.Frames[0], 3, 85222, 85222, false); -- Light of Dawn
-	cooldowns[4] = self:CreateCooldown(cooldowns.Frames[0], 4, 633, 633, false); -- Lay on Hands
-	cooldowns[5] = self:CreateCooldown(cooldowns.Frames[1], 0, 31884, 31884, false); -- Avenging Wrath
-	cooldowns[6] = self:CreateCooldown(cooldowns.Frames[1], 1, 31842, 31842, false); -- Divine Favor
-	cooldowns[7] = self:CreateCooldown(cooldowns.Frames[1], 2, 86150, 86150, false); -- Guardian of Ancient Kings
-	cooldowns[8] = self:CreateCooldown(cooldowns.Frames[1], 3, 31821, 31821, false); -- Aura Mastery
-	cooldowns[9] = self:CreateCooldown(cooldowns.Frames[1], 4, 54428, 54428, false); -- Divine Plea
+	self.Class.CreateCooldowns(self, cooldowns);
 
 	return cooldowns;
-end;
-
-function OrlanHeal:UpdateCooldowns()
-	self:UpdatePlayerBuffCooldown(self.RaidWindow.Cooldowns[0], 53655); -- Judgements of the Pure
-	self:UpdateRaidBuffCooldown(self.RaidWindow.Cooldowns[1], 53563); -- Beacon of Light
-	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[2], 82327); -- Holy Radiance
-	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[3], 85222); -- Light of Dawn
-	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[4], 633); -- Lay on Hands
-	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[5], 31884); -- Avenging Wrath
-	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[6], 31842); -- Divine Favor
-	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[7], 86150); -- Guardian of Ancient Kings
-	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[8], 31821); -- Aura Mastery
-	self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[9], 54428); -- Divine Plea
 end;
 
 function OrlanHeal:CreateCooldownFrame(parent)
@@ -1452,7 +1418,11 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateHealthBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateManaBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
-	self:CreateBuffs(playerWindow.Canvas, self.PlayerSpecificBuffCount, self.PlayerOtherBuffCount, 3, 2);
+	self:CreateBuffs(
+		playerWindow.Canvas, 
+		self.Class.PlayerSpecificBuffCount, 
+		self.PlayerBuffCount - self.Class.PlayerSpecificBuffCount,
+		self.Class.PlayerDebuffSlots);
 	self:CreateBorder(playerWindow.Canvas, 1, 1);
 	self:CreateRoleIcon(playerWindow.Canvas);
 	self:CreateTargetIcon(playerWindow.Canvas, self.PlayerStatusWidth);
@@ -1487,7 +1457,7 @@ function OrlanHeal:CreateTargetIcon(canvas, statusWidth)
 	canvas.Target:SetPoint("TOPLEFT", self.RangeWidth + statusWidth - self.NameHeight, 0);
 end;
 
-function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specificDebuffCount, otherDebuffCount)
+function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, debuffSlots)
 	if specificBuffCount > 0 then
 		parent.SpecificBuffs = {};
 
@@ -1510,26 +1480,17 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, specif
 			0);
 	end;
 
-	if specificDebuffCount > 0 then
-		parent.SpecificDebuffs = {};
-
-		for buffIndex = 0, specificDebuffCount - 1 do
-			parent.SpecificDebuffs[buffIndex] = self:CreateBuff(
-				parent,
-				"BOTTOMRIGHT", 
-				-(otherDebuffCount + specificDebuffCount - buffIndex) * self.BuffSize,
-				self.BuffSize);
-		end;
-	end;
-
-	parent.OtherDebuffs = {};
-
-	for buffIndex = 0, otherDebuffCount - 1 do
-		parent.OtherDebuffs[buffIndex] = self:CreateBuff(
+	local debuffIndex = 0;
+	parent.Debuffs = {};
+	parent.Debuffs.Slots = debuffSlots;
+	while debuffSlots[debuffIndex + 1] do
+		parent.Debuffs[debuffIndex] = self:CreateBuff(
 			parent,
 			"BOTTOMRIGHT", 
-			-(otherDebuffCount - buffIndex) * self.BuffSize,
+			-(otherBuffCount + specificBuffCount - debuffIndex) * self.BuffSize,
 			self.BuffSize);
+
+		debuffIndex = debuffIndex + 1;
 	end;
 end;
 
@@ -1713,7 +1674,7 @@ function OrlanHeal:CreatePetWindow(parent)
 	self:CreateHealthBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateManaBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateNameBar(petWindow.Canvas, self.PetStatusWidth);
-	self:CreateBuffs(petWindow.Canvas, 0, 2, 1, 1);
+	self:CreateBuffs(petWindow.Canvas, 0, 2, self.Class.PetDebuffSlots);
 	self:CreateBorder(petWindow.Canvas, 1, 1);
 	self:CreateTargetIcon(petWindow.Canvas, self.PetStatusWidth);
 
@@ -2089,8 +2050,8 @@ function OrlanHeal:UpdateStatus()
 		end;
 	end;
 
-	self:UpdateRaidBorder();
-	self:UpdateCooldowns();
+	self.Class.UpdateRaidBorder(self);
+	self.Class.UpdateCooldowns(self);
 end;
 
 function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
@@ -2240,31 +2201,6 @@ function OrlanHeal:IsSpellReady(spellId)
 	return result;
 end;
 
-function OrlanHeal:UpdateRaidBorder()
-	local infusionOfLightSpellName = GetSpellInfo(54149);
-	local daybreakSpellName = GetSpellInfo(88819);
-
-	if (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
-			and self:IsSpellReady(85673) then -- Word of Glory
-		self:SetBorderColor(self.RaidWindow, 0, 1, 0, self.RaidBorderAlpha);
-	elseif UnitBuff("player", infusionOfLightSpellName) then -- Infusion of Light
-		self:SetBorderColor(self.RaidWindow, 0, 0, 1, self.RaidBorderAlpha);
-	elseif UnitBuff("player", daybreakSpellName) -- Daybreak
-			and self:IsSpellReady(20473) then -- Holy Shock
-		self:SetBorderColor(self.RaidWindow, 1, 1, 1, self.RaidBorderAlpha);
-	elseif self:IsSpellReady(20473) then -- Holy Shock
-		self:SetBorderColor(self.RaidWindow, 1, 1, 0, self.RaidBorderAlpha);
-	elseif (UnitPower("player", SPELL_POWER_HOLY_POWER) == 2)
-			and self:IsSpellReady(85673) then -- Word of Glory
-		self:SetBorderColor(self.RaidWindow, 1, 0.5, 0, self.RaidBorderAlpha);
-	elseif (UnitPower("player", SPELL_POWER_HOLY_POWER) == 1)
-			and self:IsSpellReady(85673) then -- Word of Glory
-		self:SetBorderColor(self.RaidWindow, 1, 0, 0, self.RaidBorderAlpha);
-	else
-		self:SetBorderColor(self.RaidWindow, 0, 0, 0, 0);
-	end;
-end;
-
 function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 	local unit = window.Button:GetAttribute("unit");
 	if (unit == nil) or (unit == "") or not UnitExists(unit) then
@@ -2361,19 +2297,9 @@ function OrlanHeal:UpdateBackground(background, unit)
 	end;
 end;
 
-function OrlanHeal:IsInRedRangeOrCloser(unit)
-	local beaconOfLightSpellName = GetSpellInfo(53563);
-	return (IsSpellInRange(beaconOfLightSpellName, "player") ~= 1) or (IsSpellInRange(beaconOfLightSpellName, unit) == 1); -- Частица Света
-end;
-
-function OrlanHeal:IsInOrangeRangeOrCloser(unit)
-	local holyLightSpellName = GetSpellInfo(635);
-	return (IsSpellInRange(holyLightSpellName, "player") ~= 1) or (IsSpellInRange(holyLightSpellName, unit) == 1); -- Holy Light
-end;
-
-function OrlanHeal:IsInYellowRangeOrCloser(unit)
-	local handOfProtectionSpellName = GetSpellInfo(1022);
-	return (IsSpellInRange(handOfProtectionSpellName, "player") ~= 1) or (IsSpellInRange(handOfProtectionSpellName, unit) == 1); -- Hand of Protection
+function OrlanHeal:IsSpellInRangeById(unit, spellId)
+	local spellName = GetSpellInfo(spellId);
+	return (IsSpellInRange(spellName, "player") ~= 1) or (IsSpellInRange(spellName, unit) == 1);
 end;
 
 function OrlanHeal:UpdateRange(rangeBar, unit)
@@ -2381,11 +2307,11 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 		rangeBar:SetTexture(0, 0, 0, 1);
 	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
 		rangeBar:SetTexture(0.4, 0.4, 0.4, 1);
-	elseif (not self:IsInRedRangeOrCloser(unit)) or (UnitCanAssist("player", unit) ~= 1) then
+	elseif (not self:IsSpellInRangeById(unit, self.Class.RedRangeSpellId)) or (UnitCanAssist("player", unit) ~= 1) then
 		rangeBar:SetTexture(0.2, 0.2, 0.75, 1);
-	elseif not self:IsInOrangeRangeOrCloser(unit) then
+	elseif not self:IsSpellInRangeById(unit, self.Class.OrangeRangeSpellId) then
 		rangeBar:SetTexture(0.75, 0.2, 0.2, 1);
-	elseif not self:IsInYellowRangeOrCloser(unit) then -- Длань Спасения
+	elseif not self:IsSpellInRangeById(unit, self.Class.YellowRangeSpellId) then
 		rangeBar:SetTexture(0.75, 0.45, 0.2, 1);
 	elseif CheckInteractDistance(unit, 2) ~= 1 then
 		rangeBar:SetTexture(0.75, 0.75, 0.2, 1);
@@ -2448,19 +2374,15 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 			UnitAura(unit, buffIndex, "HELPFUL");
 		if name == nil then break; end;
 
-		local buffKind;
-		if (spellId == 53563) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- своя Частица Света
-				(spellId == 1022) or -- Длань защиты
-				(spellId == 5599) or -- Длань защиты
-				(spellId == 10278) or -- Длань защиты
-				(spellId == 1038) then -- Длань спасения
-			buffKind = 1;
-		elseif (self.SavingAbilities[spellId]) then
-			buffKind = -1;
-		elseif (self.ShieldAbilities[spellId]) then
-			buffKind = -2;
-		elseif (self.HealingBuffs[spellId]) then
-			buffKind = -3;
+		local buffKind = self.Class.GetSpecificBuffKind(self, spellId, caster);
+		if not buffKind then
+			if (self.SavingAbilities[spellId]) then
+				buffKind = -1;
+			elseif (self.ShieldAbilities[spellId]) then
+				buffKind = -2;
+			elseif (self.HealingBuffs[spellId]) then
+				buffKind = -3;
+			end;
 		end;
 
 		if buffKind ~= nil then
@@ -2489,35 +2411,41 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	if canvas.OtherBuffs ~= nil then
 		for buffIndex = 0, 4 do
 			if canvas.OtherBuffs[buffIndex] ~= nill then
-				self:ShowBuff(canvas.OtherBuffs[buffIndex], self:GetLastUsualBuff(goodBuffs, goodBuffCount));
+				self:ShowBuff(canvas.OtherBuffs[buffIndex], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 0));
 			end;
 		end;
 	end;
 end;
 
 function OrlanHeal:UpdateDebuffs(canvas, unit)
-	local goodBuffCount = 0;
-	local goodBuffs = {};
+	local specialDebuffCount = 0;
+	local specialDebuffs = {};
 	local buffIndex = 1;
 	local canAssist = UnitCanAssist("player", unit) == 1;
 	while true do
 		local name, _, icon, count, dispelType, duration, expires, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
 		if name == nil then break; end;
 
-		local buffKind;
-		if ((dispelType == "Disease") or (dispelType == "Magic") or (dispelType == "Poison")) and canAssist then
-			buffKind = 1;
-		elseif (dispelType == "Curse") and canAssist then
-			buffKind = 2;
-		elseif (self.IgnoredDebuffs[spellId]) then
-			buffKind = nil;
-		elseif canAssist then
-			buffKind = 3;
+		local buffKind = self.Class.GetSpecificDebuffKind(self, spellId);
+		if not buffKind then
+			if (dispelType == "Disease") and canAssist then
+				buffKind = self.Class.DiseaseDebuffKind;
+			elseif (dispelType == "Magic") and canAssist then
+				buffKind = self.Class.MagicDebuffKind;
+			elseif (dispelType == "Poison") and canAssist then
+				buffKind = self.Class.PoisonDebuffKind;
+			elseif (dispelType == "Curse") and canAssist then
+				buffKind = self.Class.CurseDebuffKind;
+			elseif (self.IgnoredDebuffs[spellId]) then
+				buffKind = nil;
+			elseif canAssist then
+				buffKind = -1;
+			end;
 		end;
 
 		if buffKind ~= nil then
-			goodBuffCount = goodBuffCount + 1;
-			goodBuffs[goodBuffCount] =
+			specialDebuffCount = specialDebuffCount + 1;
+			specialDebuffs[specialDebuffCount] =
 			{
 				Icon = icon,
 				Count = count,
@@ -2530,36 +2458,19 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 		buffIndex = buffIndex + 1;
 	end;
 
-	if canvas.SpecificDebuffs ~= nil then
-		if canvas.SpecificDebuffs[0] ~= nill then
-			self:ShowBuff(canvas.SpecificDebuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 1));
-		end;
+	local slotIndex = 0;
+	while canvas.Debuffs.Slots[slotIndex + 1] do
+		self:ShowBuff(
+			canvas.Debuffs[slotIndex], 
+			self:GetLastBuffOfKind(specialDebuffs, specialDebuffCount, canvas.Debuffs.Slots[slotIndex + 1]));
 
-		if canvas.SpecificDebuffs[1] ~= nill then
-			self:ShowBuff(canvas.SpecificDebuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 1));
-		end;
-
-		if canvas.SpecificDebuffs[2] ~= nill then
-			self:ShowBuff(canvas.SpecificDebuffs[2], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 2));
-		end;
-	end;
-
-	if canvas.OtherDebuffs[2] ~= nill then
-		self:ShowBuff(canvas.OtherDebuffs[2], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
-	end;
-
-	if canvas.OtherDebuffs[1] ~= nill then
-		self:ShowBuff(canvas.OtherDebuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
-	end;
-
-	if canvas.OtherDebuffs[0] ~= nill then
-		self:ShowBuff(canvas.OtherDebuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
+		slotIndex = slotIndex + 1;
 	end;
 end;
 
 function OrlanHeal:GetLastBuffOfKind(buffs, buffCount, kind)
 	for index = buffCount, 1, -1 do
-		if (buffs[index] ~= nil) and ((kind == nil) or (buffs[index].Kind == kind)) then
+		if (buffs[index] ~= nil) and ((kind == nil) or (kind == 0) or (buffs[index].Kind == kind)) then
 			local result = buffs[index];
 			buffs[index] = nil;
 			return result;
@@ -2567,17 +2478,6 @@ function OrlanHeal:GetLastBuffOfKind(buffs, buffCount, kind)
 	end;
 
 	return nil;
-end;
-
-function OrlanHeal:GetLastUsualBuff(buffs, buffCount)
-	local buff = self:GetLastBuffOfKind(buffs, buffCount, -1);
-	if not buff then
-		buff = self:GetLastBuffOfKind(buffs, buffCount, -2);
-	end;
-	if not buff then
-		buff = self:GetLastBuffOfKind(buffs, buffCount, -3);
-	end;
-	return buff;
 end;
 
 function OrlanHeal:ShowBuff(texture, buff)
@@ -2603,5 +2503,179 @@ function OrlanHeal:ShowBuff(texture, buff)
 		end;
 	end;
 end;
+
+
+OrlanHeal.Paladin = {};
+
+OrlanHeal.Paladin.AvailableSpells =
+{
+	635, -- Holy Light
+	19750, -- Flash of Light
+	1022, -- Hand of Protection
+	4987, -- Cleanse
+	20473, -- Holy Shock
+	633, -- Lay on Hands
+	85673, -- Word of Glory
+	1038, -- Hand of Salvation
+	82326, -- Divine Light
+	53563, -- Beacon of Light
+	6940, -- Hand of Sacrifice
+	1044, -- Hand of Freedom
+	59542, -- Дар наауру
+	20217, -- Blessing of Kings
+	7328, -- Redemption
+	31789, -- Righteous Defense
+	19740 -- Blessing of Might
+};
+
+function OrlanHeal.Paladin.CreateCooldowns(orlanHeal, cooldowns)
+	cooldowns[0] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 0, 53655, 20271, true); -- Judgements of the Pure
+	cooldowns[1] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 1, 53563, 53563, true); -- Beacon of Light
+	cooldowns[2] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 2, 82327, 82327, false); -- Holy Radiance
+	cooldowns[3] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 3, 85222, 85222, false); -- Light of Dawn
+	cooldowns[4] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 4, 633, 633, false); -- Lay on Hands
+	cooldowns[5] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 0, 31884, 31884, false); -- Avenging Wrath
+	cooldowns[6] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 1, 31842, 31842, false); -- Divine Favor
+	cooldowns[7] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 2, 86150, 86150, false); -- Guardian of Ancient Kings
+	cooldowns[8] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 3, 31821, 31821, false); -- Aura Mastery
+	cooldowns[9] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 4, 54428, 54428, false); -- Divine Plea
+end;
+
+function OrlanHeal.Paladin.UpdateCooldowns(orlanHeal)
+	orlanHeal:UpdatePlayerBuffCooldown(orlanHeal.RaidWindow.Cooldowns[0], 53655); -- Judgements of the Pure
+	orlanHeal:UpdateRaidBuffCooldown(orlanHeal.RaidWindow.Cooldowns[1], 53563); -- Beacon of Light
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[2], 82327); -- Holy Radiance
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[3], 85222); -- Light of Dawn
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[4], 633); -- Lay on Hands
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[5], 31884); -- Avenging Wrath
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[6], 31842); -- Divine Favor
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[7], 86150); -- Guardian of Ancient Kings
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[8], 31821); -- Aura Mastery
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[9], 54428); -- Divine Plea
+end;
+
+OrlanHeal.Paladin.RedRangeSpellId = 53563; -- Частица Света
+OrlanHeal.Paladin.OrangeRangeSpellId = 635; -- Holy Light
+OrlanHeal.Paladin.YellowRangeSpellId = 1022; -- Hand of Protection
+
+function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
+	local infusionOfLightSpellName = GetSpellInfo(54149);
+	local daybreakSpellName = GetSpellInfo(88819);
+
+	if (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
+			and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
+	elseif UnitBuff("player", infusionOfLightSpellName) then -- Infusion of Light
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha);
+	elseif UnitBuff("player", daybreakSpellName) -- Daybreak
+			and orlanHeal:IsSpellReady(20473) then -- Holy Shock
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
+	elseif orlanHeal:IsSpellReady(20473) then -- Holy Shock
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
+	elseif (UnitPower("player", SPELL_POWER_HOLY_POWER) == 2)
+			and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.5, 0, orlanHeal.RaidBorderAlpha);
+	elseif (UnitPower("player", SPELL_POWER_HOLY_POWER) == 1)
+			and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha);
+	else
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+	end;
+end;
+
+OrlanHeal.Paladin.PlayerSpecificBuffCount = 1;
+
+function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
+	local buffKind;
+	if (spellId == 53563) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- своя Частица Света
+			(spellId == 1022) or -- Длань защиты
+			(spellId == 5599) or -- Длань защиты
+			(spellId == 10278) or -- Длань защиты
+			(spellId == 1038) then -- Длань спасения
+		buffKind = 1;
+	end;
+
+	return buffKind;
+end;
+
+OrlanHeal.Paladin.PoisonDebuffKind = 1;
+OrlanHeal.Paladin.DiseaseDebuffKind = 1;
+OrlanHeal.Paladin.MagicDebuffKind = 1;
+OrlanHeal.Paladin.CurseDebuffKind = 2;
+OrlanHeal.Paladin.PlayerDebuffSlots = { 1, 1, 2, 0, 0 };
+OrlanHeal.Paladin.PetDebuffSlots = { 0, 0 };
+
+function OrlanHeal.Paladin.GetSpecificDebuffKind(orlanHeal, spellId)
+end;
+
+
+OrlanHeal.Priest = {};
+
+OrlanHeal.Priest.AvailableSpells =
+{
+	1706, -- Левитация
+	527, -- Рассеивание заклинаний
+	17, -- Слово силы: Щит
+	6346, -- Защита от страха
+	2061, -- Быстрое исцеление
+	2060, -- Великое исцеление
+	2006, -- Воскрешение
+	528, -- Излечение болезни
+	2050, -- Исцеление
+	139, -- Обновление
+	32546, -- Связующее исцеление
+	33076, -- Молитва восстановления
+	73325, -- Духовное рвение
+	2096, -- Внутреннее зрение
+	47540, -- Исповедь
+	47788, -- Оберегающий дух
+	10060, -- Придание сил
+	33206, -- Подавление боли
+}
+
+function OrlanHeal.Priest.CreateCooldowns(orlanHeal, cooldowns)
+end;
+
+function OrlanHeal.Priest.UpdateCooldowns(orlanHeal)
+end;
+
+OrlanHeal.Priest.RedRangeSpellId = 2096; -- Внутреннее зрение
+OrlanHeal.Priest.OrangeRangeSpellId = 1706; -- Левитация
+OrlanHeal.Priest.YellowRangeSpellId = 2061; -- Быстрое исцеление
+
+
+function OrlanHeal.Priest.UpdateRaidBorder(orlanHeal)
+	orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+end;
+
+OrlanHeal.Priest.PlayerSpecificBuffCount = 2;
+
+function OrlanHeal.Priest.GetSpecificBuffKind(orlanHeal, spellId, caster)
+	local buffKind;
+	if (spellId == 17) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- свой щит
+		buffKind = 1;
+	elseif (spellId == 139) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- своё восстановление
+		buffKind = 2;
+	end;
+
+	return buffKind;
+end;
+
+OrlanHeal.Priest.PoisonDebuffKind = 4;
+OrlanHeal.Priest.DiseaseDebuffKind = 2;
+OrlanHeal.Priest.MagicDebuffKind = 3;
+OrlanHeal.Priest.CurseDebuffKind = 4;
+OrlanHeal.Priest.PlayerDebuffSlots = { 1, 2, 3, 4, 0 };
+OrlanHeal.Priest.PetDebuffSlots = { 0, 0 };
+
+function OrlanHeal.Priest.GetSpecificDebuffKind(orlanHeal, spellId)
+	local debuffKind;
+	if spellId == 6788 then -- Ослабленная душа
+		debuffKind = 1;
+	end;
+
+	return debuffKind;
+end;
+
 
 OrlanHeal:Initialize("OrlanHealConfig");
