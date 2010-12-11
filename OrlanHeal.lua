@@ -941,7 +941,11 @@ function OrlanHeal:Initialize(configName)
 		[67625] = true, -- Burning Bite
 		[67624] = true, -- Burning Bite
 		[66879] = true, -- Burning Bite
-		[70126] = true -- Frost Beacon
+		[70126] = true, -- Frost Beacon
+		[92036] = true, -- Acquiring Target
+		[92037] = true, -- Acquiring Target
+		[92035] = true, -- Acquiring Target
+		[79501] = true -- Acquiring Target
 	};
 end;
 
