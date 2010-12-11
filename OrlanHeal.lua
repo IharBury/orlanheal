@@ -945,7 +945,17 @@ function OrlanHeal:Initialize(configName)
 		[92036] = true, -- Acquiring Target
 		[92037] = true, -- Acquiring Target
 		[92035] = true, -- Acquiring Target
-		[79501] = true -- Acquiring Target
+		[79501] = true, -- Acquiring Target
+		[94616] = true, -- Mangle
+		[94617] = true, -- Mangle
+		[91912] = true, -- Mangle
+		[78412] = true, -- Mangle
+		[89773] = true, -- Mangle
+		[94679] = true, -- Parasitic Infection
+		[94678] = true, -- Parasitic Infection
+		[91913] = true, -- Parasitic Infection
+		[78941] = true, -- Parasitic Infection
+		[78097] = true -- Parasitic Infection
 	};
 end;
 
