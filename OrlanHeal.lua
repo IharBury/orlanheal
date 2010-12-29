@@ -955,7 +955,11 @@ function OrlanHeal:Initialize(configName)
 		[94678] = true, -- Parasitic Infection
 		[91913] = true, -- Parasitic Infection
 		[78941] = true, -- Parasitic Infection
-		[78097] = true -- Parasitic Infection
+		[78097] = true, -- Parasitic Infection
+		[92878] = true, -- Blackout
+		[92876] = true, -- Blackout
+		[92877] = true, -- Blackout
+		[86788] = true -- Blackout
 	};
 end;
 
