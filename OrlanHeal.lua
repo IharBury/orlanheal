@@ -959,7 +959,8 @@ function OrlanHeal:Initialize(configName)
 		[92878] = true, -- Blackout
 		[92876] = true, -- Blackout
 		[92877] = true, -- Blackout
-		[86788] = true -- Blackout
+		[86788] = true, -- Blackout
+		[89084] = true -- Низкий запас здоровья
 	};
 end;
 
