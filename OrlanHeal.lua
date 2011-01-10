@@ -1986,25 +1986,41 @@ function OrlanHeal:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts)
 			(groupNumber ~= 0) and 
 			(groupNumber <= self.GroupCount) and 
 			(groupPlayerCounts[groupNumber] < 5) then
+		local unit = "raid" .. unitNumber;
+		local pet = "raidpet" .. unitNumber;
+
 		groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
 		self:SetPlayerTarget(
 			groupNumber, 
 			groupPlayerCounts[groupNumber], 
-			"raid" .. unitNumber, 
-			"raidpet" .. unitNumber);
+			unit, 
+			pet);
 
 		local name, _, _, _, _, _, _, _, _, role = GetRaidRosterInfo(unitNumber);
-		self.RaidRoles["raid" .. unitNumber] = role;
+		self.RaidRoles[unit] = role;
 		if name then
 			self.RaidRoles[name] = role;
 		end;
 		if self.IsTankWindowVisible then
-			local role2 = UnitGroupRolesAssigned("raid" .. unitNumber);
-			if (role == "MAINTANK") or (role2 == "TANK") then
+			local role2 = UnitGroupRolesAssigned(unit);
+			if (role == "MAINTANK") or (role2 == "TANK") or self:IsOraMainTank(name) then
 				self:SetupTank(name);
 			end;
 		end;
 	end;
+end;
+
+function OrlanHeal:IsOraMainTank(name)
+	local isMainTank = false;
+	if oRA and oRA.maintanktable then
+		for _, tank in pairs(oRA.maintanktable) do
+			if tank == name then
+				isMainTank = true;
+				break;
+			end;
+		end;
+	end;
+	return isMainTank;
 end;
 
 function OrlanHeal:SetupFreeRaidSlot(unitNumber, groupPlayerCounts)
