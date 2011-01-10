@@ -1997,13 +1997,16 @@ function OrlanHeal:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts)
 			pet);
 
 		local name, _, _, _, _, _, _, _, _, role = GetRaidRosterInfo(unitNumber);
+		if name and self:IsOraMainTank(name) then
+			role = "MAINTANK";
+		end;
 		self.RaidRoles[unit] = role;
 		if name then
 			self.RaidRoles[name] = role;
 		end;
 		if self.IsTankWindowVisible then
 			local role2 = UnitGroupRolesAssigned(unit);
-			if (role == "MAINTANK") or (role2 == "TANK") or self:IsOraMainTank(name) then
+			if (role == "MAINTANK") or (role2 == "TANK") then
 				self:SetupTank(name);
 			end;
 		end;
