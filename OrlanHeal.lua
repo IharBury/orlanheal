@@ -25,6 +25,8 @@ function SlashCmdList.ORLANHEAL(message, editbox)
 		OrlanHeal:SetVisibleGroupCount(1);
 	elseif message == "tanks" then
 		OrlanHeal:ToggleTanks();
+	elseif message == "byname" then
+		OrlanHeal:SetNameBinding();
 	elseif message == "setup" then
 		OrlanHeal:Setup();
 	else
@@ -131,7 +133,7 @@ function OrlanHeal:Initialize(configName)
 	self.NameFontHeight = self.NameHeight * 0.8;
 
 	self.GroupCountSwitchHeight = 16;
-	self.GroupCountSwitchWidth = 21;
+	self.GroupCountSwitchWidth = 20;
 	self.GroupCountSwitchHorizontalSpacing = 3;
 	self.GroupCountSwitchVerticalSpacing = 2;
 
@@ -147,6 +149,7 @@ function OrlanHeal:Initialize(configName)
 	self.VisibleGroupCount = 9;
 	self.IsInStartUpMode = true;
 	self.IsTankWindowVisible = false;
+	self.IsNameBindingEnabled = false;
 
 	self.PlayerBuffCount = 5;
 
@@ -1218,6 +1221,8 @@ function OrlanHeal:CreateRaidWindow()
 	end;
 
 	raidWindow.TankSwitch = self:CreateTankSwitch(raidWindow);
+	raidWindow.NameBindingSwitch = self:CreateNameBindingSwitch(raidWindow);
+	raidWindow.SetupButton = self:CreateSetupButton(raidWindow);
 
 	return raidWindow;
 end;
@@ -1249,6 +1254,66 @@ function OrlanHeal:CreateTankSwitch(raidWindow)
 		end);
 
 	button:Hide();
+
+	return button;
+end;
+
+function OrlanHeal:CreateNameBindingSwitch(raidWindow)
+	local button = CreateFrame("Button", nil, raidWindow);
+	button:SetPoint(
+		"TOPLEFT", 
+		raidWindow, 
+		"BOTTOMLEFT", 
+		8 * (self.GroupCountSwitchWidth + self.GroupCountSwitchHorizontalSpacing), 
+		-self.GroupCountSwitchHeight - 2 * self.GroupCountSwitchVerticalSpacing);
+	button:SetHeight(self.GroupCountSwitchHeight);
+	button:SetWidth(self.GroupCountSwitchWidth);
+	button:SetNormalFontObject("GameFontNormalSmall");
+	button:SetText("Nm");
+	button:SetAlpha(self.RaidAlpha);
+
+	local normalTexture = button:CreateTexture();
+	normalTexture:SetAllPoints();
+	normalTexture:SetTexture(0, 0, 0, 1);
+	button:SetNormalTexture(normalTexture);
+
+	local orlanHeal = self;
+	button:SetScript(
+		"OnClick",
+		function()
+			orlanHeal:SetNameBinding();
+		end);
+
+	button:Hide();
+
+	return button;
+end;
+
+function OrlanHeal:CreateSetupButton(raidWindow)
+	local button = CreateFrame("Button", nil, raidWindow);
+	button:SetPoint(
+		"TOPLEFT", 
+		raidWindow, 
+		"BOTTOMLEFT", 
+		9 * (self.GroupCountSwitchWidth + self.GroupCountSwitchHorizontalSpacing), 
+		-self.GroupCountSwitchVerticalSpacing);
+	button:SetHeight(self.GroupCountSwitchHeight);
+	button:SetWidth(self.GroupCountSwitchWidth);
+	button:SetNormalFontObject("GameFontNormalSmall");
+	button:SetText("Set");
+	button:SetAlpha(self.RaidAlpha);
+
+	local normalTexture = button:CreateTexture();
+	normalTexture:SetAllPoints();
+	normalTexture:SetTexture(0, 0, 0, 1);
+	button:SetNormalTexture(normalTexture);
+
+	local orlanHeal = self;
+	button:SetScript(
+		"OnClick",
+		function()
+			orlanHeal:Setup();
+		end);
 
 	return button;
 end;
@@ -1832,6 +1897,7 @@ function OrlanHeal:SetGroupCount(newGroupCount)
 	if self:RequestNonCombat() then
 		self.GroupCount = newGroupCount;
 		self.VisibleGroupCount = newGroupCount;
+		self.IsNameBindingEnabled = false;
 		self.IsInStartUpMode = false;
 		self:UpdateVisibleGroupCount();
 		self:UpdateUnits();
@@ -1880,13 +1946,27 @@ function OrlanHeal:UpdateCooldownFrames()
 end;
 
 function OrlanHeal:SetVisibleGroupCount(newVisibleGroupCount)
-	self.VisibleGroupCount = newVisibleGroupCount;
-	self:UpdateGroupCountSwitches();
+	if self:RequestNonCombat() then
+		self.VisibleGroupCount = newVisibleGroupCount;
+		self.IsNameBindingEnabled = false;
+		self:UpdateUnits();
+		self:UpdateSwitches();
+	end;
+end;
+
+function OrlanHeal:SetNameBinding()
+	if self:RequestNonCombat() then
+		self.VisibleGroupCount = self.GroupCount;
+		self.IsNameBindingEnabled = true;
+		self:UpdateUnits();
+		self:UpdateSwitches();
+	end;
 end;
 
 function OrlanHeal:UpdateSwitches()
 	self:UpdateGroupCountSwitches();
 	self:UpdateTankSwitch();
+	self:UpdateNameBindingSwitch();
 end;
 
 function OrlanHeal:UpdateGroupCountSwitches()
@@ -1904,7 +1984,7 @@ function OrlanHeal:UpdateGroupCountSwitches()
 			self.RaidWindow.VisibleGroupCountSwitches[size]:Show();
 
 			local visibleGroupCountTexture = self.RaidWindow.VisibleGroupCountSwitches[size]:GetNormalTexture();
-			if self.VisibleGroupCount == size / 5 then
+			if (self.VisibleGroupCount == size / 5) and not self.IsNameBindingEnabled then
 				visibleGroupCountTexture:SetTexture(1, 0.5, 0.5, 1);
 			else
 				visibleGroupCountTexture:SetTexture(0, 0, 0, 1);
@@ -1919,6 +1999,17 @@ function OrlanHeal:UpdateTankSwitch()
 	local texture = self.RaidWindow.TankSwitch:GetNormalTexture();
 	if self.IsTankWindowVisible then
 		texture:SetTexture(0.5, 1, 0.5, 1);
+	else
+		texture:SetTexture(0, 0, 0, 1);
+	end;
+end;
+
+function OrlanHeal:UpdateNameBindingSwitch()
+	self.RaidWindow.NameBindingSwitch:Show();
+
+	local texture = self.RaidWindow.NameBindingSwitch:GetNormalTexture();
+	if self.IsNameBindingEnabled then
+		texture:SetTexture(1, 0.5, 0.5, 1);
 	else
 		texture:SetTexture(0, 0, 0, 1);
 	end;
@@ -1970,7 +2061,7 @@ end;
 function OrlanHeal:SetupTank(name)
 	if self.TankCount < 5 then
 		self.RaidWindow.Groups[0].Players[self.TankCount].Button:SetAttribute("unit", name);
-		self.RaidWindow.Groups[0].Players[self.TankCount].Pet.Button:SetAttribute("unit", name + "-pet");
+		self.RaidWindow.Groups[0].Players[self.TankCount].Pet.Button:SetAttribute("unit", name .. "-pet");
 		self.TankCount = self.TankCount + 1;
 	end;
 end;
@@ -1989,15 +2080,21 @@ function OrlanHeal:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts)
 			(groupPlayerCounts[groupNumber] < 5) then
 		local unit = "raid" .. unitNumber;
 		local pet = "raidpet" .. unitNumber;
+		local unitBinding = unit;
+		local petBinding = pet;
+		local name, _, _, _, _, _, _, _, _, role = GetRaidRosterInfo(unitNumber);
+		if name and self.IsNameBindingEnabled then
+			unitBinding = name;
+			petBinding = name .. "-pet";
+		end;
 
 		groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
 		self:SetPlayerTarget(
 			groupNumber, 
 			groupPlayerCounts[groupNumber], 
-			unit, 
-			pet);
+			unitBinding, 
+			petBinding);
 
-		local name, _, _, _, _, _, _, _, _, role = GetRaidRosterInfo(unitNumber);
 		if name and self:IsOraMainTank(name) then
 			role = "MAINTANK";
 		end;
@@ -2031,11 +2128,17 @@ function OrlanHeal:SetupFreeRaidSlot(unitNumber, groupPlayerCounts)
 	for groupNumber = 1, self.GroupCount do
 		if groupPlayerCounts[groupNumber] < 5 then
 			groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
+			local unit = "raid" .. unitNumber;
+			local pet = "raidpet" .. unitNumber;
+			if self.IsNameBindingEnabled then
+				unit = "";
+				pet = "";
+			end;
 			self:SetPlayerTarget(
 				groupNumber, 
 				groupPlayerCounts[groupNumber], 
-				"raid" .. unitNumber, 
-				"raidpet" .. unitNumber);
+				unit, 
+				pet);
 			break;
 		end;
 	end;
@@ -2052,21 +2155,35 @@ function OrlanHeal:SetupParty(groupNumber)
 	end;
 
 	for unitNumber = 1, 4 do
-		self:SetPlayerTarget(groupNumber, unitNumber + 1, "party" .. unitNumber, "partypet" .. unitNumber);
+		local unit = "party" .. unitNumber;
+		local pet = "partypet" .. unitNumber;
+		local unitBinding = unit;
+		local petBinding = pet;
+		local name = self:GetUnitNameAndRealm(unit);
+		if name and self.IsNameBindingEnabled then
+			unitBinding = name;
+			petBinding = name .. "-pet";
+		end;
+
+		self:SetPlayerTarget(groupNumber, unitNumber + 1, unitBinding, petBinding);
 		if self.IsTankWindowVisible then
-			local role = UnitGroupRolesAssigned("party" .. unitNumber);
-			if role == "TANK" then
-				local name, realm = UnitName("party" .. unitNumber);
-				local fullName;
-				if realm then
-					fullName = name .. "-" .. realm;
-				else
-					fullName = name;
-				end;
-				self:SetupTank(fullName);
+			local role = UnitGroupRolesAssigned(unit);
+			if name and (role == "TANK") then
+				self:SetupTank(name);
 			end;
 		end;
 	end;
+end;
+
+function OrlanHeal:GetUnitNameAndRealm(unit)
+	local name, realm = UnitName(unit);
+	local fullName;
+	if realm then
+		fullName = name .. "-" .. realm;
+	else
+		fullName = name;
+	end;
+	return fullName;
 end;
 
 function OrlanHeal:SetupEmptyGroup(groupNumber)
