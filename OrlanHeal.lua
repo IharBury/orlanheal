@@ -2285,6 +2285,21 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 end;
 
 function OrlanHeal:UpdateUnitBorder(canvas, unit)
+	if self:UnitHasCriticalDebuff(unit) then
+		self:SetBorderColor(canvas, 1, 1, 1, 1);
+	else
+		local situation = UnitThreatSituation(unit)
+		if situation == 1 then
+			self:SetBorderColor(canvas, 1, 0.6, 0, 1);
+		elseif (situation == 2) or (situation == 3) then
+			self:SetBorderColor(canvas, 1, 0, 0, 1);
+		else
+			self:SetBorderColor(canvas, 0, 0, 0, 0);
+		end;
+	end;
+end;
+
+function OrlanHeal:UnitHasCriticalDebuff(unit)
 	local buffIndex = 1;
 	local hasCriticalDebuff = false;
 
@@ -2300,18 +2315,7 @@ function OrlanHeal:UpdateUnitBorder(canvas, unit)
 		buffIndex = buffIndex + 1;
 	end;
 
-	if hasCriticalDebuff then
-		self:SetBorderColor(canvas, 1, 1, 1, 1);
-	else
-		local situation = UnitThreatSituation(unit)
-		if situation == 1 then
-			self:SetBorderColor(canvas, 1, 0.6, 0, 1);
-		elseif (situation == 2) or (situation == 3) then
-			self:SetBorderColor(canvas, 1, 0, 0, 1);
-		else
-			self:SetBorderColor(canvas, 0, 0, 0, 0);
-		end;
-	end;
+	return hasCriticalDebuff;
 end;
 
 function OrlanHeal:UpdateBackground(background, unit)
