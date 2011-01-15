@@ -2178,7 +2178,7 @@ end;
 function OrlanHeal:GetUnitNameAndRealm(unit)
 	local name, realm = UnitName(unit);
 	local fullName;
-	if realm then
+	if realm and (realm ~= "") then
 		fullName = name .. "-" .. realm;
 	else
 		fullName = name;
