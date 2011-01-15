@@ -2028,7 +2028,8 @@ function OrlanHeal:UpdateUnits()
 	end;
 
 	self.RaidRoles = {};
-	self.TankCount = 0;
+	self.DisplayedTankCount = 0;
+	self.DisplayedTanks = {};
 
 	if self.IsInStartUpMode then
 		for groupNumber = 1, (self.GroupCount - 1) * 5 do
@@ -2059,15 +2060,16 @@ function OrlanHeal:UpdateUnits()
 end;
 
 function OrlanHeal:SetupTank(name)
-	if self.TankCount < 5 then
-		self.RaidWindow.Groups[0].Players[self.TankCount].Button:SetAttribute("unit", name);
-		self.RaidWindow.Groups[0].Players[self.TankCount].Pet.Button:SetAttribute("unit", name .. "-pet");
-		self.TankCount = self.TankCount + 1;
+	if self.DisplayedTankCount < 5 then
+		self.RaidWindow.Groups[0].Players[self.DisplayedTankCount].Button:SetAttribute("unit", name);
+		self.RaidWindow.Groups[0].Players[self.DisplayedTankCount].Pet.Button:SetAttribute("unit", name .. "-pet");
+		self.DisplayedTanks[name] = true;
+		self.DisplayedTankCount = self.DisplayedTankCount + 1;
 	end;
 end;
 
 function OrlanHeal:FinishTankSetup()
-	for playerIndex = self.TankCount, 4 do
+	for playerIndex = self.DisplayedTankCount, 4 do
 		self.RaidWindow.Groups[0].Players[playerIndex].Button:SetAttribute("unit", "");
 		self.RaidWindow.Groups[0].Players[playerIndex].Pet.Button:SetAttribute("unit", "");
 	end;
@@ -2390,6 +2392,7 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 
 		window.Canvas:Show();
 
+		self:UpdateUnitAlpha(window.Canvas, unit, displayedGroup);
 		self:UpdateBackground(window.Canvas.BackgroundTexture, unit);
 		self:UpdateRange(window.Canvas.RangeBar, unit);
 		self:UpdateHealth(window.Canvas.HealthBar, unit);
@@ -2399,6 +2402,14 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		self:UpdateDebuffs(window.Canvas, unit);
 		self:UpdateUnitBorder(window.Canvas, unit);
 		self:UpdateTargetIcon(window.Canvas, unit);
+	end;
+end;
+
+function OrlanHeal:UpdateUnitAlpha(canvas, unit, displayedGroup)
+	if displayedGroup and self.DisplayedTanks[self:GetUnitNameAndRealm(unit)] then
+		canvas:SetAlpha(0.25);
+	else
+		canvas:SetAlpha(1);
 	end;
 end;
 
