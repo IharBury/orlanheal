@@ -1969,7 +1969,7 @@ end;
 function OrlanHeal:SetupTank(name)
 	if self.TankCount < 5 then
 		self.RaidWindow.Groups[0].Players[self.TankCount].Button:SetAttribute("unit", name);
-		self.RaidWindow.Groups[0].Players[self.TankCount].Pet.Button:SetAttribute("unit", "");
+		self.RaidWindow.Groups[0].Players[self.TankCount].Pet.Button:SetAttribute("unit", name + "-pet");
 		self.TankCount = self.TankCount + 1;
 	end;
 end;
