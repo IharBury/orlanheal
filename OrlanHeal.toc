@@ -1,6 +1,6 @@
-## Interface: 40000
+## Interface: 40100
 ## Title: OrlanHeal
-## Version: 1.5
+## Version: 1.5.2
 ## Notes: 
 ## SavedVariablesPerCharacter: OrlanHealConfig
 OrlanHeal.lua
