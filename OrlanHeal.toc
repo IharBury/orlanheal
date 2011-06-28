@@ -1,6 +1,6 @@
-## Interface: 40100
+## Interface: 40200
 ## Title: OrlanHeal
-## Version: 1.5.3
+## Version: 1.5.4
 ## Notes: 
 ## SavedVariablesPerCharacter: OrlanHealConfig
 OrlanHeal.lua
