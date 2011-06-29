@@ -965,7 +965,39 @@ function OrlanHeal:Initialize(configName)
 		[86788] = true, -- Blackout
 		[89084] = true, -- Низкий запас здоровья
 		[82170] = true, -- Corruption: Absolute
-		[79339] = true -- Взрывчатая субстанция
+		[79339] = true, -- Взрывчатая субстанция
+		[49026] = true, -- Fixate
+		[100094] = true, -- Fieroblast
+		[101223] = true, -- Fieroblast
+		[101294] = true, -- Fieroblast
+		[101295] = true, -- Fieroblast
+		[101296] = true, -- Fieroblast
+		[100722] = true, -- Gushing Wound
+		[100721] = true, -- Gushing Wound
+		[100720] = true, -- Gushing Wound
+		[100719] = true, -- Gushing Wound
+		[100723] = true, -- Gushing Wound
+		[100024] = true, -- Gushing Wound
+		[99308] = true, -- Gushing Wound
+		[100718] = true, -- Gushing Wound
+		[99838] = true, -- Immolation Trap
+		[101208] = true, -- Immolation Trap
+		[101209] = true, -- Immolation Trap
+		[101210] = true, -- Immolation Trap
+		[101213] = true, -- Face Rage
+		[99947] = true, -- Face Rage
+		[99948] = true, -- Face Rage
+		[100129] = true, -- Face Rage
+		[101212] = true, -- Face Rage
+		[101214] = true, -- Face Rage
+		[99256] = true, -- Torment
+		[100230] = true, -- Torment
+		[100231] = true, -- Torment
+		[100232] = true, -- Torment
+		[100293] = true, -- Lava Wave
+		[98928] = true, -- Lava Wave
+		[100292] = true, -- Lava Wave
+		[100294] = true, -- Lava Wave
 	};
 end;
 
