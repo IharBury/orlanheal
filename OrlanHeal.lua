@@ -76,6 +76,8 @@ function OrlanHeal:Initialize(configName)
 		self.Class = self.Paladin;
 	elseif class == "PRIEST" then
 		self.Class = self.Priest;
+	elseif class == "SHAMAN" then
+		self.Class = self.Shaman;
 	else
 		self.Class = self.Paladin;
 		print("OrlanHeal: " .. className .. " class is not supported.");
@@ -2443,12 +2445,12 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 			end;
 	        end;
 
-		local beaconOfLightSpellName = GetSpellInfo(53563);
+		local redRangeSpellName = GetSpellInfo(self.Class.RedRangeSpellId);
 		if UnitInBattleground("player") ~= nil then
 			if (UnitIsConnected(unit) ~= 1) or
 					(UnitIsCorpse(unit) == 1) or 
 					(UnitIsDeadOrGhost(unit) == 1) or
-					(IsSpellInRange(beaconOfLightSpellName, unit) ~= 1) or -- Частица Света
+					(IsSpellInRange(redRangeSpellName, unit) ~= 1) or
 					(UnitCanAssist("player", unit) ~= 1) then
 		                window.Canvas:Hide();
         		        return;
@@ -2908,6 +2910,53 @@ function OrlanHeal.Priest.GetSpecificDebuffKind(orlanHeal, spellId)
 		debuffKind = 1;
 	end;
 
+	return debuffKind;
+end;
+
+
+
+OrlanHeal.Shaman = {};
+
+OrlanHeal.Shaman.AvailableSpells =
+{
+	331, -- Волна исцеления
+	974, -- Щит земли
+}
+
+function OrlanHeal.Shaman.CreateCooldowns(orlanHeal, cooldowns)
+end;
+
+function OrlanHeal.Shaman.UpdateCooldowns(orlanHeal)
+end;
+
+OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления
+OrlanHeal.Shaman.OrangeRangeSpellId = 331; -- Волна исцеления
+OrlanHeal.Shaman.YellowRangeSpellId = 546; -- Хождение по воде
+
+
+function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
+	orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+end;
+
+OrlanHeal.Shaman.PlayerSpecificBuffCount = 1;
+
+function OrlanHeal.Shaman.GetSpecificBuffKind(orlanHeal, spellId, caster)
+	local buffKind;
+	if (spellId == 974) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- свой Щит земли
+		buffKind = 1;
+	end;
+	return buffKind;
+end;
+
+OrlanHeal.Shaman.PoisonDebuffKind = 4;
+OrlanHeal.Shaman.DiseaseDebuffKind = 4;
+OrlanHeal.Shaman.MagicDebuffKind = 4;
+OrlanHeal.Shaman.CurseDebuffKind = 4;
+OrlanHeal.Shaman.PlayerDebuffSlots = { 0, 0, 0, 0, 0 };
+OrlanHeal.Shaman.PetDebuffSlots = { 0, 0 };
+
+function OrlanHeal.Shaman.GetSpecificDebuffKind(orlanHeal, spellId)
+	local debuffKind;
 	return debuffKind;
 end;
 
