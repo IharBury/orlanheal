@@ -156,6 +156,7 @@ function OrlanHeal:Initialize(configName)
 	self.PlayerBuffCount = 5;
 
 	self.CooldownSize = 40;
+	self.CooldownCountSize = 15;
 
 	self.RaidRoles = {};
 
@@ -1475,10 +1476,19 @@ function OrlanHeal:CreateCooldown(parent, index, imageSpellId, castSpellId, isRe
 	cooldown.Background:SetAllPoints(cooldown);
 	cooldown.Background:SetAlpha(0.5);
 
+	local countSize = self.CooldownCountSize;
+	cooldown.Count = cooldown:CreateFontString(nil, "ARTWORK", "GameFontNormal");
+	cooldown.Count:SetHeight(countSize);
+	cooldown.Count:SetWidth(countSize);
+	cooldown.Count:SetTextColor(1, 1, 1, 1);
+	cooldown.Count:SetShadowColor(0, 0, 0, 1);
+	cooldown.Count:SetShadowOffset(-1, -1);
+	cooldown.Count:SetTextHeight(countSize);
+	cooldown.Count:SetPoint("BOTTOMRIGHT", cooldown, "BOTTOMRIGHT", 0, 0);
+
 	local _, _, icon = GetSpellInfo(imageSpellId);
 	cooldown.Background:SetTexture(icon);
 	cooldown:SetReverse(isReverse);
-	
 
 	if castSpellId then
 		cooldown.Button = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
@@ -2281,8 +2291,8 @@ end;
 
 function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
 	local spellName = GetSpellInfo(spellId);
-	local _, _, _, _, _, duration, expirationTime = UnitBuff("player", spellName);
-	self:UpdateCooldown(cooldown, duration, expirationTime);
+	local _, _, _, count, _, duration, expirationTime = UnitBuff("player", spellName);
+	self:UpdateCooldown(cooldown, duration, expirationTime, count);
 end;
 
 function OrlanHeal:UpdateAbilityCooldown(cooldown, spellId)
@@ -2299,42 +2309,42 @@ function OrlanHeal:UpdateAbilityCooldown(cooldown, spellId)
 end;
 
 function OrlanHeal:UpdateRaidBuffCooldown(cooldown, spellId)
-	local duration, expirationTime = self:GetRaidBuffCooldown(spellId);
-	self:UpdateCooldown(cooldown, duration, expirationTime);
+	local duration, expirationTime, count = self:GetRaidBuffCooldown(spellId);
+	self:UpdateCooldown(cooldown, duration, expirationTime, count);
 end;
 
 function OrlanHeal:GetRaidBuffCooldown(spellId)
-	local duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("player", spellId);
+	local duration, expirationTime, count = self:GetPlayerCastUnitBuffCooldown("player", spellId);
 	if duration then
-		return duration, expirationTime;
+		return duration, expirationTime, count;
 	end;
 
-	duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("pet", spellId);
+	duration, expirationTime, count = self:GetPlayerCastUnitBuffCooldown("pet", spellId);
 	if duration then
-		return duration, expirationTime;
+		return duration, expirationTime, count;
 	end;
 
 	for i = 1, 4 do
-		duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("party" .. i, spellId);
+		duration, expirationTime, count = self:GetPlayerCastUnitBuffCooldown("party" .. i, spellId);
 		if duration then
-			return duration, expirationTime;
+			return duration, expirationTime, count;
 		end;
 
-		duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("partypet" .. i, spellId);
+		duration, expirationTime, count = self:GetPlayerCastUnitBuffCooldown("partypet" .. i, spellId);
 		if duration then
-			return duration, expirationTime;
+			return duration, expirationTime, count;
 		end;
 	end;
 
 	for i = 1, 40 do
-		duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("raid" .. i, spellId);
+		duration, expirationTime, count = self:GetPlayerCastUnitBuffCooldown("raid" .. i, spellId);
 		if duration then
-			return duration, expirationTime;
+			return duration, expirationTime, count;
 		end;
 
-		duration, expirationTime = self:GetPlayerCastUnitBuffCooldown("raidpet" .. i, spellId);
+		duration, expirationTime, count = self:GetPlayerCastUnitBuffCooldown("raidpet" .. i, spellId);
 		if duration then
-			return duration, expirationTime;
+			return duration, expirationTime, count;
 		end;
 	end;
 end;
@@ -2342,20 +2352,20 @@ end;
 function OrlanHeal:GetPlayerCastUnitBuffCooldown(unit, spellId)
 	local i = 1;
 	while true do
-		local _, _, _, _, _, duration, expirationTime, _, _, _, buffId = UnitBuff(unit, i, "PLAYER");
+		local _, _, _, count, _, duration, expirationTime, _, _, _, buffId = UnitBuff(unit, i, "PLAYER");
 		if not buffId then
 			return;
 		end;
 
 		if buffId == spellId then
-			return duration, expirationTime;
+			return duration, expirationTime, count;
 		end;
 
 		i = i + 1;
 	end;
 end;
 
-function OrlanHeal:UpdateCooldown(cooldown, duration, expirationTime)
+function OrlanHeal:UpdateCooldown(cooldown, duration, expirationTime, count)
 	duration = duration or 0;
 	expirationTime = expirationTime or 0;
 	if expirationTime ~= cooldown.Off then
@@ -2371,6 +2381,12 @@ function OrlanHeal:UpdateCooldown(cooldown, duration, expirationTime)
 		cooldown:SetReverse(cooldown.IsReverse);
 	else
 		cooldown:SetReverse(true);
+	end;
+
+	if count and (count > 1) then
+		cooldown.Count:SetText(count);
+	else
+		cooldown.Count:SetText("");
 	end;
 end;
 
@@ -2926,11 +2942,15 @@ OrlanHeal.Shaman.AvailableSpells =
 }
 
 function OrlanHeal.Shaman.CreateCooldowns(orlanHeal, cooldowns)
-	cooldowns[0] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 0, 16188, 16188, false); -- Природная стремительность
+	cooldowns[0] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 0, 52127, 52127, true); -- Водный щит
+	cooldowns[1] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 1, 974, 974, true); -- Щит земли
+	cooldowns[2] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 2, 16188, 16188, false); -- Природная стремительность
 end;
 
 function OrlanHeal.Shaman.UpdateCooldowns(orlanHeal)
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[0], 16188); -- Природная стремительность
+	orlanHeal:UpdatePlayerBuffCooldown(orlanHeal.RaidWindow.Cooldowns[0], 52127); -- Водный щит
+	orlanHeal:UpdateRaidBuffCooldown(orlanHeal.RaidWindow.Cooldowns[1], 974); -- Щит земли
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[2], 16188); -- Природная стремительность
 end;
 
 OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления
