@@ -2921,12 +2921,16 @@ OrlanHeal.Shaman.AvailableSpells =
 {
 	331, -- Волна исцеления
 	974, -- Щит земли
+	51886, -- Очищение духа
+	8004 -- Исцеляющий всплеск
 }
 
 function OrlanHeal.Shaman.CreateCooldowns(orlanHeal, cooldowns)
+	cooldowns[0] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 0, 16188, 16188, false); -- Природная стремительность
 end;
 
 function OrlanHeal.Shaman.UpdateCooldowns(orlanHeal)
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[0], 16188); -- Природная стремительность
 end;
 
 OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления
@@ -2951,8 +2955,8 @@ end;
 OrlanHeal.Shaman.PoisonDebuffKind = 4;
 OrlanHeal.Shaman.DiseaseDebuffKind = 4;
 OrlanHeal.Shaman.MagicDebuffKind = 4;
-OrlanHeal.Shaman.CurseDebuffKind = 4;
-OrlanHeal.Shaman.PlayerDebuffSlots = { 0, 0, 0, 0, 0 };
+OrlanHeal.Shaman.CurseDebuffKind = 1;
+OrlanHeal.Shaman.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Shaman.PetDebuffSlots = { 0, 0 };
 
 function OrlanHeal.Shaman.GetSpecificDebuffKind(orlanHeal, spellId)
