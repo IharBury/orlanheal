@@ -2888,10 +2888,12 @@ OrlanHeal.Priest.AvailableSpells =
 
 function OrlanHeal.Priest.CreateCooldowns(orlanHeal, cooldowns)
 	cooldowns[0] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 0, 89485, 89485, false); -- Внутреннее сосредоточение
+	cooldowns[1] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 1, 17, 17, false); -- Слово силы: Щит
 end;
 
 function OrlanHeal.Priest.UpdateCooldowns(orlanHeal)
 	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[0], 89485); -- Внутреннее сосредоточение
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[1], 17); -- Слово силы: Щит
 end;
 
 OrlanHeal.Priest.RedRangeSpellId = 2096; -- Внутреннее зрение
