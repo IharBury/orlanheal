@@ -2883,12 +2883,15 @@ OrlanHeal.Priest.AvailableSpells =
 	47788, -- Оберегающий дух
 	10060, -- Придание сил
 	33206, -- Подавление боли
+	59544, -- Дар Наару
 }
 
 function OrlanHeal.Priest.CreateCooldowns(orlanHeal, cooldowns)
+	cooldowns[0] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 0, 89485, 89485, false); -- Внутреннее сосредоточение
 end;
 
 function OrlanHeal.Priest.UpdateCooldowns(orlanHeal)
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[0], 89485); -- Внутреннее сосредоточение
 end;
 
 OrlanHeal.Priest.RedRangeSpellId = 2096; -- Внутреннее зрение
@@ -2938,7 +2941,8 @@ OrlanHeal.Shaman.AvailableSpells =
 	331, -- Волна исцеления
 	974, -- Щит земли
 	51886, -- Очищение духа
-	8004 -- Исцеляющий всплеск
+	8004, -- Исцеляющий всплеск
+	546 -- Хождение по воде
 }
 
 function OrlanHeal.Shaman.CreateCooldowns(orlanHeal, cooldowns)
