@@ -2980,9 +2980,9 @@ end;
 
 OrlanHeal.Shaman.PoisonDebuffKind = 4;
 OrlanHeal.Shaman.DiseaseDebuffKind = 4;
-OrlanHeal.Shaman.MagicDebuffKind = 4;
+OrlanHeal.Shaman.MagicDebuffKind = 2;
 OrlanHeal.Shaman.CurseDebuffKind = 1;
-OrlanHeal.Shaman.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
+OrlanHeal.Shaman.PlayerDebuffSlots = { 1, 2, 0, 0, 0 };
 OrlanHeal.Shaman.PetDebuffSlots = { 0, 0 };
 
 function OrlanHeal.Shaman.GetSpecificDebuffKind(orlanHeal, spellId)
