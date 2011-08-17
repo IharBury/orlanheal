@@ -2944,7 +2944,8 @@ OrlanHeal.Shaman.AvailableSpells =
 	974, -- Щит земли
 	51886, -- Очищение духа
 	8004, -- Исцеляющий всплеск
-	546 -- Хождение по воде
+	546, -- Хождение по воде
+	1064 -- Цепное исцеление
 }
 
 function OrlanHeal.Shaman.CreateCooldowns(orlanHeal, cooldowns)
