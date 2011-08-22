@@ -2953,6 +2953,7 @@ function OrlanHeal.Shaman.CreateCooldowns(orlanHeal, cooldowns)
 	cooldowns[1] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 1, 974, 974, true); -- Щит земли
 	cooldowns[2] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 2, 16188, 16188, false); -- Природная стремительность
 	cooldowns[3] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 3, 26297, 26297, false); -- Берсерк
+	cooldowns[4] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 4, 16190, 16190, false); -- Тотем прилива маны
 end;
 
 function OrlanHeal.Shaman.UpdateCooldowns(orlanHeal)
@@ -2960,6 +2961,7 @@ function OrlanHeal.Shaman.UpdateCooldowns(orlanHeal)
 	orlanHeal:UpdateRaidBuffCooldown(orlanHeal.RaidWindow.Cooldowns[1], 974); -- Щит земли
 	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[2], 16188); -- Природная стремительность
 	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[3], 26297); -- Берсерк
+	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[4], 16190); -- Тотем прилива маны
 end;
 
 OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления
