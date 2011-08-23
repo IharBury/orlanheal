@@ -2295,6 +2295,19 @@ function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
 	self:UpdateCooldown(cooldown, duration, expirationTime, count);
 end;
 
+function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(cooldown, duration)
+	local hasEnchant, timeLeft = GetWeaponEnchantInfo();
+	if hasEnchant then
+		local expiration = GetTime() + timeLeft / 1000;
+		if (cooldown.Off and (expiration > cooldown.Off - 1) and (expiration < cooldown.Off + 1)) then
+			expiration = cooldown.Off;
+		end;
+		self:UpdateCooldown(cooldown, duration, expiration, 1);
+	else
+		self:UpdateCooldown(cooldown, nil, nil, nil);
+	end;
+end;
+
 function OrlanHeal:UpdateAbilityCooldown(cooldown, spellId)
 	local start, duration, enabled = GetSpellCooldown(spellId);
 	local expirationTime;
@@ -2954,6 +2967,7 @@ function OrlanHeal.Shaman.CreateCooldowns(orlanHeal, cooldowns)
 	cooldowns[2] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 2, 16188, 16188, false); -- Природная стремительность
 	cooldowns[3] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 3, 26297, 26297, false); -- Берсерк
 	cooldowns[4] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 4, 16190, 16190, false); -- Тотем прилива маны
+	cooldowns[5] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 0, 51730, 51730, true); -- Оружие жизни земли
 end;
 
 function OrlanHeal.Shaman.UpdateCooldowns(orlanHeal)
@@ -2962,6 +2976,7 @@ function OrlanHeal.Shaman.UpdateCooldowns(orlanHeal)
 	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[2], 16188); -- Природная стремительность
 	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[3], 26297); -- Берсерк
 	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[4], 16190); -- Тотем прилива маны
+	orlanHeal:UpdateMainHandTemporaryEnchantCooldown(orlanHeal.RaidWindow.Cooldowns[5], 30 * 60); -- Оружие жизни земли
 end;
 
 OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления
