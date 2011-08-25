@@ -4,3 +4,16 @@
 ## Notes: 
 ## SavedVariablesPerCharacter: OrlanHealConfig
 OrlanHeal.lua
+Constants.lua
+
+SavingAbilities.lua
+ShieldAbilities.lua
+HealingBuffs.lua
+IgnoredDebuffs.lua
+CriticalDebuffs.lua
+
+Paladin.lua
+Priest.lua
+Shaman.lua
+
+Initialize.lua
