@@ -9,37 +9,84 @@
 	background:SetAllPoints();
 	background:SetTexture(0, 0, 0, 0.6);
 
-	setupWindow:SetHeight(560);
-	setupWindow:SetWidth(450);
+	setupWindow:SetHeight(self.SetupWindowHeight);
+	setupWindow:SetWidth(self.SetupWindowWidth);
 	setupWindow:Hide();
 
-	setupWindow.Spell1Window = self:CreateSpellSelectWindow(setupWindow, "Spell1", "1", 0, "LEFT");
-	setupWindow.Spell2Window = self:CreateSpellSelectWindow(setupWindow, "Spell2", "2", 1, "RIGHT");
-	setupWindow.Spell3Window = self:CreateSpellSelectWindow(setupWindow, "Spell3", "3", 2, "MIDDLE");
-	setupWindow.Spell4Window = self:CreateSpellSelectWindow(setupWindow, "Spell4", "4", 3, "BTN4");
-	setupWindow.Spell5Window = self:CreateSpellSelectWindow(setupWindow, "Spell5", "5", 4, "BTN5");
-	setupWindow.AltSpell1Window = self:CreateSpellSelectWindow(setupWindow, "AltSpell1", "alt1", 5, "ALT LEFT");
-	setupWindow.AltSpell2Window = self:CreateSpellSelectWindow(setupWindow, "AltSpell2", "alt2", 6, "ALT RIGHT");
-	setupWindow.AltSpell3Window = self:CreateSpellSelectWindow(setupWindow, "AltSpell3", "alt3", 7, "ALT MIDDLE");
-	setupWindow.AltSpell4Window = self:CreateSpellSelectWindow(setupWindow, "AltSpell4", "alt4", 8, "ALT BTN4");
-	setupWindow.AltSpell5Window = self:CreateSpellSelectWindow(setupWindow, "AltSpell5", "alt5", 9, "ALT BTN5");
-	setupWindow.ShiftSpell1Window = self:CreateSpellSelectWindow(setupWindow, "ShiftSpell1", "shift1", 10, "SHIFT LEFT");
-	setupWindow.ShiftSpell2Window = self:CreateSpellSelectWindow(setupWindow, "ShiftSpell2", "shift2", 11, "SHIFT RIGHT");
-	setupWindow.ShiftSpell3Window = self:CreateSpellSelectWindow(setupWindow, "ShiftSpell3", "shift3", 12, "SHIFT MIDDLE");
-	setupWindow.ShiftSpell4Window = self:CreateSpellSelectWindow(setupWindow, "ShiftSpell4", "shift4", 13, "SHIFT BTN4");
-	setupWindow.ShiftSpell5Window = self:CreateSpellSelectWindow(setupWindow, "ShiftSpell5", "shift5", 14, "SHIFT BTN5");
-	setupWindow.ControlSpell1Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell1", "control1", 15, "CONTROL LEFT");
-	setupWindow.ControlSpell2Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell2", "control2", 16, "CONTROL RIGHT");
-	setupWindow.ControlSpell3Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell3", "control3", 17, "CONTROL MIDDLE");
-	setupWindow.ControlSpell4Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell4", "control4", 18, "CONTROL BTN4");
-	setupWindow.ControlSpell5Window = self:CreateSpellSelectWindow(setupWindow, "ControlSpell5", "control5", 19, "CONTROL BTN5");
-	setupWindow.SizeWindow = self:CreateSizeSelectWindow(setupWindow, 20);
+	local setupScrollWindowContainer = CreateFrame("ScrollFrame", self.SetupWindowName .. "_SCROLL", setupWindow);
+	setupScrollWindowContainer:SetPoint("TOPLEFT", 0, 0);
+	setupScrollWindowContainer:SetPoint("BOTTOMRIGHT", -18, 40);
+
+	local setupScrollWindow = CreateFrame("Frame");
+	setupScrollWindow:SetHeight(1);
+	setupScrollWindow:SetWidth(self.SetupWindowWidth - 18);
+	setupScrollWindowContainer:SetScrollChild(setupScrollWindow);
+
+	local setupWindowSlider = CreateFrame(
+		"Slider", 
+		self.SetupWindowName .. "_SLIDER", 
+		setupScrollWindowContainer, 
+		"UIPanelScrollBarTemplate");
+	setupWindowSlider:SetPoint("TOPLEFT", setupScrollWindowContainer, "TOPRIGHT", 0, -16);
+	setupWindowSlider:SetPoint("BOTTOMLEFT", setupScrollWindowContainer, "BOTTOMRIGHT", 0, 16);
+	setupWindowSlider:SetOrientation("VERTICAL");
+
+	setupScrollWindowContainer:SetScript(
+		"OnScrollRangeChanged",
+		function()
+			setupWindowSlider:SetMinMaxValues(0, setupScrollWindowContainer:GetVerticalScrollRange());
+			setupWindowSlider:SetValue(setupScrollWindowContainer:GetVerticalScroll());
+		end);
+
+	setupWindow.ControlCount = 0;
+	setupWindow.SpellSelectWindows = {};
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "Spell1", "1", "LEFT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "Spell2", "2", "RIGHT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "Spell3", "3", "MIDDLE");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "Spell4", "4", "BUTTON4");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "Spell5", "5", "BUTTON5");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "AltSpell1", "alt1", "ALT LEFT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "AltSpell2", "alt2", "ALT RIGHT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "AltSpell3", "alt3", "ALT MIDDLE");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "AltSpell4", "alt4", "ALT BUTTON4");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "AltSpell5", "alt5", "ALT BUTTON5");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ShiftSpell1", "shift1", "SHIFT LEFT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ShiftSpell2", "shift2", "SHIFT RIGHT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ShiftSpell3", "shift3", "SHIFT MIDDLE");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ShiftSpell4", "shift4", "SHIFT BUTTON4");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ShiftSpell5", "shift5", "SHIFT BUTTON5");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlSpell1", "control1", "CONTROL LEFT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlSpell2", "control2", "CONTROL RIGHT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlSpell3", "control3", "CONTROL MIDDLE");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlSpell4", "control4", "CONTROL BUTTON4");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlSpell5", "control5", "CONTROL BUTTON5");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "AltShiftSpell1", "altshift1", "ALT SHIFT LEFT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "AltShiftSpell2", "altshift2", "ALT SHIFT RIGHT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "AltShiftSpell3", "altshift3", "ALT SHIFT MIDDLE");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "AltShiftSpell4", "altshift4", "ALT SHIFT BUTTON4");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "AltShiftSpell5", "altshift5", "ALT SHIFT BUTTON5");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltSpell1", "controlalt1", "CONTROL ALT LEFT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltSpell2", "controlalt2", "CONTROL ALT RIGHT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltSpell3", "controlalt3", "CONTROL ALT MIDDLE");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltSpell4", "controlalt4", "CONTROL ALT BUTTON4");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltSpell5", "controlalt5", "CONTROL ALT BUTTON5");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlShiftSpell1", "controlshift1", "CONTROL SHIFT LEFT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlShiftSpell2", "controlshift2", "CONTROL SHIFT RIGHT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlShiftSpell3", "controlshift3", "CONTROL SHIFT MIDDLE");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlShiftSpell4", "controlshift4", "CONTROL SHIFT BUTTON4");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlShiftSpell5", "controlshift5", "CONTROL SHIFT BUTTON5");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell1", "controlaltshift1", "CONTROL ALT SHIFT LEFT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell2", "controlaltshift2", "CONTROL ALT SHIFT RIGHT");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell3", "controlaltshift3", "CONTROL ALT SHIFT MIDDLE");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell4", "controlaltshift4", "CONTROL ALT SHIFT BUTTON4");
+	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell5", "controlaltshift5", "CONTROL ALT SHIFT BUTTON5");
+	setupWindow.SizeWindow = self:CreateSizeSelectWindow(setupWindow, setupScrollWindow);
 
 	local okButton = CreateFrame("Button", nil, setupWindow, "UIPanelButtonTemplate");
 	okButton:SetText("OK");
 	okButton:SetWidth(150);
 	okButton:SetHeight(25);
-	okButton:SetPoint("TOPLEFT", 50, -530);
+	okButton:SetPoint("TOPLEFT", setupWindow, "BOTTOMLEFT", 50, 30);
 	okButton:SetScript(
 		"OnClick",
 		function()
@@ -50,7 +97,7 @@
 	cancelButton:SetText("Cancel");
 	cancelButton:SetWidth(150);	
 	cancelButton:SetHeight(25);
-	cancelButton:SetPoint("TOPLEFT", 250, -530);
+	cancelButton:SetPoint("TOPLEFT", setupWindow, "BOTTOMLEFT", 250, 30);
 	cancelButton:SetScript(
 		"OnClick",
 		function()
@@ -60,33 +107,35 @@
 	return setupWindow;
 end;
 
-function OrlanHeal:CreateSpellSelectWindow(parent, nameSuffix, button, index, caption)
+function OrlanHeal:CreateSpellSelectWindow(setupWindow, parent, nameSuffix, button, caption)
 	local label = parent:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -8 - index * 25);
+	label:SetPoint("TOPRIGHT", parent, "TOPLEFT", self.SetupWindowLabelWidth - 5, -8 - setupWindow.ControlCount * 25);
 	label:SetText(caption);
 
 	local spellSelectWindow = CreateFrame("Frame", self.SetupWindowName .. "_" .. nameSuffix, parent, "UIDropDownMenuTemplate");
-	UIDropDownMenu_SetWidth(spellSelectWindow, 300);
+	UIDropDownMenu_SetWidth(spellSelectWindow, self.SetupWindowValueWidth - 5);
 	spellSelectWindow.OrlanHeal = self;
 	spellSelectWindow.button = button;
-	spellSelectWindow:SetPoint("TOPLEFT", 100, -index * 25);
+	spellSelectWindow:SetPoint("TOPLEFT", self.SetupWindowLabelWidth - 20, -setupWindow.ControlCount * 25);
 
-	return spellSelectWindow;
+	setupWindow.SpellSelectWindows[setupWindow.ControlCount] = spellSelectWindow;
+	setupWindow.ControlCount = setupWindow.ControlCount + 1;
 end;
 
-function OrlanHeal:CreateSizeSelectWindow(parent, index)
+function OrlanHeal:CreateSizeSelectWindow(setupWindow, parent)
 	local label = parent:CreateFontString(nil, nil, "GameFontNormal");
-	label:SetPoint("TOPLEFT", 5, -8 - index * 25);
+	label:SetPoint("TOPRIGHT", parent, "TOPLEFT", self.SetupWindowLabelWidth - 5, -8 - setupWindow.ControlCount * 25);
 	label:SetText("SIZE");
 
 	local sizeSelectWindow = CreateFrame("Slider", self.SetupWindowName .. "_Size", parent, "OptionsSliderTemplate");
-	sizeSelectWindow:SetWidth(300);
+	sizeSelectWindow:SetWidth(self.SetupWindowValueWidth);
 	sizeSelectWindow:SetHeight(20);
 	sizeSelectWindow:SetOrientation('HORIZONTAL');
 	sizeSelectWindow:SetMinMaxValues(500, 2000);
 	sizeSelectWindow.OrlanHeal = self;
-	sizeSelectWindow:SetPoint("TOPLEFT", 125, -index * 25);
+	sizeSelectWindow:SetPoint("TOPLEFT", self.SetupWindowLabelWidth, -setupWindow.ControlCount * 25);
 
+	setupWindow.ControlCount = setupWindow.ControlCount + 1;
 	return sizeSelectWindow;
 end;
 
@@ -156,6 +205,26 @@ function OrlanHeal:LoadSetup()
 	self.Config["alt3"] = self.Config["alt3"] or 633; -- Lay on Hands
 	self.Config["alt4"] = self.Config["alt4"] or "";
 	self.Config["alt5"] = self.Config["alt5"] or "";
+	self.Config["controlalt1"] = self.Config["controlalt1"] or "";
+	self.Config["controlalt2"] = self.Config["controlalt2"] or "";
+	self.Config["controlalt3"] = self.Config["controlalt3"] or "";
+	self.Config["controlalt4"] = self.Config["controlalt4"] or "";
+	self.Config["controlalt5"] = self.Config["controlalt5"] or "";
+	self.Config["controlshift1"] = self.Config["controlshift1"] or "";
+	self.Config["controlshift2"] = self.Config["controlshift2"] or "";
+	self.Config["controlshift3"] = self.Config["controlshift3"] or "";
+	self.Config["controlshift4"] = self.Config["controlshift4"] or "";
+	self.Config["controlshift5"] = self.Config["controlshift5"] or "";
+	self.Config["altshift1"] = self.Config["altshift1"] or "";
+	self.Config["altshift2"] = self.Config["altshift2"] or "";
+	self.Config["altshift3"] = self.Config["altshift3"] or "";
+	self.Config["altshift4"] = self.Config["altshift4"] or "";
+	self.Config["altshift5"] = self.Config["altshift5"] or "";
+	self.Config["controlaltshift1"] = self.Config["controlaltshift1"] or "";
+	self.Config["controlaltshift2"] = self.Config["controlaltshift2"] or "";
+	self.Config["controlaltshift3"] = self.Config["controlaltshift3"] or "";
+	self.Config["controlaltshift4"] = self.Config["controlaltshift4"] or "";
+	self.Config["controlaltshift5"] = self.Config["controlaltshift5"] or "";
 	self.Config.Size = self.Config.Size or 1;
 end;
 
@@ -165,26 +234,11 @@ function OrlanHeal:Setup()
 		self.PendingConfig[key] = value;
 	end;
 
-	self:InitializeSpellSelectWindow(self.SetupWindow.Spell1Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.Spell2Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.Spell3Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.Spell4Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.Spell5Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.AltSpell1Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.AltSpell2Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.AltSpell3Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.AltSpell4Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.AltSpell5Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.ShiftSpell1Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.ShiftSpell2Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.ShiftSpell3Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.ShiftSpell4Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.ShiftSpell5Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell1Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell2Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell3Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell4Window);
-	self:InitializeSpellSelectWindow(self.SetupWindow.ControlSpell5Window);
+	for spellSelectWindowIndex = 0, self.SetupWindow.ControlCount do
+		if self.SetupWindow.SpellSelectWindows[spellSelectWindowIndex] then
+			self:InitializeSpellSelectWindow(self.SetupWindow.SpellSelectWindows[spellSelectWindowIndex]);
+		end;
+	end;
 	self.SetupWindow.SizeWindow:SetValue(self.RaidWindow:GetScale() / self.Scale * 1000);
 
 	self.SetupWindow:Show();
