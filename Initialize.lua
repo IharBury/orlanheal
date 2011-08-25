@@ -60,4 +60,30 @@
 	self.RaidRoles = {};
 end;
 
+function OrlanHeal:HandleLoaded()
+	_G[self.ConfigName] = _G[self.ConfigName] or {};
+	self.Config = _G[self.ConfigName];
+
+	self:LoadSetup();
+
+	self.RaidWindow = self:CreateRaidWindow();
+	self.SetupWindow = self:CreateSetupWindow();
+
+	self:UpdateVisibleGroupCount();
+	self:UpdateCooldownFrames();
+	self:Show();
+
+	self.EventFrame:RegisterEvent("RAID_ROSTER_UPDATE");
+	self.EventFrame:RegisterEvent("PARTY_MEMBERS_CHANGED");
+	self.EventFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
+	self.EventFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
+	self.EventFrame:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND");
+	self.EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
+	self.EventFrame:RegisterEvent("PARTY_CONVERTED_TO_RAID");
+	self.EventFrame:RegisterEvent("PARTY_LEADER_CHANGED");
+	self.EventFrame:RegisterEvent("LFG_ROLE_UPDATE");
+	self.EventFrame:RegisterEvent("PLAYER_ROLES_ASSIGNED");
+	self.EventFrame:RegisterEvent("ROLE_CHANGED_INFORM");
+end;
+
 OrlanHeal:Initialize("OrlanHealConfig");

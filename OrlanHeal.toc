@@ -12,6 +12,11 @@ HealingBuffs.lua
 IgnoredDebuffs.lua
 CriticalDebuffs.lua
 
+Setup.lua
+Mode.lua
+Cooldowns.lua
+Commands.lua
+
 Paladin.lua
 Priest.lua
 Shaman.lua
