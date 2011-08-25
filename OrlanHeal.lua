@@ -433,6 +433,26 @@ function OrlanHeal:SetupSpells(button)
 	self:SetAction(button, "ctrl-", "3", self.Config["control3"]);
 	self:SetAction(button, "ctrl-", "4", self.Config["control4"]);
 	self:SetAction(button, "ctrl-", "5", self.Config["control5"]);
+	self:SetAction(button, "alt-ctrl-", "1", self.Config["controlalt1"]);
+	self:SetAction(button, "alt-ctrl-", "2", self.Config["controlalt2"]);
+	self:SetAction(button, "alt-ctrl-", "3", self.Config["controlalt3"]);
+	self:SetAction(button, "alt-ctrl-", "4", self.Config["controlalt4"]);
+	self:SetAction(button, "alt-ctrl-", "5", self.Config["controlalt5"]);
+	self:SetAction(button, "alt-shift-", "1", self.Config["altshift1"]);
+	self:SetAction(button, "alt-shift-", "2", self.Config["altshift2"]);
+	self:SetAction(button, "alt-shift-", "3", self.Config["altshift3"]);
+	self:SetAction(button, "alt-shift-", "4", self.Config["altshift4"]);
+	self:SetAction(button, "alt-shift-", "5", self.Config["altshift5"]);
+	self:SetAction(button, "ctrl-shift-", "1", self.Config["controlshift1"]);
+	self:SetAction(button, "ctrl-shift-", "2", self.Config["controlshift2"]);
+	self:SetAction(button, "ctrl-shift-", "3", self.Config["controlshift3"]);
+	self:SetAction(button, "ctrl-shift-", "4", self.Config["controlshift4"]);
+	self:SetAction(button, "ctrl-shift-", "5", self.Config["controlshift5"]);
+	self:SetAction(button, "alt-ctrl-shift-", "1", self.Config["controlaltshift1"]);
+	self:SetAction(button, "alt-ctrl-shift-", "2", self.Config["controlaltshift2"]);
+	self:SetAction(button, "alt-ctrl-shift-", "3", self.Config["controlaltshift3"]);
+	self:SetAction(button, "alt-ctrl-shift-", "4", self.Config["controlaltshift4"]);
+	self:SetAction(button, "alt-ctrl-shift-", "5", self.Config["controlaltshift5"]);
 end;
 
 function OrlanHeal:SetAction(button, prefix, mouseButton, action)

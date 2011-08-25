@@ -53,3 +53,8 @@ OrlanHeal.PlayerBuffCount = 5;
 
 OrlanHeal.CooldownSize = 40;
 OrlanHeal.CooldownCountSize = 15;
+
+OrlanHeal.SetupWindowWidth = 600;
+OrlanHeal.SetupWindowHeight = 500;
+OrlanHeal.SetupWindowLabelWidth = 200;
+OrlanHeal.SetupWindowValueWidth = OrlanHeal.SetupWindowWidth - OrlanHeal.SetupWindowLabelWidth - 18 - 10;
