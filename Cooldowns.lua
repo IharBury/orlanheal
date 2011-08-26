@@ -257,5 +257,45 @@ OrlanHeal.CommonCooldownOptions =
 			local _, race = UnitRace("player");
 			return race == "Troll";
 		end;
+	},
+	Lifeblood1 =
+	{
+		SpellId = 81708,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Lifeblood2 =
+	{
+		SpellId = 55428,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Lifeblood3 =
+	{
+		SpellId = 55480,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Lifeblood4 =
+	{
+		SpellId = 55500,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Lifeblood5 =
+	{
+		SpellId = 55501,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Lifeblood6 =
+	{
+		SpellId = 55502,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Lifeblood7 =
+	{
+		SpellId = 55503,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Lifeblood8 =
+	{
+		SpellId = 74497,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
