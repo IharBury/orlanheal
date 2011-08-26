@@ -239,7 +239,10 @@ end;
 
 function OrlanHeal:AddCooldownOption(info, level, key, cooldown)
 	if not cooldown.IsAvailable or cooldown.IsAvailable(self) then
-		local spellName = GetSpellInfo(cooldown.AuraId or cooldown.SpellId);
+		local spellName, rank = GetSpellInfo(cooldown.AuraId or cooldown.SpellId);
+		if rank and (rank ~= "") then
+			spellName = spellName .. " (" .. rank .. ")";
+		end;
 		info["text"] = spellName;
 		info["value"] = key;
 		info["arg2"] = key;
