@@ -40,6 +40,7 @@
 
 	setupWindow.ControlCount = 0;
 	setupWindow.SpellSelectWindows = {};
+	setupWindow.CooldownSelectWindows = {};
 	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "Spell1", "1", "LEFT");
 	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "Spell2", "2", "RIGHT");
 	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "Spell3", "3", "MIDDLE");
@@ -80,6 +81,16 @@
 	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell3", "controlaltshift3", "CONTROL ALT SHIFT MIDDLE");
 	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell4", "controlaltshift4", "CONTROL ALT SHIFT BUTTON4");
 	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell5", "controlaltshift5", "CONTROL ALT SHIFT BUTTON5");
+	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown1", "cooldown1", "COOLDOWN 1");
+	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown2", "cooldown2", "COOLDOWN 2");
+	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown3", "cooldown3", "COOLDOWN 3");
+	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown4", "cooldown4", "COOLDOWN 4");
+	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown5", "cooldown5", "COOLDOWN 5");
+	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown6", "cooldown6", "COOLDOWN 6");
+	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown7", "cooldown7", "COOLDOWN 7");
+	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown8", "cooldown8", "COOLDOWN 8");
+	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown9", "cooldown9", "COOLDOWN 9");
+	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown10", "cooldown10", "COOLDOWN 10");
 	setupWindow.SizeWindow = self:CreateSizeSelectWindow(setupWindow, setupScrollWindow);
 
 	local okButton = CreateFrame("Button", nil, setupWindow, "UIPanelButtonTemplate");
@@ -119,6 +130,21 @@ function OrlanHeal:CreateSpellSelectWindow(setupWindow, parent, nameSuffix, butt
 	spellSelectWindow:SetPoint("TOPLEFT", self.SetupWindowLabelWidth - 20, -setupWindow.ControlCount * 25);
 
 	setupWindow.SpellSelectWindows[setupWindow.ControlCount] = spellSelectWindow;
+	setupWindow.ControlCount = setupWindow.ControlCount + 1;
+end;
+
+function OrlanHeal:CreateCooldownSelectWindow(setupWindow, parent, nameSuffix, cooldown, caption)
+	local label = parent:CreateFontString(nil, nil, "GameFontNormal");
+	label:SetPoint("TOPRIGHT", parent, "TOPLEFT", self.SetupWindowLabelWidth - 5, -8 - setupWindow.ControlCount * 25);
+	label:SetText(caption);
+
+	local cooldownSelectWindow = CreateFrame("Frame", self.SetupWindowName .. "_" .. nameSuffix, parent, "UIDropDownMenuTemplate");
+	UIDropDownMenu_SetWidth(cooldownSelectWindow, self.SetupWindowValueWidth - 5);
+	cooldownSelectWindow.OrlanHeal = self;
+	cooldownSelectWindow.cooldown = cooldown;
+	cooldownSelectWindow:SetPoint("TOPLEFT", self.SetupWindowLabelWidth - 20, -setupWindow.ControlCount * 25);
+
+	setupWindow.CooldownSelectWindows[setupWindow.ControlCount] = cooldownSelectWindow;
 	setupWindow.ControlCount = setupWindow.ControlCount + 1;
 end;
 
@@ -184,25 +210,71 @@ function OrlanHeal:HandleSpellSelect(spellWindow, value)
 	UIDropDownMenu_SetSelectedValue(spellWindow, value);	
 end;
 
+function OrlanHeal:InitializeCooldownSelectWindow(cooldownSelectWindow)
+	UIDropDownMenu_Initialize(cooldownSelectWindow, self.HandleCooldownInit);
+end;
+
+function OrlanHeal:HandleCooldownInit(level)
+	local info = {};
+	info["func"] = self.OrlanHeal.HandleCooldownSelect;
+	info["arg1"] = self;
+
+	info["text"] = "";
+	info["value"] = "";
+	info["arg2"] = "";
+	UIDropDownMenu_AddButton(info, level);
+
+	for key, cooldown in pairs(self.OrlanHeal.CommonCooldownOptions) do
+		self.OrlanHeal:AddCooldownOption(info, level, key, cooldown);
+	end;
+
+	if self.OrlanHeal.Class.CooldownOptions then
+		for key, cooldown in pairs(self.OrlanHeal.Class.CooldownOptions) do
+			self.OrlanHeal:AddCooldownOption(info, level, key, cooldown);
+		end;
+	end;
+
+	UIDropDownMenu_SetSelectedValue(self, self.OrlanHeal.PendingConfig[self.cooldown]);
+end;
+
+function OrlanHeal:AddCooldownOption(info, level, key, cooldown)
+	if not cooldown.IsAvailable or cooldown.IsAvailable(self) then
+		local spellName = GetSpellInfo(cooldown.AuraId or cooldown.SpellId);
+		info["text"] = spellName;
+		info["value"] = key;
+		info["arg2"] = key;
+		UIDropDownMenu_AddButton(info, level);
+	end;
+end;
+
+function OrlanHeal:HandleCooldownSelect(cooldownWindow, value)
+	cooldownWindow.OrlanHeal.PendingConfig[cooldownWindow.cooldown] = value;
+	UIDropDownMenu_SetSelectedValue(cooldownWindow, value);	
+end;
+
 function OrlanHeal:LoadSetup()
-	self.Config["1"] = self.Config["1"] or 635; -- Holy Light
-	self.Config["2"] = self.Config["2"] or 19750; -- Flash of Light
-	self.Config["3"] = self.Config["3"] or 1022; -- Hand of Protection
+	if self.Class.LoadSetup then
+		self.Class.LoadSetup(self);
+	end;
+
+	self.Config["1"] = self.Config["1"] or "";
+	self.Config["2"] = self.Config["2"] or "";
+	self.Config["3"] = self.Config["3"] or "";
 	self.Config["4"] = self.Config["4"] or "";
 	self.Config["5"] = self.Config["5"] or "";
 	self.Config["shift1"] = self.Config["shift1"] or "target";
-	self.Config["shift2"] = self.Config["shift2"] or 53563; -- Beacon of Light
-	self.Config["shift3"] = self.Config["shift3"] or 1038; -- Hand of Salvation
+	self.Config["shift2"] = self.Config["shift2"] or "";
+	self.Config["shift3"] = self.Config["shift3"] or "";
 	self.Config["shift4"] = self.Config["shift4"] or "";
 	self.Config["shift5"] = self.Config["shift5"] or "";
-	self.Config["control1"] = self.Config["control1"] or 82326; -- Divine Light
-	self.Config["control2"] = self.Config["control2"] or 85673; -- Word of Glory
-	self.Config["control3"] = self.Config["control3"] or 6940; -- Hand of Sacrifice
+	self.Config["control1"] = self.Config["control1"] or "";
+	self.Config["control2"] = self.Config["control2"] or "";
+	self.Config["control3"] = self.Config["control3"] or "";
 	self.Config["control4"] = self.Config["control4"] or "";
 	self.Config["control5"] = self.Config["control5"] or "";
-	self.Config["alt1"] = self.Config["alt1"] or 4987; -- Cleanse
-	self.Config["alt2"] = self.Config["alt2"] or 20473; -- Holy Shock
-	self.Config["alt3"] = self.Config["alt3"] or 633; -- Lay on Hands
+	self.Config["alt1"] = self.Config["alt1"] or "";
+	self.Config["alt2"] = self.Config["alt2"] or "";
+	self.Config["alt3"] = self.Config["alt3"] or "";
 	self.Config["alt4"] = self.Config["alt4"] or "";
 	self.Config["alt5"] = self.Config["alt5"] or "";
 	self.Config["controlalt1"] = self.Config["controlalt1"] or "";
@@ -226,6 +298,17 @@ function OrlanHeal:LoadSetup()
 	self.Config["controlaltshift4"] = self.Config["controlaltshift4"] or "";
 	self.Config["controlaltshift5"] = self.Config["controlaltshift5"] or "";
 	self.Config.Size = self.Config.Size or 1;
+
+	self.Config["cooldown1"] = self.Config["cooldown1"] or "";
+	self.Config["cooldown2"] = self.Config["cooldown2"] or "";
+	self.Config["cooldown3"] = self.Config["cooldown3"] or "";
+	self.Config["cooldown4"] = self.Config["cooldown4"] or "";
+	self.Config["cooldown5"] = self.Config["cooldown5"] or "";
+	self.Config["cooldown6"] = self.Config["cooldown6"] or "";
+	self.Config["cooldown7"] = self.Config["cooldown7"] or "";
+	self.Config["cooldown8"] = self.Config["cooldown8"] or "";
+	self.Config["cooldown9"] = self.Config["cooldown9"] or "";
+	self.Config["cooldown10"] = self.Config["cooldown10"] or "";
 end;
 
 function OrlanHeal:Setup()
@@ -237,6 +320,11 @@ function OrlanHeal:Setup()
 	for spellSelectWindowIndex = 0, self.SetupWindow.ControlCount do
 		if self.SetupWindow.SpellSelectWindows[spellSelectWindowIndex] then
 			self:InitializeSpellSelectWindow(self.SetupWindow.SpellSelectWindows[spellSelectWindowIndex]);
+		end;
+	end;
+	for cooldownSelectWindowIndex = 0, self.SetupWindow.ControlCount do
+		if self.SetupWindow.CooldownSelectWindows[cooldownSelectWindowIndex] then
+			self:InitializeCooldownSelectWindow(self.SetupWindow.CooldownSelectWindows[cooldownSelectWindowIndex]);
 		end;
 	end;
 	self.SetupWindow.SizeWindow:SetValue(self.RaidWindow:GetScale() / self.Scale * 1000);
@@ -260,5 +348,6 @@ function OrlanHeal:SaveSetup()
 		self.SetupWindow:Hide();
 
 		self:UpdateSpells();
+		self:SetupCooldowns();
 	end;
 end;

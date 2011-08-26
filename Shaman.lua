@@ -8,30 +8,53 @@ OrlanHeal.Shaman.AvailableSpells =
 	8004, -- Исцеляющий всплеск
 	546, -- Хождение по воде
 	1064 -- Цепное исцеление
-}
+};
 
-function OrlanHeal.Shaman.CreateCooldowns(orlanHeal, cooldowns)
-	cooldowns[0] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 0, 52127, 52127, true); -- Водный щит
-	cooldowns[1] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 1, 974, 974, true); -- Щит земли
-	cooldowns[2] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 2, 16188, 16188, false); -- Природная стремительность
-	cooldowns[3] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 3, 26297, 26297, false); -- Берсерк
-	cooldowns[4] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 4, 16190, 16190, false); -- Тотем прилива маны
-	cooldowns[5] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 0, 51730, 51730, true); -- Оружие жизни земли
-end;
+OrlanHeal.Shaman.CooldownOptions =
+{
+	WaterShield =
+	{
+		SpellId = 52127, -- Водный щит
+		IsReverse = true,
+		Update = OrlanHeal.UpdatePlayerBuffCooldown
+	},
+	EarthShield =
+	{
+		SpellId = 974, -- Щит земли
+		IsReverse = true,
+		Update = OrlanHeal.UpdateRaidBuffCooldown
+	},
+	NaturesSwiftness =
+	{
+		SpellId = 16188, -- Природная стремительность
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	ManaTideTotem =
+	{
+		SpellId = 16190, -- Тотем прилива маны
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	EarthlivingWeapon =
+	{
+		SpellId = 51730, -- Оружие жизни земли
+		IsReverse = true,
+		Duration = 30 * 60,
+		Update = OrlanHeal.UpdateMainHandTemporaryEnchantCooldown
+	}
+};
 
-function OrlanHeal.Shaman.UpdateCooldowns(orlanHeal)
-	orlanHeal:UpdatePlayerBuffCooldown(orlanHeal.RaidWindow.Cooldowns[0], 52127); -- Водный щит
-	orlanHeal:UpdateRaidBuffCooldown(orlanHeal.RaidWindow.Cooldowns[1], 974); -- Щит земли
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[2], 16188); -- Природная стремительность
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[3], 26297); -- Берсерк
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[4], 16190); -- Тотем прилива маны
-	orlanHeal:UpdateMainHandTemporaryEnchantCooldown(orlanHeal.RaidWindow.Cooldowns[5], 30 * 60); -- Оружие жизни земли
+function OrlanHeal.Shaman.LoadSetup(orlanHeal)
+	orlanHeal.Config["cooldown1"] = orlanHeal.Config["cooldown1"] or "WaterShield";
+	orlanHeal.Config["cooldown2"] = orlanHeal.Config["cooldown2"] or "EarthShield";
+	orlanHeal.Config["cooldown3"] = orlanHeal.Config["cooldown3"] or "NaturesSwiftness";
+	orlanHeal.Config["cooldown4"] = orlanHeal.Config["cooldown4"] or "Berserk";
+	orlanHeal.Config["cooldown5"] = orlanHeal.Config["cooldown5"] or "ManaTideTotem";
+	orlanHeal.Config["cooldown6"] = orlanHeal.Config["cooldown6"] or "EarthlivingWeapon";
 end;
 
 OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления
 OrlanHeal.Shaman.OrangeRangeSpellId = 331; -- Волна исцеления
 OrlanHeal.Shaman.YellowRangeSpellId = 546; -- Хождение по воде
-
 
 function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
 	orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
