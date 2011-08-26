@@ -108,7 +108,7 @@
 	cancelButton:SetText("Cancel");
 	cancelButton:SetWidth(150);	
 	cancelButton:SetHeight(25);
-	cancelButton:SetPoint("TOPLEFT", setupWindow, "BOTTOMLEFT", 250, 30);
+	cancelButton:SetPoint("TOPRIGHT", setupWindow, "BOTTOMRIGHT", -50, 30);
 	cancelButton:SetScript(
 		"OnClick",
 		function()
