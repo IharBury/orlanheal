@@ -2,25 +2,16 @@
 	local cooldowns = {};
 
 	cooldowns.Frames = {};
-	cooldowns.Frames[0] = self:CreateCooldownFrame(parent);
-	cooldowns.Frames[0]:SetPoint(
-		"BOTTOMLEFT",
-		parent,
-		"TOPLEFT",
-		self.RaidOuterSpacing,
-		self.RaidOuterSpacing);
+	for frameIndex = 0, math.ceil(self.MaxCooldownCount / self.CooldownCountPerFrame) do
+		cooldowns.Frames[frameIndex] = self:CreateCooldownFrame(parent);
+	end;
 	cooldowns.Frames[1] = self:CreateCooldownFrame(parent);
 
-	cooldowns[0] = self:CreateCooldown(cooldowns.Frames[0], 0);
-	cooldowns[1] = self:CreateCooldown(cooldowns.Frames[0], 1);
-	cooldowns[2] = self:CreateCooldown(cooldowns.Frames[0], 2);
-	cooldowns[3] = self:CreateCooldown(cooldowns.Frames[0], 3);
-	cooldowns[4] = self:CreateCooldown(cooldowns.Frames[0], 4);
-	cooldowns[5] = self:CreateCooldown(cooldowns.Frames[1], 0);
-	cooldowns[6] = self:CreateCooldown(cooldowns.Frames[1], 1);
-	cooldowns[7] = self:CreateCooldown(cooldowns.Frames[1], 2);
-	cooldowns[8] = self:CreateCooldown(cooldowns.Frames[1], 3);
-	cooldowns[9] = self:CreateCooldown(cooldowns.Frames[1], 4);
+	for cooldownIndex = 0, self.MaxCooldownCount - 1 do
+		cooldowns[cooldownIndex] = self:CreateCooldown(
+			cooldowns.Frames[math.floor(cooldownIndex / self.CooldownCountPerFrame)], 
+			cooldownIndex % self.CooldownCountPerFrame);
+	end;
 
 	return cooldowns;
 end;
@@ -28,7 +19,7 @@ end;
 function OrlanHeal:CreateCooldownFrame(parent)
 	local frame = CreateFrame("Frame", nil, parent);
 	frame:SetHeight(self.CooldownSize);
-	frame:SetWidth(self.CooldownSize * (5 + 1 / 8 * 4));
+	frame:SetWidth(self.CooldownSize * (1 + (1 + 1 / 8) * (self.CooldownCountPerFrame - 1)));
 	return frame;
 end;
 
@@ -97,13 +88,13 @@ function OrlanHeal:GetCooldown(index)
 end;
 
 function OrlanHeal:SetupCooldowns()
-	for index = 0, 9 do
+	for index = 0, self.MaxCooldownCount - 1 do
 		self:SetupCooldown(self.RaidWindow.Cooldowns[index], self:GetCooldown(index));
 	end;
 end;
 
 function OrlanHeal:UpdateCooldowns()
-	for index = 0, 9 do
+	for index = 0, self.MaxCooldownCount - 1 do
 		self:UpdateCooldownWindow(self.RaidWindow.Cooldowns[index], self:GetCooldown(index));
 	end;
 end;
@@ -115,21 +106,33 @@ function OrlanHeal:UpdateCooldownWindow(window, cooldown)
 end;
 
 function OrlanHeal:UpdateCooldownFrames()
-	self.RaidWindow.Cooldowns.Frames[1]:ClearAllPoints();
-	if self.IsInStartUpMode or (self:GetGroupCountWithTanks() > 1) then
-		self.RaidWindow.Cooldowns.Frames[1]:SetPoint(
-			"BOTTOMLEFT",
-			self.RaidWindow,
-			"TOPLEFT",
-			self.RaidOuterSpacing + 5 * self.CooldownSize * (1 + 1 / 8),
-			self.RaidOuterSpacing);
-	else
-		self.RaidWindow.Cooldowns.Frames[1]:SetPoint(
-			"BOTTOMLEFT",
-			self.RaidWindow,
-			"TOPLEFT",
-			self.RaidOuterSpacing,
-			self.RaidOuterSpacing + self.CooldownSize * (1 + 1 / 8));
+	for frameIndex = 0, math.ceil(self.MaxCooldownCount / self.CooldownCountPerFrame) do
+		local frame = self.RaidWindow.Cooldowns.Frames[frameIndex];
+		frame:ClearAllPoints();
+		if self.IsInStartUpMode or (self:GetGroupCountWithTanks() > 1) then
+			if frameIndex % 2 == 0 then
+				frame:SetPoint(
+					"BOTTOMLEFT",
+					self.RaidWindow,
+					"TOPLEFT",
+					self.RaidOuterSpacing,
+					self.RaidOuterSpacing + self.CooldownSize * (1 + 1 / 8) * frameIndex / 2);
+			else
+				frame:SetPoint(
+					"BOTTOMLEFT",
+					self.RaidWindow,
+					"TOPLEFT",
+					self.RaidOuterSpacing + self.CooldownCountPerFrame * self.CooldownSize * (1 + 1 / 8),
+					self.RaidOuterSpacing + self.CooldownSize * (1 + 1 / 8) * (frameIndex - 1) / 2);
+			end;
+		else
+			frame:SetPoint(
+				"BOTTOMLEFT",
+				self.RaidWindow,
+				"TOPLEFT",
+				self.RaidOuterSpacing,
+				self.RaidOuterSpacing + self.CooldownSize * (1 + 1 / 8) * frameIndex);
+		end;
 	end;
 end;
 
@@ -260,42 +263,42 @@ OrlanHeal.CommonCooldownOptions =
 	},
 	Lifeblood1 =
 	{
-		SpellId = 81708,
+		SpellId = 81708, -- Lifeblood (Rank 1)
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Lifeblood2 =
 	{
-		SpellId = 55428,
+		SpellId = 55428, -- Lifeblood (Rank 2)
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Lifeblood3 =
 	{
-		SpellId = 55480,
+		SpellId = 55480, -- Lifeblood (Rank 3)
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Lifeblood4 =
 	{
-		SpellId = 55500,
+		SpellId = 55500, -- Lifeblood (Rank 4)
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Lifeblood5 =
 	{
-		SpellId = 55501,
+		SpellId = 55501, -- Lifeblood (Rank 5)
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Lifeblood6 =
 	{
-		SpellId = 55502,
+		SpellId = 55502, -- Lifeblood (Rank 6)
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Lifeblood7 =
 	{
-		SpellId = 55503,
+		SpellId = 55503, -- Lifeblood (Rank 7)
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Lifeblood8 =
 	{
-		SpellId = 74497,
+		SpellId = 74497, -- Lifeblood (Rank 8)
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };

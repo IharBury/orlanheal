@@ -81,16 +81,16 @@
 	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell3", "controlaltshift3", "CONTROL ALT SHIFT MIDDLE");
 	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell4", "controlaltshift4", "CONTROL ALT SHIFT BUTTON4");
 	self:CreateSpellSelectWindow(setupWindow, setupScrollWindow, "ControlAltShiftSpell5", "controlaltshift5", "CONTROL ALT SHIFT BUTTON5");
-	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown1", "cooldown1", "COOLDOWN 1");
-	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown2", "cooldown2", "COOLDOWN 2");
-	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown3", "cooldown3", "COOLDOWN 3");
-	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown4", "cooldown4", "COOLDOWN 4");
-	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown5", "cooldown5", "COOLDOWN 5");
-	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown6", "cooldown6", "COOLDOWN 6");
-	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown7", "cooldown7", "COOLDOWN 7");
-	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown8", "cooldown8", "COOLDOWN 8");
-	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown9", "cooldown9", "COOLDOWN 9");
-	self:CreateCooldownSelectWindow(setupWindow, setupScrollWindow, "Cooldown10", "cooldown10", "COOLDOWN 10");
+
+	for cooldownNumber = 1, self.MaxCooldownCount do
+		self:CreateCooldownSelectWindow(
+			setupWindow, 
+			setupScrollWindow, 
+			"Cooldown" .. cooldownNumber, 
+			"cooldown" .. cooldownNumber, 
+			"COOLDOWN " .. cooldownNumber);
+	end;
+
 	setupWindow.SizeWindow = self:CreateSizeSelectWindow(setupWindow, setupScrollWindow);
 
 	local okButton = CreateFrame("Button", nil, setupWindow, "UIPanelButtonTemplate");
@@ -304,16 +304,10 @@ function OrlanHeal:LoadSetup()
 	self.Config["controlaltshift5"] = self.Config["controlaltshift5"] or "";
 	self.Config.Size = self.Config.Size or 1;
 
-	self.Config["cooldown1"] = self.Config["cooldown1"] or "";
-	self.Config["cooldown2"] = self.Config["cooldown2"] or "";
-	self.Config["cooldown3"] = self.Config["cooldown3"] or "";
-	self.Config["cooldown4"] = self.Config["cooldown4"] or "";
-	self.Config["cooldown5"] = self.Config["cooldown5"] or "";
-	self.Config["cooldown6"] = self.Config["cooldown6"] or "";
-	self.Config["cooldown7"] = self.Config["cooldown7"] or "";
-	self.Config["cooldown8"] = self.Config["cooldown8"] or "";
-	self.Config["cooldown9"] = self.Config["cooldown9"] or "";
-	self.Config["cooldown10"] = self.Config["cooldown10"] or "";
+	for cooldownNumber = 1, self.MaxCooldownCount do
+		local key = "cooldown" .. cooldownNumber;
+		self.Config[key] = self.Config[key] or "";
+	end;
 end;
 
 function OrlanHeal:Setup()
