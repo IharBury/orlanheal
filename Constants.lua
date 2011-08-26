@@ -60,3 +60,12 @@ OrlanHeal.SetupWindowWidth = 600;
 OrlanHeal.SetupWindowHeight = 500;
 OrlanHeal.SetupWindowLabelWidth = 200;
 OrlanHeal.SetupWindowValueWidth = OrlanHeal.SetupWindowWidth - OrlanHeal.SetupWindowLabelWidth - 18 - 10;
+
+OrlanHeal.ButtonNames =
+{
+	"LEFT",
+	"RIGHT",
+	"MIDDLE",
+	"BUTTON4",
+	"BUTTON5"
+};

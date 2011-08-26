@@ -413,56 +413,38 @@ function OrlanHeal:SetupSpells(button)
 	button:SetAttribute("*helpbutton2", "help2");
 	button:SetAttribute("*helpbutton3", "help3");
 
-	self:SetAction(button, "", "1", self.Config["1"]);
-	self:SetAction(button, "", "2", self.Config["2"]);
-	self:SetAction(button, "", "3", self.Config["3"]);
-	self:SetAction(button, "", "4", self.Config["4"]);
-	self:SetAction(button, "", "5", self.Config["5"]);
-	self:SetAction(button, "alt-", "1", self.Config["alt1"]);
-	self:SetAction(button, "alt-", "2", self.Config["alt2"]);
-	self:SetAction(button, "alt-", "3", self.Config["alt3"]);
-	self:SetAction(button, "alt-", "4", self.Config["alt4"]);
-	self:SetAction(button, "alt-", "5", self.Config["alt5"]);
-	self:SetAction(button, "shift-", "1", self.Config["shift1"]);
-	self:SetAction(button, "shift-", "2", self.Config["shift2"]);
-	self:SetAction(button, "shift-", "3", self.Config["shift3"]);
-	self:SetAction(button, "shift-", "4", self.Config["shift4"]);
-	self:SetAction(button, "shift-", "5", self.Config["shift5"]);
-	self:SetAction(button, "ctrl-", "1", self.Config["control1"]);
-	self:SetAction(button, "ctrl-", "2", self.Config["control2"]);
-	self:SetAction(button, "ctrl-", "3", self.Config["control3"]);
-	self:SetAction(button, "ctrl-", "4", self.Config["control4"]);
-	self:SetAction(button, "ctrl-", "5", self.Config["control5"]);
-	self:SetAction(button, "alt-ctrl-", "1", self.Config["controlalt1"]);
-	self:SetAction(button, "alt-ctrl-", "2", self.Config["controlalt2"]);
-	self:SetAction(button, "alt-ctrl-", "3", self.Config["controlalt3"]);
-	self:SetAction(button, "alt-ctrl-", "4", self.Config["controlalt4"]);
-	self:SetAction(button, "alt-ctrl-", "5", self.Config["controlalt5"]);
-	self:SetAction(button, "alt-shift-", "1", self.Config["altshift1"]);
-	self:SetAction(button, "alt-shift-", "2", self.Config["altshift2"]);
-	self:SetAction(button, "alt-shift-", "3", self.Config["altshift3"]);
-	self:SetAction(button, "alt-shift-", "4", self.Config["altshift4"]);
-	self:SetAction(button, "alt-shift-", "5", self.Config["altshift5"]);
-	self:SetAction(button, "ctrl-shift-", "1", self.Config["controlshift1"]);
-	self:SetAction(button, "ctrl-shift-", "2", self.Config["controlshift2"]);
-	self:SetAction(button, "ctrl-shift-", "3", self.Config["controlshift3"]);
-	self:SetAction(button, "ctrl-shift-", "4", self.Config["controlshift4"]);
-	self:SetAction(button, "ctrl-shift-", "5", self.Config["controlshift5"]);
-	self:SetAction(button, "alt-ctrl-shift-", "1", self.Config["controlaltshift1"]);
-	self:SetAction(button, "alt-ctrl-shift-", "2", self.Config["controlaltshift2"]);
-	self:SetAction(button, "alt-ctrl-shift-", "3", self.Config["controlaltshift3"]);
-	self:SetAction(button, "alt-ctrl-shift-", "4", self.Config["controlaltshift4"]);
-	self:SetAction(button, "alt-ctrl-shift-", "5", self.Config["controlaltshift5"]);
+	for hasControl = 0, 1 do
+		for hasShift = 0, 1 do
+			for hasAlt = 0, 1 do
+				for buttonNumber = 1, 5 do
+					self:SetAction(button, hasControl == 1, hasShift == 1, hasAlt == 1, buttonNumber);
+				end;
+			end;
+		end;
+	end;
 end;
 
-function OrlanHeal:SetAction(button, prefix, mouseButton, action)
+function OrlanHeal:SetAction(button, hasControl, hasShift, hasAlt, buttonNumber)
+	local name = self:BuildClickName(hasControl, hasShift, hasAlt, buttonNumber);
+	local action = self.Config[name];
+	local prefix = "";
+	if hasAlt then
+		prefix = prefix .. "alt-";
+	end;
+	if hasControl then
+		prefix = prefix .. "ctrl-";
+	end;
+	if hasShift then
+		prefix = prefix .. "shift-";
+	end;
+
 	if ((action == "") or (action == "target")) then
-		button:SetAttribute(prefix .. "type" .. mouseButton, action);
-		button:SetAttribute(prefix .. "type-help" .. mouseButton, action);
+		button:SetAttribute(prefix .. "type" .. buttonNumber, action);
+		button:SetAttribute(prefix .. "type-help" .. buttonNumber, action);
 	else
-		button:SetAttribute(prefix .. "type" .. mouseButton, "");
-		button:SetAttribute(prefix .. "type-help" .. mouseButton, "spell");
-		button:SetAttribute(prefix .. "spell-help" .. mouseButton, action);
+		button:SetAttribute(prefix .. "type" .. buttonNumber, "");
+		button:SetAttribute(prefix .. "type-help" .. buttonNumber, "spell");
+		button:SetAttribute(prefix .. "spell-help" .. buttonNumber, action);
 	end;
 end;
 
@@ -1056,4 +1038,19 @@ function OrlanHeal:ShowBuff(texture, buff)
 			texture.Count:SetText("");
 		end;
 	end;
+end;
+
+function OrlanHeal:BuildClickName(hasControl, hasShift, hasAlt, buttonNumber)
+	local name = "";
+	if hasControl then
+		name = name .. "control";
+	end;
+	if hasAlt then
+		name = name .. "alt";
+	end;
+	if hasShift then
+		name = name .. "shift";
+	end;
+	name = name .. buttonNumber;
+	return name;
 end;
