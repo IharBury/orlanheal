@@ -21,30 +21,85 @@ OrlanHeal.Paladin.AvailableSpells =
 	19740 -- Blessing of Might
 };
 
-function OrlanHeal.Paladin.CreateCooldowns(orlanHeal, cooldowns)
-	cooldowns[0] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 0, 53655, 20271, true); -- Judgements of the Pure
-	cooldowns[1] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 1, 53563, 53563, true); -- Beacon of Light
-	cooldowns[2] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 2, 82327, 82327, false); -- Holy Radiance
-	cooldowns[3] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 3, 85222, 85222, false); -- Light of Dawn
-	cooldowns[4] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 4, 633, 633, false); -- Lay on Hands
-	cooldowns[5] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 0, 31884, 31884, false); -- Avenging Wrath
-	cooldowns[6] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 1, 31842, 31842, false); -- Divine Favor
-	cooldowns[7] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 2, 86150, 86150, false); -- Guardian of Ancient Kings
-	cooldowns[8] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 3, 31821, 31821, false); -- Aura Mastery
-	cooldowns[9] = orlanHeal:CreateCooldown(cooldowns.Frames[1], 4, 54428, 54428, false); -- Divine Plea
-end;
+OrlanHeal.Paladin.CooldownOptions =
+{
+	JudgementsOfThePure =
+	{
+		SpellId = 20271, -- Judgement
+		AuraId = 53655, -- Judgements of the Pure
+		IsReverse = true,
+		Update = OrlanHeal.UpdatePlayerBuffCooldown
+	},
+	BeaconOfLight =
+	{
+		SpellId = 53563, -- Beacon of Light
+		IsReverse = true,
+		Update = OrlanHeal.UpdateRaidBuffCooldown
+	},
+	HolyRadiance =
+	{
+		SpellId = 82327, -- Holy Radiance
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	LightOfDawn =
+	{
+		SpellId = 85222 -- Light of Dawn
+	},
+	LayOnHands =
+	{
+		SpellId = 633, -- Lay on Hands
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	AvengingWrath =
+	{
+		SpellId = 31884, -- Avenging Wrath
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DivineFavor =
+	{
+		SpellId = 31842, -- Divine Favor
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	GuardianOfAncientKings =
+	{
+		SpellId = 86150, -- Guardian of Ancient Kings
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	AuraMastery =
+	{
+		SpellId = 31821, -- Aura Mastery
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DivinePlea =
+	{
+		SpellId = 54428, -- Divine Plea
+		Update = OrlanHeal.UpdateAbilityCooldown
+	}
+};
 
-function OrlanHeal.Paladin.UpdateCooldowns(orlanHeal)
-	orlanHeal:UpdatePlayerBuffCooldown(orlanHeal.RaidWindow.Cooldowns[0], 53655); -- Judgements of the Pure
-	orlanHeal:UpdateRaidBuffCooldown(orlanHeal.RaidWindow.Cooldowns[1], 53563); -- Beacon of Light
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[2], 82327); -- Holy Radiance
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[3], 85222); -- Light of Dawn
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[4], 633); -- Lay on Hands
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[5], 31884); -- Avenging Wrath
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[6], 31842); -- Divine Favor
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[7], 86150); -- Guardian of Ancient Kings
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[8], 31821); -- Aura Mastery
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[9], 54428); -- Divine Plea
+function OrlanHeal.Paladin.LoadSetup(orlanHeal)
+	orlanHeal.Config["1"] = orlanHeal.Config["1"] or 635; -- Holy Light
+	orlanHeal.Config["2"] = orlanHeal.Config["2"] or 19750; -- Flash of Light
+	orlanHeal.Config["3"] = orlanHeal.Config["3"] or 1022; -- Hand of Protection
+	orlanHeal.Config["shift2"] = orlanHeal.Config["shift2"] or 53563; -- Beacon of Light
+	orlanHeal.Config["shift3"] = orlanHeal.Config["shift3"] or 1038; -- Hand of Salvation
+	orlanHeal.Config["control1"] = orlanHeal.Config["control1"] or 82326; -- Divine Light
+	orlanHeal.Config["control2"] = orlanHeal.Config["control2"] or 85673; -- Word of Glory
+	orlanHeal.Config["control3"] = orlanHeal.Config["control3"] or 6940; -- Hand of Sacrifice
+	orlanHeal.Config["alt1"] = orlanHeal.Config["alt1"] or 4987; -- Cleanse
+	orlanHeal.Config["alt2"] = orlanHeal.Config["alt2"] or 20473; -- Holy Shock
+	orlanHeal.Config["alt3"] = orlanHeal.Config["alt3"] or 633; -- Lay on Hands
+
+	orlanHeal.Config["cooldown1"] = orlanHeal.Config["cooldown1"] or "JudgementsOfThePure";
+	orlanHeal.Config["cooldown2"] = orlanHeal.Config["cooldown2"] or "BeaconOfLight";
+	orlanHeal.Config["cooldown3"] = orlanHeal.Config["cooldown3"] or "HolyRadiance";
+	orlanHeal.Config["cooldown4"] = orlanHeal.Config["cooldown4"] or "LightOfDawn";
+	orlanHeal.Config["cooldown5"] = orlanHeal.Config["cooldown5"] or "LayOnHands";
+	orlanHeal.Config["cooldown6"] = orlanHeal.Config["cooldown6"] or "AvengingWrath";
+	orlanHeal.Config["cooldown7"] = orlanHeal.Config["cooldown7"] or "DivineFavor";
+	orlanHeal.Config["cooldown8"] = orlanHeal.Config["cooldown8"] or "GuardianOfAncientKings";
+	orlanHeal.Config["cooldown9"] = orlanHeal.Config["cooldown9"] or "AuraMastery";
+	orlanHeal.Config["cooldown10"] = orlanHeal.Config["cooldown10"] or "DivinePlea";
 end;
 
 OrlanHeal.Paladin.RedRangeSpellId = 53563; -- Частица Света

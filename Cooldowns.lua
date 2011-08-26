@@ -11,7 +11,16 @@
 		self.RaidOuterSpacing);
 	cooldowns.Frames[1] = self:CreateCooldownFrame(parent);
 
-	self.Class.CreateCooldowns(self, cooldowns);
+	cooldowns[0] = self:CreateCooldown(cooldowns.Frames[0], 0);
+	cooldowns[1] = self:CreateCooldown(cooldowns.Frames[0], 1);
+	cooldowns[2] = self:CreateCooldown(cooldowns.Frames[0], 2);
+	cooldowns[3] = self:CreateCooldown(cooldowns.Frames[0], 3);
+	cooldowns[4] = self:CreateCooldown(cooldowns.Frames[0], 4);
+	cooldowns[5] = self:CreateCooldown(cooldowns.Frames[1], 0);
+	cooldowns[6] = self:CreateCooldown(cooldowns.Frames[1], 1);
+	cooldowns[7] = self:CreateCooldown(cooldowns.Frames[1], 2);
+	cooldowns[8] = self:CreateCooldown(cooldowns.Frames[1], 3);
+	cooldowns[9] = self:CreateCooldown(cooldowns.Frames[1], 4);
 
 	return cooldowns;
 end;
@@ -23,10 +32,8 @@ function OrlanHeal:CreateCooldownFrame(parent)
 	return frame;
 end;
 
-function OrlanHeal:CreateCooldown(parent, index, imageSpellId, castSpellId, isReverse)
+function OrlanHeal:CreateCooldown(parent, index)
 	local cooldown = CreateFrame("Cooldown", nil, parent, "CooldownFrameTemplate");
-	cooldown.IsReverse = isReverse;
-	cooldown.CastSpellId = castSpellId;
 
 	cooldown:ClearAllPoints();
 	cooldown:SetPoint("TOPLEFT", index * self.CooldownSize * (1 + 1 / 8), 0);
@@ -47,19 +54,64 @@ function OrlanHeal:CreateCooldown(parent, index, imageSpellId, castSpellId, isRe
 	cooldown.Count:SetTextHeight(countSize);
 	cooldown.Count:SetPoint("BOTTOMRIGHT", cooldown, "BOTTOMRIGHT", 0, 0);
 
-	local _, _, icon = GetSpellInfo(imageSpellId);
-	cooldown.Background:SetTexture(icon);
-	cooldown:SetReverse(isReverse);
-
-	if castSpellId then
-		cooldown.Button = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
-		cooldown.Button:SetAllPoints(cooldown);
-		cooldown.Button:RegisterForClicks("LeftButtonDown");
-		cooldown.Button:SetAttribute("type", "spell");
-		cooldown.Button:SetAttribute("spell", castSpellId);
-	end;
+	cooldown.Button = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
+	cooldown.Button:SetAllPoints(cooldown);
+	cooldown.Button:RegisterForClicks("LeftButtonDown");
+	cooldown.Button:SetAttribute("type", "spell");
 
 	return cooldown;
+end;
+
+function OrlanHeal:SetupCooldown(window, cooldown)
+	if cooldown then
+		window:Show();
+		window.Background:Show();
+		window.Button:Show();
+
+		window.IsReverse = cooldown.IsReverse or false;
+		window.CastSpellId = cooldown.SpellId;
+
+		local _, _, icon = GetSpellInfo(cooldown.AuraId or cooldown.SpellId);
+		window.Background:SetTexture(icon);
+		window:SetReverse(window.IsReverse);
+
+		if cooldown.SpellId then
+			window.Button:SetAttribute("spell", cooldown.SpellId);
+		end;
+	else
+		window:Hide();
+		window.Background:Hide();
+		window.Button:Hide();
+	end;
+end;
+
+function OrlanHeal:GetCooldown(index)
+	local name = self.Config["cooldown" .. (index + 1)];
+	local cooldown;
+	if self.CommonCooldownOptions[name] then
+		cooldown = self.CommonCooldownOptions[name];
+	elseif self.Class.CooldownOptions and self.Class.CooldownOptions[name] then
+		cooldown = self.Class.CooldownOptions[name];
+	end;
+	return cooldown;
+end;
+
+function OrlanHeal:SetupCooldowns()
+	for index = 0, 9 do
+		self:SetupCooldown(self.RaidWindow.Cooldowns[index], self:GetCooldown(index));
+	end;
+end;
+
+function OrlanHeal:UpdateCooldowns()
+	for index = 0, 9 do
+		self:UpdateCooldownWindow(self.RaidWindow.Cooldowns[index], self:GetCooldown(index));
+	end;
+end;
+
+function OrlanHeal:UpdateCooldownWindow(window, cooldown)
+	if cooldown and cooldown.Update then
+		cooldown.Update(self, window, cooldown);
+	end;
 end;
 
 function OrlanHeal:UpdateCooldownFrames()
@@ -81,27 +133,27 @@ function OrlanHeal:UpdateCooldownFrames()
 	end;
 end;
 
-function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
-	local spellName = GetSpellInfo(spellId);
+function OrlanHeal:UpdatePlayerBuffCooldown(window, cooldown)
+	local spellName = GetSpellInfo(cooldown.AuraId or cooldown.SpellId);
 	local _, _, _, count, _, duration, expirationTime = UnitBuff("player", spellName);
-	self:UpdateCooldown(cooldown, duration, expirationTime, count);
+	self:UpdateCooldown(window, duration, expirationTime, count);
 end;
 
-function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(cooldown, duration)
+function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(window, cooldown)
 	local hasEnchant, timeLeft = GetWeaponEnchantInfo();
 	if hasEnchant then
 		local expiration = GetTime() + timeLeft / 1000;
-		if (cooldown.Off and (expiration > cooldown.Off - 1) and (expiration < cooldown.Off + 1)) then
-			expiration = cooldown.Off;
+		if (window.Off and (expiration > window.Off - 1) and (expiration < window.Off + 1)) then
+			expiration = window.Off;
 		end;
-		self:UpdateCooldown(cooldown, duration, expiration, 1);
+		self:UpdateCooldown(window, cooldown.Duration, expiration, 1);
 	else
-		self:UpdateCooldown(cooldown, nil, nil, nil);
+		self:UpdateCooldown(window, nil, nil, nil);
 	end;
 end;
 
-function OrlanHeal:UpdateAbilityCooldown(cooldown, spellId)
-	local start, duration, enabled = GetSpellCooldown(spellId);
+function OrlanHeal:UpdateAbilityCooldown(window, cooldown)
+	local start, duration, enabled = GetSpellCooldown(cooldown.SpellId);
 	local expirationTime;
 	if start and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
@@ -110,12 +162,12 @@ function OrlanHeal:UpdateAbilityCooldown(cooldown, spellId)
 		duration = nil;
 		expirationTime = nil;
 	end;
-	self:UpdateCooldown(cooldown, duration, expirationTime);
+	self:UpdateCooldown(window, duration, expirationTime);
 end;
 
-function OrlanHeal:UpdateRaidBuffCooldown(cooldown, spellId)
-	local duration, expirationTime, count = self:GetRaidBuffCooldown(spellId);
-	self:UpdateCooldown(cooldown, duration, expirationTime, count);
+function OrlanHeal:UpdateRaidBuffCooldown(window, cooldown)
+	local duration, expirationTime, count = self:GetRaidBuffCooldown(cooldown.AuraId or cooldown.SpellId);
+	self:UpdateCooldown(window, duration, expirationTime, count);
 end;
 
 function OrlanHeal:GetRaidBuffCooldown(spellId)
@@ -170,28 +222,40 @@ function OrlanHeal:GetPlayerCastUnitBuffCooldown(unit, spellId)
 	end;
 end;
 
-function OrlanHeal:UpdateCooldown(cooldown, duration, expirationTime, count)
+function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count)
 	duration = duration or 0;
 	expirationTime = expirationTime or 0;
-	if expirationTime ~= cooldown.Off then
-		cooldown.Off = expirationTime;
+	if expirationTime ~= window.Off then
+		window.Off = expirationTime;
 		if (duration ~= 0) and (expirationTime ~= 0) then
-			cooldown:SetCooldown(expirationTime - duration, duration);
+			window:SetCooldown(expirationTime - duration, duration);
 		else
-			cooldown:SetCooldown(0, 10);
+			window:SetCooldown(0, 10);
 		end;
 	end;
 
-	if FindSpellBookSlotBySpellID(cooldown.CastSpellId) then
-		cooldown:SetReverse(cooldown.IsReverse);
+	if FindSpellBookSlotBySpellID(window.CastSpellId) then
+		window:SetReverse(window.IsReverse);
 	else
-		cooldown:SetReverse(true);
+		window:SetReverse(true);
 	end;
 
 	if count and (count > 1) then
-		cooldown.Count:SetText(count);
+		window.Count:SetText(count);
 	else
-		cooldown.Count:SetText("");
+		window.Count:SetText("");
 	end;
 end;
 
+OrlanHeal.CommonCooldownOptions =
+{
+	Berserk =
+	{
+		SpellId = 26297, -- Берсерк
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Troll";
+		end;
+	}
+};

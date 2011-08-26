@@ -23,14 +23,23 @@ OrlanHeal.Priest.AvailableSpells =
 	59544, -- Дар Наару
 }
 
-function OrlanHeal.Priest.CreateCooldowns(orlanHeal, cooldowns)
-	cooldowns[0] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 0, 89485, 89485, false); -- Внутреннее сосредоточение
-	cooldowns[1] = orlanHeal:CreateCooldown(cooldowns.Frames[0], 1, 17, 17, false); -- Слово силы: Щит
-end;
+OrlanHeal.Priest.CooldownOptions =
+{
+	InnerFocus =
+	{
+		SpellId = 89485,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	PowerWordShield =
+	{
+		SpellId = 17,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	}
+};
 
-function OrlanHeal.Priest.UpdateCooldowns(orlanHeal)
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[0], 89485); -- Внутреннее сосредоточение
-	orlanHeal:UpdateAbilityCooldown(orlanHeal.RaidWindow.Cooldowns[1], 17); -- Слово силы: Щит
+function OrlanHeal.Priest.LoadSetup(orlanHeal)
+	orlanHeal.Config["cooldown1"] = orlanHeal.Config["cooldown1"] or "InnerFocus";
+	orlanHeal.Config["cooldown2"] = orlanHeal.Config["cooldown2"] or "PowerWordShield";
 end;
 
 OrlanHeal.Priest.RedRangeSpellId = 2096; -- Внутреннее зрение

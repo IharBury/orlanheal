@@ -69,6 +69,7 @@ function OrlanHeal:HandleLoaded()
 	self.RaidWindow = self:CreateRaidWindow();
 	self.SetupWindow = self:CreateSetupWindow();
 
+	self:SetupCooldowns();
 	self:UpdateVisibleGroupCount();
 	self:UpdateCooldownFrames();
 	self:Show();

@@ -689,7 +689,7 @@ function OrlanHeal:UpdateStatus()
 	end;
 
 	self.Class.UpdateRaidBorder(self);
-	self.Class.UpdateCooldowns(self);
+	self:UpdateCooldowns();
 end;
 
 function OrlanHeal:UpdatePlayerRoleIcon(player)
