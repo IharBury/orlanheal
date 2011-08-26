@@ -66,6 +66,6 @@ OrlanHeal.ButtonNames =
 	"LEFT",
 	"RIGHT",
 	"MIDDLE",
-	"BUTTON4",
-	"BUTTON5"
+	"BUTTON 4",
+	"BUTTON 5"
 };
