@@ -234,11 +234,18 @@ end;
 
 function OrlanHeal:AddCooldownOption(info, level, key, cooldown)
 	if not cooldown.IsAvailable or cooldown.IsAvailable(self) then
-		local spellName, rank = GetSpellInfo(cooldown.AuraId or cooldown.SpellId);
-		if rank and (rank ~= "") then
-			spellName = spellName .. " (" .. rank .. ")";
+		local effectId = cooldown.AuraId or cooldown.SpellId;
+		local name;
+		if effectId then
+			local rank;
+			name, rank = GetSpellInfo(effectId);
+			if rank and (rank ~= "") then
+				name = name .. " (" .. rank .. ")";
+			end;
+		else
+			name = cooldown.SlotCaption;
 		end;
-		info["text"] = spellName;
+		info["text"] = name;
 		info["value"] = key;
 		info["arg2"] = key;
 		UIDropDownMenu_AddButton(info, level);
