@@ -109,13 +109,13 @@ end;
 
 function OrlanHeal:UpdateCooldowns()
 	for index = 0, self.MaxCooldownCount - 1 do
-		self:UpdateCooldownWindow(self.RaidWindow.Cooldowns[index], self:GetCooldown(index));
+		self:UpdateCooldownWindow(self.RaidWindow.Cooldowns[index]);
 	end;
 end;
 
-function OrlanHeal:UpdateCooldownWindow(window, cooldown)
-	if cooldown and cooldown.Update then
-		cooldown.Update(self, window, cooldown);
+function OrlanHeal:UpdateCooldownWindow(window)
+	if window.Cooldown and window.Cooldown.Update then
+		window.Cooldown.Update(self, window);
 	end;
 end;
 
@@ -150,27 +150,27 @@ function OrlanHeal:UpdateCooldownFrames()
 	end;
 end;
 
-function OrlanHeal:UpdatePlayerBuffCooldown(window, cooldown)
-	local spellName = GetSpellInfo(cooldown.AuraId or cooldown.SpellId);
+function OrlanHeal:UpdatePlayerBuffCooldown(window)
+	local spellName = GetSpellInfo(window.Cooldown.AuraId or window.Cooldown.SpellId);
 	local _, _, _, count, _, duration, expirationTime = UnitBuff("player", spellName);
 	self:UpdateCooldown(window, duration, expirationTime, count);
 end;
 
-function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(window, cooldown)
+function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(window)
 	local hasEnchant, timeLeft = GetWeaponEnchantInfo();
 	if hasEnchant then
 		local expiration = GetTime() + timeLeft / 1000;
 		if (window.Off and (expiration > window.Off - 1) and (expiration < window.Off + 1)) then
 			expiration = window.Off;
 		end;
-		self:UpdateCooldown(window, cooldown.Duration, expiration, 1);
+		self:UpdateCooldown(window, window.Cooldown.Duration, expiration, 1);
 	else
 		self:UpdateCooldown(window, nil, nil, nil);
 	end;
 end;
 
-function OrlanHeal:UpdateAbilityCooldown(window, cooldown)
-	local start, duration, enabled = GetSpellCooldown(cooldown.SpellId);
+function OrlanHeal:UpdateAbilityCooldown(window)
+	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 	local expirationTime;
 	if start and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
@@ -182,8 +182,8 @@ function OrlanHeal:UpdateAbilityCooldown(window, cooldown)
 	self:UpdateCooldown(window, duration, expirationTime);
 end;
 
-function OrlanHeal:UpdateItemCooldown(window, cooldown)
-	local start, duration, enabled = GetInventoryItemCooldown("player", GetInventorySlotInfo(cooldown.SlotName));
+function OrlanHeal:UpdateItemCooldown(window)
+	local start, duration, enabled = GetInventoryItemCooldown("player", GetInventorySlotInfo(window.Cooldown.SlotName));
 	local expirationTime;
 	if start and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
@@ -195,8 +195,8 @@ function OrlanHeal:UpdateItemCooldown(window, cooldown)
 	self:UpdateCooldown(window, duration, expirationTime);
 end;
 
-function OrlanHeal:UpdateRaidBuffCooldown(window, cooldown)
-	local duration, expirationTime, count = self:GetRaidBuffCooldown(cooldown.AuraId or cooldown.SpellId);
+function OrlanHeal:UpdateRaidBuffCooldown(window)
+	local duration, expirationTime, count = self:GetRaidBuffCooldown(window.Cooldown.AuraId or window.Cooldown.SpellId);
 	self:UpdateCooldown(window, duration, expirationTime, count);
 end;
 
