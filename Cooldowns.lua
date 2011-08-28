@@ -59,15 +59,29 @@ function OrlanHeal:SetupCooldown(window, cooldown)
 		window.Background:Show();
 		window.Button:Show();
 
-		window.IsReverse = cooldown.IsReverse or false;
-		window.CastSpellId = cooldown.SpellId;
+		window.Cooldown = cooldown;
 
-		local _, _, icon = GetSpellInfo(cooldown.AuraId or cooldown.SpellId);
-		window.Background:SetTexture(icon);
-		window:SetReverse(window.IsReverse);
+		local effectId = cooldown.AuraId or cooldown.SpellId;
+		local texture;
+		if effectId then
+			_, _, texture = GetSpellInfo(effectId);
+		elseif cooldown.SlotName then
+			local slotId;
+			slotId, texture = GetInventorySlotInfo(cooldown.SlotName);
+			texture = GetInventoryItemTexture("player", slotId) or texture;
+		end;
+		window.Background:SetTexture(texture);
+		window:SetReverse(cooldown.IsReverse);
 
 		if cooldown.SpellId then
+			window.Button:SetAttribute("type", "spell");
 			window.Button:SetAttribute("spell", cooldown.SpellId);
+		elseif cooldown.SlotName then
+			window.Button:SetAttribute("type", "item");
+			window.Button:SetAttribute("item", GetInventorySlotInfo(cooldown.SlotName));
+		else
+			window.Button:SetAttribute("type", "spell");
+			window.Button:SetAttribute("spell", nil);
 		end;
 	else
 		window:Hide();
@@ -168,6 +182,19 @@ function OrlanHeal:UpdateAbilityCooldown(window, cooldown)
 	self:UpdateCooldown(window, duration, expirationTime);
 end;
 
+function OrlanHeal:UpdateItemCooldown(window, cooldown)
+	local start, duration, enabled = GetInventoryItemCooldown("player", GetInventorySlotInfo(cooldown.SlotName));
+	local expirationTime;
+	if start and duration and (duration ~= 0) and (enabled == 1) then
+		expirationTime = start + duration;
+	else
+		start = nil;
+		duration = nil;
+		expirationTime = nil;
+	end;
+	self:UpdateCooldown(window, duration, expirationTime);
+end;
+
 function OrlanHeal:UpdateRaidBuffCooldown(window, cooldown)
 	local duration, expirationTime, count = self:GetRaidBuffCooldown(cooldown.AuraId or cooldown.SpellId);
 	self:UpdateCooldown(window, duration, expirationTime, count);
@@ -237,8 +264,9 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count)
 		end;
 	end;
 
-	if FindSpellBookSlotBySpellID(window.CastSpellId) then
-		window:SetReverse(window.IsReverse);
+	if (window.Cooldown.SpellId and FindSpellBookSlotBySpellID(window.Cooldown.SpellId)) or
+			(window.Cooldown.SlotName and GetInventoryItemID("player", GetInventorySlotInfo(window.Cooldown.SlotName))) then
+		window:SetReverse(window.Cooldown.IsReverse);
 	else
 		window:SetReverse(true);
 	end;
@@ -300,5 +328,119 @@ OrlanHeal.CommonCooldownOptions =
 	{
 		SpellId = 74497, -- Lifeblood (Rank 8)
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Back =
+	{
+		SlotName = "BackSlot",
+		SlotCaption = BACKSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Chest =
+	{
+		SlotName = "ChestSlot",
+		SlotCaption = CHESTSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Feet =
+	{
+		SlotName = "FeetSlot",
+		SlotCaption = FEETSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Finger0 =
+	{
+		SlotName = "Finger0Slot",
+		SlotCaption = FINGER0SLOT .. " (1)",
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Finger1 =
+	{
+		SlotName = "Finger1Slot",
+		SlotCaption = FINGER1SLOT .. " (2)",
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Hands =
+	{
+		SlotName = "HandsSlot",
+		SlotCaption = HANDSSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Head = 
+	{
+		SlotName = "HeadSlot",
+		SlotCaption = HEADSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Legs =
+	{
+		SlotName = "LegsSlot",
+		SlotCaption = LEGSSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	MainHand =
+	{
+		SlotName = "MainHandSlot",
+		SlotCaption = MAINHANDSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Neck =
+	{
+		SlotName = "NeckSlot",
+		SlotCaption = NECKSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Ranged =
+	{
+		SlotName = "RangedSlot",
+		SlotCaption = (UnitHasRelicSlot("player") and RELICSLOT) or RANGEDSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	SecondaryHand =
+	{
+		SlotName = "SecondaryHandSlot",
+		SlotCaption = SECONDARYHANDSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Shirt =
+	{
+		SlotName = "ShirtSlot",
+		SlotCaption = SHIRTSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Shoulder =
+	{
+		SlotName = "ShoulderSlot",
+		SlotCaption = SHOULDERSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Tabard =
+	{
+		SlotName = "TabardSlot",
+		SlotCaption = TABARDSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Trinket0 =
+	{
+		SlotName = "Trinket0Slot",
+		SlotCaption = TRINKET0SLOT .. " (1)",
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Trinket1 =
+	{
+		SlotName = "Trinket1Slot",
+		SlotCaption = TRINKET1SLOT .. " (2)",
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Waist =
+	{
+		SlotName = "WaistSlot",
+		SlotCaption = WAISTSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
+	},
+	Wrist =
+	{
+		SlotName = "WristSlot",
+		SlotCaption = WRISTSLOT,
+		Update = OrlanHeal.UpdateItemCooldown
 	}
 };
