@@ -8,7 +8,8 @@ OrlanHeal.Shaman.AvailableSpells =
 	8004, -- Исцеляющий всплеск
 	546, -- Хождение по воде
 	1064, -- Цепное исцеление
-	77472 -- Великая волна исцеления
+	77472, -- Великая волна исцеления
+	61295 -- Быстрина
 };
 
 OrlanHeal.Shaman.CooldownOptions =
@@ -41,6 +42,11 @@ OrlanHeal.Shaman.CooldownOptions =
 		IsReverse = true,
 		Duration = 30 * 60,
 		Update = OrlanHeal.UpdateMainHandTemporaryEnchantCooldown
+	},
+	Riptide =
+	{
+		SpellId = 61295,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
