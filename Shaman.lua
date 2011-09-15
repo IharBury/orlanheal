@@ -47,6 +47,11 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 61295,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Bloodlust =
+	{
+		SpellId = 2825,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
