@@ -67,12 +67,15 @@ function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
 	orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
 end;
 
-OrlanHeal.Shaman.PlayerSpecificBuffCount = 1;
+OrlanHeal.Shaman.PlayerSpecificBuffCount = 2;
 
 function OrlanHeal.Shaman.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
 	if (spellId == 974) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- свой Щит земли
 		buffKind = 1;
+	end;
+	if spellId == 61295 then -- Быстрина
+		buffKind = 2;
 	end;
 	return buffKind;
 end;
