@@ -1,6 +1,7 @@
 ﻿OrlanHeal.IgnoredDebuffs = 
 {
 	[24755] = true, -- Tricked or Treated
+	[26013] = true, -- Дезертир
 	[58539] = true, -- Тело наблюдателя
 	[69127] = true, -- Холод Трона
 	[64816] = true, -- Победа над нежитью
