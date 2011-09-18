@@ -34,12 +34,18 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 17,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	PainSuppression =
+	{
+		SpellId = 33206,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
 function OrlanHeal.Priest.LoadSetup(orlanHeal)
 	orlanHeal.Config["cooldown1"] = orlanHeal.Config["cooldown1"] or "InnerFocus";
 	orlanHeal.Config["cooldown2"] = orlanHeal.Config["cooldown2"] or "PowerWordShield";
+	orlanHeal.Config["cooldown3"] = orlanHeal.Config["cooldown3"] or "PainSuppression";
 end;
 
 OrlanHeal.Priest.RedRangeSpellId = 2096; -- Внутреннее зрение
