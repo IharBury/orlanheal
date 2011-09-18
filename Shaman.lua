@@ -52,6 +52,11 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 2825,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	SpiritLinkTotem =
+	{
+		SpellId = 98008,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
