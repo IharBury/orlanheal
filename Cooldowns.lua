@@ -193,6 +193,14 @@ function OrlanHeal:UpdateItemCooldown(window)
 		expirationTime = nil;
 	end;
 	self:UpdateCooldown(window, duration, expirationTime);
+
+	if not window.LastTextureUpdate or (window.LastTextureUpdate < time() - 5) then
+		local slotId;
+		slotId, texture = GetInventorySlotInfo(window.Cooldown.SlotName);
+		texture = GetInventoryItemTexture("player", slotId) or texture;
+		window.Background:SetTexture(texture);
+		window.LastTextureUpdate = time();
+	end;
 end;
 
 function OrlanHeal:UpdateRaidBuffCooldown(window)
