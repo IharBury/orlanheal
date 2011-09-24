@@ -1,5 +1,7 @@
 ﻿OrlanHeal.Paladin = {};
 
+OrlanHeal.Paladin.IsSupported = true;
+
 OrlanHeal.Paladin.AvailableSpells =
 {
 	635, -- Holy Light
