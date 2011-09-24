@@ -180,15 +180,24 @@ function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
 	info.arg2 = "target";
 	UIDropDownMenu_AddButton(info, level);
 
+	local spells = {};
 	local spellIndex = 1;
 	while true do
 		local spellId = spellSelectWindow.OrlanHeal.Class.AvailableSpells[spellIndex];
 		if (not spellId) then
 			break;
 		end;
+		spells[spellId] = GetSpellInfo(spellId);
 
-		local spellName = GetSpellInfo(spellId);
+		spellIndex = spellIndex + 1;
+	end;
 
+	for index, spellId, spellName in 
+			spellSelectWindow.OrlanHeal:SortedPairs(
+				spells,
+				function(spellId1, spellName1, spellId2, spellName2)
+					return spellName1 < spellName2;
+				end) do
 		info = UIDropDownMenu_CreateInfo();
 		info.func = spellSelectWindow.OrlanHeal.HandleSpellSelect;
 		info.arg1 = spellSelectWindow;
@@ -197,8 +206,6 @@ function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
 		info.arg2 = spellId;
 
 		UIDropDownMenu_AddButton(info, level);
-
-		spellIndex = spellIndex + 1;
 	end;
 end;
 
@@ -230,6 +237,30 @@ function OrlanHeal:SetCooldownSelectWindowSelectedValue(cooldownSelectWindow, va
 	UIDropDownMenu_SetText(cooldownSelectWindow, text);
 end;
 
+function OrlanHeal:SortedPairs(tableToSort, comparer)
+	local array = {};
+	for key, value in pairs(tableToSort) do
+		table.insert(array, { key = key, value = value });
+	end;
+	table.sort(
+		array,
+		function(item1, item2)
+			return comparer(item1.key, item1.value, item2.key, item2.value);
+		end);
+	return
+		function(array, index)
+			local nextIndex, nextItem = next(array, index);
+			local nextKey, nextValue;
+			if nextIndex ~= nil then
+				nextKey = nextItem.key;
+				nextValue = nextItem.value;
+			end;
+			return nextIndex, nextKey, nextValue;
+		end,
+		array,
+		nil;
+end;
+
 function OrlanHeal.HandleCooldownInit(cooldownSelectWindow, level)
 	if level == 1 then
 		local info = UIDropDownMenu_CreateInfo();
@@ -242,7 +273,13 @@ function OrlanHeal.HandleCooldownInit(cooldownSelectWindow, level)
 		UIDropDownMenu_AddButton(info, level);
 
 		local groups = {};
-		for key, cooldown in pairs(cooldownSelectWindow.OrlanHeal:GetCooldownOptions()) do
+		for index, key, cooldown in 
+				cooldownSelectWindow.OrlanHeal:SortedPairs(
+					cooldownSelectWindow.OrlanHeal:GetCooldownOptions(),
+					function(key1, cooldown1, key2, cooldown2)
+						return cooldownSelectWindow.OrlanHeal:GetCooldownCaption(cooldown1) <
+							cooldownSelectWindow.OrlanHeal:GetCooldownCaption(cooldown2);
+					end) do
 			if cooldown.Group then
 				if not groups[cooldown.Group] then
 					groups[cooldown.Group] = {};
@@ -253,13 +290,24 @@ function OrlanHeal.HandleCooldownInit(cooldownSelectWindow, level)
 			end;
 		end;
 
-		for key, groupOptions in pairs(groups) do
+		for index, key, groupOptions in 
+				cooldownSelectWindow.OrlanHeal:SortedPairs(
+					groups,
+					function(key1, _, key2, _)
+						return key1 < key2;
+					end) do
 			cooldownSelectWindow.OrlanHeal:AddCooldownGroup(key, groupOptions, level);
 		end;
 	end;
 
 	if level == 2 then
-		for key, cooldown in pairs(UIDROPDOWNMENU_MENU_VALUE) do
+		for index, key, cooldown in 
+				cooldownSelectWindow.OrlanHeal:SortedPairs(
+					UIDROPDOWNMENU_MENU_VALUE,
+					function(key1, cooldown1, key2, cooldown2)
+						return cooldownSelectWindow.OrlanHeal:GetCooldownCaption(cooldown1) <
+							cooldownSelectWindow.OrlanHeal:GetCooldownCaption(cooldown2);
+					end) do
 			cooldownSelectWindow.OrlanHeal:AddCooldownOption(level, key, cooldown, cooldownSelectWindow);
 		end;
 	end;
