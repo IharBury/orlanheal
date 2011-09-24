@@ -300,155 +300,182 @@ OrlanHeal.CommonCooldownOptions =
 	Lifeblood1 =
 	{
 		SpellId = 81708, -- Lifeblood (Rank 1)
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Lifeblood"
 	},
 	Lifeblood2 =
 	{
 		SpellId = 55428, -- Lifeblood (Rank 2)
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Lifeblood"
 	},
 	Lifeblood3 =
 	{
 		SpellId = 55480, -- Lifeblood (Rank 3)
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Lifeblood"
 	},
 	Lifeblood4 =
 	{
 		SpellId = 55500, -- Lifeblood (Rank 4)
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Lifeblood"
 	},
 	Lifeblood5 =
 	{
 		SpellId = 55501, -- Lifeblood (Rank 5)
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Lifeblood"
 	},
 	Lifeblood6 =
 	{
 		SpellId = 55502, -- Lifeblood (Rank 6)
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Lifeblood"
 	},
 	Lifeblood7 =
 	{
 		SpellId = 55503, -- Lifeblood (Rank 7)
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Lifeblood"
 	},
 	Lifeblood8 =
 	{
 		SpellId = 74497, -- Lifeblood (Rank 8)
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Lifeblood"
 	},
 	Back =
 	{
 		SlotName = "BackSlot",
 		SlotCaption = BACKSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Chest =
 	{
 		SlotName = "ChestSlot",
 		SlotCaption = CHESTSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Feet =
 	{
 		SlotName = "FeetSlot",
 		SlotCaption = FEETSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Finger0 =
 	{
 		SlotName = "Finger0Slot",
 		SlotCaption = FINGER0SLOT .. " (1)",
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Finger1 =
 	{
 		SlotName = "Finger1Slot",
 		SlotCaption = FINGER1SLOT .. " (2)",
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Hands =
 	{
 		SlotName = "HandsSlot",
 		SlotCaption = HANDSSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Head = 
 	{
 		SlotName = "HeadSlot",
 		SlotCaption = HEADSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Legs =
 	{
 		SlotName = "LegsSlot",
 		SlotCaption = LEGSSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	MainHand =
 	{
 		SlotName = "MainHandSlot",
 		SlotCaption = MAINHANDSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Neck =
 	{
 		SlotName = "NeckSlot",
 		SlotCaption = NECKSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Ranged =
 	{
 		SlotName = "RangedSlot",
 		SlotCaption = (UnitHasRelicSlot("player") and RELICSLOT) or RANGEDSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	SecondaryHand =
 	{
 		SlotName = "SecondaryHandSlot",
 		SlotCaption = SECONDARYHANDSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Shirt =
 	{
 		SlotName = "ShirtSlot",
 		SlotCaption = SHIRTSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Shoulder =
 	{
 		SlotName = "ShoulderSlot",
 		SlotCaption = SHOULDERSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Tabard =
 	{
 		SlotName = "TabardSlot",
 		SlotCaption = TABARDSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Trinket0 =
 	{
 		SlotName = "Trinket0Slot",
 		SlotCaption = TRINKET0SLOT .. " (1)",
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Trinket1 =
 	{
 		SlotName = "Trinket1Slot",
 		SlotCaption = TRINKET1SLOT .. " (2)",
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Waist =
 	{
 		SlotName = "WaistSlot",
 		SlotCaption = WAISTSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	},
 	Wrist =
 	{
 		SlotName = "WristSlot",
 		SlotCaption = WRISTSLOT,
-		Update = OrlanHeal.UpdateItemCooldown
+		Update = OrlanHeal.UpdateItemCooldown,
+		Group = "Use"
 	}
 };
