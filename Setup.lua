@@ -160,21 +160,24 @@ end;
 
 function OrlanHeal:InitializeSpellSelectWindow(spellSelectWindow)
 	UIDropDownMenu_Initialize(spellSelectWindow, self.HandleSpellInit);
+	UIDropDownMenu_SetSelectedValue(spellSelectWindow, spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button]);
 end;
 
 function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
-	local info = {};
-	info["func"] = spellSelectWindow.OrlanHeal.HandleSpellSelect;
-	info["arg1"] = spellSelectWindow;
-
-	info["text"] = "";
-	info["value"] = "";
-	info["arg2"] = "";
+	local info = UIDropDownMenu_CreateInfo();
+	info.func = spellSelectWindow.OrlanHeal.HandleSpellSelect;
+	info.arg1 = spellSelectWindow;
+	info.text = "";
+	info.value = "";
+	info.arg2 = "";
 	UIDropDownMenu_AddButton(info, level);
 
-	info["text"] = "Set as target";
-	info["value"] = "target";
-	info["arg2"] = "target";
+	info = UIDropDownMenu_CreateInfo();
+	info.func = spellSelectWindow.OrlanHeal.HandleSpellSelect;
+	info.arg1 = spellSelectWindow;
+	info.text = "Set as target";
+	info.value = "target";
+	info.arg2 = "target";
 	UIDropDownMenu_AddButton(info, level);
 
 	local spellIndex = 1;
@@ -186,16 +189,17 @@ function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
 
 		local spellName = GetSpellInfo(spellId);
 
-		info["text"] = spellName;
-		info["value"] = spellId;
-		info["arg2"] = spellId;
+		info = UIDropDownMenu_CreateInfo();
+		info.func = spellSelectWindow.OrlanHeal.HandleSpellSelect;
+		info.arg1 = spellSelectWindow;
+		info.text = spellName;
+		info.value = spellId;
+		info.arg2 = spellId;
 
 		UIDropDownMenu_AddButton(info, level);
 
 		spellIndex = spellIndex + 1;
 	end;
-
-	UIDropDownMenu_SetSelectedValue(spellSelectWindow, spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button]);
 end;
 
 function OrlanHeal.HandleSpellSelect(item, spellSelectWindow, value)
@@ -205,56 +209,118 @@ end;
 
 function OrlanHeal:InitializeCooldownSelectWindow(cooldownSelectWindow)
 	UIDropDownMenu_Initialize(cooldownSelectWindow, self.HandleCooldownInit);
-end;
-
-function OrlanHeal.HandleCooldownInit(cooldownSelectWindow, level)
-	local info = {};
-	info["func"] = cooldownSelectWindow.OrlanHeal.HandleCooldownSelect;
-	info["arg1"] = cooldownSelectWindow;
-
-	info["text"] = "";
-	info["value"] = "";
-	info["arg2"] = "";
-	UIDropDownMenu_AddButton(info, level);
-
-	for key, cooldown in pairs(cooldownSelectWindow.OrlanHeal.CommonCooldownOptions) do
-		cooldownSelectWindow.OrlanHeal:AddCooldownOption(info, level, key, cooldown);
-	end;
-
-	if cooldownSelectWindow.OrlanHeal.Class.CooldownOptions then
-		for key, cooldown in pairs(cooldownSelectWindow.OrlanHeal.Class.CooldownOptions) do
-			cooldownSelectWindow.OrlanHeal:AddCooldownOption(info, level, key, cooldown);
-		end;
-	end;
-
-	UIDropDownMenu_SetSelectedValue(
+	cooldownSelectWindow.OrlanHeal:SetCooldownSelectWindowSelectedValue(
 		cooldownSelectWindow, 
 		cooldownSelectWindow.OrlanHeal.PendingConfig[cooldownSelectWindow.cooldown]);
 end;
 
-function OrlanHeal:AddCooldownOption(info, level, key, cooldown)
-	if not cooldown.IsAvailable or cooldown.IsAvailable(self) then
-		local effectId = cooldown.AuraId or cooldown.SpellId;
-		local name;
-		if effectId then
-			local rank;
-			name, rank = GetSpellInfo(effectId);
-			if rank and (rank ~= "") then
-				name = name .. " (" .. rank .. ")";
-			end;
+function OrlanHeal:SetCooldownSelectWindowSelectedValue(cooldownSelectWindow, value)
+	UIDropDownMenu_SetSelectedValue(cooldownSelectWindow, value);
+	local text;
+	if value == "" then
+		text = "";
+	else
+		local cooldown = self:GetCooldownOptions()[value];
+		if cooldown then
+			text = self:GetCooldownCaption(cooldown);
 		else
-			name = cooldown.SlotCaption;
+			text = "Custom";
 		end;
-		info["text"] = name;
-		info["value"] = key;
-		info["arg2"] = key;
+	end;
+	UIDropDownMenu_SetText(cooldownSelectWindow, text);
+end;
+
+function OrlanHeal.HandleCooldownInit(cooldownSelectWindow, level)
+	if level == 1 then
+		local info = UIDropDownMenu_CreateInfo();
+		info.func = cooldownSelectWindow.OrlanHeal.HandleCooldownSelect;
+		info.arg1 = cooldownSelectWindow;
+		info.text = "";
+		info.value = "";
+		info.arg2 = "";
+		info.keepShownOnClick = true;
+		UIDropDownMenu_AddButton(info, level);
+
+		local groups = {};
+		for key, cooldown in pairs(cooldownSelectWindow.OrlanHeal:GetCooldownOptions()) do
+			if cooldown.Group then
+				if not groups[cooldown.Group] then
+					groups[cooldown.Group] = {};
+				end;
+				groups[cooldown.Group][key] = cooldown;
+			else
+				cooldownSelectWindow.OrlanHeal:AddCooldownOption(level, key, cooldown, cooldownSelectWindow);
+			end;
+		end;
+
+		for key, groupOptions in pairs(groups) do
+			cooldownSelectWindow.OrlanHeal:AddCooldownGroup(key, groupOptions, level);
+		end;
+	end;
+
+	if level == 2 then
+		for key, cooldown in pairs(UIDROPDOWNMENU_MENU_VALUE) do
+			cooldownSelectWindow.OrlanHeal:AddCooldownOption(level, key, cooldown, cooldownSelectWindow);
+		end;
+	end;
+end;
+
+function OrlanHeal:GetCooldownOptions()
+	local options = {};
+	for key, cooldown in pairs(self.CommonCooldownOptions) do
+		options[key] = cooldown;
+	end;
+	if self.Class.CooldownOptions then
+		for key, cooldown in pairs(self.Class.CooldownOptions) do
+			options[key] = cooldown;
+		end;
+	end;
+	return options;
+end;
+
+function OrlanHeal:GetCooldownCaption(cooldown)
+	local effectId = cooldown.AuraId or cooldown.SpellId;
+	local caption;
+	if effectId then
+		local name, rank = GetSpellInfo(effectId);
+		if rank and (rank ~= "") then
+			caption = name .. " (" .. rank .. ")";
+		else
+			caption = name;
+		end;
+	else
+		caption = cooldown.SlotCaption;
+	end;
+	return caption;
+end;
+
+function OrlanHeal:AddCooldownOption(level, key, cooldown, cooldownSelectWindow)
+	if not cooldown.IsAvailable or cooldown.IsAvailable(self) then
+		local info = UIDropDownMenu_CreateInfo();
+		info.func = cooldownSelectWindow.OrlanHeal.HandleCooldownSelect;
+		info.arg1 = cooldownSelectWindow;
+		info.text = self:GetCooldownCaption(cooldown);
+		info.value = key;
+		info.arg2 = key;
+		info.keepShownOnClick = true;
 		UIDropDownMenu_AddButton(info, level);
 	end;
 end;
 
+function OrlanHeal:AddCooldownGroup(name, options, level)
+	local info = UIDropDownMenu_CreateInfo();
+	info.hasArrow = true;
+	info.notCheckable = true;
+	info.text = name;
+	info.value = options;
+	info.keepShownOnClick = true;
+	UIDropDownMenu_AddButton(info, level);
+end;
+
 function OrlanHeal.HandleCooldownSelect(item, cooldownWindow, value)
 	cooldownWindow.OrlanHeal.PendingConfig[cooldownWindow.cooldown] = value;
-	UIDropDownMenu_SetSelectedValue(cooldownWindow, value);	
+	cooldownWindow.OrlanHeal:SetCooldownSelectWindowSelectedValue(cooldownWindow, value);
+	ToggleDropDownMenu(nil, nil, cooldownWindow);
 end;
 
 function OrlanHeal:LoadSetup()
