@@ -36,6 +36,10 @@
 		print("OrlanHeal: " .. className .. " class is not supported.");
 	end;
 
+	if not self.Class.IsSupported then
+		print("OrlanHeal: " .. className .. " class support in not completely implemented yet.");
+	end;
+
 	self.ElapsedAfterUpdate = 0;
 	function self.EventFrame:HandleUpdate(elapsed)
 		if orlanHeal.RaidWindow:IsShown() then
