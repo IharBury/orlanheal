@@ -11,6 +11,7 @@ ShieldAbilities.lua
 HealingBuffs.lua
 IgnoredDebuffs.lua
 CriticalDebuffs.lua
+CommonAvailableSpells.lua
 
 Setup.lua
 Mode.lua

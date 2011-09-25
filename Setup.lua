@@ -160,50 +160,99 @@ end;
 
 function OrlanHeal:InitializeSpellSelectWindow(spellSelectWindow)
 	UIDropDownMenu_Initialize(spellSelectWindow, self.HandleSpellInit);
-	UIDropDownMenu_SetSelectedValue(spellSelectWindow, spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button]);
+	UIDropDownMenu_SetSelectedValue(
+		spellSelectWindow, 
+		spellSelectWindow.OrlanHeal:GetSpellKey(
+			spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button]));
 end;
 
 function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
+	spellSelectWindow.OrlanHeal:AddSpellOption(
+		spellSelectWindow, 
+		{
+			type = "",
+			caption = ""
+		},
+		level);
+
+	spellSelectWindow.OrlanHeal:AddSpellOption(
+		spellSelectWindow, 
+		{
+			type = "target",
+			caption = "Set as target"
+		},
+		level);
+
+	local spells = {};
+	for spellIndex, spell in ipairs(spellSelectWindow.OrlanHeal:GetAvailableSpells()) do
+		spells[spell] = spellSelectWindow.OrlanHeal:GetSpellCaption(spell);
+	end;
+	for index, spell, _ in 
+			spellSelectWindow.OrlanHeal:SortedPairs(
+				spells,
+				function(spell1, spellCaption1, spell2, spellCaption2)
+					return spellCaption1 < spellCaption2;
+				end) do
+		spellSelectWindow.OrlanHeal:AddSpellOption(spellSelectWindow, spell, level);
+	end;
+end;
+
+function OrlanHeal:AddSpellOption(spellSelectWindow, spell, level)
 	local info = UIDropDownMenu_CreateInfo();
 	info.func = spellSelectWindow.OrlanHeal.HandleSpellSelect;
 	info.arg1 = spellSelectWindow;
-	info.text = "";
-	info.value = "";
-	info.arg2 = "";
+	info.text = self:GetSpellCaption(spell);
+	info.value = spellSelectWindow.OrlanHeal:GetSpellKey(spell);
+	info.arg2 = spell;
 	UIDropDownMenu_AddButton(info, level);
+end;
 
-	info = UIDropDownMenu_CreateInfo();
-	info.func = spellSelectWindow.OrlanHeal.HandleSpellSelect;
-	info.arg1 = spellSelectWindow;
-	info.text = "Set as target";
-	info.value = "target";
-	info.arg2 = "target";
-	UIDropDownMenu_AddButton(info, level);
+function OrlanHeal:GetSpellKey(spell)
+	local key;
+	if type(spell) == "table" then
+		if spell.type == "target" then
+			key = spell.type;
+		elseif spell.type == "item" then
+			key = spell.item;
+		else
+			key = spell.spell;
+		end;
+	else
+		key = spell;
+	end;
+	return key;
+end;
 
+function OrlanHeal:GetSpellCaption(spell)
+	local caption;
+	if type(spell) == "table" then
+		if spell.caption then
+			caption = spell.caption;
+		else
+			caption = GetSpellInfo(spell.spell);
+		end;
+	else
+		caption = GetSpellInfo(spell);
+	end;
+	return caption;
+end;
+
+function OrlanHeal:GetAvailableSpells()
 	local spells = {};
-	for spellIndex, spellId in ipairs(spellSelectWindow.OrlanHeal.Class.AvailableSpells) do
-		spells[spellId] = GetSpellInfo(spellId);
+	for index, spell in ipairs(self.CommonAvailableSpells) do
+		table.insert(spells, spell);
 	end;
-	for index, spellId, spellName in 
-			spellSelectWindow.OrlanHeal:SortedPairs(
-				spells,
-				function(spellId1, spellName1, spellId2, spellName2)
-					return spellName1 < spellName2;
-				end) do
-		info = UIDropDownMenu_CreateInfo();
-		info.func = spellSelectWindow.OrlanHeal.HandleSpellSelect;
-		info.arg1 = spellSelectWindow;
-		info.text = spellName;
-		info.value = spellId;
-		info.arg2 = spellId;
-
-		UIDropDownMenu_AddButton(info, level);
+	for index, spell in ipairs(self.Class.AvailableSpells) do
+		table.insert(spells, spell);
 	end;
+	return spells;
 end;
 
 function OrlanHeal.HandleSpellSelect(item, spellSelectWindow, value)
 	spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button] = value;
-	UIDropDownMenu_SetSelectedValue(spellSelectWindow, value);	
+	UIDropDownMenu_SetSelectedValue(
+		spellSelectWindow, 
+		spellSelectWindow.OrlanHeal:GetSpellKey(value));
 end;
 
 function OrlanHeal:InitializeCooldownSelectWindow(cooldownSelectWindow)
