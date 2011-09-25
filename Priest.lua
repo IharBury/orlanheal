@@ -39,6 +39,15 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 33206,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	GiftOfTheNaaru =
+	{
+		SpellId = 59544, -- Gift of the Naaru
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Draenei";
+		end
 	}
 };
 

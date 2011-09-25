@@ -82,6 +82,60 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 20165, -- Seal of Insight
 		IsReverse = true,
 		Update = OrlanHeal.UpdatePlayerBuffCooldown
+	},
+	GiftOfTheNaaru =
+	{
+		SpellId = 59542, -- Gift of the Naaru
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Draenei";
+		end
+	},
+	Rebuke =
+	{
+		SpellId = 96231, -- Rebuke
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DivineProtection =
+	{
+		SpellId = 498, -- Divine Protection
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DivineShield =
+	{
+		SpellId = 642, -- Divine Shield
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HandOfSacrifice =
+	{
+		SpellId = 6940, -- Hand of Sacrifice
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HandOfProtection =
+	{
+		SpellId = 1022, -- Hand of Protection
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HandOfFreedom =
+	{
+		SpellId = 1044, -- Hand of Freedom
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HandOfSalvation =
+	{
+		SpellId = 1038, -- Hand of Salvation
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HammerOfJustice =
+	{
+		SpellId = 853, -- Hammer of Justice
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HolyShock =
+	{
+		SpellId = 20473, -- Holy Shock
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
