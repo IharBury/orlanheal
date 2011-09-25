@@ -288,15 +288,6 @@ end;
 
 OrlanHeal.CommonCooldownOptions =
 {
-	Berserk =
-	{
-		SpellId = 26297, -- Берсерк
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		IsAvailable = function()
-			local _, race = UnitRace("player");
-			return race == "Troll";
-		end;
-	},
 	Lifeblood1 =
 	{
 		SpellId = 81708, -- Lifeblood (Rank 1)
@@ -477,5 +468,95 @@ OrlanHeal.CommonCooldownOptions =
 		SlotCaption = WRISTSLOT,
 		Update = OrlanHeal.UpdateItemCooldown,
 		Group = "Use"
+	},
+	Darkflight =
+	{
+		SpellId = 68992, -- Darkflight
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Worgen";
+		end
+	},
+	EscapeArtist =
+	{
+		SpellId = 20589, -- Escape Artist
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Gnome";
+		end
+	},
+	Stoneform =
+	{
+		SpellId = 20594, -- Stoneform
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Dwarf";
+		end
+	},
+	Shadowmeld =
+	{
+		SpellId = 58984, -- Shadowmeld
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "NightElf";
+		end
+	},
+	EveryManForHimself =
+	{
+		SpellId = 59752, -- Every Man for Himself
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Human";
+		end
+	},
+	RocketJump =
+	{
+		SpellId = 69070, -- Rocket Jump
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Goblin";
+		end
+	},
+	WillOfTheForsaken =
+	{
+		SpellId = 7744, -- Will of the Forsaken
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return (race == "Undead") or (race == "Scourge");
+		end
+	},
+	WarStomp =
+	{
+		SpellId = 20549, -- War Stomp
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Tauren";
+		end
+	},
+	Berserk =
+	{
+		SpellId = 26297, -- Берсерк
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Troll";
+		end
+	},
+	ArcaneTorrent =
+	{
+		SpellId = 28730, -- Arcane Torrent
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "BloodElf";
+		end
 	}
 };

@@ -57,6 +57,24 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 98008,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	GiftOfTheNaaru =
+	{
+		SpellId = 59547, -- Gift of the Naaru
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Draenei";
+		end
+	},
+	BloodFury =
+	{
+		SpellId = 33697, -- Blood Fury
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Orc";
+		end
 	}
 };
 
