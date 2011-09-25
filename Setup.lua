@@ -181,17 +181,9 @@ function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
 	UIDropDownMenu_AddButton(info, level);
 
 	local spells = {};
-	local spellIndex = 1;
-	while true do
-		local spellId = spellSelectWindow.OrlanHeal.Class.AvailableSpells[spellIndex];
-		if (not spellId) then
-			break;
-		end;
+	for spellIndex, spellId in ipairs(spellSelectWindow.OrlanHeal.Class.AvailableSpells) do
 		spells[spellId] = GetSpellInfo(spellId);
-
-		spellIndex = spellIndex + 1;
 	end;
-
 	for index, spellId, spellName in 
 			spellSelectWindow.OrlanHeal:SortedPairs(
 				spells,
