@@ -76,6 +76,12 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 54428, -- Divine Plea
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	SealOfInsight =
+	{
+		SpellId = 20165, -- Seal of Insight
+		IsReverse = true,
+		Update = OrlanHeal.UpdatePlayerBuffCooldown
 	}
 };
 
