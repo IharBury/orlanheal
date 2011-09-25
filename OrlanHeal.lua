@@ -438,7 +438,20 @@ function OrlanHeal:SetAction(button, hasControl, hasShift, hasAlt, buttonNumber)
 		prefix = prefix .. "shift-";
 	end;
 
-	if ((action == "") or (action == "target")) then
+	if type(action) == "table" then
+		if action == "target" then
+			button:SetAttribute(prefix .. "type" .. buttonNumber, action);
+		else
+			button:SetAttribute(prefix .. "type" .. buttonNumber, "");
+		end;
+		button:SetAttribute(prefix .. "type-help" .. buttonNumber, action.type);
+		button:SetAttribute(prefix .. "spell-help" .. buttonNumber, action.spell);
+		if action.item then
+			button:SetAttribute(
+				prefix .. "item-help" .. buttonNumber, 
+				GetInventorySlotInfo(action.item));
+		end;
+	elseif ((action == "") or (action == "target")) then
 		button:SetAttribute(prefix .. "type" .. buttonNumber, action);
 		button:SetAttribute(prefix .. "type-help" .. buttonNumber, action);
 	else
