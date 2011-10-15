@@ -20,7 +20,8 @@ OrlanHeal.Paladin.AvailableSpells =
 	20217, -- Blessing of Kings
 	7328, -- Redemption
 	31789, -- Righteous Defense
-	19740 -- Blessing of Might
+	19740, -- Blessing of Might
+	82327 -- Holy Radiance
 };
 
 OrlanHeal.Paladin.CooldownOptions =
