@@ -152,6 +152,7 @@ function OrlanHeal.Paladin.LoadSetup(orlanHeal)
 	orlanHeal.Config["alt1"] = orlanHeal.Config["alt1"] or 4987; -- Cleanse
 	orlanHeal.Config["alt2"] = orlanHeal.Config["alt2"] or 20473; -- Holy Shock
 	orlanHeal.Config["alt3"] = orlanHeal.Config["alt3"] or 633; -- Lay on Hands
+	orlanHeal.Config["controlalt1"] = orlanHeal.Config["controlalt1"] or 82327; -- Holy Radiance
 
 	orlanHeal.Config["cooldown1"] = orlanHeal.Config["cooldown1"] or "JudgementsOfThePure";
 	orlanHeal.Config["cooldown2"] = orlanHeal.Config["cooldown2"] or "BeaconOfLight";
@@ -163,6 +164,11 @@ function OrlanHeal.Paladin.LoadSetup(orlanHeal)
 	orlanHeal.Config["cooldown8"] = orlanHeal.Config["cooldown8"] or "GuardianOfAncientKings";
 	orlanHeal.Config["cooldown9"] = orlanHeal.Config["cooldown9"] or "AuraMastery";
 	orlanHeal.Config["cooldown10"] = orlanHeal.Config["cooldown10"] or "DivinePlea";
+
+	if (orlanHeal.Config["controlalt1update"] ~= 1) and (orlanHeal.Config["controlalt1"] == "") then
+		orlanHeal.Config["controlalt1"] = 82327; -- Holy Radiance
+		orlanHeal.Config["controlalt1update"] = 1;
+	end;
 end;
 
 OrlanHeal.Paladin.RedRangeSpellId = 53563; -- Частица Света
