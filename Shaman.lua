@@ -9,7 +9,8 @@ OrlanHeal.Shaman.AvailableSpells =
 	546, -- Хождение по воде
 	1064, -- Цепное исцеление
 	77472, -- Великая волна исцеления
-	61295 -- Быстрина
+	61295, -- Быстрина
+	73680 -- Высвободить чары стихий
 };
 
 OrlanHeal.Shaman.CooldownOptions =
@@ -75,6 +76,11 @@ OrlanHeal.Shaman.CooldownOptions =
 			local _, race = UnitRace("player");
 			return race == "Orc";
 		end
+	},
+	UnleashElements =
+	{
+		SpellId = 73680,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
