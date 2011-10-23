@@ -81,6 +81,11 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 73680,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HealingRain =
+	{
+		SpellId = 73920,
+		Update = OrlanHeal.updateAbilityCooldown
 	}
 };
 
