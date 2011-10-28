@@ -86,6 +86,11 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 73920,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	SpiritwalkersGrace =
+	{
+		SpellId = 79206,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -103,7 +108,11 @@ OrlanHeal.Shaman.OrangeRangeSpellId = 331; -- Волна исцеления
 OrlanHeal.Shaman.YellowRangeSpellId = 546; -- Хождение по воде
 
 function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
-	orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+	if orlanHeal:IsSpellReady(61295) then -- Riptide
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
+	else
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+	end;
 end;
 
 OrlanHeal.Shaman.PlayerSpecificBuffCount = 2;
