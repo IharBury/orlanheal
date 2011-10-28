@@ -250,7 +250,9 @@ end;
 function OrlanHeal:GetSpellKey(spell)
 	local key;
 	if type(spell) == "table" then
-		if spell.type == "target" then
+		if spell.key then
+			key = spell.key;
+		elseif spell.type == "target" then
 			key = spell.type;
 		elseif spell.type == "item" then
 			key = spell.item;

@@ -439,13 +439,14 @@ function OrlanHeal:SetAction(button, hasControl, hasShift, hasAlt, buttonNumber)
 	end;
 
 	if type(action) == "table" then
-		if action == "target" then
+		if action.type == "target" then
 			button:SetAttribute(prefix .. "type" .. buttonNumber, action);
 		else
 			button:SetAttribute(prefix .. "type" .. buttonNumber, "");
 		end;
 		button:SetAttribute(prefix .. "type-help" .. buttonNumber, action.type);
 		button:SetAttribute(prefix .. "spell-help" .. buttonNumber, action.spell);
+		button:SetAttribute(prefix .. "macrotext-help" .. buttonNumber, action.macrotext);
 		if action.item then
 			button:SetAttribute(
 				prefix .. "item-help" .. buttonNumber, 
