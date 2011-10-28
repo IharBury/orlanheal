@@ -82,7 +82,18 @@ OrlanHeal.Shaman.CooldownOptions =
 	Bloodlust =
 	{
 		SpellId = 2825,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			return UnitFactionGroup("player") == "Horde";
+		end
+	},
+	Heroism =
+	{
+		SpellId = 32182,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			return UnitFactionGroup("player") == "Alliance";
+		end
 	},
 	SpiritLinkTotem =
 	{
@@ -146,7 +157,11 @@ function OrlanHeal.Shaman.LoadSetup(orlanHeal)
 	orlanHeal.Config["cooldown7"] = orlanHeal.Config["cooldown7"] or "UnleashElements";
 	orlanHeal.Config["cooldown8"] = orlanHeal.Config["cooldown8"] or "Riptide";
 	orlanHeal.Config["cooldown9"] = orlanHeal.Config["cooldown9"] or "SpiritwalkersGrace";
-	orlanHeal.Config["cooldown10"] = orlanHeal.Config["cooldown10"] or "Bloodlust";
+	if UnitFactionGroup("player") == "Alliance" then
+		orlanHeal.Config["cooldown10"] = orlanHeal.Config["cooldown10"] or "Heroism";
+	else
+		orlanHeal.Config["cooldown10"] = orlanHeal.Config["cooldown10"] or "Bloodlust";
+	end;
 end;
 
 OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления

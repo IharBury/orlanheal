@@ -162,7 +162,8 @@ function OrlanHeal:InitializeSpellSelectWindow(spellSelectWindow)
 	UIDropDownMenu_Initialize(spellSelectWindow, self.HandleSpellInit);
 	spellSelectWindow.OrlanHeal:SetSpellSelectWindowSelectedValue(
 		spellSelectWindow, 
-		spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button]);
+		spellSelectWindow.OrlanHeal:GetSpellByKey(
+			spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button]));
 end;
 
 function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
@@ -171,7 +172,8 @@ function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
 			spellSelectWindow, 
 			{
 				type = "",
-				caption = ""
+				caption = "",
+				key = ""
 			},
 			level);
 
@@ -267,7 +269,9 @@ end;
 
 function OrlanHeal:GetSpellCaption(spell)
 	local caption;
-	if type(spell) == "table" then
+	if spell == nil then
+		caption = nil;
+	elseif type(spell) == "table" then
 		if spell.caption then
 			caption = spell.caption;
 		else
@@ -293,7 +297,8 @@ function OrlanHeal:GetAvailableSpells()
 end;
 
 function OrlanHeal.HandleSpellSelect(item, spellSelectWindow, value)
-	spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button] = value;
+	spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button] = 
+		spellSelectWindow.OrlanHeal:GetSpellKey(value);
 	spellSelectWindow.OrlanHeal:SetSpellSelectWindowSelectedValue(spellSelectWindow, value);
 	ToggleDropDownMenu(nil, nil, spellSelectWindow);
 end;
@@ -303,6 +308,20 @@ function OrlanHeal:InitializeCooldownSelectWindow(cooldownSelectWindow)
 	cooldownSelectWindow.OrlanHeal:SetCooldownSelectWindowSelectedValue(
 		cooldownSelectWindow, 
 		cooldownSelectWindow.OrlanHeal.PendingConfig[cooldownSelectWindow.cooldown]);
+end;
+
+function OrlanHeal:GetSpellByKey(spellKey)
+	local spell;
+	spell = spellKey;
+	if type(spellKey) ~= "table" then
+		for index, currentSpell in ipairs(self:GetAvailableSpells()) do
+			if self:GetSpellKey(currentSpell) == spellKey then
+				spell = currentSpell;
+				break;
+			end;
+		end;
+	end;
+	return spell;
 end;
 
 function OrlanHeal:SetSpellSelectWindowSelectedValue(spellSelectWindow, spell)
