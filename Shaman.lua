@@ -10,7 +10,35 @@ OrlanHeal.Shaman.AvailableSpells =
 	1064, -- Цепное исцеление
 	77472, -- Великая волна исцеления
 	61295, -- Быстрина
-	73680 -- Высвободить чары стихий
+	73680, -- Высвободить чары стихий
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(331), -- Волна исцеления
+		group = GetSpellInfo(16188), -- Природная стремительность
+		macrotext = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(331),
+		key = "16188,331"
+	},
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(8004), -- Исцеляющий всплеск
+		group = GetSpellInfo(16188), -- Природная стремительность
+		macrotext = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(8004),
+		key = "16188,8004"
+	},
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(1064), -- Цепное исцеление
+		group = GetSpellInfo(16188), -- Природная стремительность
+		macrotext = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(1064),
+		key = "16188,1064"
+	},
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(77472), -- Великая волна исцеления
+		group = GetSpellInfo(16188), -- Природная стремительность
+		macrotext = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(77472),
+		key = "16188,77472"
+	}
 };
 
 OrlanHeal.Shaman.CooldownOptions =
@@ -108,10 +136,27 @@ OrlanHeal.Shaman.OrangeRangeSpellId = 331; -- Волна исцеления
 OrlanHeal.Shaman.YellowRangeSpellId = 546; -- Хождение по воде
 
 function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
-	if orlanHeal:IsSpellReady(61295) then -- Riptide
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
+	local isRiptideReady = orlanHeal:IsSpellReady(61295);
+	local isNaturesSwiftnessReady = orlanHeal:IsSpellReady(16188);
+	local spiritwalkersGraceSpellName = GetSpellInfo(79206);
+	if UnitBuff("player", spiritwalkersGraceSpellName) then
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
+	elseif isRiptideReady then
+		if isNaturesSwiftnessReady then
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
+		else
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
+		end;
 	else
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+		if isNaturesSwiftnessReady then
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha);
+		else
+			if orlanHeal:IsSpellReady(79206) then -- Spiritwalker's Grace
+				orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha);
+			else
+				orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+			end;
+		end;
 	end;
 end;
 
