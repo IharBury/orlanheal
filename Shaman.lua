@@ -1,5 +1,7 @@
 ﻿OrlanHeal.Shaman = {};
 
+OrlanHeal.Shaman.IsSupported = true;
+
 OrlanHeal.Shaman.AvailableSpells =
 {
 	331, -- Волна исцеления
@@ -123,12 +125,28 @@ OrlanHeal.Shaman.CooldownOptions =
 };
 
 function OrlanHeal.Shaman.LoadSetup(orlanHeal)
+	orlanHeal.Config["1"] = orlanHeal.Config["1"] or 331; -- Волна исцеления
+	orlanHeal.Config["2"] = orlanHeal.Config["2"] or 8004; -- Исцеляющий всплеск
+	orlanHeal.Config["3"] = orlanHeal.Config["3"] or 73680; -- Высвободить чары стихий
+	orlanHeal.Config["shift2"] = orlanHeal.Config["shift2"] or 974; -- Щит земли
+	orlanHeal.Config["shift3"] = orlanHeal.Config["shift3"] or 546; -- Хождение по воде
+	orlanHeal.Config["control1"] = orlanHeal.Config["control1"] or 77472; -- Великая волна исцеления
+	orlanHeal.Config["control2"] = orlanHeal.Config["control2"] or 61295; -- Быстрина
+	orlanHeal.Config["control3"] = orlanHeal.Config["control3"] or "16188,77472"; -- Instant Великая волна исцеления
+	orlanHeal.Config["alt1"] = orlanHeal.Config["alt1"] or 51886; -- Очищение духа
+	orlanHeal.Config["alt2"] = orlanHeal.Config["alt2"] or 1064; -- Цепное исцеление
+	orlanHeal.Config["alt3"] = orlanHeal.Config["alt3"] or "16188,1064"; -- Instant Цепное исцеление
+
 	orlanHeal.Config["cooldown1"] = orlanHeal.Config["cooldown1"] or "WaterShield";
-	orlanHeal.Config["cooldown2"] = orlanHeal.Config["cooldown2"] or "EarthShield";
-	orlanHeal.Config["cooldown3"] = orlanHeal.Config["cooldown3"] or "NaturesSwiftness";
-	orlanHeal.Config["cooldown4"] = orlanHeal.Config["cooldown4"] or "Berserk";
-	orlanHeal.Config["cooldown5"] = orlanHeal.Config["cooldown5"] or "ManaTideTotem";
-	orlanHeal.Config["cooldown6"] = orlanHeal.Config["cooldown6"] or "EarthlivingWeapon";
+	orlanHeal.Config["cooldown2"] = orlanHeal.Config["cooldown2"] or "EarthlivingWeapon";
+	orlanHeal.Config["cooldown3"] = orlanHeal.Config["cooldown3"] or "EarthShield";
+	orlanHeal.Config["cooldown4"] = orlanHeal.Config["cooldown4"] or "ManaTideTotem";
+	orlanHeal.Config["cooldown5"] = orlanHeal.Config["cooldown5"] or "SpiritLinkTotem";
+	orlanHeal.Config["cooldown6"] = orlanHeal.Config["cooldown6"] or "HealingRain";
+	orlanHeal.Config["cooldown7"] = orlanHeal.Config["cooldown7"] or "UnleashElements";
+	orlanHeal.Config["cooldown8"] = orlanHeal.Config["cooldown8"] or "Riptide";
+	orlanHeal.Config["cooldown9"] = orlanHeal.Config["cooldown9"] or "SpiritwalkersGrace";
+	orlanHeal.Config["cooldown10"] = orlanHeal.Config["cooldown10"] or "Bloodlust";
 end;
 
 OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления
