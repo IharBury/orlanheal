@@ -273,6 +273,8 @@ function OrlanHeal:GetSpellCaption(spell)
 		else
 			caption = GetSpellInfo(spell.spell);
 		end;
+	elseif spell == "target" then
+		caption = "Set as target";
 	else
 		caption = GetSpellInfo(spell);
 	end;
