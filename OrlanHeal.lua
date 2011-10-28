@@ -426,7 +426,7 @@ end;
 
 function OrlanHeal:SetAction(button, hasControl, hasShift, hasAlt, buttonNumber)
 	local name = self:BuildClickName(hasControl, hasShift, hasAlt, buttonNumber);
-	local action = self.Config[name];
+	local action = self:GetSpellByKey(self.Config[name]);
 	local prefix = "";
 	if hasAlt then
 		prefix = prefix .. "alt-";
