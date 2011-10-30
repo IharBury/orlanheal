@@ -197,7 +197,7 @@ OrlanHeal.Shaman.PlayerSpecificBuffCount = 2;
 
 function OrlanHeal.Shaman.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
-	if (spellId == 974) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- свой Щит земли
+	if spellId == 974 then -- Щит земли
 		buffKind = 1;
 	end;
 	if spellId == 61295 then -- Быстрина
