@@ -311,6 +311,9 @@ function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue, incomingValue, y
 
 	currentValue = currentValue or 0;
 	maxValue = maxValue or 1;
+	if maxValue == 0 then
+		maxValue = 1;
+	end;
 	incomingValue = incomingValue or 0;
 	yourIncomingValue = yourIncomingValue or 0;
 	if (currentValue > maxValue) then
