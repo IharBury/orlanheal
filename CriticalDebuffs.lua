@@ -138,4 +138,12 @@
 	[98928] = true, -- Lava Wave
 	[100292] = true, -- Lava Wave
 	[100294] = true, -- Lava Wave
+	[108342] = true, -- Disrupting Shadows
+	[108343] = true, -- Disrupting Shadows
+	[108344] = true, -- Disrupting Shadows
+	[104601] = true, -- Disrupting Shadows
+	[104600] = true, -- Disrupting Shadows
+	[103948] = true, -- Disrupting Shadows
+	[104599] = true, -- Disrupting Shadows
+	[103434] = true -- Disrupting Shadows
 };
