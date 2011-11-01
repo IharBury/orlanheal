@@ -443,7 +443,7 @@ function OrlanHeal:SetAction(button, hasControl, hasShift, hasAlt, buttonNumber)
 
 	if type(action) == "table" then
 		if action.type == "target" then
-			button:SetAttribute(prefix .. "type" .. buttonNumber, action);
+			button:SetAttribute(prefix .. "type" .. buttonNumber, action.type);
 		else
 			button:SetAttribute(prefix .. "type" .. buttonNumber, "");
 		end;
