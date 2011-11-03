@@ -145,5 +145,17 @@
 	[104600] = true, -- Disrupting Shadows
 	[103948] = true, -- Disrupting Shadows
 	[104599] = true, -- Disrupting Shadows
-	[103434] = true -- Disrupting Shadows
+	[103434] = true, -- Disrupting Shadows
+	[108348] = true, -- Deep Corruption
+	[108349] = true, -- Deep Corruption
+	[109389] = true, -- Deep Corruption
+	[109390] = true, -- Deep Corruption
+	[108220] = true, -- Deep Corruption
+	[108347] = true, -- Deep Corruption
+	[105171] = true, -- Deep Corruption
+	[105173] = true, -- Deep Corruption
+	[107975] = true, -- Deep Corruption
+	[107976] = true, -- Deep Corruption
+	[103628] = true, -- Deep Corruption
+	[107977] = true -- Deep Corruption
 };
