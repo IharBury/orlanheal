@@ -60,6 +60,7 @@
 	self.IsInStartUpMode = true;
 	self.IsTankWindowVisible = false;
 	self.IsNameBindingEnabled = false;
+	self.IsUnitUpdateRequired = false;
 
 	self.RaidRoles = {};
 end;
