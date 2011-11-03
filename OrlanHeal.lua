@@ -509,9 +509,11 @@ function OrlanHeal:UpdateUnits()
 	self.RaidRoles = {};
 	self.DisplayedTankCount = 0;
 	self.DisplayedTanks = {};
+	self.IsUnitUpdateRequired = false;
+	self.UpdateUnitsAt = time() + 3;
 
 	if self.IsInStartUpMode then
-		for groupNumber = 1, (self.GroupCount - 1) * 5 do
+		for groupNumber = 1, self.GroupCount - 1 do
 			for unitNumber = (groupNumber - 1) * 5 + 1, (groupNumber - 1) * 5 + 5 do
 				self:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts);
 			end;
@@ -538,11 +540,11 @@ function OrlanHeal:UpdateUnits()
 	end;
 end;
 
-function OrlanHeal:SetupTank(name)
+function OrlanHeal:SetupTank(unitBinding)
 	if self.DisplayedTankCount < 5 then
-		self.RaidWindow.Groups[0].Players[self.DisplayedTankCount].Button:SetAttribute("unit", name);
-		self.RaidWindow.Groups[0].Players[self.DisplayedTankCount].Pet.Button:SetAttribute("unit", name .. "-pet");
-		self.DisplayedTanks[name] = true;
+		self.RaidWindow.Groups[0].Players[self.DisplayedTankCount].Button:SetAttribute("unit", unitBinding);
+		self.RaidWindow.Groups[0].Players[self.DisplayedTankCount].Pet.Button:SetAttribute("unit", unitBinding .. "-pet");
+		self.DisplayedTanks[unitBinding] = true;
 		self.DisplayedTankCount = self.DisplayedTankCount + 1;
 	end;
 end;
@@ -564,6 +566,11 @@ function OrlanHeal:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts)
 		local unitBinding = unit;
 		local petBinding = pet;
 		local name, _, _, _, _, _, _, _, _, role = GetRaidRosterInfo(unitNumber);
+
+		if UnitExists(unit) and not name then
+			self.IsUnitUpdateRequired = true;
+		end;
+
 		if name and self.IsNameBindingEnabled then
 			unitBinding = name;
 			petBinding = name .. "-pet";
@@ -586,7 +593,7 @@ function OrlanHeal:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts)
 		if self.IsTankWindowVisible then
 			local role2 = UnitGroupRolesAssigned(unit);
 			if (role == "MAINTANK") or (role2 == "TANK") then
-				self:SetupTank(name);
+				self:SetupTank(name or unit);
 			end;
 		end;
 	end;
@@ -630,8 +637,12 @@ function OrlanHeal:SetupParty(groupNumber)
 
 	if self.IsTankWindowVisible then
 		local playerRole = UnitGroupRolesAssigned("player");
+		local name = self:GetUnitNameAndRealm("player");
+		if not name then
+			self.IsUnitUpdateRequired = true;
+		end;
 		if playerRole == "TANK" then
-			self:SetupTank("player");
+			self:SetupTank(name or "player");
 		end;
 	end;
 
@@ -641,6 +652,11 @@ function OrlanHeal:SetupParty(groupNumber)
 		local unitBinding = unit;
 		local petBinding = pet;
 		local name = self:GetUnitNameAndRealm(unit);
+
+		if UnitExists(unit) and not name then
+			self.IsUnitUpdateRequired = true;
+		end;
+
 		if name and self.IsNameBindingEnabled then
 			unitBinding = name;
 			petBinding = name .. "-pet";
@@ -649,8 +665,8 @@ function OrlanHeal:SetupParty(groupNumber)
 		self:SetPlayerTarget(groupNumber, unitNumber + 1, unitBinding, petBinding);
 		if self.IsTankWindowVisible then
 			local role = UnitGroupRolesAssigned(unit);
-			if name and (role == "TANK") then
-				self:SetupTank(name);
+			if role == "TANK" then
+				self:SetupTank(name or unit);
 			end;
 		end;
 	end;
@@ -689,6 +705,10 @@ function OrlanHeal:UpdateStatus()
 
 	self.Class.UpdateRaidBorder(self);
 	self:UpdateCooldowns();
+
+	if self.IsUnitUpdateRequired and (time() > self.UpdateUnitsAt) and not InCombatLockdown() then
+		self:UpdateUnits();
+	end;
 end;
 
 function OrlanHeal:UpdatePlayerRoleIcon(player)
