@@ -10,7 +10,8 @@ OrlanHeal.Druid.AvailableSpells =
 	33763, -- Жизнецвет
 	5185, -- Целительное прикосновение
 	20484, -- Возрождение
-	29166 -- Озарение
+	29166, -- Озарение
+	467 -- Шипы
 }
 
 OrlanHeal.Druid.CooldownOptions =
@@ -35,6 +36,11 @@ OrlanHeal.Druid.CooldownOptions =
 	{
 		SpellId = 18562,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Thorns =
+	{
+		SpellId = 467,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -43,7 +49,7 @@ end;
 
 OrlanHeal.Druid.RedRangeSpellId = 774; -- Омоложение
 OrlanHeal.Druid.OrangeRangeSpellId = 774; -- Омоложение
-OrlanHeal.Druid.YellowRangeSpellId = 29166; -- Озарение
+OrlanHeal.Druid.YellowRangeSpellId = 467; -- Шипы
 
 
 function OrlanHeal.Druid.UpdateRaidBorder(orlanHeal)
@@ -65,6 +71,8 @@ function OrlanHeal.Druid.GetSpecificBuffKind(orlanHeal, spellId, caster)
 		buffKind = 2;
 	elseif spellId == 33763 and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- свой Жизнецвет
 		buffKind = 3;
+	elseif spellId == 467 then -- Шипы
+		buffKind = 4;
 	end;
 	return buffKind;
 end;
