@@ -31,6 +31,8 @@
 		self.Class = self.Priest;
 	elseif class == "SHAMAN" then
 		self.Class = self.Shaman;
+	elseif class == "DRUID" then
+		self.Class = self.Druid;
 	else
 		self.Class = self.Paladin;
 		print("OrlanHeal: " .. className .. " class is not supported.");
