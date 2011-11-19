@@ -157,5 +157,19 @@
 	[107975] = true, -- Deep Corruption
 	[107976] = true, -- Deep Corruption
 	[103628] = true, -- Deep Corruption
-	[107977] = true -- Deep Corruption
+	[107977] = true, -- Deep Corruption
+	[108571] = true, -- Stomp
+	[103414] = true, -- Stomp
+	[109033] = true, -- Stomp
+	[109034] = true, -- Stomp
+	[109325] = true, -- Frostflake
+	[110598] = true, -- Consuming Shroud
+	[110215] = true, -- Consuming Shroud
+	[110214] = true, -- Consuming Shroud
+	[109379] = true, -- Searing Plasma
+	[105479] = true, -- Searing Plasma
+	[106199] = true, -- Blood Corruption: Death
+	[102582] = true, -- Chains of Frost
+	[103363] = true, -- Twilight Shear
+	[105544] = true -- Fel Decay
 };
