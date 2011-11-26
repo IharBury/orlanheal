@@ -171,5 +171,9 @@
 	[106199] = true, -- Blood Corruption: Death
 	[102582] = true, -- Chains of Frost
 	[103363] = true, -- Twilight Shear
-	[105544] = true -- Fel Decay
+	[105544] = true, -- Fel Decay
+	[89421] = true, -- Wrack
+	[92956] = true, -- Wrack
+	[89435] = true, -- Wrack
+	[92955] = true -- Wrack
 };
