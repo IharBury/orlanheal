@@ -847,6 +847,27 @@ function OrlanHeal:UnitHasCriticalDebuff(unit)
 	return hasCriticalDebuff;
 end;
 
+function OrlanHeal:UnitCriticalDebuffDuration(unit)
+	local buffIndex = 1;
+	local maxTimeSpent;
+
+	while true do
+		local _, _, _, _, _, duration, expires, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
+		if spellId == nil then break; end;
+
+		if self.CriticalDebuffs[spellId] then
+			local timeSpent = duration - expiration + GetTime();
+			if (not maxTimeSpent) or (timeSpent > maxTimeSpent) then
+				maxTimeSpent = timeSpent;
+			end;
+		end;
+
+		buffIndex = buffIndex + 1;
+	end;
+
+	return maxTimeSpent;
+end;
+
 function OrlanHeal:UpdateBackground(background, unit)
 	if UnitIsConnected(unit) ~= 1 then
 		background:SetTexture(0, 0, 0, 1);
@@ -920,6 +941,11 @@ function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 	end;
 	if UnitIsDND(unit) then
 		text = "dnd " .. text;
+	end;
+
+	local criticalDuration = self:UnitCriticalDebuffDuration(unit);
+	if criticalDuration then
+		text = criticalDuration .. " " .. text;
 	end;
 
 	if (displayedGroup ~= nil) and (string.sub(unit, 1, 4) == "raid") then
