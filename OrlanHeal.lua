@@ -945,7 +945,7 @@ function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 
 	local criticalDuration = self:UnitCriticalDebuffDuration(unit);
 	if criticalDuration then
-		text = criticalDuration .. " " .. text;
+		text = floor(criticalDuration) .. " " .. text;
 	end;
 
 	if (displayedGroup ~= nil) and (string.sub(unit, 1, 4) == "raid") then
