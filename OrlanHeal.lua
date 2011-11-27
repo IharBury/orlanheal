@@ -852,7 +852,7 @@ function OrlanHeal:UnitCriticalDebuffDuration(unit)
 	local maxTimeSpent;
 
 	while true do
-		local _, _, _, _, _, duration, expires, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
+		local _, _, _, _, _, duration, expiration, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
 		if spellId == nil then break; end;
 
 		if self.CriticalDebuffs[spellId] then
