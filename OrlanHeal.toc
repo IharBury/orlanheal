@@ -1,6 +1,6 @@
 ## Interface: 40300
 ## Title: OrlanHeal
-## Version: 2.0.3
+## Version: 2.0.4
 ## Notes: 
 ## SavedVariablesPerCharacter: OrlanHealConfig
 OrlanHeal.lua
