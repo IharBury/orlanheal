@@ -857,7 +857,10 @@ function OrlanHeal:UnitCriticalDebuffDuration(unit)
 
 		if self.CriticalDebuffs[spellId] then
 			local timeSpent = duration - expiration + GetTime();
-			if (not maxTimeSpent) or (timeSpent > maxTimeSpent) then
+			if timeSpent > 100 then
+				timeSpent = nil;
+			end;
+			if (not maxTimeSpent) or (timeSpent and (timeSpent > maxTimeSpent)) then
 				maxTimeSpent = timeSpent;
 			end;
 		end;
