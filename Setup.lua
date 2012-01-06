@@ -60,6 +60,12 @@
 	presetLoadButton:SetScript(
 		"OnClick",
 		function()
+			local presetName = UIDropDownMenu_GetSelectedValue(presetSelectWindow);
+			local preset = orlanHeal.Class.GetConfigPresets(orlanHeal)[presetName];
+			for key, value in pairs(preset) do
+				self.PendingConfig[key] = value;
+			end;
+			self:ApplyPendingConfigSetup();
 		end);
 
 	local setupScrollWindowContainer = CreateFrame("ScrollFrame", self.SetupWindowName .. "_SCROLL", setupWindow);
@@ -748,7 +754,13 @@ function OrlanHeal:Setup()
 	for key, value in pairs(self.Config) do
 		self.PendingConfig[key] = value;
 	end;
+	self:ApplyPendingConfigSetup();
 
+	self.SetupWindow.ConfigSaveNameEditBox:SetText("");
+	self.SetupWindow:Show();
+end;
+
+function OrlanHeal:ApplyPendingConfigSetup()
 	self:InitializeConfigSelectWindow(self.SetupWindow.ConfigSelectWindow);
 	self:InitializePresetSelectWindow(self.SetupWindow.PresetSelectWindow);
 
@@ -763,10 +775,6 @@ function OrlanHeal:Setup()
 		end;
 	end;
 	self.SetupWindow.SizeWindow:SetValue(self.RaidWindow:GetScale() / self.Scale * 1000);
-
-	self.SetupWindow.ConfigSaveNameEditBox:SetText("");
-
-	self.SetupWindow:Show();
 end;
 
 function OrlanHeal:CancelSetup()
