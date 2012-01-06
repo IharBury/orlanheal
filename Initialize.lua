@@ -1,12 +1,15 @@
-﻿function OrlanHeal:Initialize(configName)
+﻿function OrlanHeal:Initialize(configVariableName, characterConfigVariableName)
 	local orlanHeal = self;
 
-	self.ConfigName = configName;
+	self.ConfigVariableName = configVariableName;
+	self.CharacterConfigVariableName = characterConfigVariableName;
 	self.EventFrame = CreateFrame("Frame");
 
 	function self.EventFrame:HandleEvent(event, arg1)
 		if (event == "ADDON_LOADED") and (arg1 == "OrlanHeal") then
 			orlanHeal:HandleLoaded();
+		elseif (event == "ACTIVE_TALENT_GROUP_CHANGED") then
+			orlanHeal:LoadTalentGroupConfig();
 		elseif (event == "RAID_ROSTER_UPDATE") or
 				(event == "PARTY_CONVERTED_TO_RAID") or
 				(event == "PARTY_LEADER_CHANGED") or
@@ -68,10 +71,7 @@
 end;
 
 function OrlanHeal:HandleLoaded()
-	_G[self.ConfigName] = _G[self.ConfigName] or {};
-	self.Config = _G[self.ConfigName];
-
-	self:LoadSetup();
+	self:LoadConfigSet();
 
 	self.RaidWindow = self:CreateRaidWindow();
 	self.SetupWindow = self:CreateSetupWindow();
@@ -92,6 +92,7 @@ function OrlanHeal:HandleLoaded()
 	self.EventFrame:RegisterEvent("LFG_ROLE_UPDATE");
 	self.EventFrame:RegisterEvent("PLAYER_ROLES_ASSIGNED");
 	self.EventFrame:RegisterEvent("ROLE_CHANGED_INFORM");
+	self.EventFrame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED");
 end;
 
-OrlanHeal:Initialize("OrlanHealConfig");
+OrlanHeal:Initialize("OrlanHealGlobalConfig", "OrlanHealConfig");

@@ -135,7 +135,7 @@ OrlanHeal.Shaman.CooldownOptions =
 	}
 };
 
-function OrlanHeal.Shaman.LoadSetup(orlanHeal)
+function OrlanHeal.Shaman.LoadConfig(orlanHeal)
 	orlanHeal.Config["1"] = orlanHeal.Config["1"] or 331; -- Волна исцеления
 	orlanHeal.Config["2"] = orlanHeal.Config["2"] or 8004; -- Исцеляющий всплеск
 	orlanHeal.Config["3"] = orlanHeal.Config["3"] or 73680; -- Высвободить чары стихий

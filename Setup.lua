@@ -479,9 +479,50 @@ function OrlanHeal.HandleCooldownSelect(item, cooldownWindow, value)
 	ToggleDropDownMenu(nil, nil, cooldownWindow);
 end;
 
-function OrlanHeal:LoadSetup()
-	if self.Class.LoadSetup then
-		self.Class.LoadSetup(self);
+function OrlanHeal:GenerateDefaultConfigName()
+	local corePrefix = GetUnitName("player") .. "-" .. GetRealmName();
+	local index = 1;
+	local candidateName = corePrefix;
+	while self.ConfigSet[candidateName] do
+		index = index + 1;
+		candidateName = corePrefix .. " " .. index;
+	end;
+	return candidateName;
+end;
+
+function OrlanHeal:LoadConfigSet()
+	_G[self.ConfigVariableName] = _G[self.ConfigVariableName] or {};
+	self.ConfigSet = _G[self.ConfigVariableName];
+
+	_G[self.CharacterConfigVariableName] = _G[self.CharacterConfigVariableName] or {};
+	self.CharacterConfig = _G[self.CharacterConfigVariableName];
+
+	if not self.CharacterConfig[1] then
+		local _, class = UnitClass("player");
+		self.CharacterConfig["class"] = class;
+
+		local configName = self:GenerateDefaultConfigName();
+		self.ConfigSet[configName] = self.CharacterConfig;
+		self.CharacterConfig = { [1] = configName };
+		_G[self.CharacterConfigVariableName] = self.CharacterConfig;
+	end;
+
+	self:LoadTalentGroupConfig();
+end;
+
+function OrlanHeal:LoadTalentGroupConfig()
+	local talentGroup = GetActiveTalentGroup(false, false);
+	if not self.CharacterConfig[talentGroup] then
+		self.CharacterConfig[talentGroup] = self.CharacterConfig[1];
+	end;
+
+	self.Config = self.ConfigSet[self.CharacterConfig[talentGroup]];
+	self:LoadConfig();
+end;
+
+function OrlanHeal:LoadConfig()
+	if self.Class.LoadConfig then
+		self.Class.LoadConfig(self);
 	end;
 
 	self.Config["shift1"] = self.Config["shift1"] or "target";
