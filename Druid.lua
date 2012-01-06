@@ -44,6 +44,11 @@ OrlanHeal.Druid.CooldownOptions =
 	}
 };
 
+function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
+	local config = orlanHeal:GetCommonDefaultConfig();
+	return config;
+end;
+
 function OrlanHeal.Druid.LoadConfig(orlanHeal)
 end;
 
