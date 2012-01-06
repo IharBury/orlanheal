@@ -520,6 +520,11 @@ function OrlanHeal:LoadTalentGroupConfig()
 	self:LoadConfig();
 end;
 
+function OrlanHeal:HandleTalentGroupChanged()
+	self:LoadTalentGroupConfig();
+	self:ApplyConfig();
+end;
+
 function OrlanHeal:LoadConfig()
 	if self.Class.LoadConfig then
 		self.Class.LoadConfig(self);
@@ -577,11 +582,15 @@ function OrlanHeal:SaveSetup()
 		end;
 
 		self.Config.Size = self.SetupWindow.SizeWindow:GetValue() / 1000;
+		self:ApplyConfig();
+	end;
+end;
+
+function OrlanHeal:ApplyConfig()
 		self.RaidWindow:SetScale(self.Config.Size * self.Scale);
 
 		self.SetupWindow:Hide();
 
 		self:UpdateSpells();
 		self:SetupCooldowns();
-	end;
 end;

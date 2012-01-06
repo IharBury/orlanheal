@@ -9,7 +9,7 @@
 		if (event == "ADDON_LOADED") and (arg1 == "OrlanHeal") then
 			orlanHeal:HandleLoaded();
 		elseif (event == "ACTIVE_TALENT_GROUP_CHANGED") then
-			orlanHeal:LoadTalentGroupConfig();
+			orlanHeal:HandleTalentGroupChanged();
 		elseif (event == "RAID_ROSTER_UPDATE") or
 				(event == "PARTY_CONVERTED_TO_RAID") or
 				(event == "PARTY_LEADER_CHANGED") or
