@@ -51,10 +51,17 @@ OrlanHeal.Priest.CooldownOptions =
 	}
 };
 
+function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
+	local config = orlanHeal:GetCommonDefaultConfig();
+
+	config["cooldown1"] = "InnerFocus";
+	config["cooldown2"] = "PowerWordShield";
+	config["cooldown3"] = "PainSuppression";
+
+	return config;
+end;
+
 function OrlanHeal.Priest.LoadConfig(orlanHeal)
-	orlanHeal.Config["cooldown1"] = orlanHeal.Config["cooldown1"] or "InnerFocus";
-	orlanHeal.Config["cooldown2"] = orlanHeal.Config["cooldown2"] or "PowerWordShield";
-	orlanHeal.Config["cooldown3"] = orlanHeal.Config["cooldown3"] or "PainSuppression";
 end;
 
 OrlanHeal.Priest.RedRangeSpellId = 2096; -- Внутреннее зрение

@@ -634,28 +634,39 @@ function OrlanHeal:HandleTalentGroupChanged()
 	self:ApplyConfig();
 end;
 
-function OrlanHeal:LoadConfig()
-	if self.Class.LoadConfig then
-		self.Class.LoadConfig(self);
-	end;
-
-	self.Config["shift1"] = self.Config["shift1"] or "target";
+function OrlanHeal:GetCommonDefaultConfig()
+	local config = {};
 
 	for hasControl = 0, 1 do
 		for hasShift = 0, 1 do
 			for hasAlt = 0, 1 do
 				for buttonNumber = 1, 5 do
 					local name = self:BuildClickName(hasControl == 1, hasShift == 1, hasAlt == 1, buttonNumber);
-					self.Config[name] = self.Config[name] or "";
+					config[name] = "";
 				end;
 			end;
 		end;
 	end;
-	self.Config.Size = self.Config.Size or 1;
+
+	config["shift1"] = "target";
+	config.Size = 1;
 
 	for cooldownNumber = 1, self.MaxCooldownCount do
 		local key = "cooldown" .. cooldownNumber;
-		self.Config[key] = self.Config[key] or "";
+		config[key] = "";
+	end;
+
+	return config;
+end;
+
+function OrlanHeal:LoadConfig()
+	local defaultConfig = self.Class.GetDefaultConfig(self);
+	for key, value in pairs(defaultConfig) do
+		self.Config[key] = self.Config[key] or value;
+	end;
+
+	if self.Class.LoadConfig then
+		self.Class.LoadConfig(self);
 	end;
 end;
 
