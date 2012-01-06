@@ -1120,3 +1120,7 @@ function OrlanHeal:BuildClickName(hasControl, hasShift, hasAlt, buttonNumber)
 	name = name .. buttonNumber;
 	return name;
 end;
+
+function OrlanHeal:BuildCastSequenceMacro(spellId1, spellId2)
+	return "/cast " .. GetSpellInfo(spellId1) .. "\n/cast " .. GetSpellInfo(spellId2);
+end;

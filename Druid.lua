@@ -11,7 +11,8 @@ OrlanHeal.Druid.AvailableSpells =
 	5185, -- Целительное прикосновение
 	20484, -- Возрождение
 	29166, -- Озарение
-	467 -- Шипы
+	467, -- Шипы
+	48438 -- Буйный рост
 }
 
 OrlanHeal.Druid.CooldownOptions =
@@ -40,6 +41,11 @@ OrlanHeal.Druid.CooldownOptions =
 	Thorns =
 	{
 		SpellId = 467,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	WildGrowth =
+	{
+		SpellId = 48438,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
