@@ -276,7 +276,12 @@ function OrlanHeal.HandleConfigInit(configSelectWindow, level)
 	if level == 1 then
 		local _, class = UnitClass("player");
 
-		for configName, config in pairs(configSelectWindow.OrlanHeal.ConfigSet) do
+		for _, configName, config in 
+				configSelectWindow.OrlanHeal:SortedPairs(
+					configSelectWindow.OrlanHeal.ConfigSet,
+					function(name1, config1, name2, config2)
+						return name1 < name2;
+					end) do
 			if config.class == class then
 				local info = UIDropDownMenu_CreateInfo();
 				info.text = configName;
