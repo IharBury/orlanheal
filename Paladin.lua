@@ -179,6 +179,13 @@ function OrlanHeal.Paladin.LoadConfig(orlanHeal)
 	orlanHeal.Config["controlalt1update"] = 1;
 end;
 
+function OrlanHeal.Paladin.GetConfigPresets(orlanHeal)
+	return
+		{
+			["Paladin Default"] = orlanHeal.Class.GetDefaultConfig(orlanHeal)
+		};
+end;
+
 OrlanHeal.Paladin.RedRangeSpellId = 53563; -- Частица Света
 OrlanHeal.Paladin.OrangeRangeSpellId = 635; -- Holy Light
 OrlanHeal.Paladin.YellowRangeSpellId = 1022; -- Hand of Protection

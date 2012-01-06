@@ -19,7 +19,11 @@
 	configSwitchButton:SetHeight(25);
 	configSwitchButton:SetPoint("TOPLEFT", setupWindow, "TOPLEFT", 5, -5);
 
-	local configSelectWindow = CreateFrame("Frame", self.SetupWindowName .. "_ConfigSelect", setupWindow, "UIDropDownMenuTemplate");
+	local configSelectWindow = CreateFrame(
+		"Frame", 
+		self.SetupWindowName .. "_ConfigSelect", 
+		setupWindow, 
+		"UIDropDownMenuTemplate");
 	UIDropDownMenu_SetWidth(configSelectWindow, self.SetupWindowWidth - 205);
 	configSelectWindow.OrlanHeal = self;
 	configSelectWindow:SetPoint("TOPLEFT", 160, -5);
@@ -37,8 +41,29 @@
 			end;
 		end);
 
+	local presetLoadButton = CreateFrame("Button", nil, setupWindow, "UIPanelButtonTemplate");
+	presetLoadButton:SetText("Load Preset:");
+	presetLoadButton:SetWidth(150);
+	presetLoadButton:SetHeight(25);
+	presetLoadButton:SetPoint("TOPLEFT", setupWindow, "TOPLEFT", 5, -35);
+
+	local presetSelectWindow = CreateFrame(
+		"Frame", 
+		self.SetupWindowName .. "_PresetSelect", 
+		setupWindow, 
+		"UIDropDownMenuTemplate");
+	UIDropDownMenu_SetWidth(presetSelectWindow, self.SetupWindowWidth - 205);
+	presetSelectWindow.OrlanHeal = self;
+	presetSelectWindow:SetPoint("TOPLEFT", 160, -35);
+	setupWindow.PresetSelectWindow = presetSelectWindow;
+
+	presetLoadButton:SetScript(
+		"OnClick",
+		function()
+		end);
+
 	local setupScrollWindowContainer = CreateFrame("ScrollFrame", self.SetupWindowName .. "_SCROLL", setupWindow);
-	setupScrollWindowContainer:SetPoint("TOPLEFT", 0, -40);
+	setupScrollWindowContainer:SetPoint("TOPLEFT", 0, -70);
 	setupScrollWindowContainer:SetPoint("BOTTOMRIGHT", -18, 65);
 
 	local setupScrollWindow = CreateFrame("Frame");
@@ -234,17 +259,17 @@ function OrlanHeal:CreateSizeSelectWindow(setupWindow, parent)
 	return sizeSelectWindow;
 end;
 
-function OrlanHeal:InitializeConfigSelectWindow(configSelectWindow)
-	UIDropDownMenu_Initialize(configSelectWindow, self.HandleConfigInit);
-	local talentGroup = GetActiveTalentGroup(false, false);
-	self:SetConfigSelectWindowSelectedValue(configSelectWindow, self.CharacterConfig[talentGroup]);
-end;
-
 function OrlanHeal:InitializeSpellSelectWindow(spellSelectWindow)
 	UIDropDownMenu_Initialize(spellSelectWindow, self.HandleSpellInit);
 	self:SetSpellSelectWindowSelectedValue(
 		spellSelectWindow, 
 		self:GetSpellByKey(spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button]));
+end;
+
+function OrlanHeal:InitializeConfigSelectWindow(configSelectWindow)
+	UIDropDownMenu_Initialize(configSelectWindow, self.HandleConfigInit);
+	local talentGroup = GetActiveTalentGroup(false, false);
+	self:SetConfigSelectWindowSelectedValue(configSelectWindow, self.CharacterConfig[talentGroup]);
 end;
 
 function OrlanHeal.HandleConfigInit(configSelectWindow, level)
@@ -272,6 +297,48 @@ end;
 function OrlanHeal:SetConfigSelectWindowSelectedValue(configSelectWindow, value)
 	UIDropDownMenu_SetSelectedValue(configSelectWindow, value);
 	UIDropDownMenu_SetText(configSelectWindow, value);
+end;
+
+function OrlanHeal:InitializePresetSelectWindow(presetSelectWindow)
+	UIDropDownMenu_Initialize(presetSelectWindow, self.HandlePresetInit);
+
+	for _, name in 
+			self:SortedPairs(
+				self.Class.GetConfigPresets(self),
+				function(name1, preset1, name2, preset2)
+					return name1 < name2;
+				end) do
+		self:SetPresetSelectWindowSelectedValue(presetSelectWindow, name);
+		break;
+	end;
+end;
+
+function OrlanHeal.HandlePresetInit(presetSelectWindow, level)
+	if level == 1 then
+		for _, name in 
+				presetSelectWindow.OrlanHeal:SortedPairs(
+					presetSelectWindow.OrlanHeal.Class.GetConfigPresets(presetSelectWindow.OrlanHeal),
+					function(name1, preset1, name2, preset2)
+						return name1 < name2;
+					end) do
+			local info = UIDropDownMenu_CreateInfo();
+			info.text = name;
+			info.value = name;
+			info.func = presetSelectWindow.OrlanHeal.HandlePresetSelect;
+			info.arg1 = presetSelectWindow;
+			info.arg2 = name;
+			UIDropDownMenu_AddButton(info, level);
+		end;
+	end;
+end;
+
+function OrlanHeal.HandlePresetSelect(item, presetSelectWindow, value)
+	presetSelectWindow.OrlanHeal:SetPresetSelectWindowSelectedValue(presetSelectWindow, value);
+end;
+
+function OrlanHeal:SetPresetSelectWindowSelectedValue(presetSelectWindow, value)
+	UIDropDownMenu_SetSelectedValue(presetSelectWindow, value);
+	UIDropDownMenu_SetText(presetSelectWindow, value);
 end;
 
 function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
@@ -304,14 +371,14 @@ function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
 					function(spell1, spellCaption1, spell2, spellCaption2)
 						return spellCaption1 < spellCaption2;
 					end) do
-				if (type(spell) == "table") and spell.group then
-					if not groups[spell.group] then
-						groups[spell.group] = {};
-					end;
-					groups[spell.group][spell] = spellCaption;
-				else
-					spellSelectWindow.OrlanHeal:AddSpellOption(spellSelectWindow, spell, level);
+			if (type(spell) == "table") and spell.group then
+				if not groups[spell.group] then
+					groups[spell.group] = {};
 				end;
+				groups[spell.group][spell] = spellCaption;
+			else
+				spellSelectWindow.OrlanHeal:AddSpellOption(spellSelectWindow, spell, level);
+			end;
 		end;
 
 		for index, key, groupSpells in 
@@ -649,7 +716,6 @@ function OrlanHeal:GetCommonDefaultConfig()
 	end;
 
 	config["shift1"] = "target";
-	config.Size = 1;
 
 	for cooldownNumber = 1, self.MaxCooldownCount do
 		local key = "cooldown" .. cooldownNumber;
@@ -668,6 +734,8 @@ function OrlanHeal:LoadConfig()
 	if self.Class.LoadConfig then
 		self.Class.LoadConfig(self);
 	end;
+
+	self.Config.Size = self.Config.Size or 1;
 end;
 
 function OrlanHeal:Setup()
@@ -677,6 +745,7 @@ function OrlanHeal:Setup()
 	end;
 
 	self:InitializeConfigSelectWindow(self.SetupWindow.ConfigSelectWindow);
+	self:InitializePresetSelectWindow(self.SetupWindow.PresetSelectWindow);
 
 	for spellSelectWindowIndex = 0, self.SetupWindow.ControlCount do
 		if self.SetupWindow.SpellSelectWindows[spellSelectWindowIndex] then

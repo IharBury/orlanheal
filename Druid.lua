@@ -52,6 +52,13 @@ end;
 function OrlanHeal.Druid.LoadConfig(orlanHeal)
 end;
 
+function OrlanHeal.Druid.GetConfigPresets(orlanHeal)
+	return
+		{
+			["Druid Default"] = orlanHeal.Class.GetDefaultConfig(orlanHeal)
+		};
+end;
+
 OrlanHeal.Druid.RedRangeSpellId = 774; -- Омоложение
 OrlanHeal.Druid.OrangeRangeSpellId = 774; -- Омоложение
 OrlanHeal.Druid.YellowRangeSpellId = 467; -- Шипы

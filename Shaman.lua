@@ -171,6 +171,13 @@ end;
 function OrlanHeal.Shaman.LoadConfig(orlanHeal)
 end;
 
+function OrlanHeal.Shaman.GetConfigPresets(orlanHeal)
+	return
+		{
+			["Shaman Default"] = orlanHeal.Class.GetDefaultConfig(orlanHeal)
+		};
+end;
+
 OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления
 OrlanHeal.Shaman.OrangeRangeSpellId = 331; -- Волна исцеления
 OrlanHeal.Shaman.YellowRangeSpellId = 546; -- Хождение по воде
