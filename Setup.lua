@@ -13,8 +13,30 @@
 	setupWindow:SetWidth(self.SetupWindowWidth);
 	setupWindow:Hide();
 
+	local configSwitchButton = CreateFrame("Button", nil, setupWindow, "UIPanelButtonTemplate");
+	configSwitchButton:SetText("Switch Config to:");
+	configSwitchButton:SetWidth(150);
+	configSwitchButton:SetHeight(25);
+	configSwitchButton:SetPoint("TOPLEFT", setupWindow, "TOPLEFT", 5, -5);
+
+	local configSelectWindow = CreateFrame("Frame", self.SetupWindowName .. "_ConfigSelect", setupWindow, "UIDropDownMenuTemplate");
+	UIDropDownMenu_SetWidth(configSelectWindow, self.SetupWindowWidth - 205);
+	configSelectWindow.OrlanHeal = self;
+	configSelectWindow:SetPoint("TOPLEFT", 160, -5);
+	setupWindow.ConfigSelectWindow = configSelectWindow;
+
+	configSwitchButton:SetScript(
+		"OnClick",
+		function()
+			local talentGroup = GetActiveTalentGroup(false, false);
+			orlanHeal.CharacterConfig[talentGroup] = UIDropDownMenu_GetSelectedValue(configSelectWindow);
+			orlanHeal:LoadTalentGroupConfig();
+			orlanHeal:ApplyConfig();
+			orlanHeal:Setup();
+		end);
+
 	local setupScrollWindowContainer = CreateFrame("ScrollFrame", self.SetupWindowName .. "_SCROLL", setupWindow);
-	setupScrollWindowContainer:SetPoint("TOPLEFT", 0, 0);
+	setupScrollWindowContainer:SetPoint("TOPLEFT", 0, -40);
 	setupScrollWindowContainer:SetPoint("BOTTOMRIGHT", -18, 40);
 
 	local setupScrollWindow = CreateFrame("Frame");
@@ -158,12 +180,44 @@ function OrlanHeal:CreateSizeSelectWindow(setupWindow, parent)
 	return sizeSelectWindow;
 end;
 
+function OrlanHeal:InitializeConfigSelectWindow(configSelectWindow)
+	UIDropDownMenu_Initialize(configSelectWindow, self.HandleConfigInit);
+	local talentGroup = GetActiveTalentGroup(false, false);
+	self:SetConfigSelectWindowSelectedValue(configSelectWindow, self.CharacterConfig[talentGroup]);
+end;
+
 function OrlanHeal:InitializeSpellSelectWindow(spellSelectWindow)
 	UIDropDownMenu_Initialize(spellSelectWindow, self.HandleSpellInit);
-	spellSelectWindow.OrlanHeal:SetSpellSelectWindowSelectedValue(
+	self:SetSpellSelectWindowSelectedValue(
 		spellSelectWindow, 
-		spellSelectWindow.OrlanHeal:GetSpellByKey(
-			spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button]));
+		self:GetSpellByKey(spellSelectWindow.OrlanHeal.PendingConfig[spellSelectWindow.button]));
+end;
+
+function OrlanHeal.HandleConfigInit(configSelectWindow, level)
+	if level == 1 then
+		local _, class = UnitClass("player");
+
+		for configName, config in pairs(configSelectWindow.OrlanHeal.ConfigSet) do
+			if config.class == class then
+				local info = UIDropDownMenu_CreateInfo();
+				info.text = configName;
+				info.value = configName;
+				info.func = configSelectWindow.OrlanHeal.HandleConfigSelect;
+				info.arg1 = configSelectWindow;
+				info.arg2 = configName;
+				UIDropDownMenu_AddButton(info, level);
+			end;
+		end;
+	end;
+end;
+
+function OrlanHeal.HandleConfigSelect(item, configSelectWindow, value)
+	configSelectWindow.OrlanHeal:SetConfigSelectWindowSelectedValue(configSelectWindow, value);
+end;
+
+function OrlanHeal:SetConfigSelectWindowSelectedValue(configSelectWindow, value)
+	UIDropDownMenu_SetSelectedValue(configSelectWindow, value);
+	UIDropDownMenu_SetText(configSelectWindow, value);
 end;
 
 function OrlanHeal.HandleSpellInit(spellSelectWindow, level)
@@ -499,7 +553,7 @@ function OrlanHeal:LoadConfigSet()
 
 	if not self.CharacterConfig[1] then
 		local _, class = UnitClass("player");
-		self.CharacterConfig["class"] = class;
+		self.CharacterConfig.class = class;
 
 		local configName = self:GenerateDefaultConfigName();
 		self.ConfigSet[configName] = self.CharacterConfig;
@@ -521,6 +575,7 @@ function OrlanHeal:LoadTalentGroupConfig()
 end;
 
 function OrlanHeal:HandleTalentGroupChanged()
+	self:CancelSetup();
 	self:LoadTalentGroupConfig();
 	self:ApplyConfig();
 end;
@@ -555,6 +610,8 @@ function OrlanHeal:Setup()
 	for key, value in pairs(self.Config) do
 		self.PendingConfig[key] = value;
 	end;
+
+	self:InitializeConfigSelectWindow(self.SetupWindow.ConfigSelectWindow);
 
 	for spellSelectWindowIndex = 0, self.SetupWindow.ControlCount do
 		if self.SetupWindow.SpellSelectWindows[spellSelectWindowIndex] then
