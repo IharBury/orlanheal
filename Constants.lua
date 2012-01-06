@@ -57,7 +57,7 @@ OrlanHeal.MaxCooldownCount = 20;
 OrlanHeal.CooldownCountPerFrame = 5;
 
 OrlanHeal.SetupWindowWidth = 600;
-OrlanHeal.SetupWindowHeight = 500;
+OrlanHeal.SetupWindowHeight = 600;
 OrlanHeal.SetupWindowLabelWidth = 200;
 OrlanHeal.SetupWindowValueWidth = OrlanHeal.SetupWindowWidth - OrlanHeal.SetupWindowLabelWidth - 18 - 10;
 

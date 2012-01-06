@@ -5,7 +5,7 @@
 	setupWindow:SetPoint("CENTER", 0, 0);
 	setupWindow:SetFrameStrata("DIALOG");
 
-	local background = setupWindow:CreateTexture();
+	local background = setupWindow:CreateTexture(nil, "BACKGROUND");
 	background:SetAllPoints();
 	background:SetTexture(0, 0, 0, 0.6);
 
@@ -28,16 +28,18 @@
 	configSwitchButton:SetScript(
 		"OnClick",
 		function()
-			local talentGroup = GetActiveTalentGroup(false, false);
-			orlanHeal.CharacterConfig[talentGroup] = UIDropDownMenu_GetSelectedValue(configSelectWindow);
-			orlanHeal:LoadTalentGroupConfig();
-			orlanHeal:ApplyConfig();
-			orlanHeal:Setup();
+			if orlanHeal:RequestNonCombat() then
+				local talentGroup = GetActiveTalentGroup(false, false);
+				orlanHeal.CharacterConfig[talentGroup] = UIDropDownMenu_GetSelectedValue(configSelectWindow);
+				orlanHeal:LoadTalentGroupConfig();
+				orlanHeal:ApplyConfig();
+				orlanHeal:Setup();
+			end;
 		end);
 
 	local setupScrollWindowContainer = CreateFrame("ScrollFrame", self.SetupWindowName .. "_SCROLL", setupWindow);
 	setupScrollWindowContainer:SetPoint("TOPLEFT", 0, -40);
-	setupScrollWindowContainer:SetPoint("BOTTOMRIGHT", -18, 40);
+	setupScrollWindowContainer:SetPoint("BOTTOMRIGHT", -18, 65);
 
 	local setupScrollWindow = CreateFrame("Frame");
 	setupScrollWindow:SetHeight(1);
@@ -94,7 +96,7 @@
 	okButton:SetText("OK");
 	okButton:SetWidth(150);
 	okButton:SetHeight(25);
-	okButton:SetPoint("TOPLEFT", setupWindow, "BOTTOMLEFT", 50, 30);
+	okButton:SetPoint("TOPLEFT", setupWindow, "BOTTOMLEFT", 50, 60);
 	okButton:SetScript(
 		"OnClick",
 		function()
@@ -105,14 +107,66 @@
 	cancelButton:SetText("Cancel");
 	cancelButton:SetWidth(150);	
 	cancelButton:SetHeight(25);
-	cancelButton:SetPoint("TOPRIGHT", setupWindow, "BOTTOMRIGHT", -50, 30);
+	cancelButton:SetPoint("TOPRIGHT", setupWindow, "BOTTOMRIGHT", -50, 60);
 	cancelButton:SetScript(
 		"OnClick",
 		function()
 			orlanHeal:CancelSetup();
 		end);
 
+	local configSaveButton = CreateFrame("Button", nil, setupWindow, "UIPanelButtonTemplate");
+	configSaveButton:SetText("Save Config as:");
+	configSaveButton:SetHeight(25);
+	configSaveButton:SetWidth(150);
+	configSaveButton:SetPoint("TOPLEFT", setupWindow, "BOTTOMLEFT", 5, 30);
+
+	local configSaveNameEditBox = self:CreateEditBox(
+		setupWindow, 
+		self.SetupWindowName .. "_ConfigSaveName", 
+		50,
+		self.SetupWindowWidth - 181);
+	configSaveNameEditBox:SetPoint("TOPRIGHT", setupWindow, "BOTTOMRIGHT", -13, 27.5);
+	setupWindow.ConfigSaveNameEditBox = configSaveNameEditBox;
+
+	configSaveButton:SetScript(
+		"OnClick",
+		function()
+			orlanHeal:SaveSetupAs(strtrim(configSaveNameEditBox:GetText()));
+		end);
+
 	return setupWindow;
+end;
+
+function OrlanHeal:CreateEditBox(parent, name, maxLetters, width)
+	local editBox = CreateFrame("EditBox", name, parent);
+	editBox:SetFontObject("GameFontNormal");
+	editBox:SetMaxLetters(maxLetters);
+	editBox:SetCountInvisibleLetters(true);
+	editBox:SetHeight(20);
+	editBox:SetWidth(width);
+
+	local leftBorder = editBox:CreateTexture(nil, "BORDER");
+	leftBorder:SetTexture("Interface\\Common\\Common-Input-Border");
+	leftBorder:SetHeight(20);
+	leftBorder:SetWidth(8);
+	leftBorder:SetPoint("LEFT", -8, 0);
+	leftBorder:SetTexCoord(0, 0.0625, 0, 0.625);
+
+	local rightBorder = editBox:CreateTexture(nil, "BORDER");
+	rightBorder:SetTexture("Interface\\Common\\Common-Input-Border");
+	rightBorder:SetHeight(20);
+	rightBorder:SetWidth(8);
+	rightBorder:SetPoint("RIGHT", 8, 0);
+	rightBorder:SetTexCoord(0.9375, 1, 0, 0.625);
+
+	local middleBorder = editBox:CreateTexture(nil, "BORDER");
+	middleBorder:SetHeight(20);
+	middleBorder:SetPoint("LEFT", 0, 0);
+	middleBorder:SetPoint("RIGHT", 0, 0);
+	middleBorder:SetTexture("Interface\\Common\\Common-Input-Border");
+	middleBorder:SetTexCoord(0.0625, 0.9375, 0, 0.625);
+
+	return editBox;
 end;
 
 function OrlanHeal:BuildClickCaption(hasControl, hasShift, hasAlt, buttonNumber)
@@ -625,6 +679,8 @@ function OrlanHeal:Setup()
 	end;
 	self.SetupWindow.SizeWindow:SetValue(self.RaidWindow:GetScale() / self.Scale * 1000);
 
+	self.SetupWindow.ConfigSaveNameEditBox:SetText("");
+
 	self.SetupWindow:Show();
 end;
 
@@ -640,6 +696,22 @@ function OrlanHeal:SaveSetup()
 
 		self.Config.Size = self.SetupWindow.SizeWindow:GetValue() / 1000;
 		self:ApplyConfig();
+	end;
+end;
+
+function OrlanHeal:SaveSetupAs(name)
+	if self:RequestNonCombat() then
+		if name == "" then
+			print("OrlanHeal: Config name missing.");
+		elseif self.ConfigSet[name] then
+			print("OrlanHeal: Duplicate config name.");
+		else
+			local talentGroup = GetActiveTalentGroup(false, false);
+			self.CharacterConfig[talentGroup] = name;
+			self.ConfigSet[name] = self.Config;
+			self:SaveSetup();
+			self:Setup();
+		end;
 	end;
 end;
 
