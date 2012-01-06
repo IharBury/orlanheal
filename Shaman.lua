@@ -17,28 +17,28 @@ OrlanHeal.Shaman.AvailableSpells =
 		type = "macro",
 		caption = "Instant " .. GetSpellInfo(331), -- Волна исцеления
 		group = GetSpellInfo(16188), -- Природная стремительность
-		macrotext = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(331),
+		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 331),
 		key = "16188,331"
 	},
 	{
 		type = "macro",
 		caption = "Instant " .. GetSpellInfo(8004), -- Исцеляющий всплеск
 		group = GetSpellInfo(16188), -- Природная стремительность
-		macrotext = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(8004),
+		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 8004),
 		key = "16188,8004"
 	},
 	{
 		type = "macro",
 		caption = "Instant " .. GetSpellInfo(1064), -- Цепное исцеление
 		group = GetSpellInfo(16188), -- Природная стремительность
-		macrotext = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(1064),
+		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 1064),
 		key = "16188,1064"
 	},
 	{
 		type = "macro",
 		caption = "Instant " .. GetSpellInfo(77472), -- Великая волна исцеления
 		group = GetSpellInfo(16188), -- Природная стремительность
-		macrotext = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(77472),
+		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 77472),
 		key = "16188,77472"
 	}
 };
