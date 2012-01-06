@@ -44,7 +44,7 @@ OrlanHeal.Druid.CooldownOptions =
 	}
 };
 
-function OrlanHeal.Druid.LoadSetup(orlanHeal)
+function OrlanHeal.Druid.LoadConfig(orlanHeal)
 end;
 
 OrlanHeal.Druid.RedRangeSpellId = 774; -- Омоложение

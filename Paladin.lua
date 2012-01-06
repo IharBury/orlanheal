@@ -140,7 +140,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	}
 };
 
-function OrlanHeal.Paladin.LoadSetup(orlanHeal)
+function OrlanHeal.Paladin.LoadConfig(orlanHeal)
 	orlanHeal.Config["1"] = orlanHeal.Config["1"] or 635; -- Holy Light
 	orlanHeal.Config["2"] = orlanHeal.Config["2"] or 19750; -- Flash of Light
 	orlanHeal.Config["3"] = orlanHeal.Config["3"] or 1022; -- Hand of Protection

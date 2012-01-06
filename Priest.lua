@@ -51,7 +51,7 @@ OrlanHeal.Priest.CooldownOptions =
 	}
 };
 
-function OrlanHeal.Priest.LoadSetup(orlanHeal)
+function OrlanHeal.Priest.LoadConfig(orlanHeal)
 	orlanHeal.Config["cooldown1"] = orlanHeal.Config["cooldown1"] or "InnerFocus";
 	orlanHeal.Config["cooldown2"] = orlanHeal.Config["cooldown2"] or "PowerWordShield";
 	orlanHeal.Config["cooldown3"] = orlanHeal.Config["cooldown3"] or "PainSuppression";

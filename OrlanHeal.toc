@@ -2,6 +2,7 @@
 ## Title: OrlanHeal
 ## Version: 2.0.4
 ## Notes: 
+## SavedVariables: OrlanHealGlobalConfig
 ## SavedVariablesPerCharacter: OrlanHealConfig
 OrlanHeal.lua
 Constants.lua
