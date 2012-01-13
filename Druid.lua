@@ -12,7 +12,21 @@ OrlanHeal.Druid.AvailableSpells =
 	20484, -- Возрождение
 	29166, -- Озарение
 	467, -- Шипы
-	48438 -- Буйный рост
+	48438, -- Буйный рост
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(8936), -- Восстановление
+		group = GetSpellInfo(17116), -- Природная стремительность
+		macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 8936),
+		key = "17116,8936"
+	},
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(50464), -- Покровительство природы
+		group = GetSpellInfo(17116), -- Природная стремительность
+		macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 50464),
+		key = "17116,50464"
+	}
 }
 
 OrlanHeal.Druid.CooldownOptions =
@@ -46,6 +60,11 @@ OrlanHeal.Druid.CooldownOptions =
 	WildGrowth =
 	{
 		SpellId = 48438,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	NaturesSwiftness=
+	{
+		SpellId = 17116,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
