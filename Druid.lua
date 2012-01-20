@@ -73,6 +73,11 @@ OrlanHeal.Druid.CooldownOptions =
 	{
 		SpellId = 17116,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Barkskin=
+	{
+		SpellId = 22812,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
