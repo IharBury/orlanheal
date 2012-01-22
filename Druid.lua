@@ -69,14 +69,24 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 48438,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	NaturesSwiftness=
+	NaturesSwiftness =
 	{
 		SpellId = 17116,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Barkskin=
+	Barkskin =
 	{
 		SpellId = 22812,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	TreeOfLife =
+	{
+		SpellId = 33891,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Tranquility =
+	{
+		SpellId = 740,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
