@@ -33,6 +33,13 @@ OrlanHeal.Druid.AvailableSpells =
 		group = GetSpellInfo(17116), -- Природная стремительность
 		macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 20484),
 		key = "17116,20484"
+	},
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(5185), -- Целительное прикосновение
+		group = GetSpellInfo(17116), -- Природная стремительность
+		macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 5185),
+		key = "17116,5185"
 	}
 }
 
