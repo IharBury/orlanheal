@@ -100,6 +100,33 @@ OrlanHeal.Druid.CooldownOptions =
 
 function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
+
+	config["1"] = 50464; -- Покровительство природы
+	config["2"] = 8936; -- Восстановление
+	config["3"] = 48438; -- Буйный рост
+	config["shift2"] = 33763; -- Жизнецвет
+	config["shift3"] = 467; -- Шипы
+	config["control1"] = 5185; -- Целительное прикосновение
+	config["control2"] = 18562; -- Быстрое восстановление
+	config["control3"] = 20484; -- Возрождение
+	config["alt1"] = 2782; -- Снятие порчи
+	config["alt2"] = 774; -- Омоложение
+	config["alt3"] = 29166; -- Озарение
+	config["controlalt1"] = "17116,5185"; -- Instant Целительное прикосновение
+	config["controlalt2"] = "17116,8936"; -- Instant Восстановление
+	config["controlalt3"] = "17116,20484"; -- Instant Возрождение
+
+	config["cooldown1"] = "Lifebloom";
+	config["cooldown2"] = "Swiftmend";
+	config["cooldown3"] = "WildGrowth";
+	config["cooldown4"] = "Innervate";
+	config["cooldown5"] = "NaturesSwiftness";
+	config["cooldown6"] = "Barkskin";
+	config["cooldown7"] = "Rebirth";
+	config["cooldown8"] = "Thorns";
+	config["cooldown9"] = "TreeOfLife";
+	config["cooldown10"] = "Tranquility";
+
 	return config;
 end;
 
