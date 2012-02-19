@@ -1,5 +1,7 @@
 ﻿OrlanHeal.Druid = {};
 
+OrlanHeal.Druid.IsSupported = true;
+
 OrlanHeal.Druid.AvailableSpells =
 {
 	2782, -- Снятие порчи
