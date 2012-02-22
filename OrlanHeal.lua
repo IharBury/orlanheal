@@ -411,6 +411,7 @@ end;
 
 function OrlanHeal:SetupSpells(button)
 	button:RegisterForClicks("AnyDown");
+	button:EnableMouseWheel(true);
 
 	button:SetAttribute("*helpbutton1", "help1");
 	button:SetAttribute("*helpbutton2", "help2");
@@ -422,13 +423,16 @@ function OrlanHeal:SetupSpells(button)
 				for buttonNumber = 1, 5 do
 					self:SetAction(button, hasControl == 1, hasShift == 1, hasAlt == 1, buttonNumber);
 				end;
+				for whellActionIndex = 1, 2 do
+					self:SetAction(button, hasControl == 1, hasShift == 1, hasAlt == 1, "w" .. whellActionIndex);
+				end;
 			end;
 		end;
 	end;
 end;
 
-function OrlanHeal:SetAction(button, hasControl, hasShift, hasAlt, buttonNumber)
-	local name = self:BuildClickName(hasControl, hasShift, hasAlt, buttonNumber);
+function OrlanHeal:SetAction(button, hasControl, hasShift, hasAlt, buttonBinding)
+	local name = self:BuildClickName(hasControl, hasShift, hasAlt, buttonBinding);
 	local action = self:GetSpellByKey(self.Config[name]);
 	local prefix = "";
 	if hasAlt then
@@ -443,25 +447,25 @@ function OrlanHeal:SetAction(button, hasControl, hasShift, hasAlt, buttonNumber)
 
 	if type(action) == "table" then
 		if action.type == "target" then
-			button:SetAttribute(prefix .. "type" .. buttonNumber, action.type);
+			button:SetAttribute(prefix .. "type" .. buttonBinding, action.type);
 		else
-			button:SetAttribute(prefix .. "type" .. buttonNumber, "");
+			button:SetAttribute(prefix .. "type" .. buttonBinding, "");
 		end;
-		button:SetAttribute(prefix .. "type-help" .. buttonNumber, action.type);
-		button:SetAttribute(prefix .. "spell-help" .. buttonNumber, action.spell);
-		button:SetAttribute(prefix .. "macrotext-help" .. buttonNumber, action.macrotext);
+		button:SetAttribute(prefix .. "type-help" .. buttonBinding, action.type);
+		button:SetAttribute(prefix .. "spell-help" .. buttonBinding, action.spell);
+		button:SetAttribute(prefix .. "macrotext-help" .. buttonBinding, action.macrotext);
 		if action.item then
 			button:SetAttribute(
-				prefix .. "item-help" .. buttonNumber, 
+				prefix .. "item-help" .. buttonBinding, 
 				GetInventorySlotInfo(action.item));
 		end;
 	elseif ((action == "") or (action == "target")) then
-		button:SetAttribute(prefix .. "type" .. buttonNumber, action);
-		button:SetAttribute(prefix .. "type-help" .. buttonNumber, action);
+		button:SetAttribute(prefix .. "type" .. buttonBinding, action);
+		button:SetAttribute(prefix .. "type-help" .. buttonBinding, action);
 	else
-		button:SetAttribute(prefix .. "type" .. buttonNumber, "");
-		button:SetAttribute(prefix .. "type-help" .. buttonNumber, "spell");
-		button:SetAttribute(prefix .. "spell-help" .. buttonNumber, action);
+		button:SetAttribute(prefix .. "type" .. buttonBinding, "");
+		button:SetAttribute(prefix .. "type-help" .. buttonBinding, "spell");
+		button:SetAttribute(prefix .. "spell-help" .. buttonBinding, action);
 	end;
 end;
 
@@ -1106,7 +1110,7 @@ function OrlanHeal:ShowBuff(texture, buff)
 	end;
 end;
 
-function OrlanHeal:BuildClickName(hasControl, hasShift, hasAlt, buttonNumber)
+function OrlanHeal:BuildClickName(hasControl, hasShift, hasAlt, buttonBinding)
 	local name = "";
 	if hasControl then
 		name = name .. "control";
@@ -1117,7 +1121,7 @@ function OrlanHeal:BuildClickName(hasControl, hasShift, hasAlt, buttonNumber)
 	if hasShift then
 		name = name .. "shift";
 	end;
-	name = name .. buttonNumber;
+	name = name .. buttonBinding;
 	return name;
 end;
 
