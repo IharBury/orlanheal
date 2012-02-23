@@ -420,11 +420,8 @@ function OrlanHeal:SetupSpells(button)
 	for hasControl = 0, 1 do
 		for hasShift = 0, 1 do
 			for hasAlt = 0, 1 do
-				for buttonNumber = 1, 5 do
-					self:SetAction(button, hasControl == 1, hasShift == 1, hasAlt == 1, buttonNumber);
-				end;
-				for whellActionIndex = 1, 2 do
-					self:SetAction(button, hasControl == 1, hasShift == 1, hasAlt == 1, "w" .. whellActionIndex);
+				for buttonBinding in pairs(self.ButtonNames) do
+					self:SetAction(button, hasControl == 1, hasShift == 1, hasAlt == 1, buttonBinding);
 				end;
 			end;
 		end;
