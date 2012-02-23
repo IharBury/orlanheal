@@ -99,14 +99,14 @@
 	for hasControl = 0, 1 do
 		for hasShift = 0, 1 do
 			for hasAlt = 0, 1 do
-				for buttonNumber = 1, 5 do
+				for buttonBinding in pairs(self.ButtonNames) do
 					self:CreateSpellSelectWindow(
 						setupWindow, 
 						setupScrollWindow, 
 						hasControl == 1, 
 						hasShift == 1, 
 						hasAlt == 1, 
-						buttonNumber);
+						buttonBinding);
 				end;
 			end;
 		end;
@@ -200,7 +200,7 @@ function OrlanHeal:CreateEditBox(parent, name, maxLetters, width)
 	return editBox;
 end;
 
-function OrlanHeal:BuildClickCaption(hasControl, hasShift, hasAlt, buttonNumber)
+function OrlanHeal:BuildClickCaption(hasControl, hasShift, hasAlt, buttonBinding)
 	local caption = "";
 	if hasControl then
 		caption = caption .. "CONTROL ";
@@ -211,13 +211,13 @@ function OrlanHeal:BuildClickCaption(hasControl, hasShift, hasAlt, buttonNumber)
 	if hasShift then
 		caption = caption .. "SHIFT ";
 	end;
-	caption = caption .. self.ButtonNames[buttonNumber];
+	caption = caption .. self.ButtonNames[buttonBinding];
 	return caption;
 end;
 
-function OrlanHeal:CreateSpellSelectWindow(setupWindow, parent, hasControl, hasShift, hasAlt, buttonNumber)
-	local name = self:BuildClickName(hasControl, hasShift, hasAlt, buttonNumber);
-	local caption = self:BuildClickCaption(hasControl, hasShift, hasAlt, buttonNumber);
+function OrlanHeal:CreateSpellSelectWindow(setupWindow, parent, hasControl, hasShift, hasAlt, buttonBinding)
+	local name = self:BuildClickName(hasControl, hasShift, hasAlt, buttonBinding);
+	local caption = self:BuildClickCaption(hasControl, hasShift, hasAlt, buttonBinding);
 
 	local label = parent:CreateFontString(nil, nil, "GameFontNormal");
 	label:SetPoint("TOPRIGHT", parent, "TOPLEFT", self.SetupWindowLabelWidth - 5, -8 - setupWindow.ControlCount * 25);
@@ -718,8 +718,8 @@ function OrlanHeal:GetCommonDefaultConfig()
 	for hasControl = 0, 1 do
 		for hasShift = 0, 1 do
 			for hasAlt = 0, 1 do
-				for buttonNumber = 1, 5 do
-					local name = self:BuildClickName(hasControl == 1, hasShift == 1, hasAlt == 1, buttonNumber);
+				for buttonBinding in pairs(self.ButtonNames) do
+					local name = self:BuildClickName(hasControl == 1, hasShift == 1, hasAlt == 1, buttonBinding);
 					config[name] = "";
 				end;
 			end;
