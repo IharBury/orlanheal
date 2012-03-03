@@ -68,6 +68,6 @@ OrlanHeal.ButtonNames =
 	"MIDDLE",
 	"BUTTON 4",
 	"BUTTON 5",
-	["-mousewheelup"] = "WHEEL UP",
-	["-mousewheeldown"] = "WHEEL DOWN"
+	["-w1"] = "WHEEL UP",
+	["-w2"] = "WHEEL DOWN"
 };

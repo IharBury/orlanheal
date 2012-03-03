@@ -384,8 +384,23 @@ function OrlanHeal:CreateManaBar(parent, width)
 end;
 
 function OrlanHeal:CreateUnitButton(parent)
-	parent.Button = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
+	self.UnitButtonNumber = (self.UnitButtonNumber or 0) + 1;
+
+	parent.Button = CreateFrame(
+		"Button", 
+		self.RaidWindowName .. "_UnitButton" .. self.UnitButtonNumber, 
+		parent, 
+		"SecureUnitButtonTemplate,SecureHandlerEnterLeaveTemplate,SecureHandlerShowHideTemplate");
 	parent.Button:SetAllPoints();
+	
+	parent.Button:SetAttribute(
+		"_onenter",
+		"self:ClearBindings();" ..
+			"self:SetBindingClick(0,\"MOUSEWHEELUP\",self:GetName(),\"w1\");" ..
+			"self:SetBindingClick(0,\"MOUSEWHEELDOWN\",self:GetName(),\"w2\");");
+	parent.Button:SetAttribute("_onleave", "self:ClearBindings();");
+	parent.Button:SetAttribute("_onshow", "self:ClearBindings();");
+	parent.Button:SetAttribute("_onhide", "self:ClearBindings();");
 
 	self:SetupSpells(parent.Button);
 end;
@@ -411,11 +426,10 @@ end;
 
 function OrlanHeal:SetupSpells(button)
 	button:RegisterForClicks("AnyDown");
-	button:EnableMouseWheel(true);
 
-	button:SetAttribute("*helpbutton1", "help1");
-	button:SetAttribute("*helpbutton2", "help2");
-	button:SetAttribute("*helpbutton3", "help3");
+	for buttonBinding in pairs(self.ButtonNames) do
+		button:SetAttribute("*helpbutton" .. buttonBinding, "help" .. buttonBinding);
+	end;
 
 	for hasControl = 0, 1 do
 		for hasShift = 0, 1 do
