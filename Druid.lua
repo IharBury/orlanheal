@@ -175,7 +175,11 @@ OrlanHeal.Druid.PlayerSpecificBuffCount = 3;
 function OrlanHeal.Druid.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
 	if spellId == 774 then -- Омоложение
-		buffKind = 1;
+		if (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- своё
+			buffKind = 1;
+		else
+			buffKind = 4;
+		end;
 	elseif spellId == 8936 then -- Восстановление
 		buffKind = 2;
 	elseif spellId == 33763 and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- свой Жизнецвет
