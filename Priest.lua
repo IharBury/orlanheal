@@ -24,7 +24,7 @@ OrlanHeal.Priest.AvailableSpells =
 	{
 		type = "macro",
 		caption = GetSpellInfo(88684), -- Слово Света: Безмятежность
-		macrotext = "/cast " .. GetSpellInfo(88684),
+		macrotext = "/cast [target=mouseover] " .. GetSpellInfo(88684),
 		key = 88684
 	},
 	34861 -- Круг исцеления
