@@ -92,6 +92,11 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 34861,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HolyNova =
+	{
+		SpellId = 15237,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
