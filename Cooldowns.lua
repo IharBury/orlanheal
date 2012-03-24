@@ -73,7 +73,10 @@ function OrlanHeal:SetupCooldown(window, cooldown)
 		window.Background:SetTexture(texture);
 		window:SetReverse(cooldown.IsReverse);
 
-		if cooldown.SpellId then
+		if cooldown.MacroText then
+			window.Button:SetAttribute("type", "macro");
+			window.Button:SetAttribute("macrotext", cooldown.MacroText);
+		elseif cooldown.SpellId then
 			window.Button:SetAttribute("type", "spell");
 			window.Button:SetAttribute("spell", cooldown.SpellId);
 		elseif cooldown.SlotName then
@@ -84,6 +87,7 @@ function OrlanHeal:SetupCooldown(window, cooldown)
 			window.Button:SetAttribute("spell", nil);
 		end;
 	else
+		window.Cooldown = nil;
 		window:Hide();
 		window.Background:Hide();
 		window.Button:Hide();
@@ -273,7 +277,8 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count)
 	end;
 
 	if (window.Cooldown.SpellId and FindSpellBookSlotBySpellID(window.Cooldown.SpellId)) or
-			(window.Cooldown.SlotName and GetInventoryItemID("player", GetInventorySlotInfo(window.Cooldown.SlotName))) then
+			(window.Cooldown.SlotName and GetInventoryItemID("player", GetInventorySlotInfo(window.Cooldown.SlotName))) or
+			window.Cooldown.MacroText then
 		window:SetReverse(window.Cooldown.IsReverse);
 	else
 		window:SetReverse(true);
