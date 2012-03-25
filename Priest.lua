@@ -97,6 +97,16 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 15237,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HymnOfHope =
+	{
+		SpellId = 64904,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DesperatePrayer =
+	{
+		SpellId = 19236,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
