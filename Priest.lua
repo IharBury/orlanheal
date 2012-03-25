@@ -1,5 +1,21 @@
 ﻿OrlanHeal.Priest = {};
 
+function OrlanHeal.Priest.UpdateChakraAbilityCooldown(orlanHeal, window)
+	local chakraName = GetSpellInfo(window.Cooldown.ChakraId);
+	if UnitBuff("player", chakraName) then
+		orlanHeal:UpdateAbilityCooldown(window);
+	else
+		window:SetReverse(true);
+		window.Count:SetText("");
+
+		if not window.Dark then
+			window.Dark = true;
+			window.Off = 0;
+			window:SetCooldown(0, 10);
+		end;		
+	end;
+end;
+
 OrlanHeal.Priest.AvailableSpells =
 {
 	1706, -- Левитация
@@ -80,13 +96,15 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		MacroText = "/cast " .. GetSpellInfo(88685),
 		SpellId = 88685,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		ChakraId = 81206,
+		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
 	},
 	HolyWordSerenity =
 	{
 		MacroText = "/cast " .. GetSpellInfo(88684),
 		SpellId = 88684,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		ChakraId = 81585,
+		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
 	},
 	CircleOfHealing =
 	{
@@ -100,7 +118,7 @@ OrlanHeal.Priest.CooldownOptions =
 	},
 	HymnOfHope =
 	{
-		SpellId = 64904,
+		SpellId = 64901,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	DesperatePrayer =

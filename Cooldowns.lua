@@ -279,9 +279,14 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count)
 	if (window.Cooldown.SpellId and FindSpellBookSlotBySpellID(window.Cooldown.SpellId)) or
 			(window.Cooldown.SlotName and GetInventoryItemID("player", GetInventorySlotInfo(window.Cooldown.SlotName))) or
 			window.Cooldown.MacroText then
+		window.Dark = false;
 		window:SetReverse(window.Cooldown.IsReverse);
 	else
 		window:SetReverse(true);
+		if not window.Dark then
+			window:SetCooldown(0, 10);
+			window.Dark = true;
+		end;
 	end;
 
 	if count and (count > 1) then
