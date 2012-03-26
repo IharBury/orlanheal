@@ -44,7 +44,8 @@ OrlanHeal.Priest.AvailableSpells =
 		key = 88684
 	},
 	34861, -- Круг исцеления
-	33076 -- Молитва восстановления
+	33076, -- Молитва восстановления
+	47788 -- Оберегающий дух
 }
 
 OrlanHeal.Priest.CooldownOptions =
@@ -137,6 +138,11 @@ OrlanHeal.Priest.CooldownOptions =
 		SpellId = 33076,
 		AuraId = 41635,
 		Update = OrlanHeal.UpdateRaidBuffAbilityCooldown
+	},
+	GuardianSpirit =
+	{
+		SpellId = 47788,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
