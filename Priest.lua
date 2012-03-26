@@ -43,7 +43,8 @@ OrlanHeal.Priest.AvailableSpells =
 		macrotext = "/cast [target=mouseover] " .. GetSpellInfo(88684),
 		key = 88684
 	},
-	34861 -- Круг исцеления
+	34861, -- Круг исцеления
+	33076 -- Молитва восстановления
 }
 
 OrlanHeal.Priest.CooldownOptions =
@@ -130,6 +131,11 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 34433,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	PrayerOfMending =
+	{
+		SpellId = 33076,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -170,7 +176,8 @@ function OrlanHeal.Priest.GetSpecificBuffKind(orlanHeal, spellId, caster)
 		buffKind = 1;
 	elseif (spellId == 139) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- своё восстановление
 		buffKind = 2;
-	elseif spellId == 6346 then -- Защита от страха
+	elseif (spellId == 6346) or  -- Защита от страха
+			((spellId == 33076) and (caster ~= nil) and (UnitIsUnit(caster, "player"))) then -- своя Молитва восстановления
 		buffKind = 3;
 	end;
 
