@@ -72,6 +72,8 @@ function OrlanHeal:SetupCooldown(window, cooldown)
 		end;
 		window.Background:SetTexture(texture);
 		window:SetReverse(cooldown.IsReverse);
+		window.Off = nil;
+		window.Dark = nil;
 
 		if cooldown.MacroText then
 			window.Button:SetAttribute("type", "macro");
