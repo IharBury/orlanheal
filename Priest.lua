@@ -125,6 +125,11 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 19236,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Shadowfiend =
+	{
+		SpellId = 34433,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
