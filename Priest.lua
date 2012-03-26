@@ -135,7 +135,8 @@ OrlanHeal.Priest.CooldownOptions =
 	PrayerOfMending =
 	{
 		SpellId = 33076,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		AuraId = 41635,
+		Update = OrlanHeal.UpdateRaidBuffAbilityCooldown
 	}
 };
 

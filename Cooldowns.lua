@@ -35,8 +35,13 @@ function OrlanHeal:CreateCooldown(parent, index)
 	cooldown.Background:SetAllPoints(cooldown);
 	cooldown.Background:SetAlpha(0.5);
 
+	cooldown.Button = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
+	cooldown.Button:SetAllPoints(cooldown);
+	cooldown.Button:RegisterForClicks("LeftButtonDown");
+	cooldown.Button:SetAttribute("type", "spell");
+
 	local countSize = self.CooldownCountSize;
-	cooldown.Count = cooldown:CreateFontString(nil, "ARTWORK", "GameFontNormal");
+	cooldown.Count = cooldown.Button:CreateFontString(nil, "ARTWORK", "GameFontNormal");
 	cooldown.Count:SetHeight(countSize);
 	cooldown.Count:SetWidth(countSize);
 	cooldown.Count:SetTextColor(1, 1, 1, 1);
@@ -44,11 +49,6 @@ function OrlanHeal:CreateCooldown(parent, index)
 	cooldown.Count:SetShadowOffset(-1, -1);
 	cooldown.Count:SetTextHeight(countSize);
 	cooldown.Count:SetPoint("BOTTOMRIGHT", cooldown, "BOTTOMRIGHT", 0, 0);
-
-	cooldown.Button = CreateFrame("Button", nil, parent, "SecureActionButtonTemplate");
-	cooldown.Button:SetAllPoints(cooldown);
-	cooldown.Button:RegisterForClicks("LeftButtonDown");
-	cooldown.Button:SetAttribute("type", "spell");
 
 	return cooldown;
 end;
@@ -214,6 +214,20 @@ function OrlanHeal:UpdateRaidBuffCooldown(window)
 	self:UpdateCooldown(window, duration, expirationTime, count);
 end;
 
+function OrlanHeal:UpdateRaidBuffAbilityCooldown(window)
+	local _, _, count = self:GetRaidBuffCooldown(window.Cooldown.AuraId or window.Cooldown.SpellId);
+	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	local expirationTime;
+	if start and duration and (duration ~= 0) and (enabled == 1) then
+		expirationTime = start + duration;
+	else
+		start = nil;
+		duration = nil;
+		expirationTime = nil;
+	end;
+	self:UpdateCooldown(window, duration, expirationTime, count);
+end;
+
 function OrlanHeal:GetRaidBuffCooldown(spellId)
 	local duration, expirationTime, count = self:GetPlayerCastUnitBuffCooldown("player", spellId);
 	if duration then
@@ -266,7 +280,7 @@ function OrlanHeal:GetPlayerCastUnitBuffCooldown(unit, spellId)
 	end;
 end;
 
-function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count)
+function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alwaysDisplayCount)
 	duration = duration or 0;
 	expirationTime = expirationTime or 0;
 	if expirationTime ~= window.Off then
@@ -291,7 +305,7 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count)
 		end;
 	end;
 
-	if count and (count > 1) then
+	if count and ((count > 1) or alwaysDisplayCount) then
 		window.Count:SetText(count);
 	else
 		window.Count:SetText("");
