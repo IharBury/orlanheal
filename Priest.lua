@@ -16,6 +16,42 @@ function OrlanHeal.Priest.UpdateChakraAbilityCooldown(orlanHeal, window)
 	end;
 end;
 
+function OrlanHeal.Priest.UpdateArchangelCooldown(orlanHeal, window)
+	local buff1Name = GetSpellInfo(81660); -- Приверженность (1 очко таланта)
+	local buff2Name = GetSpellInfo(81661); -- Приверженность (2 очка таланта)
+
+	local _, _, _, count1 = UnitBuff("player", buff1Name);
+	local _, _, _, count2 = UnitBuff("player", buff2Name);
+	local count;
+	if count1 then
+		count = count1;
+	else
+		count = count2;
+	end;
+
+	if count then
+		local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+		local expirationTime;
+		if start and duration and (duration ~= 0) and (enabled == 1) then
+			expirationTime = start + duration;
+		else
+			start = nil;
+			duration = nil;
+			expirationTime = nil;
+		end;
+		orlanHeal:UpdateCooldown(window, duration, expirationTime, count, true);
+	else
+		window:SetReverse(true);
+		window.Count:SetText("");
+
+		if not window.Dark then
+			window.Dark = true;
+			window.Off = 0;
+			window:SetCooldown(0, 10);
+		end;		
+	end;
+end;
+
 OrlanHeal.Priest.AvailableSpells =
 {
 	1706, -- Левитация
@@ -143,6 +179,11 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 47788,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Archangel =
+	{
+		SpellId = 87151,
+		Update = OrlanHeal.Priest.UpdateArchangelCooldown
 	}
 };
 
