@@ -102,7 +102,8 @@ OrlanHeal.Priest.AvailableSpells =
 		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
 		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
 		key = "89485,2060"
-	}
+	},
+	47540 -- Исповедь
 }
 
 OrlanHeal.Priest.CooldownOptions =
@@ -205,6 +206,11 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 87151,
 		Update = OrlanHeal.Priest.UpdateArchangelCooldown
+	},
+	Penance =
+	{
+		SpellId = 47540,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
