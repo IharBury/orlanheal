@@ -81,7 +81,28 @@ OrlanHeal.Priest.AvailableSpells =
 	},
 	34861, -- Круг исцеления
 	33076, -- Молитва восстановления
-	47788 -- Оберегающий дух
+	47788, -- Оберегающий дух
+	{
+		type = "macro",
+		caption = "Free " .. GetSpellInfo(2061), -- Быстрое исцеление
+		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2061),
+		key = "89485,2061"
+	},
+	{
+		type = "macro",
+		caption = "Free " .. GetSpellInfo(32546), -- Связующее исцеление
+		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 32546),
+		key = "89485,32546"
+	},
+	{
+		type = "macro",
+		caption = "Free " .. GetSpellInfo(2060), -- Великое исцеление
+		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
+		key = "89485,2060"
+	}
 }
 
 OrlanHeal.Priest.CooldownOptions =
