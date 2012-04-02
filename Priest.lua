@@ -263,7 +263,7 @@ function OrlanHeal.Priest.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	elseif (spellId == 139) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- своё восстановление
 		buffKind = 2;
 	elseif (spellId == 6346) or  -- Защита от страха
-			((spellId == 33076) and (caster ~= nil) and (UnitIsUnit(caster, "player"))) then -- своя Молитва восстановления
+			((spellId == 41635) and (caster ~= nil) and (UnitIsUnit(caster, "player"))) then -- своя Молитва восстановления
 		buffKind = 3;
 	end;
 
