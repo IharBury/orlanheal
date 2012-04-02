@@ -217,6 +217,11 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 10060,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	PowerWordBarrier =
+	{
+		SpellId = 62618,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
