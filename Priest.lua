@@ -227,6 +227,11 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 32375,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DivineHymn =
+	{
+		SpellId = 64843,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
