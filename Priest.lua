@@ -222,6 +222,11 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 62618,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	MassDispel =
+	{
+		SpellId = 32375,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
