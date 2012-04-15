@@ -256,8 +256,8 @@ function OrlanHeal.Priest.GetConfigPresets(orlanHeal)
 end;
 
 OrlanHeal.Priest.RedRangeSpellId = 2096; -- Внутреннее зрение
-OrlanHeal.Priest.OrangeRangeSpellId = 1706; -- Левитация
-OrlanHeal.Priest.YellowRangeSpellId = 2061; -- Быстрое исцеление
+OrlanHeal.Priest.OrangeRangeSpellId = 2061; -- Быстрое исцеление
+OrlanHeal.Priest.YellowRangeSpellId = 1706; -- Левитация
 
 
 function OrlanHeal.Priest.UpdateRaidBorder(orlanHeal)
