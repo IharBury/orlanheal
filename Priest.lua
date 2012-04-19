@@ -104,7 +104,8 @@ OrlanHeal.Priest.AvailableSpells =
 		key = "89485,2060"
 	},
 	47540, -- Исповедь
-	10060 -- Придание сил
+	10060, -- Придание сил
+	73325 -- Духовное рвение
 }
 
 OrlanHeal.Priest.CooldownOptions =
@@ -231,6 +232,11 @@ OrlanHeal.Priest.CooldownOptions =
 	DivineHymn =
 	{
 		SpellId = 64843,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	LeapOfFaith =
+	{
+		SpellId = 73325,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
