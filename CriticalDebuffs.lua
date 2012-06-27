@@ -166,6 +166,9 @@
 	[110598] = true, -- Consuming Shroud
 	[110215] = true, -- Consuming Shroud
 	[110214] = true, -- Consuming Shroud
+	[109362] = true, -- Searing Plasma
+	[109363] = true, -- Searing Plasma
+	[109364] = true, -- Searing Plasma
 	[109379] = true, -- Searing Plasma
 	[105479] = true, -- Searing Plasma
 	[106199] = true, -- Blood Corruption: Death
