@@ -843,34 +843,42 @@ function OrlanHeal:UpdateUnitBorder(canvas, unit)
 	end;
 end;
 
-function OrlanHeal:UnitHasCriticalDebuff(unit)
+function OrlanHeal:GetUnitCriticalDebuffSignificance(unit)
 	local buffIndex = 1;
-	local hasCriticalDebuff = false;
+	local result = 0;
 
 	while true do
 		local _, _, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
 		if spellId == nil then break; end;
 
-		if self.CriticalDebuffs[spellId] then
-			hasCriticalDebuff = true;
+		if self.VeryCriticalDebuffs[spellId] then
+			result = 2;
 			break;
+		end;
+
+		if self.CriticalDebuffs[spellId] and not result then
+			result = 1;
+		end;
+
+		if self.GoodCriticalDebuffs[spellId] then
+			result = -1;
 		end;
 
 		buffIndex = buffIndex + 1;
 	end;
 
-	return hasCriticalDebuff;
+	return result;
 end;
 
 function OrlanHeal:UnitCriticalDebuffDuration(unit)
 	local buffIndex = 1;
-	local maxTimeSpent;
+	local maxTimeSpent, minTimeLeft;
 
 	while true do
 		local _, _, _, _, _, duration, expiration, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
 		if spellId == nil then break; end;
 
-		if self.CriticalDebuffs[spellId] then
+		if self.CriticalDebuffs[spellId] or self.VeryCriticalDebuffs[spellId] or self.GoodCriticalDebuffs[spellId] then
 			local timeSpent = duration - expiration + GetTime();
 			if timeSpent > 100 then
 				timeSpent = nil;
@@ -878,12 +886,20 @@ function OrlanHeal:UnitCriticalDebuffDuration(unit)
 			if (not maxTimeSpent) or (timeSpent and (timeSpent > maxTimeSpent)) then
 				maxTimeSpent = timeSpent;
 			end;
+
+			local timeLeft = expiration - GetTime();
+			if (timeLeft < 0) or (timeLeft > 100) then
+				timeLeft = nil;
+			end;
+			if (not minTimeLeft) or (timeLeft and (timeLeft < minTimeLeft)) then
+				minTimeLeft = timeLeft;
+			end;
 		end;
 
 		buffIndex = buffIndex + 1;
 	end;
 
-	return maxTimeSpent;
+	return maxTimeSpent, minTimeLeft;
 end;
 
 function OrlanHeal:UpdateBackground(background, unit)
@@ -891,20 +907,27 @@ function OrlanHeal:UpdateBackground(background, unit)
 		background:SetTexture(0, 0, 0, 1);
 	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
 		background:SetTexture(0.1, 0.1, 0.1, 1);
-	elseif self:UnitHasCriticalDebuff(unit) then
-		background:SetTexture(0.8, 0.8, 0.8, 1);
 	else
-		local health = UnitHealth(unit);
-		local maxHealth = UnitHealthMax(unit);
-
-		if health / maxHealth < 0.5 then
-			background:SetTexture(0.6, 0.2, 0.2, 1);
-		elseif health / maxHealth < 0.75 then
-			background:SetTexture(0.6, 0.4, 0.2, 1);
-		elseif health / maxHealth < 0.9 then
-			background:SetTexture(0.4, 0.4, 0.2, 1);
+		local debuffSignificance = self:GetUnitCriticalDebuffSignificance(unit);
+		if debuffSignificance == 2 then
+			background:SetTexture(0.5, 0.5, 1, 1);
+		elseif debuffSignificance == -1 then
+			background:SetTexture(0.5, 1, 0.5, 1);
+		elseif debuffSignificance == 1 then
+			background:SetTexture(0.8, 0.8, 0.8, 1);
 		else
-			background:SetTexture(0.2, 0.2, 0.2, 1);
+			local health = UnitHealth(unit);
+			local maxHealth = UnitHealthMax(unit);
+
+			if health / maxHealth < 0.5 then
+				background:SetTexture(0.6, 0.2, 0.2, 1);
+			elseif health / maxHealth < 0.75 then
+				background:SetTexture(0.6, 0.4, 0.2, 1);
+			elseif health / maxHealth < 0.9 then
+				background:SetTexture(0.4, 0.4, 0.2, 1);
+			else
+				background:SetTexture(0.2, 0.2, 0.2, 1);
+			end;
 		end;
 	end;
 end;
@@ -961,7 +984,10 @@ function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 		text = "dnd " .. text;
 	end;
 
-	local criticalDuration = self:UnitCriticalDebuffDuration(unit);
+	local criticalDuration, criticalTimeLeft = self:UnitCriticalDebuffDuration(unit);
+	if criticalTimeLeft then
+		text = "-" .. floor(criticalTimeLeft) .. " " .. text;
+	end;
 	if criticalDuration then
 		text = floor(criticalDuration) .. " " .. text;
 	end;

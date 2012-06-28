@@ -171,7 +171,6 @@
 	[109364] = true, -- Searing Plasma
 	[109379] = true, -- Searing Plasma
 	[105479] = true, -- Searing Plasma
-	[106199] = true, -- Blood Corruption: Death
 	[102582] = true, -- Chains of Frost
 	[103363] = true, -- Twilight Shear
 	[105544] = true, -- Fel Decay
@@ -179,4 +178,14 @@
 	[92956] = true, -- Wrack
 	[89435] = true, -- Wrack
 	[92955] = true -- Wrack
+};
+
+OrlanHeal.VeryCriticalDebuffs =
+{
+	[106199] = true -- Blood Corruption: Death
+};
+
+OrlanHeal.GoodCriticalDebuffs =
+{
+	[106200] = true -- Blood Corruption: Earth
 };
