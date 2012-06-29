@@ -856,7 +856,7 @@ function OrlanHeal:GetUnitCriticalDebuffSignificance(unit)
 			break;
 		end;
 
-		if self.CriticalDebuffs[spellId] and not result then
+		if self.CriticalDebuffs[spellId] and (result == 0) then
 			result = 1;
 		end;
 
