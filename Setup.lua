@@ -33,7 +33,7 @@
 		"OnClick",
 		function()
 			if orlanHeal:RequestNonCombat() then
-				local talentGroup = GetActiveTalentGroup(false, false);
+				local talentGroup = (GetActiveTalentGroup or GetActiveSpecGroup)(false, false);
 				orlanHeal.CharacterConfig[talentGroup] = UIDropDownMenu_GetSelectedValue(configSelectWindow);
 				orlanHeal:LoadTalentGroupConfig();
 				orlanHeal:ApplyConfig();
@@ -274,7 +274,7 @@ end;
 
 function OrlanHeal:InitializeConfigSelectWindow(configSelectWindow)
 	UIDropDownMenu_Initialize(configSelectWindow, self.HandleConfigInit);
-	local talentGroup = GetActiveTalentGroup(false, false);
+	local talentGroup = (GetActiveTalentGroup or GetActiveSpecGroup)(false, false);
 	self:SetConfigSelectWindowSelectedValue(configSelectWindow, self.CharacterConfig[talentGroup]);
 end;
 
@@ -697,7 +697,7 @@ function OrlanHeal:LoadConfigSet()
 end;
 
 function OrlanHeal:LoadTalentGroupConfig()
-	local talentGroup = GetActiveTalentGroup(false, false);
+	local talentGroup = (GetActiveTalentGroup or GetActiveSpecGroup)(false, false);
 	if not self.CharacterConfig[talentGroup] then
 		self.CharacterConfig[talentGroup] = self.CharacterConfig[1];
 	end;
@@ -799,7 +799,7 @@ function OrlanHeal:SaveSetupAs(name)
 		elseif self.ConfigSet[name] then
 			print("OrlanHeal: Duplicate config name.");
 		else
-			local talentGroup = GetActiveTalentGroup(false, false);
+			local talentGroup = (GetActiveTalentGroup or GetActiveSpecGroup)(false, false);
 			self.CharacterConfig[talentGroup] = name;
 			self.ConfigSet[name] = self.Config;
 			self:SaveSetup();
