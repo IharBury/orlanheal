@@ -917,7 +917,13 @@ function OrlanHeal:UpdateBackground(background, unit)
 			background:SetTexture(0.8, 0.8, 0.8, 1);
 		else
 			local health = UnitHealth(unit);
+			if not health then
+				health = 0;
+			end;
 			local maxHealth = UnitHealthMax(unit);
+			if not maxHealth or (maxHealth == 0) then
+				maxHealth = 1;
+			end;
 
 			if health / maxHealth < 0.5 then
 				background:SetTexture(0.6, 0.2, 0.2, 1);
