@@ -126,6 +126,7 @@ OrlanHeal.Paladin.CooldownOptions =
 if GetBuildInfo() == "5.0.1" then
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114163); -- Eternal Flame
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 20925); -- Sacred Shield
+	table.insert(OrlanHeal.Paladin.AvailableSpells, 114039); -- Hand of Purity
 else
 	OrlanHeal.Paladin.CooldownOptions["JudgementsOfThePure"] =
 	{
@@ -234,7 +235,8 @@ function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 			(spellId == 1022) or -- Длань защиты
 			(spellId == 5599) or -- Длань защиты
 			(spellId == 10278) or -- Длань защиты
-			(spellId == 1038) then -- Длань спасения
+			(spellId == 1038) or  -- Длань спасения
+			(spellId == 114039) then -- Hand of Purity
 		buffKind = 1;
 	elseif (spellId == 114163) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- свой Eternal Flame
 			(spellId == 20925) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- свой Sacred Shield
