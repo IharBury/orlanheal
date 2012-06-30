@@ -310,5 +310,6 @@
        	[93349] = true, -- Crimson Flames
        	[93466] = true, -- Glyph of the Long Word
        	[93705] = true, -- Pity Heal
-       	[93706] = true -- Pity Heal
+       	[93706] = true, -- Pity Heal
+	[114163] = true -- Eternal Flame
 };

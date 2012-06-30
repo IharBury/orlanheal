@@ -1131,7 +1131,9 @@ function OrlanHeal:ShowBuff(texture, buff)
 	else
 		texture.Image:SetTexture(buff.Icon);
 
-		if buff.Expires <= GetTime() + 3 then
+		if buff.Expires == 0 then
+			texture.Time:SetTexture(0, 0, 0, 0);
+		elseif buff.Expires <= GetTime() + 3 then
 			texture.Time:SetTexture(1, 0, 0, 0.3);
 		elseif buff.Expires <= GetTime() + 6 then
 			texture.Time:SetTexture(1, 1, 0, 0.3);

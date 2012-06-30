@@ -93,6 +93,7 @@
 	[20697] = true, -- Power Word: Shield
 	[20705] = true, -- Power Shield 500
 	[20706] = true, -- Power Word: Shield 500
+	[20925] = true, -- Sacred Shield
 	[21956] = true, -- Physical Protection
 	[22187] = true, -- Power Word: Shield
 	[22417] = true, -- Shadow Shield
