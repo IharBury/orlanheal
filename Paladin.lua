@@ -126,6 +126,8 @@ if GetBuildInfo() == "5.0.1" then
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114163); -- Eternal Flame
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 20925); -- Sacred Shield
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114039); -- Hand of Purity
+	table.insert(OrlanHeal.Paladin.AvailableSpells, 114165); -- Holy Prism
+	table.insert(OrlanHeal.Paladin.AvailableSpells, 114157); -- Execution Sentence
 	OrlanHeal.Paladin.CooldownOptions["EternalFlame"] =
 	{
 		SpellId = 114163, -- Eternal Flame
@@ -151,6 +153,21 @@ if GetBuildInfo() == "5.0.1" then
 	OrlanHeal.Paladin.CooldownOptions["HandOfPurity"] =
 	{
 		SpellId = 114039, -- Hand of Purity
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Paladin.CooldownOptions["HolyPrism"] =
+	{
+		SpellId = 114165, -- Holy Prism
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Paladin.CooldownOptions["LightsHammer"] =
+	{
+		SpellId = 114158, -- Light's Hammer
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Paladin.CooldownOptions["ExecutionSentence"] =
+	{
+		SpellId = 114157, -- Execution Sentence
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
 else
