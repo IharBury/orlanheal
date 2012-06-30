@@ -26,12 +26,6 @@ OrlanHeal.Paladin.AvailableSpells =
 
 OrlanHeal.Paladin.CooldownOptions =
 {
-	BeaconOfLight =
-	{
-		SpellId = 53563, -- Beacon of Light
-		IsReverse = true,
-		Update = OrlanHeal.UpdateRaidBuffCooldown
-	},
 	HolyRadiance =
 	{
 		SpellId = 82327, -- Holy Radiance
@@ -127,6 +121,17 @@ if GetBuildInfo() == "5.0.1" then
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114163); -- Eternal Flame
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 20925); -- Sacred Shield
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114039); -- Hand of Purity
+	OrlanHeal.Paladin.CooldownOptions["EternalFlame"] =
+	{
+		SpellId = 114163, -- Eternal Flame
+		IsReverse = true,
+		Update = OrlanHeal.UpdateRaidBuffCooldown
+	};
+	OrlanHeal.Paladin.CooldownOptions["BeaconOfLight"] =
+	{
+		SpellId = 53563, -- Beacon of Light
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Paladin.CooldownOptions["JudgementsOfThePure"] =
 	{
@@ -144,6 +149,12 @@ else
 	{
 		SpellId = 86150, -- Guardian of Ancient Kings
 		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Paladin.CooldownOptions["BeaconOfLight"] =
+	{
+		SpellId = 53563, -- Beacon of Light
+		IsReverse = true,
+		Update = OrlanHeal.UpdateRaidBuffCooldown
 	};
 end;
 
