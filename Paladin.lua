@@ -132,9 +132,25 @@ if GetBuildInfo() == "5.0.1" then
 		IsReverse = true,
 		Update = OrlanHeal.UpdateRaidBuffCooldown
 	};
+	OrlanHeal.Paladin.CooldownOptions["SacredShield"] =
+	{
+		SpellId = 20925, -- Sacred Shield
+		IsReverse = true,
+		Update = OrlanHeal.UpdateRaidBuffCooldown
+	};
 	OrlanHeal.Paladin.CooldownOptions["BeaconOfLight"] =
 	{
 		SpellId = 53563, -- Beacon of Light
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Paladin.CooldownOptions["SpeedOfLight"] =
+	{
+		SpellId = 85499, -- Speed of Light
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Paladin.CooldownOptions["HandOfPurity"] =
+	{
+		SpellId = 114039, -- Hand of Purity
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
 else
