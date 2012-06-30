@@ -114,6 +114,11 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 20473, -- Holy Shock
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Cleanse =
+	{
+		SpellId = 4987, -- Cleanse
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
