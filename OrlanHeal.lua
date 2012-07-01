@@ -536,7 +536,7 @@ function OrlanHeal:UpdateUnits()
 		self:SetupParty(self.GroupCount);
 	elseif UnitInRaid("player") ~= nil then
 		for unitNumber = 1, self.GroupCount * 5 do
-			if unitNumber <= GetNumRaidMembers() then
+			if unitNumber <= (GetNumRaidMembers or GetNumGroupMembers)() then
 				local _, _, groupNumber = GetRaidRosterInfo(unitNumber);
 				self:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts);
 			else
