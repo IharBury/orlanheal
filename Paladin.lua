@@ -170,6 +170,11 @@ if GetBuildInfo() == "5.0.1" then
 		SpellId = 114157, -- Execution Sentence
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Paladin.CooldownOptions["GuardianOfAncientKings"] =
+	{
+		SpellId = 86669, -- Guardian of Ancient Kings
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Paladin.CooldownOptions["JudgementsOfThePure"] =
 	{
