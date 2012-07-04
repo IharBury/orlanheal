@@ -40,5 +40,6 @@
 	[74001] = true, -- Combat Readiness
 	[81162] = true, -- Will of the Necropolis
 	[81256] = true, -- Dancing Rune Weapon
-	[86657] = true -- Ancient Guardian
+	[86657] = true, -- Ancient Guardian
+	[114039] = true -- Hand of Purity
 };
