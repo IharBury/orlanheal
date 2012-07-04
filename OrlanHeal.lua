@@ -910,9 +910,9 @@ function OrlanHeal:UpdateBackground(background, unit)
 	else
 		local debuffSignificance = self:GetUnitCriticalDebuffSignificance(unit);
 		if debuffSignificance == 2 then
-			background:SetTexture(0.5, 0.5, 1, 1);
+			background:SetTexture(0.2, 0.2, 1, 1);
 		elseif debuffSignificance == -1 then
-			background:SetTexture(0.5, 1, 0.5, 1);
+			background:SetTexture(0.2, 1, 0.2, 1);
 		elseif debuffSignificance == 1 then
 			background:SetTexture(0.8, 0.8, 0.8, 1);
 		else
