@@ -1,0 +1,27 @@
+## Interface: 40300
+## Title: OrlanHeal
+## Version: 3.0.0
+## Notes: 
+## SavedVariables: OrlanHealGlobalConfig
+## SavedVariablesPerCharacter: OrlanHealConfig
+OrlanHeal.lua
+Constants.lua
+
+SavingAbilities.lua
+ShieldAbilities.lua
+HealingBuffs.lua
+IgnoredDebuffs.lua
+CriticalDebuffs.lua
+CommonAvailableSpells.lua
+
+Setup.lua
+Mode.lua
+Cooldowns.lua
+Commands.lua
+
+Paladin.lua
+Priest.lua
+Shaman.lua
+Druid.lua
+
+Initialize.lua
