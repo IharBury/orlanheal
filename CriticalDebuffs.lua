@@ -177,7 +177,8 @@
 	[89421] = true, -- Wrack
 	[92956] = true, -- Wrack
 	[89435] = true, -- Wrack
-	[92955] = true -- Wrack
+	[92955] = true, -- Wrack
+	[108649] = true -- Corrupting Parasite
 };
 
 OrlanHeal.VeryCriticalDebuffs =
