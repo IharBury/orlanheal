@@ -129,6 +129,21 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 31842, -- Divine Favor
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HammerOfWrath =
+	{
+		SpellId = 24275, -- Hammer of Wrath
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Judgment =
+	{
+		SpellId = 20271, -- Judgment
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Reckoning =
+	{
+		SpellId = 62124, -- Reckoning
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -193,6 +208,16 @@ if GetBuildInfo() == "5.0.4" then
 	OrlanHeal.Paladin.CooldownOptions["Contemplation"] =
 	{
 		SpellId = 121183, -- Contemplation
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Paladin.CooldownOptions["Repentance"] =
+	{
+		SpellId = 20066, -- Repentance
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Paladin.CooldownOptions["HolyAvenger"] =
+	{
+		SpellId = 105809, -- Holy Avenger
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
 else
