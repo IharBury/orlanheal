@@ -256,8 +256,9 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["alt2"] = 20473; -- Holy Shock
 	config["alt3"] = 633; -- Lay on Hands
 	config["controlalt1"] = 82327; -- Holy Radiance
+	config["controlalt2"] = 20925; -- Sacred Shield
 
-	config["cooldown1"] = "JudgementsOfThePure";
+	config["cooldown1"] = "Cleanse";
 	config["cooldown2"] = "BeaconOfLight";
 	config["cooldown3"] = "HolyRadiance";
 	config["cooldown4"] = "LightOfDawn";
@@ -267,6 +268,16 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown8"] = "GuardianOfAncientKings";
 	config["cooldown9"] = "AuraMastery";
 	config["cooldown10"] = "DivinePlea";
+	config["cooldown11"] = "HandOfProtection";
+	config["cooldown12"] = "HandOfPurity";
+	config["cooldown13"] = "HandOfSacrifice";
+	config["cooldown14"] = "HandOfSalvation";
+	config["cooldown15"] = "HandOfFreedom";
+	config["cooldown16"] = "HolyPrism";
+	config["cooldown17"] = "BlindingLight";
+	config["cooldown18"] = "SpeedOfLight";
+	config["cooldown19"] = "Repentance";
+	config["cooldown20"] = "SacredShield";
 
 	config["controlalt1update"] = 1;
 
