@@ -119,6 +119,11 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 4987, -- Cleanse
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	CrusaderStrike =
+	{
+		SpellId = 35395, -- Crusader Strike
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
