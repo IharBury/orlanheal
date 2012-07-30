@@ -180,6 +180,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 115750, -- Blinding Light
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Paladin.CooldownOptions["Contemplation"] =
+	{
+		SpellId = 121183, -- Contemplation
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Paladin.CooldownOptions["JudgementsOfThePure"] =
 	{
