@@ -122,7 +122,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	}
 };
 
-if GetBuildInfo() == "5.0.1" then
+if GetBuildInfo() == "5.0.4" then
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114163); -- Eternal Flame
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 20925); -- Sacred Shield
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114039); -- Hand of Purity
