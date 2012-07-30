@@ -41,5 +41,7 @@
 	[81162] = true, -- Will of the Necropolis
 	[81256] = true, -- Dancing Rune Weapon
 	[86657] = true, -- Ancient Guardian
-	[114039] = true -- Hand of Purity
+	[86949] = true, -- Cauterize
+	[114039] = true, -- Hand of Purity
+	[114556] = true -- Purgatory
 };
