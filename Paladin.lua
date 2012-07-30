@@ -175,6 +175,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 86669, -- Guardian of Ancient Kings
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Paladin.CooldownOptions["BlindingLight"] =
+	{
+		SpellId = 115750, -- Blinding Light
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Paladin.CooldownOptions["JudgementsOfThePure"] =
 	{
