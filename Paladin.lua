@@ -47,7 +47,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	AuraMastery =
 	{
-		SpellId = 31821, -- Aura Mastery
+		SpellId = 31821, -- Aura Mastery / Devotion Aura
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	DivinePlea =
@@ -124,18 +124,23 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 35395, -- Crusader Strike
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DivineFavor =
+	{
+		SpellId = 31842, -- Divine Favor
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
 if GetBuildInfo() == "5.0.4" then
-	table.insert(OrlanHeal.Paladin.AvailableSpells, 114163); -- Eternal Flame
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 20925); -- Sacred Shield
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114039); -- Hand of Purity
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114165); -- Holy Prism
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114157); -- Execution Sentence
 	OrlanHeal.Paladin.CooldownOptions["EternalFlame"] =
 	{
-		SpellId = 114163, -- Eternal Flame
+		SpellId = 85673, -- Word of Glory
+		AuraId = 114163, -- Eternal Flame
 		IsReverse = true,
 		Update = OrlanHeal.UpdateRaidBuffCooldown
 	};
@@ -197,11 +202,6 @@ else
 		AuraId = 53655, -- Judgements of the Pure
 		IsReverse = true,
 		Update = OrlanHeal.UpdatePlayerBuffCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["DivineFavor"] =
-	{
-		SpellId = 31842, -- Divine Favor
-		Update = OrlanHeal.UpdateAbilityCooldown
 	};
 	OrlanHeal.Paladin.CooldownOptions["GuardianOfAncientKings"] =
 	{
