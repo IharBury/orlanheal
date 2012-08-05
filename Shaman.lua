@@ -66,7 +66,14 @@ OrlanHeal.Shaman.CooldownOptions =
 	ManaTideTotem =
 	{
 		SpellId = 16190, -- Тотем прилива маны
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Water Totems"
+	},
+	HealingStreamTotem =
+	{
+		SpellId = 5394,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Water Totems"
 	},
 	EarthlivingWeapon =
 	{
