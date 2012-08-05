@@ -150,6 +150,12 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 8042,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	EarthbindTotem =
+	{
+		SpellId = 2484,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Earth Totems"
 	}
 };
 
