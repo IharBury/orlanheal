@@ -133,6 +133,12 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 79206,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	GroundingTotem =
+	{
+		SpellId = 8177,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Air Totems"
 	}
 };
 
@@ -140,6 +146,12 @@ if GetBuildInfo() == "5.0.4" then
 	OrlanHeal.Shaman.CooldownOptions.CapacitorTotem =
 	{
 		SpellId = 108269,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Air Totems"
+	};
+	OrlanHeal.Shaman.CooldownOptions.StormlashTotem =
+	{
+		SpellId = 120668,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Air Totems"
 	};
