@@ -274,6 +274,11 @@ if GetBuildInfo() == "5.0.4" then
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Earth Totems"
 	};
+	OrlanHeal.Shaman.CooldownOptions.CallOfTheElements =
+	{
+		SpellId = 108285,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
 	{
