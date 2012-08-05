@@ -179,6 +179,12 @@ OrlanHeal.Shaman.CooldownOptions =
 		SpellId = 2894,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Fire Totems"
+	},
+	MagmaTotem =
+	{
+		SpellId = 8190,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Fire Totems"
 	}
 };
 
