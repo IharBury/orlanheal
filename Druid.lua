@@ -40,19 +40,9 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 18562,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Thorns =
-	{
-		SpellId = 467,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	WildGrowth =
 	{
 		SpellId = 48438,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	NaturesSwiftness =
-	{
-		SpellId = 17116,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Barkskin =
@@ -68,6 +58,11 @@ OrlanHeal.Druid.CooldownOptions =
 	Tranquility =
 	{
 		SpellId = 740,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Dash =
+	{
+		SpellId = 1850,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
@@ -110,6 +105,16 @@ else
 			macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 5185),
 			key = "17116,5185"
 		});
+	OrlanHeal.Druid.CooldownOptions.Thorns =
+	{
+		SpellId = 467,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.NaturesSwiftness =
+	{
+		SpellId = 17116,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 end;
 
 function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
