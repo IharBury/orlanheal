@@ -140,6 +140,11 @@ OrlanHeal.Shaman.CooldownOptions =
 		SpellId = 8177,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Air Totems"
+	},
+	AstralRecall =
+	{
+		SpellId = 556,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
