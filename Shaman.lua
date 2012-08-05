@@ -173,6 +173,12 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 16166,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	FireElementalTotem =
+	{
+		SpellId = 2894,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Fire Totems"
 	}
 };
 
