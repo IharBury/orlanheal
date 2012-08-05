@@ -4,7 +4,6 @@ OrlanHeal.Druid.IsSupported = true;
 
 OrlanHeal.Druid.AvailableSpells =
 {
-	2782, -- Снятие порчи
 	774, -- Омоложение
 	8936, -- Восстановление
 	50464, -- Покровительство природы
@@ -75,6 +74,7 @@ OrlanHeal.Druid.CooldownOptions =
 };
 
 if GetBuildInfo() == "5.0.4" then
+	table.insert(OrlanHeal.Druid.AvailableSpells, 88423); -- Nature's Cure
 	OrlanHeal.Druid.CooldownOptions.Ironbark =
 	{
 		SpellId = 102342,
@@ -83,6 +83,11 @@ if GetBuildInfo() == "5.0.4" then
 	OrlanHeal.Druid.CooldownOptions.MightOfUrsoc =
 	{
 		SpellId = 106922,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.NaturesCure =
+	{
+		SpellId = 88423,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
 else
@@ -122,6 +127,7 @@ else
 			macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 5185),
 			key = "17116,5185"
 		});
+	table.insert(OrlanHeal.Druid.AvailableSpells, 2782); -- Снятие порчи
 	OrlanHeal.Druid.CooldownOptions.Thorns =
 	{
 		SpellId = 467,
