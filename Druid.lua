@@ -15,7 +15,8 @@ OrlanHeal.Druid.AvailableSpells =
 	29166, -- Озарение
 	467, -- Шипы
 	48438, -- Буйный рост
-	102342 -- Ironbark
+	102342, -- Ironbark
+	1126 -- Mark of the Wild
 }
 
 OrlanHeal.Druid.CooldownOptions =
