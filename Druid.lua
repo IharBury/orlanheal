@@ -64,6 +64,11 @@ OrlanHeal.Druid.CooldownOptions =
 	{
 		SpellId = 1850,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Growl =
+	{
+		SpellId = 6795,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
