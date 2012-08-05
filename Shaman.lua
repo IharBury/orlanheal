@@ -156,6 +156,12 @@ OrlanHeal.Shaman.CooldownOptions =
 		SpellId = 2484,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Earth Totems"
+	},
+	TremorTotem =
+	{
+		SpellId = 8143,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Earth Totems"
 	}
 };
 
