@@ -80,6 +80,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 102342,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Druid.CooldownOptions.MightOfUrsoc =
+	{
+		SpellId = 106922,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Druid.AvailableSpells, 
