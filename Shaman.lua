@@ -257,6 +257,11 @@ if GetBuildInfo() == "5.0.4" then
 		Duration = 60 * 60,
 		Update = OrlanHeal.UpdateMainHandTemporaryEnchantCooldown
 	};
+	OrlanHeal.Shaman.CooldownOptions.Ascendance =
+	{
+		SpellId = 114049,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
 	{
