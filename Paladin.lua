@@ -152,6 +152,7 @@ if GetBuildInfo() == "5.0.4" then
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114039); -- Hand of Purity
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114165); -- Holy Prism
 	table.insert(OrlanHeal.Paladin.AvailableSpells, 114157); -- Execution Sentence
+	table.insert(OrlanHeal.Paladin.AvailableSpells, 110501); -- Symbiosis
 	OrlanHeal.Paladin.CooldownOptions["EternalFlame"] =
 	{
 		SpellId = 85673, -- Word of Glory
@@ -220,6 +221,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 105809, -- Holy Avenger
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Paladin.CooldownOptions.Symbiosis =
+	{
+		SpellId = 110501,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Paladin.CooldownOptions["JudgementsOfThePure"] =
 	{
@@ -257,6 +263,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["alt3"] = 633; -- Lay on Hands
 	config["controlalt1"] = 82327; -- Holy Radiance
 	config["controlalt2"] = 20925; -- Sacred Shield
+	config["controlalt3"] = 110501; -- Symbiosis
 
 	config["cooldown1"] = "Cleanse";
 	config["cooldown2"] = "BeaconOfLight";
@@ -278,6 +285,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown18"] = "SpeedOfLight";
 	config["cooldown19"] = "Repentance";
 	config["cooldown20"] = "SacredShield";
+	config["cooldown21"] = "Symbiosis";
 
 	config["controlalt1update"] = 1;
 
