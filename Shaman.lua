@@ -75,13 +75,6 @@ OrlanHeal.Shaman.CooldownOptions =
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Water Totems"
 	},
-	EarthlivingWeapon =
-	{
-		SpellId = 51730, -- Оружие жизни земли
-		IsReverse = true,
-		Duration = 30 * 60,
-		Update = OrlanHeal.UpdateMainHandTemporaryEnchantCooldown
-	},
 	Riptide =
 	{
 		SpellId = 61295,
@@ -251,6 +244,21 @@ if GetBuildInfo() == "5.0.4" then
 	{
 		SpellId = 108287,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
+	{
+		SpellId = 51730, -- Оружие жизни земли
+		IsReverse = true,
+		Duration = 60 * 60,
+		Update = OrlanHeal.UpdateMainHandTemporaryEnchantCooldown
+	};
+else
+	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
+	{
+		SpellId = 51730, -- Оружие жизни земли
+		IsReverse = true,
+		Duration = 30 * 60,
+		Update = OrlanHeal.UpdateMainHandTemporaryEnchantCooldown
 	};
 end;
 
