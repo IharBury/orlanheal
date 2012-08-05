@@ -86,6 +86,7 @@ OrlanHeal.Druid.CooldownOptions =
 
 if GetBuildInfo() == "5.0.4" then
 	table.insert(OrlanHeal.Druid.AvailableSpells, 88423); -- Nature's Cure
+	table.insert(OrlanHeal.Druid.AvailableSpells, 110309); -- Symbiosis
 	OrlanHeal.Druid.CooldownOptions.Ironbark =
 	{
 		SpellId = 102342,
@@ -114,6 +115,11 @@ if GetBuildInfo() == "5.0.4" then
 	OrlanHeal.Druid.CooldownOptions.WildMushroomBloom =
 	{
 		SpellId = 102791,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.Symbiosis =
+	{
+		SpellId = 110309,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
 else

@@ -233,6 +233,7 @@ OrlanHeal.Shaman.CooldownOptions =
 };
 
 if GetBuildInfo() == "5.0.4" then
+	table.insert(OrlanHeal.Paladin.AvailableSpells, 110504); -- Symbiosis
 	OrlanHeal.Shaman.CooldownOptions.CapacitorTotem =
 	{
 		SpellId = 108269,
@@ -300,6 +301,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 117014,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Shaman.CooldownOptions.Symbiosis =
+	{
+		SpellId = 110504,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
 	{
@@ -325,6 +331,7 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["alt2"] = 1064; -- Цепное исцеление
 	config["alt3"] = "16188,1064"; -- Instant Цепное исцеление
 	config["controlalt1"] = 2008; -- Ancestral Spirit
+	config["controlalt3"] = 110504; -- Symbiosis
 
 	config["cooldown1"] = "WaterShield";
 	config["cooldown2"] = "EarthlivingWeapon";
@@ -351,6 +358,7 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["cooldown19"] = "TremorTotem";
 	config["cooldown20"] = "EarthElementalTotem";
 	config["cooldown21"] = "FireElementalTotem";
+	config["cooldown22"] = "Symbiosis";
 
 	local _, race = UnitRace("player");
 	if race == "Troll" then
