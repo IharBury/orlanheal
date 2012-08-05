@@ -324,6 +324,7 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["alt1"] = 51886; -- Очищение духа
 	config["alt2"] = 1064; -- Цепное исцеление
 	config["alt3"] = "16188,1064"; -- Instant Цепное исцеление
+	config["controlalt1"] = 2008; -- Ancestral Spirit
 
 	config["cooldown1"] = "WaterShield";
 	config["cooldown2"] = "EarthlivingWeapon";
@@ -338,6 +339,22 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 		config["cooldown10"] = "Heroism";
 	else
 		config["cooldown10"] = "Bloodlust";
+	end;
+	config["cooldown11"] = "TotemicProjection";
+	config["cooldown12"] = "Ascendance";
+	config["cooldown13"] = "AstralShift";
+	config["cooldown14"] = "ElementalMastery";
+	config["cooldown15"] = "HealingStreamTotem";
+	config["cooldown16"] = "GroundingTotem";
+	config["cooldown17"] = "StormlashTotem";
+	config["cooldown18"] = "EarthbindTotem";
+	config["cooldown19"] = "TremorTotem";
+	config["cooldown20"] = "EarthElementalTotem";
+	config["cooldown21"] = "FireElementalTotem";
+
+	local _, race = UnitRace("player");
+	if race == "Troll" then
+		config["cooldown22"] = "Berserk";
 	end;
 
 	return config;
