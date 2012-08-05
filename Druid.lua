@@ -52,11 +52,6 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 22812,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	TreeOfLife =
-	{
-		SpellId = 33891,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	Tranquility =
 	{
 		SpellId = 740,
@@ -195,6 +190,16 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 50516,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Druid.CooldownOptions.Incarnation =
+	{
+		SpellId = 106731,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.ForceOfNature =
+	{
+		SpellId = 106737,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Druid.AvailableSpells, 
@@ -241,6 +246,11 @@ else
 	OrlanHeal.Druid.CooldownOptions.NaturesSwiftness =
 	{
 		SpellId = 17116,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.TreeOfLife =
+	{
+		SpellId = 33891,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
 end;
