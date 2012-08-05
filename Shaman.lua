@@ -98,7 +98,8 @@ OrlanHeal.Shaman.CooldownOptions =
 	SpiritLinkTotem =
 	{
 		SpellId = 98008,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Air Totems"
 	},
 	GiftOfTheNaaru =
 	{
@@ -134,6 +135,15 @@ OrlanHeal.Shaman.CooldownOptions =
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
+
+if GetBuildInfo() == "5.0.4" then
+	OrlanHeal.Shaman.CooldownOptions.CapacitorTotem =
+	{
+		SpellId = 108269,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Air Totems"
+	};
+end;
 
 function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
