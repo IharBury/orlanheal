@@ -209,6 +209,11 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 51514,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	LavaBurst =
+	{
+		SpellId = 51505,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
