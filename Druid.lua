@@ -124,6 +124,7 @@ if GetBuildInfo() == "5.0.4" then
 			macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 5185),
 			key = "17116,5185"
 		});
+	table.insert(OrlanHeal.Druid.AvailableSpells, 102351); -- Cenarion Ward
 	OrlanHeal.Druid.CooldownOptions.Ironbark =
 	{
 		SpellId = 102342,
@@ -177,6 +178,11 @@ if GetBuildInfo() == "5.0.4" then
 	OrlanHeal.Druid.CooldownOptions.Renewal =
 	{
 		SpellId = 108238,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.CenarionWard =
+	{
+		SpellId = 102351,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
 else
