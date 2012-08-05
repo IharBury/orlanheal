@@ -240,6 +240,12 @@ if GetBuildInfo() == "5.0.4" then
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Air Totems"
 	};
+	OrlanHeal.Shaman.CooldownOptions.WindwalkTotem =
+	{
+		SpellId = 108273,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Air Totems"
+	};
 	OrlanHeal.Shaman.CooldownOptions.AstralShift =
 	{
 		SpellId = 108271,
