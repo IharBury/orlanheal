@@ -53,7 +53,7 @@ OrlanHeal.PlayerBuffCount = 5;
 
 OrlanHeal.CooldownSize = 40;
 OrlanHeal.CooldownCountSize = 15;
-OrlanHeal.MaxCooldownCount = 20;
+OrlanHeal.MaxCooldownCount = 30;
 OrlanHeal.CooldownCountPerFrame = 5;
 
 OrlanHeal.SetupWindowWidth = 630;
