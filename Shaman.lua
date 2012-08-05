@@ -290,6 +290,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 108281,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Shaman.CooldownOptions.ElementalBlast =
+	{
+		SpellId = 117014,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
 	{
