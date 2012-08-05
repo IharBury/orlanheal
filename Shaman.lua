@@ -262,6 +262,12 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 114049,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Shaman.CooldownOptions.StoneBulwarkTotem =
+	{
+		SpellId = 108270,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Earth Totems"
+	};
 else
 	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
 	{
