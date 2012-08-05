@@ -279,6 +279,12 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 108285,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Shaman.CooldownOptions.HealingTideTotem =
+	{
+		SpellId = 108280,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Water Totems"
+	};
 else
 	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
 	{
