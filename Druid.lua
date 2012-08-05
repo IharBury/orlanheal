@@ -200,6 +200,21 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 106737,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Druid.CooldownOptions.DisorientingRoar =
+	{
+		SpellId = 99,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.UrsolsVortex =
+	{
+		SpellId = 102793,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.MightyBash =
+	{
+		SpellId = 5211,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Druid.AvailableSpells, 
