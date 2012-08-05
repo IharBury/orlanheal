@@ -149,7 +149,14 @@ OrlanHeal.Shaman.CooldownOptions =
 	EarthShock =
 	{
 		SpellId = 8042,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Shock"
+	},
+	FlameShock =
+	{
+		SpellId = 8050,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Shock"
 	},
 	EarthbindTotem =
 	{
