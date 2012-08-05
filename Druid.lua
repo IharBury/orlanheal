@@ -14,35 +14,7 @@ OrlanHeal.Druid.AvailableSpells =
 	20484, -- Возрождение
 	29166, -- Озарение
 	467, -- Шипы
-	48438, -- Буйный рост
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(8936), -- Восстановление
-		group = GetSpellInfo(17116), -- Природная стремительность
-		macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 8936),
-		key = "17116,8936"
-	},
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(50464), -- Покровительство природы
-		group = GetSpellInfo(17116), -- Природная стремительность
-		macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 50464),
-		key = "17116,50464"
-	},
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(20484), -- Возрождение
-		group = GetSpellInfo(17116), -- Природная стремительность
-		macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 20484),
-		key = "17116,20484"
-	},
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(5185), -- Целительное прикосновение
-		group = GetSpellInfo(17116), -- Природная стремительность
-		macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 5185),
-		key = "17116,5185"
-	}
+	48438 -- Буйный рост
 }
 
 OrlanHeal.Druid.CooldownOptions =
@@ -100,6 +72,46 @@ OrlanHeal.Druid.CooldownOptions =
 	}
 };
 
+if GetBuildInfo() == "5.0.4" then
+else
+	table.insert(
+		OrlanHeal.Druid.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Instant " .. GetSpellInfo(8936), -- Восстановление
+			group = GetSpellInfo(17116), -- Природная стремительность
+			macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 8936),
+			key = "17116,8936"
+		});
+	table.insert(
+		OrlanHeal.Druid.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Instant " .. GetSpellInfo(50464), -- Покровительство природы
+			group = GetSpellInfo(17116), -- Природная стремительность
+			macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 50464),
+			key = "17116,50464"
+		});
+	table.insert(
+		OrlanHeal.Druid.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Instant " .. GetSpellInfo(20484), -- Возрождение
+			group = GetSpellInfo(17116), -- Природная стремительность
+			macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 20484),
+			key = "17116,20484"
+		});
+	table.insert(
+		OrlanHeal.Druid.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Instant " .. GetSpellInfo(5185), -- Целительное прикосновение
+			group = GetSpellInfo(17116), -- Природная стремительность
+			macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 5185),
+			key = "17116,5185"
+		});
+end;
+
 function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 
@@ -144,7 +156,7 @@ end;
 
 OrlanHeal.Druid.RedRangeSpellId = 774; -- Омоложение
 OrlanHeal.Druid.OrangeRangeSpellId = 774; -- Омоложение
-OrlanHeal.Druid.YellowRangeSpellId = 467; -- Шипы
+OrlanHeal.Druid.YellowRangeSpellId = 1126; -- Mark of the Wild
 
 
 function OrlanHeal.Druid.UpdateRaidBorder(orlanHeal)
