@@ -185,6 +185,16 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 102351,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Druid.CooldownOptions.MassEntanglement =
+	{
+		SpellId = 102359,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.Typhoon =
+	{
+		SpellId = 50516,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Druid.AvailableSpells, 
