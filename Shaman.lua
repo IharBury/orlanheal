@@ -240,6 +240,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 108271,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Shaman.CooldownOptions.TotemicProjection =
+	{
+		SpellId = 108287,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 end;
 
 function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
