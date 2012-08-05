@@ -40,7 +40,8 @@ OrlanHeal.Shaman.AvailableSpells =
 		group = GetSpellInfo(16188), -- Природная стремительность
 		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 77472),
 		key = "16188,77472"
-	}
+	},
+	2008 -- Ancestral Spirit
 };
 
 OrlanHeal.Shaman.CooldownOptions =
