@@ -214,6 +214,11 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 51505,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	PrimalStrike =
+	{
+		SpellId = 73899,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
