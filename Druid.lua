@@ -174,6 +174,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 132158,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Druid.CooldownOptions.Renewal =
+	{
+		SpellId = 108238,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Druid.AvailableSpells, 
