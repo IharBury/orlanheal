@@ -75,6 +75,11 @@ OrlanHeal.Druid.CooldownOptions =
 	{
 		SpellId = 16689,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Prowl =
+	{
+		SpellId = 5215,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
