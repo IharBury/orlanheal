@@ -285,6 +285,11 @@ if GetBuildInfo() == "5.0.4" then
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Water Totems"
 	};
+	OrlanHeal.Shaman.CooldownOptions.AncestralGuidance =
+	{
+		SpellId = 108281,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
 	{
