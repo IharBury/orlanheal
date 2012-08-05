@@ -168,6 +168,11 @@ OrlanHeal.Shaman.CooldownOptions =
 		SpellId = 2062,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Earth Totems"
+	},
+	ElementalMastery =
+	{
+		SpellId = 16166,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
