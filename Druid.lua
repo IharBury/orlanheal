@@ -14,7 +14,8 @@ OrlanHeal.Druid.AvailableSpells =
 	20484, -- Возрождение
 	29166, -- Озарение
 	467, -- Шипы
-	48438 -- Буйный рост
+	48438, -- Буйный рост
+	102342 -- Ironbark
 }
 
 OrlanHeal.Druid.CooldownOptions =
@@ -73,6 +74,11 @@ OrlanHeal.Druid.CooldownOptions =
 };
 
 if GetBuildInfo() == "5.0.4" then
+	OrlanHeal.Druid.CooldownOptions.Ironbark =
+	{
+		SpellId = 102342,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Druid.AvailableSpells, 

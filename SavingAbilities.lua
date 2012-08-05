@@ -42,6 +42,7 @@
 	[81256] = true, -- Dancing Rune Weapon
 	[86657] = true, -- Ancient Guardian
 	[86949] = true, -- Cauterize
+	[102342] = true, -- Ironbark
 	[114039] = true, -- Hand of Purity
 	[114556] = true -- Purgatory
 };
