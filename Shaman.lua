@@ -219,6 +219,11 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 73899,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	WindShear =
+	{
+		SpellId = 57994,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
