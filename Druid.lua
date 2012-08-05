@@ -106,6 +106,16 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 106898,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Druid.CooldownOptions.WildMushroom =
+	{
+		SpellId = 88747,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.WildMushroomBloom =
+	{
+		SpellId = 102791,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Druid.AvailableSpells, 
