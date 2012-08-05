@@ -224,6 +224,11 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 57994,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	ChainHeal =
+	{
+		SpellId = 1064,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
