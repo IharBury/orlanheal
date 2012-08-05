@@ -215,6 +215,16 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 5211,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Druid.CooldownOptions.HeartOfTheWild =
+	{
+		SpellId = 108288,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Druid.CooldownOptions.NaturesVigil =
+	{
+		SpellId = 124974,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Druid.AvailableSpells, 
