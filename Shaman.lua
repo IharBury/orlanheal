@@ -145,6 +145,11 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 556,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	EarthShock =
+	{
+		SpellId = 8042,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -160,6 +165,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 120668,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Air Totems"
+	};
+	OrlanHeal.Shaman.CooldownOptions.AstralShift =
+	{
+		SpellId = 108271,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	};
 end;
 
