@@ -187,7 +187,7 @@ if GetBuildInfo() == "5.0.4" then
 	};
 	OrlanHeal.Druid.CooldownOptions.Typhoon =
 	{
-		SpellId = 50516,
+		SpellId = 132469,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
 	OrlanHeal.Druid.CooldownOptions.Incarnation =
