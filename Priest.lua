@@ -149,11 +149,6 @@ OrlanHeal.Priest.CooldownOptions =
 		SpellId = 596,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Chakra =
-	{
-		SpellId = 14751,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	HolyWordSanctuary =
 	{
 		MacroText = "/cast " .. GetSpellInfo(88685),
@@ -204,11 +199,6 @@ OrlanHeal.Priest.CooldownOptions =
 		SpellId = 47788,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Archangel =
-	{
-		SpellId = 87151,
-		Update = OrlanHeal.Priest.UpdateArchangelCooldown
-	},
 	Penance =
 	{
 		SpellId = 47540,
@@ -240,6 +230,41 @@ OrlanHeal.Priest.CooldownOptions =
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
+
+if GetBuildInfo() == "5.0.4" then
+--	table.insert(OrlanHeal.Druid.AvailableSpells, 88423); -- Nature's Cure
+	OrlanHeal.Priest.CooldownOptions.VoidTendrils =
+	{
+		SpellId = 108920,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.Psyfiend =
+	{
+		SpellId = 108921,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.DominateMind =
+	{
+		SpellId = 605,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.AngelicFeather =
+	{
+		SpellId = 121536,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+else
+	OrlanHeal.Priest.CooldownOptions.Chakra =
+	{
+		SpellId = 14751,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.Archangel =
+	{
+		SpellId = 87151,
+		Update = OrlanHeal.Priest.UpdateArchangelCooldown
+	};
+end;
 
 function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
