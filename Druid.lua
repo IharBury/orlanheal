@@ -287,11 +287,11 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["2"] = 8936; -- Восстановление
 	config["3"] = 48438; -- Буйный рост
 	config["shift2"] = 33763; -- Жизнецвет
-	config["shift3"] = 467; -- Шипы
+	config["shift3"] = 102342; -- Ironbark
 	config["control1"] = 5185; -- Целительное прикосновение
 	config["control2"] = 18562; -- Быстрое восстановление
 	config["control3"] = 20484; -- Возрождение
-	config["alt1"] = 2782; -- Снятие порчи
+	config["alt1"] = 88423; -- Nature's Cure
 	config["alt2"] = 774; -- Омоложение
 	config["alt3"] = 29166; -- Озарение
 	config["controlalt1"] = "17116,5185"; -- Instant Целительное прикосновение
@@ -302,12 +302,24 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown2"] = "Swiftmend";
 	config["cooldown3"] = "WildGrowth";
 	config["cooldown4"] = "Innervate";
-	config["cooldown5"] = "NaturesSwiftness";
+	config["cooldown5"] = "NaturesCure";
 	config["cooldown6"] = "Barkskin";
-	config["cooldown7"] = "Rebirth";
-	config["cooldown8"] = "Thorns";
-	config["cooldown9"] = "TreeOfLife";
+	config["cooldown7"] = "Ironbark";
+	config["cooldown8"] = "MightOfUrsoc";
+	config["cooldown9"] = "MightyBash";
 	config["cooldown10"] = "Tranquility";
+	config["cooldown11"] = "Incarnation";
+	config["cooldown12"] = "Dash";
+	config["cooldown13"] = "Growl";
+	config["cooldown14"] = "NaturesSwiftness";
+	config["cooldown15"] = "Rebirth";
+	config["cooldown16"] = "HeartOfTheWild";
+	config["cooldown17"] = "Prowl";
+	config["cooldown18"] = "StampedingRoar";
+	config["cooldown19"] = "NaturesGrasp";
+	config["cooldown20"] = "Symbiosis";
+	config["cooldown21"] = "WildMushroom";
+	config["cooldown22"] = "WildMushroomBloom";
 
 	return config;
 end;
