@@ -16,6 +16,23 @@ function OrlanHeal.Priest.UpdateChakraAbilityCooldown(orlanHeal, window)
 	end;
 end;
 
+function OrlanHeal.Priest.UpdateDefaultChakraAbilityCooldown(orlanHeal, window)
+	local chakraSanctuaryName = GetSpellInfo(81206);
+	local chakraSerenityName = GetSpellInfo(81208);
+	if UnitBuff("player", chakraSanctuaryName) or UnitBuff("player", chakraSerenityName) then
+		window:SetReverse(true);
+		window.Count:SetText("");
+
+		if not window.Dark then
+			window.Dark = true;
+			window.Off = 0;
+			window:SetCooldown(0, 10);
+		end;		
+	else
+		orlanHeal:UpdateAbilityCooldown(window);
+	end;
+end;
+
 function OrlanHeal.Priest.UpdateArchangelCooldown(orlanHeal, window)
 	local buff2Name = GetSpellInfo(81661); -- Приверженность (2 очка таланта)
 	local _, _, _, count2 = UnitBuff("player", buff2Name);
@@ -337,8 +354,7 @@ if GetBuildInfo() == "5.0.4" then
 	{
 		MacroText = "/cast " .. GetSpellInfo(88625),
 		SpellId = 88625,
-		ChakraId = 81209,
-		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
+		Update = OrlanHeal.Priest.UpdateDefaultChakraAbilityCooldown
 	};
 else
 	table.insert(
