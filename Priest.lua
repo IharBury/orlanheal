@@ -61,7 +61,6 @@ OrlanHeal.Priest.AvailableSpells =
 	2061, -- Быстрое исцеление
 	2060, -- Великое исцеление
 	2006, -- Воскрешение
-	528, -- Излечение болезни
 	2050, -- Исцеление
 	139, -- Обновление
 	32546, -- Связующее исцеление
@@ -222,6 +221,16 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 8122,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Purify =
+	{
+		SpellId = 527,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	ShadowWordDeath =
+	{
+		SpellId = 32379,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -253,6 +262,7 @@ if GetBuildInfo() == "5.0.4" then
 			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
 			key = "89485,2060"
 		});
+	table.insert(OrlanHeal.Priest.AvailableSpells, 108968); -- Void Shift
 	OrlanHeal.Priest.CooldownOptions.VoidTendrils =
 	{
 		SpellId = 108920,
@@ -298,6 +308,16 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 81700,
 		Update = OrlanHeal.Priest.UpdateArchangelCooldown
 	};
+	OrlanHeal.Priest.CooldownOptions.SpiritShell =
+	{
+		SpellId = 109964,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.VoidShift =
+	{
+		SpellId = 108968,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Priest.AvailableSpells, 
@@ -335,6 +355,7 @@ else
 			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 596),
 			key = "89485,596"
 		});
+	table.insert(OrlanHeal.Priest.AvailableSpells, 528); -- Излечение болезни
 	OrlanHeal.Priest.CooldownOptions.Chakra =
 	{
 		SpellId = 14751,
