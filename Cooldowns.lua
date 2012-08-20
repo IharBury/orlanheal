@@ -179,7 +179,7 @@ end;
 
 function OrlanHeal:UpdateAbilityCooldown(window)
 	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
-	local currentCharges, maxCharges = GetSpellCharges(GetSpellInfo(window.Cooldown.SpellId));
+	local currentCharges, maxCharges = (GetSpellCharges or function(id) end)(GetSpellInfo(window.Cooldown.SpellId));
 	local displayedCharges;
 	if (maxCharges and (maxCharges > 1)) then
 		displayedCharges = currentCharges;
