@@ -127,20 +127,6 @@ OrlanHeal.Priest.CooldownOptions =
 		SpellId = 596,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	HolyWordSanctuary =
-	{
-		MacroText = "/cast " .. GetSpellInfo(88685),
-		SpellId = 88685,
-		ChakraId = 81206,
-		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
-	},
-	HolyWordSerenity =
-	{
-		MacroText = "/cast " .. GetSpellInfo(88684),
-		SpellId = 88684,
-		ChakraId = 81585,
-		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
-	},
 	CircleOfHealing =
 	{
 		SpellId = 34861,
@@ -318,6 +304,42 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 108968,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Priest.CooldownOptions.ChakraSerenity =
+	{
+		SpellId = 81208,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.ChakraSanctuary =
+	{
+		SpellId = 81206,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.ChakraChastise =
+	{
+		SpellId = 81209,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.HolyWordSanctuary =
+	{
+		MacroText = "/cast " .. GetSpellInfo(88685),
+		SpellId = 88685,
+		ChakraId = 81206,
+		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.HolyWordSerenity =
+	{
+		MacroText = "/cast " .. GetSpellInfo(88684),
+		SpellId = 88684,
+		ChakraId = 81208,
+		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.HolyWordChastise =
+	{
+		MacroText = "/cast " .. GetSpellInfo(88625),
+		SpellId = 88625,
+		ChakraId = 81209,
+		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Priest.AvailableSpells, 
@@ -365,6 +387,27 @@ else
 	{
 		SpellId = 87151,
 		Update = OrlanHeal.Priest.UpdateArchangelCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.HolyWordSanctuary =
+	{
+		MacroText = "/cast " .. GetSpellInfo(88685),
+		SpellId = 88685,
+		ChakraId = 81206,
+		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.HolyWordSerenity =
+	{
+		MacroText = "/cast " .. GetSpellInfo(88684),
+		SpellId = 88684,
+		ChakraId = 81585,
+		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.HolyWordChastise =
+	{
+		MacroText = "/cast " .. GetSpellInfo(88625),
+		SpellId = 88625,
+		ChakraId = 81209,
+		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
 	};
 end;
 
