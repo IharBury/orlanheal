@@ -17,16 +17,16 @@ function OrlanHeal.Priest.UpdateChakraAbilityCooldown(orlanHeal, window)
 end;
 
 function OrlanHeal.Priest.UpdateArchangelCooldown(orlanHeal, window)
-	local buff1Name = GetSpellInfo(81660); -- Приверженность (1 очко таланта)
 	local buff2Name = GetSpellInfo(81661); -- Приверженность (2 очка таланта)
-
-	local _, _, _, count1 = UnitBuff("player", buff1Name);
 	local _, _, _, count2 = UnitBuff("player", buff2Name);
-	local count;
-	if count1 then
-		count = count1;
-	else
-		count = count2;
+	local count = count2;
+
+	if GetBuildInfo() ~= "5.0.4" then
+		local buff1Name = GetSpellInfo(81660); -- Приверженность (1 очко таланта)
+		local _, _, _, count1 = UnitBuff("player", buff1Name);
+		if count1 then
+			count = count1;
+		end;
 	end;
 
 	if count then
@@ -252,6 +252,31 @@ if GetBuildInfo() == "5.0.4" then
 	{
 		SpellId = 121536,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.SpectralGuise =
+	{
+		SpellId = 112833,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.Cascade =
+	{
+		SpellId = 121135,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.DivineStar =
+	{
+		SpellId = 110744,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.Halo =
+	{
+		SpellId = 120517,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
+	OrlanHeal.Priest.CooldownOptions.Archangel =
+	{
+		SpellId = 81700,
+		Update = OrlanHeal.Priest.UpdateArchangelCooldown
 	};
 else
 	OrlanHeal.Priest.CooldownOptions.Chakra =
