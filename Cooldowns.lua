@@ -179,6 +179,11 @@ end;
 
 function OrlanHeal:UpdateAbilityCooldown(window)
 	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	local currentCharges, maxCharges = GetSpellCharges(GetSpellInfo(window.Cooldown.SpellId));
+	local displayedCharges;
+	if (maxCharges and (maxCharges > 1)) then
+		displayedCharges = currentCharges;
+	end;
 	local expirationTime;
 	if start and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
@@ -187,7 +192,7 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 		duration = nil;
 		expirationTime = nil;
 	end;
-	self:UpdateCooldown(window, duration, expirationTime);
+	self:UpdateCooldown(window, duration, expirationTime, displayedCharges, displayedCharges);
 end;
 
 function OrlanHeal:UpdateItemCooldown(window)
