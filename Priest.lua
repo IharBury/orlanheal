@@ -217,6 +217,11 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 14914,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	PsychicScream =
+	{
+		SpellId = 8122,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
