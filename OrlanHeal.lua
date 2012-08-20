@@ -771,11 +771,15 @@ function OrlanHeal:IsSpellReady(spellId)
 
 	local spellName = GetSpellInfo(spellId);
 	if IsUsableSpell(spellName) then
-		local start, duration = GetSpellCooldown(spellId);
-		result = not ((start > 0) and (duration > 1.5)); -- cooldowns less than GCD are ignored (latency + queueing)
+		result = self:IsSpellNotOnCooldown(spellId);
 	end;
 
 	return result;
+end;
+
+function OrlanHeal:IsSpellNotOnCooldown(spellId)
+	local start, duration = GetSpellCooldown(spellId);
+	return not ((start > 0) and (duration > 1.5)); -- cooldowns less than GCD are ignored (latency + queueing)
 end;
 
 function OrlanHeal:UpdateUnitStatus(window, displayedGroup)

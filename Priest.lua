@@ -453,7 +453,26 @@ OrlanHeal.Priest.YellowRangeSpellId = 1706; -- Левитация
 
 
 function OrlanHeal.Priest.UpdateRaidBorder(orlanHeal)
-	orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+	if GetBuildInfo() == "5.0.4" then
+		if UnitBuff("player", GetSpellInfo(114255)) then -- From Darkness, Comes Light
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
+		elseif UnitBuff("player", GetSpellInfo(123266)) or UnitBuff("player", GetSpellInfo(123267)) then -- Divine Insight
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha);
+		else
+			local hasSanctuary = UnitBuff("player", GetSpellInfo(81206)); -- Chakra: Sanctuary
+			local hasSerenity = UnitBuff("player", GetSpellInfo(81208)); -- Chakra: Serenity
+			if orlanHeal:IsSpellReady(47540) -- Penance
+					or (not hasSerenity and not hasSanctuary and orlanHeal:IsSpellReady(88625)) -- Holy Word: Chastise
+					or (hasSanctuary and orlanHeal:IsSpellNotOnCooldown(88685)) -- Holy Word: Sanctuary
+					or (hasSerenity and orlanHeal:IsSpellNotOnCooldown(88684)) then -- Holy Word: Serenity
+				orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
+			else
+				orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+			end;
+		end;
+	else
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+	end;
 end;
 
 OrlanHeal.Priest.PlayerSpecificBuffCount = 3;
