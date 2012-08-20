@@ -149,11 +149,6 @@ OrlanHeal.Priest.CooldownOptions =
 		SpellId = 34861,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	HolyNova =
-	{
-		SpellId = 15237,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	HymnOfHope =
 	{
 		SpellId = 64901,
@@ -246,15 +241,6 @@ if GetBuildInfo() == "5.0.4" then
 			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
 			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2061),
 			key = "89485,2061"
-		});
-	table.insert(
-		OrlanHeal.Priest.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Critical " .. GetSpellInfo(596), -- Prayer of Healing
-			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 596),
-			key = "89485,596"
 		});
 	table.insert(
 		OrlanHeal.Priest.AvailableSpells, 
@@ -356,6 +342,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 88625,
 		Update = OrlanHeal.Priest.UpdateDefaultChakraAbilityCooldown
 	};
+	OrlanHeal.Priest.CooldownOptions.HolyNova =
+	{
+		SpellId = 132157,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	table.insert(
 		OrlanHeal.Priest.AvailableSpells, 
@@ -383,15 +374,6 @@ else
 			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
 			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
 			key = "89485,2060"
-		});
-	table.insert(
-		OrlanHeal.Priest.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Free " .. GetSpellInfo(596), -- Prayer of Healing
-			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 596),
-			key = "89485,596"
 		});
 	table.insert(OrlanHeal.Priest.AvailableSpells, 528); -- Излечение болезни
 	OrlanHeal.Priest.CooldownOptions.Chakra =
@@ -425,14 +407,84 @@ else
 		ChakraId = 81209,
 		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
 	};
+	OrlanHeal.Priest.CooldownOptions.HolyNova =
+	{
+		SpellId = 15237,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 end;
 
 function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
+	config["1"] = 2050; -- Heal
+	config["2"] = 2061; -- Flash Heal
+	config["3"] = 47788; -- Guardian Spirit
+	config["alt1"] = 527; -- Purify
+	config["alt2"] = 139; -- Renew
+	config["alt3"] = 108968; -- Void Shift
+	config["shift2"] = 17; -- Power Word: Shield
+	config["shift3"] = 6346; -- Fear Ward
+	config["altshift1"] = 73325; -- Leap of Faith
+	config["altshift2"] = 2096; -- Min Vision
+	config["altshift3"] = 2006; -- Resurrection
+	config["control1"] = 2060; -- Greater Heal
+	config["control2"] = 88684; -- Holy Word: Serenity
+	config["control3"] = 33076; -- Prayer of Mending
+	config["controlalt1"] = 10060; -- Power Infusion
+	config["controlalt2"] = 1706; -- Levitate
+	config["controlalt3"] = 32546; -- Binding Heal
+	config["controlaltshift1"] = 34861; -- Circle of Healing
 
-	config["cooldown1"] = "InnerFocus";
+	config["cooldown1"] = "Purify";
 	config["cooldown2"] = "PowerWordShield";
-	config["cooldown3"] = "PainSuppression";
+	config["cooldown3"] = "Lightwell";
+	config["cooldown4"] = "PrayerOfMending";
+	config["cooldown5"] = "Shadowfiend";
+	config["cooldown6"] = "CircleOfHealing";
+	config["cooldown7"] = "PowerInfusion";
+	config["cooldown8"] = "LeapOfFaith";
+	config["cooldown9"] = "HymnOfHope";
+	config["cooldown10"] = "DivineHymn";
+	config["cooldown11"] = "ChakraSerenity";
+	config["cooldown12"] = "ChakraSanctuary";
+	config["cooldown13"] = "ChakraChastise";
+	config["cooldown14"] = "HolyWordSerenity";
+	config["cooldown15"] = "HolyWordSanctuary";
+	config["cooldown16"] = "HolyWordChastise";
+	config["cooldown17"] = "DominateMind";
+	config["cooldown18"] = "Fade";
+	config["cooldown19"] = "FearWard";
+	config["cooldown20"] = "GuardianSpirit";
+	config["cooldown21"] = "HolyFire";
+	config["cooldown22"] = "HolyNova";
+	config["cooldown23"] = "PsychicScream";
+	config["cooldown24"] = "MassDispel";
+	config["cooldown25"] = "ShadowWordDeath";
+	config["cooldown26"] = "VoidShift";
+	config["cooldown27"] = "AngelicFeather";
+
+	return config;
+end;
+
+function OrlanHeal.Priest.GetDisciplineDefaultConfig(orlanHeal)
+	local config = orlanHeal.Class.GetDefaultConfig(orlanHeal);
+
+	config["3"] = 33206; -- Pain Suppression
+	config["control2"] = 47540; -- Penance
+	config["controlaltshift1"] = "89485,2060"; -- Critical Greater Heal
+	config["controlaltshift2"] = "89485,2061"; -- Critical Flash Heal
+
+	config["cooldown3"] = "Penance";
+	config["cooldown6"] = "InnerFocus";
+	config["cooldown10"] = "Archangel";
+	config["cooldown11"] = "PowerWordBarrier";
+	config["cooldown12"] = "SpiritShell";
+	config["cooldown13"] = nil;
+	config["cooldown14"] = nil;
+	config["cooldown15"] = nil;
+	config["cooldown16"] = nil;
+	config["cooldown20"] = "PainSuppression";
+
 
 	return config;
 end;
@@ -443,7 +495,8 @@ end;
 function OrlanHeal.Priest.GetConfigPresets(orlanHeal)
 	return
 		{
-			["Priest Default"] = orlanHeal.Class.GetDefaultConfig(orlanHeal)
+			["Holy Priest Default"] = orlanHeal.Class.GetDefaultConfig(orlanHeal),
+			["Discipline Priest Default"] = orlanHeal.Class.GetDisciplineDefaultConfig(orlanHeal)
 		};
 end;
 
