@@ -82,27 +82,6 @@ OrlanHeal.Priest.AvailableSpells =
 	34861, -- Круг исцеления
 	33076, -- Молитва восстановления
 	47788, -- Оберегающий дух
-	{
-		type = "macro",
-		caption = "Free " .. GetSpellInfo(2061), -- Быстрое исцеление
-		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2061),
-		key = "89485,2061"
-	},
-	{
-		type = "macro",
-		caption = "Free " .. GetSpellInfo(32546), -- Связующее исцеление
-		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 32546),
-		key = "89485,32546"
-	},
-	{
-		type = "macro",
-		caption = "Free " .. GetSpellInfo(2060), -- Великое исцеление
-		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
-		key = "89485,2060"
-	},
 	47540, -- Исповедь
 	10060, -- Придание сил
 	73325 -- Духовное рвение
@@ -228,11 +207,47 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 73325,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Fade =
+	{
+		SpellId = 586,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HolyFire =
+	{
+		SpellId = 14914,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
 if GetBuildInfo() == "5.0.4" then
---	table.insert(OrlanHeal.Druid.AvailableSpells, 88423); -- Nature's Cure
+	table.insert(
+		OrlanHeal.Priest.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Critical " .. GetSpellInfo(2061), -- Быстрое исцеление
+			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2061),
+			key = "89485,2061"
+		});
+	table.insert(
+		OrlanHeal.Priest.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Critical " .. GetSpellInfo(596), -- Prayer of Healing
+			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 596),
+			key = "89485,596"
+		});
+	table.insert(
+		OrlanHeal.Priest.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Critical " .. GetSpellInfo(2060), -- Великое исцеление
+			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
+			key = "89485,2060"
+		});
 	OrlanHeal.Priest.CooldownOptions.VoidTendrils =
 	{
 		SpellId = 108920,
@@ -279,6 +294,42 @@ if GetBuildInfo() == "5.0.4" then
 		Update = OrlanHeal.Priest.UpdateArchangelCooldown
 	};
 else
+	table.insert(
+		OrlanHeal.Priest.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Free " .. GetSpellInfo(2061), -- Быстрое исцеление
+			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2061),
+			key = "89485,2061"
+		});
+	table.insert(
+		OrlanHeal.Priest.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Free " .. GetSpellInfo(32546), -- Связующее исцеление
+			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 32546),
+			key = "89485,32546"
+		});
+	table.insert(
+		OrlanHeal.Priest.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Free " .. GetSpellInfo(2060), -- Великое исцеление
+			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
+			key = "89485,2060"
+		});
+	table.insert(
+		OrlanHeal.Priest.AvailableSpells, 
+		{
+			type = "macro",
+			caption = "Free " .. GetSpellInfo(596), -- Prayer of Healing
+			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 596),
+			key = "89485,596"
+		});
 	OrlanHeal.Priest.CooldownOptions.Chakra =
 	{
 		SpellId = 14751,
