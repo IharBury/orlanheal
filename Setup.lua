@@ -712,6 +712,14 @@ function OrlanHeal:HandleTalentGroupChanged()
 	self:ApplyConfig();
 end;
 
+function OrlanHeal:GetRacialSpell()
+	var spell;
+	if race == "Draenei" then
+		spell = self.Class.GiftOfTheNaaruSpellId;
+	end;
+	return spell;
+end;
+
 function OrlanHeal:GetCommonDefaultConfig()
 	local config = {};
 

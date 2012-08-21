@@ -287,6 +287,39 @@ function OrlanHeal:GetPlayerCastUnitBuffCooldown(unit, spellId)
 	end;
 end;
 
+function OrlanHeal:GetRacialCooldown()
+	local _, race = UnitRace("player");
+	local cooldown;
+	if race == "Human" then
+		cooldown = "EveryManForHimself";
+	elseif race == "Dwarf" then
+		cooldown = "Stoneform";
+	elseif race == "NightElf" then
+		cooldown = "Shadowmeld";
+	elseif race == "Gnome" then
+		cooldown = "EscapeArtist";
+	elseif race == "Draenei" then
+		cooldown = "GiftOfTheNaaru";
+	elseif race == "Worgen" then
+		cooldown = "Darkflight";
+	elseif race == "Orc" then
+		cooldown = "BloodFury";
+	elseif (race == "Undead") or (race == "Scourge") then
+		cooldown = "WillOfTheForsaken";
+	elseif race == "Tauren" then
+		cooldown = "WarStomp";
+	elseif race == "Troll" then
+		cooldown = "Berserking";
+	elseif race == "BloodElf" then
+		cooldown = "ArcaneTorrent";
+	elseif race == "Goblin" then
+		cooldown = "RocketJump";
+	elseif race == "Pandaren" then
+		cooldown = "QuakingPalm";
+	end;
+	return cooldown;
+end;
+
 function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alwaysDisplayCount)
 	duration = duration or 0;
 	expirationTime = expirationTime or 0;
@@ -556,6 +589,24 @@ OrlanHeal.CommonCooldownOptions =
 			return race == "Goblin";
 		end
 	},
+	RocketBarrage =
+	{
+		SpellId = 69041,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Goblin";
+		end
+	},
+	PackHobgoblin =
+	{
+		SpellId = 69046,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Goblin";
+		end
+	},
 	WillOfTheForsaken =
 	{
 		SpellId = 7744, -- Will of the Forsaken
@@ -583,13 +634,13 @@ OrlanHeal.CommonCooldownOptions =
 			return race == "Troll";
 		end
 	},
-	ArcaneTorrent =
+	QuakingPalm =
 	{
-		SpellId = 28730, -- Arcane Torrent
+		SpellId = 107079,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		IsAvailable = function()
 			local _, race = UnitRace("player");
-			return race == "BloodElf";
+			return race == "Pandaren";
 		end
 	}
 };

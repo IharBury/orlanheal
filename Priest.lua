@@ -1,5 +1,8 @@
 ﻿OrlanHeal.Priest = {};
 
+OrlanHeal.Priest.IsSupported = true;
+OrlanHeal.Priest.GiftOfTheNaaruSpellId = 59544;
+
 function OrlanHeal.Priest.UpdateChakraAbilityCooldown(orlanHeal, window)
 	local chakraName = GetSpellInfo(window.Cooldown.ChakraId);
 	if UnitBuff("player", chakraName) then
@@ -225,6 +228,15 @@ OrlanHeal.Priest.CooldownOptions =
 		SpellId = 527,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
+	ArcaneTorrent =
+	{
+		SpellId = 28730, -- Arcane Torrent
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "BloodElf";
+		end
+	},
 	ShadowWordDeath =
 	{
 		SpellId = 32379,
@@ -434,6 +446,7 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["controlalt2"] = 1706; -- Levitate
 	config["controlalt3"] = 32546; -- Binding Heal
 	config["controlaltshift1"] = 34861; -- Circle of Healing
+	config["controlaltshift2"] = orlanHeal:GetRacialSpell();
 
 	config["cooldown1"] = "Purify";
 	config["cooldown2"] = "PowerWordShield";
@@ -462,6 +475,7 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["cooldown25"] = "ShadowWordDeath";
 	config["cooldown26"] = "VoidShift";
 	config["cooldown27"] = "AngelicFeather";
+	config["cooldown28"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
@@ -544,11 +558,11 @@ function OrlanHeal.Priest.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	return buffKind;
 end;
 
-OrlanHeal.Priest.PoisonDebuffKind = 4;
+OrlanHeal.Priest.PoisonDebuffKind = 3;
 OrlanHeal.Priest.DiseaseDebuffKind = 2;
-OrlanHeal.Priest.MagicDebuffKind = 3;
-OrlanHeal.Priest.CurseDebuffKind = 4;
-OrlanHeal.Priest.PlayerDebuffSlots = { 1, 2, 3, 4, 0 };
+OrlanHeal.Priest.MagicDebuffKind = 2;
+OrlanHeal.Priest.CurseDebuffKind = 3;
+OrlanHeal.Priest.PlayerDebuffSlots = { 1, 2, 0, 0, 0 };
 OrlanHeal.Priest.PetDebuffSlots = { 0, 0 };
 
 function OrlanHeal.Priest.GetSpecificDebuffKind(orlanHeal, spellId)
