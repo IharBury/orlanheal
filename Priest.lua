@@ -322,37 +322,43 @@ if GetBuildInfo() == "5.0.4" then
 	OrlanHeal.Priest.CooldownOptions.ChakraSerenity =
 	{
 		SpellId = 81208,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Chakra"
 	};
 	OrlanHeal.Priest.CooldownOptions.ChakraSanctuary =
 	{
 		SpellId = 81206,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Chakra"
 	};
 	OrlanHeal.Priest.CooldownOptions.ChakraChastise =
 	{
 		SpellId = 81209,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Chakra"
 	};
 	OrlanHeal.Priest.CooldownOptions.HolyWordSanctuary =
 	{
 		MacroText = "/cast " .. GetSpellInfo(88685),
 		SpellId = 88685,
 		ChakraId = 81206,
-		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
+		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown,
+		Group = "Holy Word"
 	};
 	OrlanHeal.Priest.CooldownOptions.HolyWordSerenity =
 	{
 		MacroText = "/cast " .. GetSpellInfo(88684),
 		SpellId = 88684,
 		ChakraId = 81208,
-		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
+		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown,
+		Group = "Holy Word"
 	};
 	OrlanHeal.Priest.CooldownOptions.HolyWordChastise =
 	{
 		MacroText = "/cast " .. GetSpellInfo(88625),
 		SpellId = 88625,
-		Update = OrlanHeal.Priest.UpdateDefaultChakraAbilityCooldown
+		Update = OrlanHeal.Priest.UpdateDefaultChakraAbilityCooldown,
+		Group = "Holy Word"
 	};
 	OrlanHeal.Priest.CooldownOptions.HolyNova =
 	{
