@@ -2,9 +2,34 @@ OrlanHeal.Monk = {};
 
 OrlanHeal.Monk.GiftOfTheNaaruSpellId = 121093;
 
+function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window)
+	local power = UnitPower("player", SPELL_POWER_LIGHT_FORCE);
+	local _, _, _, cost = GetSpellInfo(window.Cooldown.SpellId);
+	if power >= cost then
+		local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+		local expirationTime;
+		if start and duration and (duration ~= 0) and (enabled == 1) then
+			expirationTime = start + duration;
+		else
+			start = nil;
+			duration = nil;
+			expirationTime = nil;
+		end;
+		orlanHeal:UpdateCooldown(window, duration, expirationTime, power, true);
+	else
+		window:SetReverse(true);
+		if not window.Dark then
+			window:SetCooldown(0, 10);
+			window.Dark = true;
+		end;
+		window.Count:SetText(power);
+	end;
+end;
+
 OrlanHeal.Monk.AvailableSpells =
 {
-	121093 -- Gift of the Naaru
+	121093, -- Gift of the Naaru
+	115098 -- Chi Wave
 };
 
 OrlanHeal.Monk.CooldownOptions =
@@ -35,6 +60,16 @@ OrlanHeal.Monk.CooldownOptions =
 			local _, race = UnitRace("player");
 			return race == "BloodElf";
 		end
+	},
+	TigersLust =
+	{
+		SpellId = 116841,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	ChiWave =
+	{
+		SpellId = 115098,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
 	}
 };
 
