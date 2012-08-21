@@ -297,6 +297,7 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["controlalt1"] = "17116,5185"; -- Instant Целительное прикосновение
 	config["controlalt2"] = "17116,8936"; -- Instant Восстановление
 	config["controlalt3"] = "17116,20484"; -- Instant Возрождение
+	config["controlaltshift2"] = orlanHeal:GetRacialSpell();
 
 	config["cooldown1"] = "Lifebloom";
 	config["cooldown2"] = "Swiftmend";
@@ -320,6 +321,7 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown20"] = "Symbiosis";
 	config["cooldown21"] = "WildMushroom";
 	config["cooldown22"] = "WildMushroomBloom";
+	config["cooldown23"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
@@ -382,11 +384,11 @@ function OrlanHeal.Druid.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	return buffKind;
 end;
 
-OrlanHeal.Druid.PoisonDebuffKind = 2;
-OrlanHeal.Druid.DiseaseDebuffKind = 4;
-OrlanHeal.Druid.MagicDebuffKind = 3;
+OrlanHeal.Druid.PoisonDebuffKind = 1;
+OrlanHeal.Druid.DiseaseDebuffKind = 2;
+OrlanHeal.Druid.MagicDebuffKind = 1;
 OrlanHeal.Druid.CurseDebuffKind = 1;
-OrlanHeal.Druid.PlayerDebuffSlots = { 1, 2, 3, 0, 0 };
+OrlanHeal.Druid.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Druid.PetDebuffSlots = { 0, 0 };
 
 function OrlanHeal.Druid.GetSpecificDebuffKind(orlanHeal, spellId)

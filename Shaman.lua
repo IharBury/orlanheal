@@ -1,6 +1,7 @@
 ﻿OrlanHeal.Shaman = {};
 
 OrlanHeal.Shaman.IsSupported = true;
+OrlanHeal.Shaman.GiftOfTheNaaruSpellId = 59547;
 
 OrlanHeal.Shaman.AvailableSpells =
 {
@@ -41,7 +42,8 @@ OrlanHeal.Shaman.AvailableSpells =
 		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 77472),
 		key = "16188,77472"
 	},
-	2008 -- Ancestral Spirit
+	2008, -- Ancestral Spirit
+	59547 -- Gift of the Naaru
 };
 
 OrlanHeal.Shaman.CooldownOptions =
@@ -306,6 +308,11 @@ if GetBuildInfo() == "5.0.4" then
 		SpellId = 110504,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	};
+	OrlanHeal.Shaman.CooldownOptions.CleanseSpirit =
+	{
+		SpellId = 51886,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	};
 else
 	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
 	{
@@ -332,6 +339,7 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["alt3"] = "16188,1064"; -- Instant Цепное исцеление
 	config["controlalt1"] = 2008; -- Ancestral Spirit
 	config["controlalt3"] = 110504; -- Symbiosis
+	config["controlaltshift2"] = orlanHeal:GetRacialSpell();
 
 	config["cooldown1"] = "WaterShield";
 	config["cooldown2"] = "EarthlivingWeapon";
@@ -358,12 +366,9 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["cooldown19"] = "TremorTotem";
 	config["cooldown20"] = "EarthElementalTotem";
 	config["cooldown21"] = "FireElementalTotem";
-	config["cooldown22"] = "Symbiosis";
-
-	local _, race = UnitRace("player");
-	if race == "Troll" then
-		config["cooldown22"] = "Berserk";
-	end;
+	config["cooldown22"] = "CleanseSpirit";
+	config["cooldown23"] = "Symbiosis";
+	config["cooldown24"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
@@ -420,11 +425,11 @@ function OrlanHeal.Shaman.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	return buffKind;
 end;
 
-OrlanHeal.Shaman.PoisonDebuffKind = 4;
-OrlanHeal.Shaman.DiseaseDebuffKind = 4;
-OrlanHeal.Shaman.MagicDebuffKind = 2;
+OrlanHeal.Shaman.PoisonDebuffKind = 2;
+OrlanHeal.Shaman.DiseaseDebuffKind = 2;
+OrlanHeal.Shaman.MagicDebuffKind = 1;
 OrlanHeal.Shaman.CurseDebuffKind = 1;
-OrlanHeal.Shaman.PlayerDebuffSlots = { 1, 2, 0, 0, 0 };
+OrlanHeal.Shaman.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Shaman.PetDebuffSlots = { 0, 0 };
 
 function OrlanHeal.Shaman.GetSpecificDebuffKind(orlanHeal, spellId)

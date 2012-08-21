@@ -1,6 +1,7 @@
 ﻿OrlanHeal.Paladin = {};
 
 OrlanHeal.Paladin.IsSupported = true;
+OrlanHeal.Paladin.GiftOfTheNaaruSpellId = 59542;
 
 OrlanHeal.Paladin.AvailableSpells =
 {
@@ -140,6 +141,15 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 20271, -- Judgment
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
+	ArcaneTorrent =
+	{
+		SpellId = 28730, -- Arcane Torrent
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "BloodElf";
+		end
+	},
 	Reckoning =
 	{
 		SpellId = 62124, -- Reckoning
@@ -264,6 +274,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["controlalt1"] = 82327; -- Holy Radiance
 	config["controlalt2"] = 20925; -- Sacred Shield
 	config["controlalt3"] = 110501; -- Symbiosis
+	config["controlaltshift2"] = orlanHeal:GetRacialSpell();
 
 	config["cooldown1"] = "Cleanse";
 	config["cooldown2"] = "BeaconOfLight";
@@ -286,6 +297,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown19"] = "Repentance";
 	config["cooldown20"] = "SacredShield";
 	config["cooldown21"] = "Symbiosis";
+	config["cooldown22"] = orlanHeal:GetRacialCooldown();
 
 	config["controlalt1update"] = 1;
 
@@ -363,7 +375,7 @@ OrlanHeal.Paladin.PoisonDebuffKind = 1;
 OrlanHeal.Paladin.DiseaseDebuffKind = 1;
 OrlanHeal.Paladin.MagicDebuffKind = 1;
 OrlanHeal.Paladin.CurseDebuffKind = 2;
-OrlanHeal.Paladin.PlayerDebuffSlots = { 1, 1, 2, 0, 0 };
+OrlanHeal.Paladin.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Paladin.PetDebuffSlots = { 0, 0 };
 
 function OrlanHeal.Paladin.GetSpecificDebuffKind(orlanHeal, spellId)
