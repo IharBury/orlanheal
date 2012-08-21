@@ -309,7 +309,7 @@ function OrlanHeal:GetRacialCooldown()
 	elseif race == "Tauren" then
 		cooldown = "WarStomp";
 	elseif race == "Troll" then
-		cooldown = "Berserking";
+		cooldown = "Berserk";
 	elseif race == "BloodElf" then
 		cooldown = "ArcaneTorrent";
 	elseif race == "Goblin" then
