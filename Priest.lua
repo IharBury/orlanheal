@@ -446,7 +446,6 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["controlalt2"] = 1706; -- Levitate
 	config["controlalt3"] = 32546; -- Binding Heal
 	config["controlaltshift1"] = 34861; -- Circle of Healing
-	config["controlaltshift2"] = orlanHeal:GetRacialSpell();
 
 	config["cooldown1"] = "Purify";
 	config["cooldown2"] = "PowerWordShield";

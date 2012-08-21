@@ -713,7 +713,8 @@ function OrlanHeal:HandleTalentGroupChanged()
 end;
 
 function OrlanHeal:GetRacialSpell()
-	var spell;
+	local spell;
+	local _, race = UnitRace("player");
 	if race == "Draenei" then
 		spell = self.Class.GiftOfTheNaaruSpellId;
 	end;
@@ -735,6 +736,7 @@ function OrlanHeal:GetCommonDefaultConfig()
 	end;
 
 	config["shift1"] = "target";
+	config["controlaltshift3"] = self:GetRacialSpell();
 
 	for cooldownNumber = 1, self.MaxCooldownCount do
 		local key = "cooldown" .. cooldownNumber;
