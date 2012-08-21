@@ -26,10 +26,17 @@ function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window)
 	end;
 end;
 
+function OrlanHeal.Monk.UpdateChiRaidBuffCooldown(orlanHeal, window)
+	local power = UnitPower("player", SPELL_POWER_LIGHT_FORCE);
+	local duration, expirationTime = orlanHeal:GetRaidBuffCooldown(window.Cooldown.AuraId or window.Cooldown.SpellId);
+	orlanHeal:UpdateCooldown(window, duration, expirationTime, power, true);
+end;
+
 OrlanHeal.Monk.AvailableSpells =
 {
 	121093, -- Gift of the Naaru
-	115098 -- Chi Wave
+	115098, -- Chi Wave
+	124081 -- Zen Sphere
 };
 
 OrlanHeal.Monk.CooldownOptions =
@@ -70,6 +77,12 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		SpellId = 115098,
 		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	ZenSphere =
+	{
+		SpellId = 124081,
+		Update = OrlanHeal.Monk.UpdateChiRaidBuffCooldown,
+		IsReverse = true
 	}
 };
 
