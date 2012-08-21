@@ -3,6 +3,33 @@
 OrlanHeal.Paladin.IsSupported = true;
 OrlanHeal.Paladin.GiftOfTheNaaruSpellId = 59542;
 
+function OrlanHeal.Paladin.UpdateHolyPowerScalingAbilityCooldown(orlanHeal, window)
+	local power = UnitPower("player", SPELL_POWER_HOLY_POWER);
+	if power >= 1 then
+		local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+		local expirationTime;
+		if start and duration and (duration ~= 0) and (enabled == 1) then
+			expirationTime = start + duration;
+		else
+			start = nil;
+			duration = nil;
+			expirationTime = nil;
+		end;
+		local abilityPower = power;
+		if power > 3 then
+			abilityPower = 3;
+		end;
+		orlanHeal:UpdateCooldown(window, duration, expirationTime, abilityPower, true);
+	else
+		window:SetReverse(true);
+		if not window.Dark then
+			window:SetCooldown(0, 10);
+			window.Dark = true;
+		end;
+		window.Count:SetText(0);
+	end;
+end;
+
 OrlanHeal.Paladin.AvailableSpells =
 {
 	635, -- Holy Light
@@ -34,7 +61,8 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	LightOfDawn =
 	{
-		SpellId = 85222 -- Light of Dawn
+		SpellId = 85222, -- Light of Dawn
+		Update = OrlanHeal.Paladin.UpdateHolyPowerScalingAbilityCooldown
 	},
 	LayOnHands =
 	{
