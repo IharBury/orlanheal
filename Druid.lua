@@ -388,7 +388,7 @@ OrlanHeal.Druid.DiseaseDebuffKind = 2;
 OrlanHeal.Druid.MagicDebuffKind = 1;
 OrlanHeal.Druid.CurseDebuffKind = 1;
 OrlanHeal.Druid.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
-OrlanHeal.Druid.PetDebuffSlots = { 0, 0 };
+OrlanHeal.Druid.PetDebuffSlots = { 1, 0 };
 
 function OrlanHeal.Druid.GetSpecificDebuffKind(orlanHeal, spellId)
 end;

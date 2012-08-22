@@ -37,7 +37,8 @@ OrlanHeal.Monk.AvailableSpells =
 	121093, -- Gift of the Naaru
 	115098, -- Chi Wave
 	124081, -- Zen Sphere
-	123986 -- Chi Burst
+	123986, -- Chi Burst
+	115450 -- Detox
 };
 
 OrlanHeal.Monk.CooldownOptions =
@@ -129,6 +130,11 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		SpellId = 109132,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Detox =
+	{
+		SpellId = 115450,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -142,9 +148,9 @@ OrlanHeal.Monk.PlayerSpecificBuffCount = 0;
 OrlanHeal.Monk.PoisonDebuffKind = 1;
 OrlanHeal.Monk.DiseaseDebuffKind = 1;
 OrlanHeal.Monk.MagicDebuffKind = 1;
-OrlanHeal.Monk.CurseDebuffKind = 1;
-OrlanHeal.Monk.PlayerDebuffSlots = { 0, 0, 0, 0, 0 };
-OrlanHeal.Monk.PetDebuffSlots = { 0, 0 };
+OrlanHeal.Monk.CurseDebuffKind = 2;
+OrlanHeal.Monk.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
+OrlanHeal.Monk.PetDebuffSlots = { 1, 0 };
 
 OrlanHeal.Monk.RedRangeSpellId = 53563; -- Частица Света
 OrlanHeal.Monk.OrangeRangeSpellId = 635; -- Holy Light
