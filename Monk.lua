@@ -104,6 +104,16 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		SpellId = 119381,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DampenHarm =
+	{
+		SpellId = 122278,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DiffuseMagic =
+	{
+		SpellId = 122783,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
