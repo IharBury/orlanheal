@@ -94,6 +94,16 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		SpellId = 115399,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	ChargingOxWave =
+	{
+		SpellId = 119392,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	LegSweep =
+	{
+		SpellId = 119381,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
