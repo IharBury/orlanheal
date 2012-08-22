@@ -568,7 +568,7 @@ OrlanHeal.Priest.DiseaseDebuffKind = 2;
 OrlanHeal.Priest.MagicDebuffKind = 2;
 OrlanHeal.Priest.CurseDebuffKind = 3;
 OrlanHeal.Priest.PlayerDebuffSlots = { 1, 2, 0, 0, 0 };
-OrlanHeal.Priest.PetDebuffSlots = { 0, 0 };
+OrlanHeal.Priest.PetDebuffSlots = { 2, 0 };
 
 function OrlanHeal.Priest.GetSpecificDebuffKind(orlanHeal, spellId)
 	local debuffKind;

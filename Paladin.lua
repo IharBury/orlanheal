@@ -403,7 +403,7 @@ OrlanHeal.Paladin.DiseaseDebuffKind = 1;
 OrlanHeal.Paladin.MagicDebuffKind = 1;
 OrlanHeal.Paladin.CurseDebuffKind = 2;
 OrlanHeal.Paladin.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
-OrlanHeal.Paladin.PetDebuffSlots = { 0, 0 };
+OrlanHeal.Paladin.PetDebuffSlots = { 1, 0 };
 
 function OrlanHeal.Paladin.GetSpecificDebuffKind(orlanHeal, spellId)
 end;
