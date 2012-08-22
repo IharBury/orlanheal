@@ -114,6 +114,21 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		SpellId = 122783,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	RushingJadeWind =
+	{
+		SpellId = 116847,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	InvokeXuenTheWhiteTiger =
+	{
+		SpellId = 123904,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Roll =
+	{
+		SpellId = 109132,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
