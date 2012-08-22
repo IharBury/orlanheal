@@ -36,7 +36,8 @@ OrlanHeal.Monk.AvailableSpells =
 {
 	121093, -- Gift of the Naaru
 	115098, -- Chi Wave
-	124081 -- Zen Sphere
+	124081, -- Zen Sphere
+	123986 -- Chi Burst
 };
 
 OrlanHeal.Monk.CooldownOptions =
@@ -83,6 +84,16 @@ OrlanHeal.Monk.CooldownOptions =
 		SpellId = 124081,
 		Update = OrlanHeal.Monk.UpdateChiRaidBuffCooldown,
 		IsReverse = true
+	},
+	ChiBurst =
+	{
+		SpellId = 123986,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	ChiBrew =
+	{
+		SpellId = 115399,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
