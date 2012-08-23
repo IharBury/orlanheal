@@ -956,7 +956,7 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 		rangeBar:SetTexture(0.2, 0.2, 0.75, 1);
 	elseif not self:IsSpellInRangeById(unit, self.Class.OrangeRangeSpellId) then
 		rangeBar:SetTexture(0.75, 0.2, 0.2, 1);
-	elseif not self:IsSpellInRangeById(unit, self.Class.YellowRangeSpellId) then
+	elseif CheckInteractDistance(unit, 1) ~= 1 then
 		rangeBar:SetTexture(0.75, 0.45, 0.2, 1);
 	elseif CheckInteractDistance(unit, 2) ~= 1 then
 		rangeBar:SetTexture(0.75, 0.75, 0.2, 1);

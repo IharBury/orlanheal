@@ -247,6 +247,27 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		SpellId = 100787,
 		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	TouchOfDeath =
+	{
+		SpellId = 115080,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	ZenMeditation =
+	{
+		SpellId = 115176,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	ZenPilgrimage =
+	{
+		SpellId = 126892,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	ZenPilgrimageReturn =
+	{
+		MacroText = "/cast " .. GetSpellInfo(126895),
+		SpellId = 126895,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -264,9 +285,8 @@ OrlanHeal.Monk.CurseDebuffKind = 2;
 OrlanHeal.Monk.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Monk.PetDebuffSlots = { 1, 0 };
 
-OrlanHeal.Monk.RedRangeSpellId = 53563; -- Частица Света
-OrlanHeal.Monk.OrangeRangeSpellId = 635; -- Holy Light
-OrlanHeal.Monk.YellowRangeSpellId = 20217; -- Blessing of Kings
+OrlanHeal.Monk.RedRangeSpellId = 115175; -- Soothing Mist
+OrlanHeal.Monk.OrangeRangeSpellId = 115175; -- Soothing Mist
 
 function OrlanHeal.Monk.GetSpecificDebuffKind(orlanHeal, spellId)
 end;

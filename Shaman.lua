@@ -384,7 +384,6 @@ end;
 
 OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления
 OrlanHeal.Shaman.OrangeRangeSpellId = 331; -- Волна исцеления
-OrlanHeal.Shaman.YellowRangeSpellId = 546; -- Хождение по воде
 
 function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
 	local isRiptideReady = orlanHeal:IsSpellReady(61295);
