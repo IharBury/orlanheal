@@ -338,7 +338,6 @@ end;
 
 OrlanHeal.Druid.RedRangeSpellId = 774; -- Омоложение
 OrlanHeal.Druid.OrangeRangeSpellId = 774; -- Омоложение
-OrlanHeal.Druid.YellowRangeSpellId = 1126; -- Mark of the Wild
 
 
 function OrlanHeal.Druid.UpdateRaidBorder(orlanHeal)

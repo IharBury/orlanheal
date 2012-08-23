@@ -348,7 +348,6 @@ end;
 
 OrlanHeal.Paladin.RedRangeSpellId = 53563; -- Частица Света
 OrlanHeal.Paladin.OrangeRangeSpellId = 635; -- Holy Light
-OrlanHeal.Paladin.YellowRangeSpellId = 20217; -- Blessing of Kings
 
 function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 	local infusionOfLightSpellName = GetSpellInfo(54149);
