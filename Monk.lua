@@ -2,9 +2,14 @@ OrlanHeal.Monk = {};
 
 OrlanHeal.Monk.GiftOfTheNaaruSpellId = 121093;
 
+function OrlanHeal.Monk.GetChiCost(spellId)
+	local _, _, _, cost = GetSpellInfo(spellId);
+	return cost;
+end;
+
 function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window)
 	local power = UnitPower("player", SPELL_POWER_LIGHT_FORCE);
-	local _, _, _, cost = GetSpellInfo(window.Cooldown.SpellId);
+	local cost = window.Cooldown.ChiCost or orlanHeal.Monk.GetChiCost(window.Cooldown.SpellId);
 	if power >= cost then
 		local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 		local expirationTime;
@@ -38,7 +43,19 @@ OrlanHeal.Monk.AvailableSpells =
 	115098, -- Chi Wave
 	124081, -- Zen Sphere
 	123986, -- Chi Burst
-	115450 -- Detox
+	115450, -- Detox
+	124682, -- Enveloping Mist
+	116849, -- Life Cocoon
+	115151, -- Renewing Mist
+	115178, -- Resuscitate
+	115175, -- Soothing Mist
+	116694, -- Surging Mist
+	{
+		type = "macro",
+		caption = "Double " .. GetSpellInfo(116694), -- Surging Mist
+		macrotext = OrlanHeal:BuildCastSequenceMacro(116680, 116694),
+		key = "116680,116694"
+	}
 };
 
 OrlanHeal.Monk.CooldownOptions =
@@ -135,6 +152,101 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		SpellId = 115450,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	EnvelopingMist =
+	{
+		SpellId = 124682,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	ExpelHarm =
+	{
+		SpellId = 115072,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	FortifyingBrew =
+	{
+		SpellId = 115203,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	GrappleWeapon =
+	{
+		SpellId = 117368,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HealingSphere =
+	{
+		SpellId = 115460,
+		AuraId = 124458,
+		AlwaysShowCount = true,
+		Update = OrlanHeal.UpdatePlayerBuffCooldown
+	},
+	LifeCocoon =
+	{
+		SpellId = 116849,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	ManaTea =
+	{
+		SpellId = 115294,
+		AuraId = 115867,
+		AlwaysShowCount = true,
+		IsReverse = true,
+		Update = OrlanHeal.UpdatePlayerBuffCooldown
+	},
+	Paralysis =
+	{
+		SpellId = 115078,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Provoke =
+	{
+		SpellId = 115546,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	RenewingMist =
+	{
+		SpellId = 115151,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Revival =
+	{
+		SpellId = 115310,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	SpearHandStrike =
+	{
+		SpellId = 116705,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	SummonJadeSerpentStatue =
+	{
+		SpellId = 115313,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Uplift =
+	{
+		SpellId = 116670,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	ThunderFocusTea =
+	{
+		SpellId = 116680,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
+		Group = GetSpellInfo(116680) -- Thunder Focus Tea
+	},
+	RefreshingUplift =
+	{
+		MacroText = OrlanHeal:BuildCastSequenceMacro(116680, 116670), -- Thunder Focus Tea + Uplift
+		SpellId = 119607, -- Different visual for Renewing Mist
+		ChiCost = OrlanHeal.Monk.GetChiCost(116680) + OrlanHeal.Monk.GetChiCost(116670),
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
+		Group = GetSpellInfo(116680), -- Thunder Focus Tea
+		Caption = "Refreshing " .. GetSpellInfo(116670) -- Uplift
+	},
+	TigerPalm =
+	{
+		SpellId = 100787,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
 	}
 };
 
@@ -143,7 +255,7 @@ function OrlanHeal.Monk.GetDefaultConfig(orlanHeal)
 	return config;
 end;
 
-OrlanHeal.Monk.PlayerSpecificBuffCount = 0;
+OrlanHeal.Monk.PlayerSpecificBuffCount = 1;
 
 OrlanHeal.Monk.PoisonDebuffKind = 1;
 OrlanHeal.Monk.DiseaseDebuffKind = 1;
@@ -171,4 +283,9 @@ function OrlanHeal.Monk.GetConfigPresets(orlanHeal)
 end;
 
 function OrlanHeal.Monk.GetSpecificBuffKind(orlanHeal, spellId, caster)
+	local result;
+	if (spellId == 119611) and UnitIsUnit("player", caster) then
+		result = 1;
+	end;
+	return result;
 end;

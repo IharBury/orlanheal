@@ -621,18 +621,22 @@ function OrlanHeal:GetCooldownOptions()
 end;
 
 function OrlanHeal:GetCooldownCaption(cooldown)
-	local effectId = cooldown.AuraId or cooldown.SpellId;
 	local caption;
-	if effectId then
-		local name, rank = GetSpellInfo(effectId);
-		if rank and (rank ~= "") then
-			caption = name .. " (" .. rank .. ")";
-		else
-			caption = name;
-		end;
+	if cooldown.Caption then
+		caption = cooldown.Caption;
 	else
-		caption = cooldown.SlotCaption;
-	end;
+		local effectId = cooldown.AuraId or cooldown.SpellId;
+		if effectId then
+			local name, rank = GetSpellInfo(effectId);
+			if rank and (rank ~= "") then
+				caption = name .. " (" .. rank .. ")";
+			else
+				caption = name;
+			end;
+		else
+			caption = cooldown.SlotCaption;
+		end;
+	end;	
 	return caption;
 end;
 

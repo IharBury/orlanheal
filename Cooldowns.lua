@@ -160,7 +160,7 @@ function OrlanHeal:UpdatePlayerBuffCooldown(window)
 	local spellName = GetSpellInfo(window.Cooldown.AuraId or window.Cooldown.SpellId);
 	if spellName then
 		local _, _, _, count, _, duration, expirationTime = UnitBuff("player", spellName);
-		self:UpdateCooldown(window, duration, expirationTime, count);
+		self:UpdateCooldown(window, duration, expirationTime, count, window.Cooldown.AlwaysShowCount);
 	end;
 end;
 
