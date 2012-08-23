@@ -302,6 +302,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["controlalt1"] = 82327; -- Holy Radiance
 	config["controlalt2"] = 20925; -- Sacred Shield
 	config["controlalt3"] = 110501; -- Symbiosis
+	config["altshift3"] = 7328; -- Redemption
 
 	config["cooldown1"] = "Cleanse";
 	config["cooldown2"] = "BeaconOfLight";

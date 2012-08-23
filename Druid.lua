@@ -297,6 +297,7 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["controlalt1"] = "17116,5185"; -- Instant Целительное прикосновение
 	config["controlalt2"] = "17116,8936"; -- Instant Восстановление
 	config["controlalt3"] = "17116,20484"; -- Instant Возрождение
+	config["altshift3"] = 50769; -- Revive
 
 	config["cooldown1"] = "Lifebloom";
 	config["cooldown2"] = "Swiftmend";
