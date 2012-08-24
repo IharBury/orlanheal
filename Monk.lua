@@ -1,5 +1,6 @@
 OrlanHeal.Monk = {};
 
+OrlanHeal.Monk.IsSupported = true;
 OrlanHeal.Monk.GiftOfTheNaaruSpellId = 121093;
 
 function OrlanHeal.Monk.GetChiCost(spellId)
@@ -50,6 +51,7 @@ OrlanHeal.Monk.AvailableSpells =
 	115178, -- Resuscitate
 	115175, -- Soothing Mist
 	116694, -- Surging Mist
+	116841, -- Tiger's Lust
 	{
 		type = "macro",
 		caption = "Double " .. GetSpellInfo(116694), -- Surging Mist
@@ -273,6 +275,45 @@ OrlanHeal.Monk.CooldownOptions =
 
 function OrlanHeal.Monk.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
+
+	config["1"] = 115175; -- Soothing Mist
+	config["2"] = 116694; -- Surging Mist
+	config["3"] = 116849; -- Life Cocoon
+	config["shift2"] = 115098; -- Chi Wave
+	config["control1"] = 124682; -- Enveloping Mist
+	config["control2"] = "116680,116694"; -- Thunder Focus Tea + Surging Mist
+	config["control3"] = 116841; -- Tiger's Lust
+	config["alt1"] = 115450; -- Detox
+	config["alt2"] = 115151; -- Renewing Mist
+	config["altshift3"] = 115178; -- Resuscitate
+
+	config["cooldown1"] = "Detox";
+	config["cooldown2"] = "SpearHandStrike";
+	config["cooldown3"] = "SummonJadeSerpentStatue";
+	config["cooldown4"] = "RenewingMist";
+	config["cooldown5"] = "ExpelHarm";
+	config["cooldown6"] = "FortifyingBrew";
+	config["cooldown7"] = "LifeCocoon";
+	config["cooldown8"] = "Revival";
+	config["cooldown9"] = "DampenHarm";
+	config["cooldown10"] = "ManaTea";
+	config["cooldown11"] = "HealingSphere";
+	config["cooldown12"] = "Paralysis";
+	config["cooldown13"] = "Provoke";
+	config["cooldown14"] = "ZenMeditation";
+	config["cooldown15"] = "Uplift";
+	config["cooldown16"] = "RefreshingUplift";
+	config["cooldown17"] = "ThunderFocusTea";
+	config["cooldown18"] = "TigerPalm";
+	config["cooldown19"] = "EnvelopingMist";
+	config["cooldown20"] = "Roll";
+	config["cooldown21"] = "TigersLust";
+	config["cooldown22"] = "ChiWave";
+	config["cooldown23"] = "TouchOfDeath";
+	config["cooldown24"] = "GrappleWeapon";
+	config["cooldown25"] = "LegSweep";
+	config["cooldown26"] = orlanHeal:GetRacialCooldown();
+
 	return config;
 end;
 
@@ -292,7 +333,19 @@ function OrlanHeal.Monk.GetSpecificDebuffKind(orlanHeal, spellId)
 end;
 
 function OrlanHeal.Monk.UpdateRaidBorder(orlanHeal)
-	orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+	local power = UnitPower("player", SPELL_POWER_LIGHT_FORCE);
+	local maxPower = UnitPowerMax("player", SPELL_POWER_LIGHT_FORCE);
+	if (power < maxPower) and orlanHeal:IsSpellReady(115151) then -- Renewing Mist
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
+	elseif power >= 3 then
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
+	elseif power == 2 then	
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
+	elseif power == 1 then
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha);
+	else
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+	end;
 end;
 
 function OrlanHeal.Monk.GetConfigPresets(orlanHeal)
