@@ -62,12 +62,6 @@
 	},
 	{
 		type = "item",
-		item = "RangedSlot",
-		caption = (UnitHasRelicSlot("player") and RELICSLOT) or RANGEDSLOT,
-		group = "Use"
-	},
-	{
-		type = "item",
 		item = "SecondaryHandSlot",
 		caption = SECONDARYHANDSLOT,
 		group = "Use"

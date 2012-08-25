@@ -41,14 +41,6 @@ function OrlanHeal.Priest.UpdateArchangelCooldown(orlanHeal, window)
 	local _, _, _, count2 = UnitBuff("player", buff2Name);
 	local count = count2;
 
-	if GetBuildInfo() ~= "5.0.4" then
-		local buff1Name = GetSpellInfo(81660); -- Приверженность (1 очко таланта)
-		local _, _, _, count1 = UnitBuff("player", buff1Name);
-		if count1 then
-			count = count1;
-		end;
-	end;
-
 	if count then
 		local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 		local expirationTime;
@@ -103,7 +95,22 @@ OrlanHeal.Priest.AvailableSpells =
 	47788, -- Оберегающий дух
 	47540, -- Исповедь
 	10060, -- Придание сил
-	73325 -- Духовное рвение
+	73325, -- Духовное рвение
+	{
+		type = "macro",
+		caption = "Critical " .. GetSpellInfo(2061), -- Быстрое исцеление
+		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2061),
+		key = "89485,2061"
+	},
+	{
+		type = "macro",
+		caption = "Critical " .. GetSpellInfo(2060), -- Великое исцеление
+		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
+		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
+		key = "89485,2060"
+	},
+	108968 -- Void Shift
 }
 
 OrlanHeal.Priest.CooldownOptions =
@@ -241,196 +248,109 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 32379,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	}
-};
-
-if GetBuildInfo() == "5.0.4" then
-	table.insert(
-		OrlanHeal.Priest.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Critical " .. GetSpellInfo(2061), -- Быстрое исцеление
-			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2061),
-			key = "89485,2061"
-		});
-	table.insert(
-		OrlanHeal.Priest.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Critical " .. GetSpellInfo(2060), -- Великое исцеление
-			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
-			key = "89485,2060"
-		});
-	table.insert(OrlanHeal.Priest.AvailableSpells, 108968); -- Void Shift
-	OrlanHeal.Priest.CooldownOptions.VoidTendrils =
+	},
+	VoidTendrils =
 	{
 		SpellId = 108920,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.Psyfiend =
+	},
+	Psyfiend =
 	{
 		SpellId = 108921,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.DominateMind =
+	},
+	DominateMind =
 	{
 		SpellId = 605,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.AngelicFeather =
+	},
+	AngelicFeather =
 	{
 		SpellId = 121536,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.SpectralGuise =
+	},
+	SpectralGuise =
 	{
 		SpellId = 112833,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.Cascade =
+	},
+	Cascade =
 	{
 		SpellId = 121135,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.DivineStar =
+	},
+	DivineStar =
 	{
 		SpellId = 110744,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.Halo =
+	},
+	Halo =
 	{
 		SpellId = 120517,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.Archangel =
+	},
+	Archangel =
 	{
 		SpellId = 81700,
 		Update = OrlanHeal.Priest.UpdateArchangelCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.SpiritShell =
+	},
+	SpiritShell =
 	{
 		SpellId = 109964,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.VoidShift =
+	},
+	VoidShift =
 	{
 		SpellId = 108968,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.ChakraSerenity =
+	},
+	ChakraSerenity =
 	{
 		SpellId = 81208,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Chakra"
-	};
-	OrlanHeal.Priest.CooldownOptions.ChakraSanctuary =
+	},
+	ChakraSanctuary =
 	{
 		SpellId = 81206,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Chakra"
-	};
-	OrlanHeal.Priest.CooldownOptions.ChakraChastise =
+	},
+	ChakraChastise =
 	{
 		SpellId = 81209,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Chakra"
-	};
-	OrlanHeal.Priest.CooldownOptions.HolyWordSanctuary =
+	},
+	HolyWordSanctuary =
 	{
 		MacroText = "/cast " .. GetSpellInfo(88685),
 		SpellId = 88685,
 		ChakraId = 81206,
 		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown,
 		Group = "Holy Word"
-	};
-	OrlanHeal.Priest.CooldownOptions.HolyWordSerenity =
+	},
+	HolyWordSerenity =
 	{
 		MacroText = "/cast " .. GetSpellInfo(88684),
 		SpellId = 88684,
 		ChakraId = 81208,
 		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown,
 		Group = "Holy Word"
-	};
-	OrlanHeal.Priest.CooldownOptions.HolyWordChastise =
+	},
+	HolyWordChastise =
 	{
 		MacroText = "/cast " .. GetSpellInfo(88625),
 		SpellId = 88625,
 		Update = OrlanHeal.Priest.UpdateDefaultChakraAbilityCooldown,
 		Group = "Holy Word"
-	};
-	OrlanHeal.Priest.CooldownOptions.HolyNova =
+	},
+	HolyNova =
 	{
 		SpellId = 132157,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-else
-	table.insert(
-		OrlanHeal.Priest.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Free " .. GetSpellInfo(2061), -- Быстрое исцеление
-			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2061),
-			key = "89485,2061"
-		});
-	table.insert(
-		OrlanHeal.Priest.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Free " .. GetSpellInfo(32546), -- Связующее исцеление
-			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 32546),
-			key = "89485,32546"
-		});
-	table.insert(
-		OrlanHeal.Priest.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Free " .. GetSpellInfo(2060), -- Великое исцеление
-			group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-			macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
-			key = "89485,2060"
-		});
-	table.insert(OrlanHeal.Priest.AvailableSpells, 528); -- Излечение болезни
-	OrlanHeal.Priest.CooldownOptions.Chakra =
-	{
-		SpellId = 14751,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.Archangel =
-	{
-		SpellId = 87151,
-		Update = OrlanHeal.Priest.UpdateArchangelCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.HolyWordSanctuary =
-	{
-		MacroText = "/cast " .. GetSpellInfo(88685),
-		SpellId = 88685,
-		ChakraId = 81206,
-		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.HolyWordSerenity =
-	{
-		MacroText = "/cast " .. GetSpellInfo(88684),
-		SpellId = 88684,
-		ChakraId = 81585,
-		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.HolyWordChastise =
-	{
-		MacroText = "/cast " .. GetSpellInfo(88625),
-		SpellId = 88625,
-		ChakraId = 81209,
-		Update = OrlanHeal.Priest.UpdateChakraAbilityCooldown
-	};
-	OrlanHeal.Priest.CooldownOptions.HolyNova =
-	{
-		SpellId = 15237,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-end;
+	}
+};
 
 function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
@@ -524,25 +444,21 @@ OrlanHeal.Priest.OrangeRangeSpellId = 2061; -- Быстрое исцеление
 
 
 function OrlanHeal.Priest.UpdateRaidBorder(orlanHeal)
-	if GetBuildInfo() == "5.0.4" then
-		if UnitBuff("player", GetSpellInfo(114255)) then -- From Darkness, Comes Light
-			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
-		elseif UnitBuff("player", GetSpellInfo(123266)) or UnitBuff("player", GetSpellInfo(123267)) then -- Divine Insight
-			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha);
-		else
-			local hasSanctuary = UnitBuff("player", GetSpellInfo(81206)); -- Chakra: Sanctuary
-			local hasSerenity = UnitBuff("player", GetSpellInfo(81208)); -- Chakra: Serenity
-			if orlanHeal:IsSpellReady(47540) -- Penance
-					or (not hasSerenity and not hasSanctuary and orlanHeal:IsSpellReady(88625)) -- Holy Word: Chastise
-					or (hasSanctuary and orlanHeal:IsSpellNotOnCooldown(88685)) -- Holy Word: Sanctuary
-					or (hasSerenity and orlanHeal:IsSpellNotOnCooldown(88684)) then -- Holy Word: Serenity
-				orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
-			else
-				orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
-			end;
-		end;
+	if UnitBuff("player", GetSpellInfo(114255)) then -- From Darkness, Comes Light
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
+	elseif UnitBuff("player", GetSpellInfo(123266)) or UnitBuff("player", GetSpellInfo(123267)) then -- Divine Insight
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha);
 	else
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+		local hasSanctuary = UnitBuff("player", GetSpellInfo(81206)); -- Chakra: Sanctuary
+		local hasSerenity = UnitBuff("player", GetSpellInfo(81208)); -- Chakra: Serenity
+		if orlanHeal:IsSpellReady(47540) -- Penance
+				or (not hasSerenity and not hasSanctuary and orlanHeal:IsSpellReady(88625)) -- Holy Word: Chastise
+				or (hasSanctuary and orlanHeal:IsSpellNotOnCooldown(88685)) -- Holy Word: Sanctuary
+				or (hasSerenity and orlanHeal:IsSpellNotOnCooldown(88684)) then -- Holy Word: Serenity
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
+		else
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+		end;
 	end;
 end;
 
@@ -550,12 +466,12 @@ OrlanHeal.Priest.PlayerSpecificBuffCount = 3;
 
 function OrlanHeal.Priest.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
-	if (spellId == 17) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- свой щит
+	if (spellId == 17) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- свой щит
 		buffKind = 1;
-	elseif (spellId == 139) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- своё восстановление
+	elseif (spellId == 139) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- своё восстановление
 		buffKind = 2;
 	elseif (spellId == 6346) or  -- Защита от страха
-			((spellId == 41635) and (caster ~= nil) and (UnitIsUnit(caster, "player"))) then -- своя Молитва восстановления
+			((spellId == 41635) and (caster ~= nil) and UnitIsUnit(caster, "player")) then -- своя Молитва восстановления
 		buffKind = 3;
 	end;
 

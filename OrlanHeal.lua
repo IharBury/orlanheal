@@ -534,9 +534,9 @@ function OrlanHeal:UpdateUnits()
 			end;
 		end;
 		self:SetupParty(self.GroupCount);
-	elseif UnitInRaid("player") ~= nil then
+	elseif IsInRaid() then
 		for unitNumber = 1, self.GroupCount * 5 do
-			if unitNumber <= (GetNumRaidMembers or GetNumGroupMembers)() then
+			if unitNumber <= GetNumGroupMembers() then
 				local _, _, groupNumber = GetRaidRosterInfo(unitNumber);
 				self:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts);
 			else
@@ -907,9 +907,9 @@ function OrlanHeal:UnitCriticalDebuffDuration(unit)
 end;
 
 function OrlanHeal:UpdateBackground(background, unit)
-	if UnitIsConnected(unit) ~= 1 then
+	if not UnitIsConnected(unit) then
 		background:SetTexture(0, 0, 0, 1);
-	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
+	elseif UnitIsCorpse(unit) or UnitIsDeadOrGhost(unit) then
 		background:SetTexture(0.1, 0.1, 0.1, 1);
 	else
 		local debuffSignificance = self:GetUnitCriticalDebuffSignificance(unit);
@@ -944,15 +944,15 @@ end;
 
 function OrlanHeal:IsSpellInRangeById(unit, spellId)
 	local spellName = GetSpellInfo(spellId);
-	return (IsSpellInRange(spellName, "player") ~= 1) or (IsSpellInRange(spellName, unit) == 1);
+	return (not IsSpellInRange(spellName, "player")) or IsSpellInRange(spellName, unit);
 end;
 
 function OrlanHeal:UpdateRange(rangeBar, unit)
-	if UnitIsConnected(unit) ~= 1 then
+	if not UnitIsConnected(unit) then
 		rangeBar:SetTexture(0, 0, 0, 1);
-	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
+	elseif UnitIsCorpse(unit) or UnitIsDeadOrGhost(unit) then
 		rangeBar:SetTexture(0.4, 0.4, 0.4, 1);
-	elseif (not self:IsSpellInRangeById(unit, self.Class.RedRangeSpellId)) or (UnitCanAssist("player", unit) ~= 1) then
+	elseif (not self:IsSpellInRangeById(unit, self.Class.RedRangeSpellId)) or not UnitCanAssist("player", unit) then
 		rangeBar:SetTexture(0.2, 0.2, 0.75, 1);
 	elseif not self:IsSpellInRangeById(unit, self.Class.OrangeRangeSpellId) then
 		rangeBar:SetTexture(0.75, 0.2, 0.2, 1);

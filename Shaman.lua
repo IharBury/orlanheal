@@ -43,7 +43,8 @@ OrlanHeal.Shaman.AvailableSpells =
 		key = "16188,77472"
 	},
 	2008, -- Ancestral Spirit
-	59547 -- Gift of the Naaru
+	59547, -- Gift of the Naaru
+	110504 -- Symbiosis
 };
 
 OrlanHeal.Shaman.CooldownOptions =
@@ -231,97 +232,85 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 1064,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	}
-};
-
-if GetBuildInfo() == "5.0.4" then
-	table.insert(OrlanHeal.Paladin.AvailableSpells, 110504); -- Symbiosis
-	OrlanHeal.Shaman.CooldownOptions.CapacitorTotem =
+	},
+	CapacitorTotem =
 	{
 		SpellId = 108269,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Air Totems"
-	};
-	OrlanHeal.Shaman.CooldownOptions.StormlashTotem =
+	},
+	StormlashTotem =
 	{
 		SpellId = 120668,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Air Totems"
-	};
-	OrlanHeal.Shaman.CooldownOptions.WindwalkTotem =
+	},
+	WindwalkTotem =
 	{
 		SpellId = 108273,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Air Totems"
-	};
-	OrlanHeal.Shaman.CooldownOptions.AstralShift =
+	},
+	AstralShift =
 	{
 		SpellId = 108271,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Shaman.CooldownOptions.TotemicProjection =
+	},
+	TotemicProjection =
 	{
 		SpellId = 108287,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
+	},
+	EarthlivingWeapon =
 	{
 		SpellId = 51730, -- Оружие жизни земли
 		IsReverse = true,
 		Duration = 60 * 60,
 		Update = OrlanHeal.UpdateMainHandTemporaryEnchantCooldown
-	};
-	OrlanHeal.Shaman.CooldownOptions.Ascendance =
+	},
+	Ascendance =
 	{
 		SpellId = 114049,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Shaman.CooldownOptions.StoneBulwarkTotem =
+	},
+	StoneBulwarkTotem =
 	{
 		SpellId = 108270,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Earth Totems"
-	};
-	OrlanHeal.Shaman.CooldownOptions.CallOfTheElements =
+	},
+	CallOfTheElements =
 	{
 		SpellId = 108285,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Shaman.CooldownOptions.HealingTideTotem =
+	},
+	HealingTideTotem =
 	{
 		SpellId = 108280,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Water Totems"
-	};
-	OrlanHeal.Shaman.CooldownOptions.AncestralGuidance =
+	},
+	AncestralGuidance =
 	{
 		SpellId = 108281,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Shaman.CooldownOptions.ElementalBlast =
+	},
+	ElementalBlast =
 	{
 		SpellId = 117014,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Shaman.CooldownOptions.Symbiosis =
+	},
+	Symbiosis =
 	{
 		SpellId = 110504,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Shaman.CooldownOptions.CleanseSpirit =
+	},
+	CleanseSpirit =
 	{
 		SpellId = 51886,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-else
-	OrlanHeal.Shaman.CooldownOptions.EarthlivingWeapon =
-	{
-		SpellId = 51730, -- Оружие жизни земли
-		IsReverse = true,
-		Duration = 30 * 60,
-		Update = OrlanHeal.UpdateMainHandTemporaryEnchantCooldown
-	};
-end;
+	}
+};
 
 function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
