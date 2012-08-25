@@ -16,7 +16,39 @@ OrlanHeal.Druid.AvailableSpells =
 	48438, -- Буйный рост
 	102342, -- Ironbark
 	1126, -- Mark of the Wild
-	50769 -- Revive
+	50769, -- Revive
+	88423, -- Nature's Cure
+	110309, -- Symbiosis
+	102401, -- Wild Charge
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(8936), -- Восстановление
+		group = GetSpellInfo(132158), -- Природная стремительность
+		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 8936),
+		key = "17116,8936"
+	},
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(50464), -- Покровительство природы
+		group = GetSpellInfo(132158), -- Природная стремительность
+		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 50464),
+		key = "17116,50464"
+	},
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(20484), -- Возрождение
+		group = GetSpellInfo(132158), -- Природная стремительность
+		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 20484),
+		key = "17116,20484"
+	},
+	{
+		type = "macro",
+		caption = "Instant " .. GetSpellInfo(5185), -- Целительное прикосновение
+		group = GetSpellInfo(132158), -- Природная стремительность
+		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 5185),
+		key = "17116,5185"
+	},
+	102351 -- Cenarion Ward
 }
 
 OrlanHeal.Druid.CooldownOptions =
@@ -76,209 +108,113 @@ OrlanHeal.Druid.CooldownOptions =
 	{
 		SpellId = 5215,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	}
-};
-
-if GetBuildInfo() == "5.0.4" then
-	table.insert(OrlanHeal.Druid.AvailableSpells, 88423); -- Nature's Cure
-	table.insert(OrlanHeal.Druid.AvailableSpells, 110309); -- Symbiosis
-	table.insert(OrlanHeal.Druid.AvailableSpells, 102401); -- Wild Charge
-	table.insert(
-		OrlanHeal.Druid.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Instant " .. GetSpellInfo(8936), -- Восстановление
-			group = GetSpellInfo(132158), -- Природная стремительность
-			macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 8936),
-			key = "17116,8936"
-		});
-	table.insert(
-		OrlanHeal.Druid.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Instant " .. GetSpellInfo(50464), -- Покровительство природы
-			group = GetSpellInfo(132158), -- Природная стремительность
-			macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 50464),
-			key = "17116,50464"
-		});
-	table.insert(
-		OrlanHeal.Druid.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Instant " .. GetSpellInfo(20484), -- Возрождение
-			group = GetSpellInfo(132158), -- Природная стремительность
-			macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 20484),
-			key = "17116,20484"
-		});
-	table.insert(
-		OrlanHeal.Druid.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Instant " .. GetSpellInfo(5185), -- Целительное прикосновение
-			group = GetSpellInfo(132158), -- Природная стремительность
-			macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 5185),
-			key = "17116,5185"
-		});
-	table.insert(OrlanHeal.Druid.AvailableSpells, 102351); -- Cenarion Ward
-	OrlanHeal.Druid.CooldownOptions.Ironbark =
+	},
+	Ironbark =
 	{
 		SpellId = 102342,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.MightOfUrsoc =
+	},
+	MightOfUrsoc =
 	{
 		SpellId = 106922,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.NaturesCure =
+	},
+	NaturesCure =
 	{
 		SpellId = 88423,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.StampedingRoar =
+	},
+	StampedingRoar =
 	{
 		SpellId = 106898,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.WildMushroom =
+	},
+	WildMushroom =
 	{
 		SpellId = 88747,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.WildMushroomBloom =
+	},
+	WildMushroomBloom =
 	{
 		SpellId = 102791,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.Symbiosis =
+	},
+	Symbiosis =
 	{
 		SpellId = 110309,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.DisplacerBeast =
+	},
+	DisplacerBeast =
 	{
 		SpellId = 102280,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.WildCharge =
+	},
+	WildCharge =
 	{
 		SpellId = 102401,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.NaturesSwiftness =
+	},
+	NaturesSwiftness =
 	{
 		SpellId = 132158,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.Renewal =
+	},
+	Renewal =
 	{
 		SpellId = 108238,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.CenarionWard =
+	},
+	CenarionWard =
 	{
 		SpellId = 102351,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.MassEntanglement =
+	},
+	MassEntanglement =
 	{
 		SpellId = 102359,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.Typhoon =
+	},
+	Typhoon =
 	{
 		SpellId = 132469,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.Incarnation =
+	},
+	Incarnation =
 	{
 		SpellId = 106731,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.ForceOfNature =
+	},
+	ForceOfNature =
 	{
 		SpellId = 106737,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.DisorientingRoar =
+	},
+	DisorientingRoar =
 	{
 		SpellId = 99,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.UrsolsVortex =
+	},
+	UrsolsVortex =
 	{
 		SpellId = 102793,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.MightyBash =
+	},
+	MightyBash =
 	{
 		SpellId = 5211,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.HeartOfTheWild =
+	},
+	HeartOfTheWild =
 	{
 		SpellId = 108288,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.NaturesVigil =
+	},
+	NaturesVigil =
 	{
 		SpellId = 124974,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-else
-	table.insert(
-		OrlanHeal.Druid.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Instant " .. GetSpellInfo(8936), -- Восстановление
-			group = GetSpellInfo(17116), -- Природная стремительность
-			macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 8936),
-			key = "17116,8936"
-		});
-	table.insert(
-		OrlanHeal.Druid.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Instant " .. GetSpellInfo(50464), -- Покровительство природы
-			group = GetSpellInfo(17116), -- Природная стремительность
-			macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 50464),
-			key = "17116,50464"
-		});
-	table.insert(
-		OrlanHeal.Druid.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Instant " .. GetSpellInfo(20484), -- Возрождение
-			group = GetSpellInfo(17116), -- Природная стремительность
-			macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 20484),
-			key = "17116,20484"
-		});
-	table.insert(
-		OrlanHeal.Druid.AvailableSpells, 
-		{
-			type = "macro",
-			caption = "Instant " .. GetSpellInfo(5185), -- Целительное прикосновение
-			group = GetSpellInfo(17116), -- Природная стремительность
-			macrotext = OrlanHeal:BuildCastSequenceMacro(17116, 5185),
-			key = "17116,5185"
-		});
-	table.insert(OrlanHeal.Druid.AvailableSpells, 2782); -- Снятие порчи
-	OrlanHeal.Druid.CooldownOptions.Thorns =
-	{
-		SpellId = 467,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.NaturesSwiftness =
-	{
-		SpellId = 17116,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Druid.CooldownOptions.TreeOfLife =
-	{
-		SpellId = 33891,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-end;
+	}
+};
 
 function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();

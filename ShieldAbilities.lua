@@ -368,7 +368,3 @@
 	[131623] = true, -- Twilight Ward
 	[131624] = true -- Twilight Ward
 };
-
-if GetBuildInfo() ~= "5.0.4" then
-	OrlanHeal.ShieldAbilities[20925] = true; -- Sacred Shield
-end;

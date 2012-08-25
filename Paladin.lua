@@ -49,7 +49,12 @@ OrlanHeal.Paladin.AvailableSpells =
 	7328, -- Redemption
 	31789, -- Righteous Defense
 	19740, -- Blessing of Might
-	82327 -- Holy Radiance
+	82327, -- Holy Radiance
+	20925, -- Sacred Shield
+	114039, -- Hand of Purity
+	114165, -- Holy Prism
+	114157, -- Execution Sentence
+	110501 -- Symbiosis
 };
 
 OrlanHeal.Paladin.CooldownOptions =
@@ -182,108 +187,81 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 62124, -- Reckoning
 		Update = OrlanHeal.UpdateAbilityCooldown
-	}
-};
-
-if GetBuildInfo() == "5.0.4" then
-	table.insert(OrlanHeal.Paladin.AvailableSpells, 20925); -- Sacred Shield
-	table.insert(OrlanHeal.Paladin.AvailableSpells, 114039); -- Hand of Purity
-	table.insert(OrlanHeal.Paladin.AvailableSpells, 114165); -- Holy Prism
-	table.insert(OrlanHeal.Paladin.AvailableSpells, 114157); -- Execution Sentence
-	table.insert(OrlanHeal.Paladin.AvailableSpells, 110501); -- Symbiosis
-	OrlanHeal.Paladin.CooldownOptions["EternalFlame"] =
+	},
+	EternalFlame =
 	{
 		SpellId = 85673, -- Word of Glory
 		AuraId = 114163, -- Eternal Flame
 		IsReverse = true,
 		Update = OrlanHeal.UpdateRaidBuffCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["SacredShield"] =
+	},
+	SacredShield =
 	{
 		SpellId = 20925, -- Sacred Shield
 		IsReverse = true,
 		Update = OrlanHeal.UpdateRaidBuffCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["BeaconOfLight"] =
+	},
+	BeaconOfLight =
 	{
 		SpellId = 53563, -- Beacon of Light
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["SpeedOfLight"] =
+	},
+	SpeedOfLight =
 	{
 		SpellId = 85499, -- Speed of Light
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["HandOfPurity"] =
+	},
+	HandOfPurity =
 	{
 		SpellId = 114039, -- Hand of Purity
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["HolyPrism"] =
+	},
+	HolyPrism =
 	{
 		SpellId = 114165, -- Holy Prism
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["LightsHammer"] =
+	},
+	LightsHammer =
 	{
 		SpellId = 114158, -- Light's Hammer
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["ExecutionSentence"] =
+	},
+	ExecutionSentence =
 	{
 		SpellId = 114157, -- Execution Sentence
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["GuardianOfAncientKings"] =
+	},
+	GuardianOfAncientKings =
 	{
 		SpellId = 86669, -- Guardian of Ancient Kings
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["BlindingLight"] =
+	},
+	BlindingLight =
 	{
 		SpellId = 115750, -- Blinding Light
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["Contemplation"] =
+	},
+	Contemplation =
 	{
 		SpellId = 121183, -- Contemplation
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["Repentance"] =
+	},
+	Repentance =
 	{
 		SpellId = 20066, -- Repentance
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["HolyAvenger"] =
+	},
+	HolyAvenger =
 	{
 		SpellId = 105809, -- Holy Avenger
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions.Symbiosis =
+	},
+	Symbiosis =
 	{
 		SpellId = 110501,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-else
-	OrlanHeal.Paladin.CooldownOptions["JudgementsOfThePure"] =
-	{
-		SpellId = 20271, -- Judgement
-		AuraId = 53655, -- Judgements of the Pure
-		IsReverse = true,
-		Update = OrlanHeal.UpdatePlayerBuffCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["GuardianOfAncientKings"] =
-	{
-		SpellId = 86150, -- Guardian of Ancient Kings
-		Update = OrlanHeal.UpdateAbilityCooldown
-	};
-	OrlanHeal.Paladin.CooldownOptions["BeaconOfLight"] =
-	{
-		SpellId = 53563, -- Beacon of Light
-		IsReverse = true,
-		Update = OrlanHeal.UpdateRaidBuffCooldown
-	};
-end;
+	}
+};
 
 function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();

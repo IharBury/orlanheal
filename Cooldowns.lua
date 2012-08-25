@@ -179,7 +179,7 @@ end;
 
 function OrlanHeal:UpdateAbilityCooldown(window)
 	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
-	local currentCharges, maxCharges = (GetSpellCharges or function(id) end)(GetSpellInfo(window.Cooldown.SpellId));
+	local currentCharges, maxCharges = GetSpellCharges(GetSpellInfo(window.Cooldown.SpellId));
 	local displayedCharges;
 	if (maxCharges and (maxCharges > 1)) then
 		displayedCharges = currentCharges;
@@ -477,13 +477,6 @@ OrlanHeal.CommonCooldownOptions =
 	{
 		SlotName = "NeckSlot",
 		SlotCaption = NECKSLOT,
-		Update = OrlanHeal.UpdateItemCooldown,
-		Group = "Use"
-	},
-	Ranged =
-	{
-		SlotName = "RangedSlot",
-		SlotCaption = (UnitHasRelicSlot("player") and RELICSLOT) or RANGEDSLOT,
 		Update = OrlanHeal.UpdateItemCooldown,
 		Group = "Use"
 	},
