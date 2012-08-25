@@ -43,8 +43,7 @@ OrlanHeal.Shaman.AvailableSpells =
 		key = "16188,77472"
 	},
 	2008, -- Ancestral Spirit
-	59547, -- Gift of the Naaru
-	110504 -- Symbiosis
+	59547 -- Gift of the Naaru
 };
 
 OrlanHeal.Shaman.CooldownOptions =
