@@ -320,7 +320,10 @@ function OrlanHeal:GetRacialCooldown()
 	return cooldown;
 end;
 
-function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alwaysDisplayCount)
+function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alwaysDisplayCount, isReverse)
+	if isReverse == nil then
+		isReverse = window.Cooldown.IsReverse;
+	end;
 	duration = duration or 0;
 	expirationTime = expirationTime or 0;
 	if expirationTime ~= window.Off then
@@ -341,7 +344,7 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 				GetInventoryItemID("player", GetInventorySlotInfo(window.Cooldown.SlotName))) or
 			window.Cooldown.MacroText then
 		window.Dark = false;
-		window:SetReverse(window.Cooldown.IsReverse);
+		window:SetReverse(isReverse);
 	else
 		window:SetReverse(true);
 		if not window.Dark then

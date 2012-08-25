@@ -4,14 +4,19 @@ OrlanHeal.Monk.IsSupported = true;
 OrlanHeal.Monk.GiftOfTheNaaruSpellId = 121093;
 
 function OrlanHeal.Monk.GetChiCost(spellId)
-	local _, _, _, cost = GetSpellInfo(spellId);
+	local _, _, _, cost, _, powerType = GetSpellInfo(spellId);
+	if powerType ~= SPELL_POWER_LIGHT_FORCE then
+		cost = nil;
+	end;
 	return cost;
 end;
 
 function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window)
 	local power = UnitPower("player", SPELL_POWER_LIGHT_FORCE);
 	local cost = window.Cooldown.ChiCost or orlanHeal.Monk.GetChiCost(window.Cooldown.SpellId);
-	if power >= cost then
+	if not cost then
+		orlanHeal:UpdateAbilityCooldown(window);
+	elseif power >= cost then
 		local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 		local expirationTime;
 		if start and duration and (duration ~= 0) and (enabled == 1) then
@@ -38,6 +43,21 @@ function OrlanHeal.Monk.UpdateChiRaidBuffCooldown(orlanHeal, window)
 	orlanHeal:UpdateCooldown(window, duration, expirationTime, power, true);
 end;
 
+function OrlanHeal.Monk.UpdateManaTeaCooldown(orlanHeal, window)
+	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	local expirationTime;
+	if start and duration and (duration ~= 0) and (enabled == 1) then
+		expirationTime = start + duration;
+		orlanHeal:UpdateCooldown(window, duration, expirationTime, nil, nil, false);
+	else
+		local spellName = GetSpellInfo(window.Cooldown.AuraId or window.Cooldown.SpellId);
+		if spellName then
+			local _, _, _, count, _, duration, expirationTime = UnitBuff("player", spellName);
+			orlanHeal:UpdateCooldown(window, duration, expirationTime, count, true, true);
+		end;
+	end;
+end;
+
 OrlanHeal.Monk.AvailableSpells =
 {
 	121093, -- Gift of the Naaru
@@ -50,13 +70,20 @@ OrlanHeal.Monk.AvailableSpells =
 	115151, -- Renewing Mist
 	115178, -- Resuscitate
 	115175, -- Soothing Mist
-	116694, -- Surging Mist
+	{
+		type = "macro",
+		caption = GetSpellInfo(116694), -- Surging Mist
+		macrotext = "/cast [target=mouseover] " .. GetSpellInfo(116694),
+		key = 116694,
+		group = GetSpellInfo(116694)
+	}, -- Surging Mist
 	116841, -- Tiger's Lust
 	{
 		type = "macro",
 		caption = "Double " .. GetSpellInfo(116694), -- Surging Mist
 		macrotext = OrlanHeal:BuildCastSequenceMacro(116680, 116694),
-		key = "116680,116694"
+		key = "116680,116694",
+		group = GetSpellInfo(116694)
 	}
 };
 
@@ -191,9 +218,7 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		SpellId = 115294,
 		AuraId = 115867,
-		AlwaysShowCount = true,
-		IsReverse = true,
-		Update = OrlanHeal.UpdatePlayerBuffCooldown
+		Update = OrlanHeal.Monk.UpdateManaTeaCooldown
 	},
 	Paralysis =
 	{
@@ -228,13 +253,21 @@ OrlanHeal.Monk.CooldownOptions =
 	Uplift =
 	{
 		SpellId = 116670,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
+		Group = GetSpellInfo(116670)
+	},
+	GlyphedUplift =
+	{
+		MacroText = "/cast " .. GetSpellInfo(116670),
+		SpellId = 130316,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Caption = "Glyphed " .. GetSpellInfo(130316),
+		Group = GetSpellInfo(116670)
 	},
 	ThunderFocusTea =
 	{
 		SpellId = 116680,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
-		Group = GetSpellInfo(116680) -- Thunder Focus Tea
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
 	},
 	RefreshingUplift =
 	{
@@ -242,8 +275,17 @@ OrlanHeal.Monk.CooldownOptions =
 		SpellId = 119607, -- Different visual for Renewing Mist
 		ChiCost = OrlanHeal.Monk.GetChiCost(116680) + OrlanHeal.Monk.GetChiCost(116670),
 		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
-		Group = GetSpellInfo(116680), -- Thunder Focus Tea
-		Caption = "Refreshing " .. GetSpellInfo(116670) -- Uplift
+		Caption = "Refreshing " .. GetSpellInfo(116670), -- Uplift
+		Group = GetSpellInfo(116670)
+	},
+	GlyphedRefreshingUplift =
+	{
+		MacroText = OrlanHeal:BuildCastSequenceMacro(116680, 116670), -- Thunder Focus Tea + Uplift
+		SpellId = 119607, -- Different visual for Renewing Mist
+		ChiCost = OrlanHeal.Monk.GetChiCost(116680),
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
+		Caption = "Glyphed Refreshing " .. GetSpellInfo(116670), -- Uplift
+		Group = GetSpellInfo(116670)
 	},
 	TigerPalm =
 	{
@@ -270,6 +312,12 @@ OrlanHeal.Monk.CooldownOptions =
 		MacroText = "/cast " .. GetSpellInfo(126895),
 		SpellId = 126895,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	SurgingMist =
+	{
+		MacroText = "/cast " .. GetSpellInfo(116694),
+		SpellId = 116694,
+		Update = OrlanHeal.Monk.UpdateAbilityCooldown
 	}
 };
 
