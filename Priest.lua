@@ -363,7 +363,7 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["shift2"] = 17; -- Power Word: Shield
 	config["shift3"] = 6346; -- Fear Ward
 	config["altshift1"] = 73325; -- Leap of Faith
-	config["altshift2"] = 2096; -- Min Vision
+	config["altshift2"] = 2096; -- Mind Vision
 	config["altshift3"] = 2006; -- Resurrection
 	config["control1"] = 2060; -- Greater Heal
 	config["control2"] = 88684; -- Holy Word: Serenity
