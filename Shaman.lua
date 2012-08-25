@@ -327,7 +327,6 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["alt2"] = 1064; -- Цепное исцеление
 	config["alt3"] = "16188,1064"; -- Instant Цепное исцеление
 	config["altshift3"] = 2008; -- Ancestral Spirit
-	config["controlalt3"] = 110504; -- Symbiosis
 
 	config["cooldown1"] = "WaterShield";
 	config["cooldown2"] = "EarthlivingWeapon";
