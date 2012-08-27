@@ -3,8 +3,27 @@
 OrlanHeal.Paladin.IsSupported = true;
 OrlanHeal.Paladin.GiftOfTheNaaruSpellId = 59542;
 
-function OrlanHeal.Paladin.UpdateHolyPowerScalingAbilityCooldown(orlanHeal, window)
+function OrlanHeal.Paladin.GetEffectiveHolyPower()
 	local power = UnitPower("player", SPELL_POWER_HOLY_POWER);
+	if UnitBuff("player", GetSpellInfo(90174)) then -- Divine Purpose
+		power = power + 3;
+	end;
+	return power;
+end;
+
+function OrlanHeal.Paladin.IsUrgentToSpendHolyPower()
+	local _, _, _, _, _, _, expiration = UnitBuff("player", GetSpellInfo(90174)); -- Divine Purpose
+	local timeLeft;
+	if expiration then
+		timeLeft = expiration - GetTime();
+	end;
+	local power = UnitPower("player", SPELL_POWER_HOLY_POWER);
+	local maxPower = UnitPowerMax("player", SPELL_POWER_HOLY_POWER);
+	return (power == maxPower) or (timeLeft and (timeLeft < 2));
+end;
+
+function OrlanHeal.Paladin.UpdateHolyPowerScalingAbilityCooldown(orlanHeal, window)
+	local power = orlanHeal.Paladin.GetEffectiveHolyPower();
 	if power >= 1 then
 		local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 		local expirationTime;
@@ -330,14 +349,11 @@ OrlanHeal.Paladin.OrangeRangeSpellId = 635; -- Holy Light
 function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 	local infusionOfLightSpellName = GetSpellInfo(54149);
 	local daybreakSpellName = GetSpellInfo(88819);
-	local divinePurposeSpellName = GetSpellInfo(90174);
+	local power = orlanHeal.Paladin.GetEffectiveHolyPower();
 
-	if (UnitPower("player", SPELL_POWER_HOLY_POWER) == 5)
-			and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+	if orlanHeal.Paladin.IsUrgentToSpendHolyPower() and orlanHeal:IsSpellReady(85673) then -- Word of Glory
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.3, 1, 0.3, orlanHeal.RaidBorderAlpha);
-	elseif ((UnitPower("player", SPELL_POWER_HOLY_POWER) >= 3)
-				or (divinePurposeSpellName and UnitBuff("player", divinePurposeSpellName)))
-			and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+	elseif (power >= 3) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
 	elseif UnitBuff("player", infusionOfLightSpellName) then -- Infusion of Light
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha);
@@ -346,11 +362,9 @@ function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
 	elseif orlanHeal:IsSpellReady(20473) then -- Holy Shock
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
-	elseif (UnitPower("player", SPELL_POWER_HOLY_POWER) == 2)
-			and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+	elseif (power == 2) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.5, 0, orlanHeal.RaidBorderAlpha);
-	elseif (UnitPower("player", SPELL_POWER_HOLY_POWER) == 1)
-			and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+	elseif (power == 1) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha);
 	else
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
