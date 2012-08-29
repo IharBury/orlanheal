@@ -110,7 +110,8 @@ OrlanHeal.Priest.AvailableSpells =
 		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
 		key = "89485,2060"
 	},
-	108968 -- Void Shift
+	108968, -- Void Shift
+	596 -- Prayer of Healing
 }
 
 OrlanHeal.Priest.CooldownOptions =
@@ -363,7 +364,7 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["shift2"] = 17; -- Power Word: Shield
 	config["shift3"] = 6346; -- Fear Ward
 	config["altshift1"] = 73325; -- Leap of Faith
-	config["altshift2"] = 2096; -- Mind Vision
+	config["altshift2"] = 596; -- Prayer of Healing
 	config["altshift3"] = 2006; -- Resurrection
 	config["control1"] = 2060; -- Greater Heal
 	config["control2"] = 88684; -- Holy Word: Serenity
@@ -372,6 +373,7 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["controlalt2"] = 1706; -- Levitate
 	config["controlalt3"] = 32546; -- Binding Heal
 	config["controlaltshift1"] = 34861; -- Circle of Healing
+	config["controlshift1"] = 2096; -- Mind Vision
 
 	config["cooldown1"] = "Purify";
 	config["cooldown2"] = "PowerWordShield";
