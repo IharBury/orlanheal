@@ -760,7 +760,7 @@ function OrlanHeal:LoadConfig()
 		self.Class.LoadConfig(self);
 	end;
 
-	self.Config.Size = self.Config.Size or 1;
+	self.Config.Size = self.Config.Size or 1.4;
 end;
 
 function OrlanHeal:Setup()
