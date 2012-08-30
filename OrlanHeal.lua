@@ -805,7 +805,7 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 			if (UnitIsConnected(unit) ~= 1) or
 					(UnitIsCorpse(unit) == 1) or 
 					(UnitIsDeadOrGhost(unit) == 1) or
-					(not UnitInRange(unit)) or
+					(not UnitInRange(unit) and not UnitIsUnit(unit, "player")) or
 					(UnitCanAssist("player", unit) ~= 1) then
 		                window.Canvas:Hide();
         		        return;
@@ -948,7 +948,7 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 		rangeBar:SetTexture(0.4, 0.4, 0.4, 1);
 	elseif not UnitCanAssist("player", unit) then
 		rangeBar:SetTexture(0.2, 0.2, 0.75, 1);
-	elseif not UnitInRange(unit) then
+	elseif not UnitInRange(unit) and not UnitIsUnit(unit, "player") then
 		rangeBar:SetTexture(0.75, 0.2, 0.2, 1);
 	elseif CheckInteractDistance(unit, 4) ~= 1 then
 		rangeBar:SetTexture(0.75, 0.45, 0.2, 1);
