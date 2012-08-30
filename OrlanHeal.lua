@@ -801,12 +801,11 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 			end;
 	        end;
 
-		local redRangeSpellName = GetSpellInfo(self.Class.RedRangeSpellId);
 		if UnitInBattleground("player") ~= nil then
 			if (UnitIsConnected(unit) ~= 1) or
 					(UnitIsCorpse(unit) == 1) or 
 					(UnitIsDeadOrGhost(unit) == 1) or
-					(IsSpellInRange(redRangeSpellName, unit) ~= 1) or
+					(not UnitInRange(unit)) or
 					(UnitCanAssist("player", unit) ~= 1) then
 		                window.Canvas:Hide();
         		        return;
@@ -942,19 +941,14 @@ function OrlanHeal:UpdateBackground(background, unit)
 	end;
 end;
 
-function OrlanHeal:IsSpellInRangeById(unit, spellId)
-	local spellName = GetSpellInfo(spellId);
-	return (not IsSpellInRange(spellName, "player")) or IsSpellInRange(spellName, unit);
-end;
-
 function OrlanHeal:UpdateRange(rangeBar, unit)
 	if not UnitIsConnected(unit) then
 		rangeBar:SetTexture(0, 0, 0, 1);
 	elseif UnitIsCorpse(unit) or UnitIsDeadOrGhost(unit) then
 		rangeBar:SetTexture(0.4, 0.4, 0.4, 1);
-	elseif (not self:IsSpellInRangeById(unit, self.Class.RedRangeSpellId)) or not UnitCanAssist("player", unit) then
+	elseif not UnitCanAssist("player", unit) then
 		rangeBar:SetTexture(0.2, 0.2, 0.75, 1);
-	elseif not self:IsSpellInRangeById(unit, self.Class.OrangeRangeSpellId) then
+	elseif not UnitInRange(unit) then
 		rangeBar:SetTexture(0.75, 0.2, 0.2, 1);
 	elseif CheckInteractDistance(unit, 4) ~= 1 then
 		rangeBar:SetTexture(0.75, 0.45, 0.2, 1);

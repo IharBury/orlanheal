@@ -369,9 +369,6 @@ function OrlanHeal.Shaman.GetConfigPresets(orlanHeal)
 		};
 end;
 
-OrlanHeal.Shaman.RedRangeSpellId = 331; -- Волна исцеления
-OrlanHeal.Shaman.OrangeRangeSpellId = 331; -- Волна исцеления
-
 function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
 	local isRiptideReady = orlanHeal:IsSpellReady(61295);
 	local isNaturesSwiftnessReady = orlanHeal:IsSpellReady(16188);

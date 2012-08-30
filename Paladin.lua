@@ -344,9 +344,6 @@ function OrlanHeal.Paladin.GetConfigPresets(orlanHeal)
 		};
 end;
 
-OrlanHeal.Paladin.RedRangeSpellId = 53563; -- Частица Света
-OrlanHeal.Paladin.OrangeRangeSpellId = 635; -- Holy Light
-
 function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 	local infusionOfLightSpellName = GetSpellInfo(54149);
 	local daybreakSpellName = GetSpellInfo(88819);
