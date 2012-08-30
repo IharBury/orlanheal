@@ -944,7 +944,7 @@ end;
 
 function OrlanHeal:IsSpellInRangeById(unit, spellId)
 	local spellName = GetSpellInfo(spellId);
-	return (not IsSpellKnown(spellId)) or IsSpellInRange(spellName, unit);
+	return (not IsSpellInRange(spellName, "player")) or IsSpellInRange(spellName, unit);
 end;
 
 function OrlanHeal:UpdateRange(rangeBar, unit)
