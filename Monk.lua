@@ -374,9 +374,6 @@ OrlanHeal.Monk.CurseDebuffKind = 2;
 OrlanHeal.Monk.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Monk.PetDebuffSlots = { 1, 0 };
 
-OrlanHeal.Monk.RedRangeSpellId = 115175; -- Soothing Mist
-OrlanHeal.Monk.OrangeRangeSpellId = 115175; -- Soothing Mist
-
 function OrlanHeal.Monk.GetSpecificDebuffKind(orlanHeal, spellId)
 end;
 

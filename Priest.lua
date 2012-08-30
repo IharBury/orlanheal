@@ -441,10 +441,6 @@ function OrlanHeal.Priest.GetConfigPresets(orlanHeal)
 		};
 end;
 
-OrlanHeal.Priest.RedRangeSpellId = 2096; -- Внутреннее зрение
-OrlanHeal.Priest.OrangeRangeSpellId = 2061; -- Быстрое исцеление
-
-
 function OrlanHeal.Priest.UpdateRaidBorder(orlanHeal)
 	if UnitBuff("player", GetSpellInfo(114255)) then -- From Darkness, Comes Light
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);

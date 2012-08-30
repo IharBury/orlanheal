@@ -272,10 +272,6 @@ function OrlanHeal.Druid.GetConfigPresets(orlanHeal)
 		};
 end;
 
-OrlanHeal.Druid.RedRangeSpellId = 774; -- Омоложение
-OrlanHeal.Druid.OrangeRangeSpellId = 774; -- Омоложение
-
-
 function OrlanHeal.Druid.UpdateRaidBorder(orlanHeal)
 	local _, swiftmendCooldown = GetSpellCooldown(18562);
 	local _, lifebloomExpirationTime = orlanHeal:GetRaidBuffCooldown(33763);
