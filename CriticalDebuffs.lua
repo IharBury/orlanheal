@@ -162,6 +162,9 @@
 	[105173] = true, -- Deep Corruption
 	[105479] = true, -- Searing Plasma
 	[105544] = true, -- Fel Decay
+	[106113] = true, -- Touch of Nothingness
+	[107268] = true, -- Sabotage
+	[107291] = true, -- Sabotage
 	[107975] = true, -- Deep Corruption
 	[107976] = true, -- Deep Corruption
 	[107977] = true, -- Deep Corruption
@@ -188,8 +191,18 @@
 	[110215] = true, -- Consuming Shroud
 	[110598] = true, -- Consuming Shroud
 	[110914] = true, -- Dark Bargain
+	[111600] = true, -- Screeching Swarm
+	[111643] = true, -- Screeching Swarm
+	[111644] = true, -- Screeching Swarm
+	[113645] = true, -- Sabotage
 	[114556] = true, -- Purgatory
+	[119946] = true, -- Ravage
 
+	[120160] = true, -- Conflagrate
+	[120161] = true, -- Conflagrate
+	[120165] = true, -- Conflagrate
+	[120167] = true, -- Conflagrate
+	[120201] = true, -- Conflagrate
 	[122470] = true -- Touch of Karma
 };
 
