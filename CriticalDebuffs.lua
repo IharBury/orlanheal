@@ -196,6 +196,8 @@
 	[111644] = true, -- Screeching Swarm
 	[113645] = true, -- Sabotage
 	[114556] = true, -- Purgatory
+	[117949] = true, -- Closed Circuit
+	[118135] = true, -- Pinned Down
 	[119946] = true, -- Ravage
 
 	[120160] = true, -- Conflagrate
@@ -203,12 +205,14 @@
 	[120165] = true, -- Conflagrate
 	[120167] = true, -- Conflagrate
 	[120201] = true, -- Conflagrate
-	[122470] = true -- Touch of Karma
+	[122470] = true, -- Touch of Karma
+	[131792] = true -- Shadowburn
 };
 
 OrlanHeal.VeryCriticalDebuffs =
 {
-	[106199] = true -- Blood Corruption: Death
+	[106199] = true, -- Blood Corruption: Death
+	[132222] = true -- Destabilizing Energies
 };
 
 OrlanHeal.GoodCriticalDebuffs =
