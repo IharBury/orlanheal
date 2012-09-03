@@ -1,0 +1,29 @@
+## Interface: 50001
+## X-Min-Interface: 50000
+## Title: OrlanHeal
+## Version: 4.0.5
+## Notes: 
+## SavedVariables: OrlanHealGlobalConfig
+## SavedVariablesPerCharacter: OrlanHealConfig
+OrlanHeal.lua
+Constants.lua
+
+SavingAbilities.lua
+ShieldAbilities.lua
+HealingBuffs.lua
+IgnoredDebuffs.lua
+CriticalDebuffs.lua
+CommonAvailableSpells.lua
+
+Setup.lua
+Mode.lua
+Cooldowns.lua
+Commands.lua
+
+Paladin.lua
+Priest.lua
+Shaman.lua
+Druid.lua
+Monk.lua
+
+Initialize.lua
