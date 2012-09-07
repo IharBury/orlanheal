@@ -62,7 +62,7 @@ function OrlanHeal:SetupCooldown(window, cooldown)
 		window.Cooldown = cooldown;
 
 		local effectId = cooldown.AuraId or cooldown.SpellId;
-		local texture;
+		local texture, _;
 		if effectId then
 			_, _, texture = GetSpellInfo(effectId);
 		elseif cooldown.SlotName then
