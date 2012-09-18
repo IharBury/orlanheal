@@ -3,6 +3,19 @@
 OrlanHeal.Shaman.IsSupported = true;
 OrlanHeal.Shaman.GiftOfTheNaaruSpellId = 59547;
 
+function OrlanHeal.Shaman.UpdateDispelCooldown(orlanHeal, window)
+	local start, duration, enabled = GetSpellCooldown(window.Cooldown.DispelId);
+	local expirationTime;
+	if start and duration and (duration ~= 0) and (enabled == 1) then
+		expirationTime = start + duration;
+	else
+		start = nil;
+		duration = nil;
+		expirationTime = nil;
+	end;
+	orlanHeal:UpdateCooldown(window, duration, expirationTime);
+end;
+
 OrlanHeal.Shaman.AvailableSpells =
 {
 	331, -- Волна исцеления
@@ -307,7 +320,8 @@ OrlanHeal.Shaman.CooldownOptions =
 	CleanseSpirit =
 	{
 		SpellId = 51886,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		DispelId = 77130,
+		Update = OrlanHeal.Shaman.UpdateDispelCooldown
 	}
 };
 
