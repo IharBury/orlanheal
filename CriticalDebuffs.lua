@@ -206,6 +206,7 @@
 	[120167] = true, -- Conflagrate
 	[120201] = true, -- Conflagrate
 	[122470] = true, -- Touch of Karma
+	[125206] = true, -- Rend Flesh
 	[131792] = true -- Shadowburn
 };
 
