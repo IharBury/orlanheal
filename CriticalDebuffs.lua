@@ -196,6 +196,8 @@
 	[111644] = true, -- Screeching Swarm
 	[113645] = true, -- Sabotage
 	[114556] = true, -- Purgatory
+	[115999] = true, -- Куклы вуду
+	[116000] = true, -- Куклы вуду
 	[117949] = true, -- Closed Circuit
 	[118135] = true, -- Pinned Down
 	[119946] = true, -- Ravage
@@ -205,6 +207,7 @@
 	[120165] = true, -- Conflagrate
 	[120167] = true, -- Conflagrate
 	[120201] = true, -- Conflagrate
+	[122151] = true, -- Кукла вуду
 	[122470] = true, -- Touch of Karma
 	[125206] = true, -- Rend Flesh
 	[131792] = true -- Shadowburn
