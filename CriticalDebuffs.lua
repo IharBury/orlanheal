@@ -207,9 +207,21 @@
 	[120165] = true, -- Conflagrate
 	[120167] = true, -- Conflagrate
 	[120201] = true, -- Conflagrate
+	[121949] = true, -- Parasitic Growth
+	[122064] = true, -- Corrosive Resin
 	[122151] = true, -- Кукла вуду
 	[122470] = true, -- Touch of Karma
+	[122760] = true, -- Exhale
+	[122761] = true, -- Exhale
+	[122835] = true, -- Pheromones
+	[123092] = true, -- Pheromones
+	[123175] = true, -- Wind Step
+	[123180] = true, -- Wind Step
+	[123459] = true, -- Wind Step
 	[125206] = true, -- Rend Flesh
+	[128425] = true, -- Corrosive Resin
+	[128428] = true, -- Corrosive Resin
+	[129815] = true, -- Pheromones
 	[131792] = true -- Shadowburn
 };
 
