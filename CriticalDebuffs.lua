@@ -194,6 +194,8 @@
 	[111600] = true, -- Screeching Swarm
 	[111643] = true, -- Screeching Swarm
 	[111644] = true, -- Screeching Swarm
+	[111850] = true, -- Энергетическая тюрьма
+
 	[113645] = true, -- Sabotage
 	[114556] = true, -- Purgatory
 	[115999] = true, -- Куклы вуду
@@ -218,16 +220,31 @@
 	[123175] = true, -- Wind Step
 	[123180] = true, -- Wind Step
 	[123459] = true, -- Wind Step
+	[123788] = true, -- Крик ужаса
+	[123792] = true, -- Крик ужаса
+	[124862] = true, -- Видения смерти
+	[124863] = true, -- Видения смерти
+	[124868] = true, -- Видения смерти
 	[125206] = true, -- Rend Flesh
 	[128425] = true, -- Corrosive Resin
 	[128428] = true, -- Corrosive Resin
 	[129815] = true, -- Pheromones
-	[131792] = true -- Shadowburn
+	[131792] = true, -- Shadowburn
+	[131931] = true  -- Энергетическая тюрьма
 };
 
 OrlanHeal.VeryCriticalDebuffs =
 {
 	[106199] = true, -- Blood Corruption: Death
+	[117398] = true, -- Энергетическая тюрьма
+	[117436] = true, -- Энергетическая тюрьма
+	[122874] = true, -- Энергетическая тюрьма
+	[123504] = true, -- Звуковой разряд
+	[123506] = true, -- Звуковой разряд
+	[123591] = true, -- Звуковой разряд
+	[123592] = true, -- Звуковой разряд
+	[123593] = true, -- Звуковой разряд
+	[123594] = true, -- Звуковой разряд
 	[132222] = true -- Destabilizing Energies
 };
 
