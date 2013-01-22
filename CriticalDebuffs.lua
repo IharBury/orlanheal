@@ -216,6 +216,8 @@
 	[122760] = true, -- Exhale
 	[122761] = true, -- Exhale
 	[122835] = true, -- Pheromones
+	[123011] = true, -- Запугивание
+	[123018] = true, -- Запугивание
 	[123092] = true, -- Pheromones
 	[123175] = true, -- Wind Step
 	[123180] = true, -- Wind Step
@@ -238,6 +240,7 @@ OrlanHeal.VeryCriticalDebuffs =
 	[106199] = true, -- Blood Corruption: Death
 	[117398] = true, -- Энергетическая тюрьма
 	[117436] = true, -- Энергетическая тюрьма
+	[122409] = true, -- Удар кор'тика
 	[122874] = true, -- Энергетическая тюрьма
 	[123504] = true, -- Звуковой разряд
 	[123506] = true, -- Звуковой разряд
@@ -245,6 +248,7 @@ OrlanHeal.VeryCriticalDebuffs =
 	[123592] = true, -- Звуковой разряд
 	[123593] = true, -- Звуковой разряд
 	[123594] = true, -- Звуковой разряд
+	[123963] = true, -- Удар кор'тика
 	[132222] = true -- Destabilizing Energies
 };
 
