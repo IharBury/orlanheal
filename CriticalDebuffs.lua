@@ -232,7 +232,8 @@
 	[128428] = true, -- Corrosive Resin
 	[129815] = true, -- Pheromones
 	[131792] = true, -- Shadowburn
-	[131931] = true  -- Энергетическая тюрьма
+	[131931] = true,  -- Энергетическая тюрьма
+	[139822] = true -- Cinders
 };
 
 OrlanHeal.VeryCriticalDebuffs =
