@@ -32,8 +32,9 @@ OrlanHeal.RangeWidth = 5;
 OrlanHeal.PlayerStatusWidth = OrlanHeal.PlayerWidth - OrlanHeal.RangeWidth - OrlanHeal.BuffSize * 5;
 OrlanHeal.PetStatusWidth = OrlanHeal.PetWidth - OrlanHeal.RangeWidth - OrlanHeal.BuffSize * 2;
 OrlanHeal.HealthHeight = 4;
-OrlanHeal.ManaHeight = 4;
-OrlanHeal.NameHeight = OrlanHeal.PlayerHeight - OrlanHeal.ManaHeight - OrlanHeal.HealthHeight;
+OrlanHeal.ShieldHeight = 2;
+OrlanHeal.ManaHeight = 3;
+OrlanHeal.NameHeight = OrlanHeal.PlayerHeight - OrlanHeal.ManaHeight - OrlanHeal.ShieldHeight - OrlanHeal.HealthHeight;
 OrlanHeal.NameFontHeight = OrlanHeal.NameHeight * 0.8;
 
 OrlanHeal.GroupCountSwitchHeight = 16;
