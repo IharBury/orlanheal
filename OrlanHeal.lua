@@ -141,6 +141,7 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateBlankCanvas(playerWindow);
 	self:CreateRangeBar(playerWindow.Canvas);
 	self:CreateHealthBar(playerWindow.Canvas, self.PlayerStatusWidth);
+	self:CreateShieldBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateManaBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateBuffs(
@@ -331,8 +332,13 @@ function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue, incomingValue, y
 	local currentPosition = currentValue * width / maxValue;
 	local incomingPosition = (currentValue + incomingValue - yourIncomingValue) * width / maxValue;
 	local yourIncomingPosition = (currentValue + incomingValue) * width / maxValue;
-	
-	bar.Current:SetWidth(currentPosition);
+
+	if currentPosition > 0 then
+		bar.Current:Show();	
+		bar.Current:SetWidth(currentPosition);
+	else
+		bar.Current:Hide();
+	end;
 
 	bar.Incoming:SetPoint("TOPLEFT", currentPosition, 0);
 	bar.Incoming:SetPoint("BOTTOMLEFT", currentPosition, 0);
@@ -370,7 +376,7 @@ function OrlanHeal:CreateHealthBar(parent, width)
 		3);
 	parent.HealthBar:SetHeight(self.HealthHeight);
 	parent.HealthBar:SetWidth(width);
-	parent.HealthBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
+	parent.HealthBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight + self.ShieldHeight);
 end;
 
 function OrlanHeal:CreateManaBar(parent, width)
@@ -381,6 +387,16 @@ function OrlanHeal:CreateManaBar(parent, width)
 	parent.ManaBar:SetHeight(self.ManaHeight);
 	parent.ManaBar:SetWidth(width);
 	parent.ManaBar:SetPoint("BOTTOMLEFT", self.RangeWidth, 0);
+end;
+
+function OrlanHeal:CreateShieldBar(parent, width)
+	parent.ShieldBar = self:CreateStatusBar(
+		parent,
+		{ r = 0.4, g = 0.4, b = 0.4 },
+		{ r = 0.95, g = 0.75, b = 0.2 });
+	parent.ShieldBar:SetHeight(self.ShieldHeight);
+	parent.ShieldBar:SetWidth(width);
+	parent.ShieldBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
 end;
 
 function OrlanHeal:CreateUnitButton(parent)
@@ -416,6 +432,7 @@ function OrlanHeal:CreatePetWindow(parent)
 	self:CreateRangeBar(petWindow.Canvas);
 	self:CreateHealthBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateManaBar(petWindow.Canvas, self.PetStatusWidth);
+	self:CreateShieldBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateNameBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateBuffs(petWindow.Canvas, 0, 2, self.Class.PetDebuffSlots);
 	self:CreateBorder(petWindow.Canvas, 1, 1);
@@ -818,6 +835,7 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		self:UpdateBackground(window.Canvas.BackgroundTexture, unit);
 		self:UpdateRange(window.Canvas.RangeBar, unit);
 		self:UpdateHealth(window.Canvas.HealthBar, unit);
+		self:UpdateShield(window.Canvas.ShieldBar, unit);
 		self:UpdateMana(window.Canvas.ManaBar, unit);
 		self:UpdateName(window.Canvas.NameBar, unit, displayedGroup);
 		self:UpdateBuffs(window.Canvas, unit);
@@ -976,6 +994,10 @@ function OrlanHeal:UpdateMana(manaBar, unit)
 	else
 		manaBar:Hide();
 	end;
+end;
+
+function OrlanHeal:UpdateShield(shieldBar, unit)
+	self:UpdateStatusBar(shieldBar, UnitGetTotalAbsorbs(unit), UnitHealthMax(unit));
 end;
 
 function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
