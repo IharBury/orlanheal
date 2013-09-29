@@ -528,8 +528,20 @@ end;
 
 function OrlanHeal:SetPlayerTarget(groupNumber, groupPlayerNumber, playerUnit, petUnit)
 	local visibleGroupIndex = groupNumber + self:GetExtraGroupAtStartCount() - 1;
-	self.RaidWindow.Groups[visibleGroupIndex].Players[groupPlayerNumber - 1].Button:SetAttribute("unit", playerUnit);
-	self.RaidWindow.Groups[visibleGroupIndex].Players[groupPlayerNumber - 1].Pet.Button:SetAttribute("unit", petUnit);
+	self:BindUnitFrame(self.RaidWindow.Groups[visibleGroupIndex].Players[groupPlayerNumber - 1], playerUnit);
+	self:BindUnitFrame(self.RaidWindow.Groups[visibleGroupIndex].Players[groupPlayerNumber - 1].Pet, petUnit);
+end;
+
+function OrlanHeal:BindUnitFrame(frame, unit)
+	frame.Button:SetAttribute("unit", unit);
+
+	self:RegisterUnitEventHandler(
+		"UNIT_HEALTH_FREQUENT", 
+		unit, 
+		function(orlanHeal)
+			orlanHeal:UpdateHealth(frame.Canvas.HealthBar, unit);
+		end);
+	self:UpdateHealth(frame.Canvas.HealthBar, unit);
 end;
 
 function OrlanHeal:UpdateUnits()
@@ -543,6 +555,7 @@ function OrlanHeal:UpdateUnits()
 	self.DisplayedTanks = {};
 	self.IsUnitUpdateRequired = false;
 	self.UpdateUnitsAt = time() + 3;
+	self:ResetEventHandlers();
 
 	if self.IsInStartUpMode then
 		for groupNumber = 1, self.GroupCount - 1 do
@@ -574,8 +587,8 @@ end;
 
 function OrlanHeal:SetupTank(unitBinding)
 	if self.DisplayedTankCount < 5 then
-		self.RaidWindow.Groups[0].Players[self.DisplayedTankCount].Button:SetAttribute("unit", unitBinding);
-		self.RaidWindow.Groups[0].Players[self.DisplayedTankCount].Pet.Button:SetAttribute("unit", unitBinding .. "-pet");
+		self:BindUnitFrame(self.RaidWindow.Groups[0].Players[self.DisplayedTankCount], unitBinding);
+		self:BindUnitFrame(self.RaidWindow.Groups[0].Players[self.DisplayedTankCount].Pet, unitBinding .. "-pet");
 		self.DisplayedTanks[unitBinding] = true;
 		self.DisplayedTankCount = self.DisplayedTankCount + 1;
 	end;
@@ -834,7 +847,6 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		self:UpdateUnitAlpha(window.Canvas, unit, displayedGroup);
 		self:UpdateBackground(window.Canvas.BackgroundTexture, unit);
 		self:UpdateRange(window.Canvas.RangeBar, unit);
-		self:UpdateHealth(window.Canvas.HealthBar, unit);
 		self:UpdateShield(window.Canvas.ShieldBar, unit);
 		self:UpdateMana(window.Canvas.ManaBar, unit);
 		self:UpdateName(window.Canvas.NameBar, unit, displayedGroup);
@@ -1192,4 +1204,16 @@ end;
 
 function OrlanHeal:BuildCastSequenceMacro(spellId1, spellId2)
 	return "/cast " .. GetSpellInfo(spellId1) .. "\n/cast [target=mouseover] " .. GetSpellInfo(spellId2);
+end;
+
+function OrlanHeal:RegisterUnitEventHandler(event, unit, handler)
+	if not self.EventSubscriptions[event] then
+		self.EventFrame:RegisterEvent(event);
+		self.EventSubscriptions[event] = {};
+	end;
+	self.EventSubscriptions[event][unit] = handler;
+end;
+
+function OrlanHeal:ResetEventHandlers()
+	self.EventSubscriptions = {};
 end;
