@@ -532,6 +532,10 @@ function OrlanHeal:SetPlayerTarget(groupNumber, groupPlayerNumber, playerUnit, p
 	self:BindUnitFrame(self.RaidWindow.Groups[visibleGroupIndex].Players[groupPlayerNumber - 1].Pet, petUnit);
 end;
 
+function OrlanHeal:EndsWith(s, send)
+	return #s >= #send and s:find(send, #s-#send+1, true) and true or false
+end
+
 function OrlanHeal:BindUnitFrame(frame, unit)
 	frame.Button:SetAttribute("unit", unit);
 
@@ -551,6 +555,11 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 		shieldUpdate(orlanHeal);
 	end;
 	self:RegisterUnitEventHandler("UNIT_MAXHEALTH", unit, allUpdate);
+	if self:EndsWith(unit, "-pet") then
+		self:RegisterUnitEventHandler("UNIT_PET", strsub(unit, 1, strlen(unit) - 4), allUpdate);
+	elseif self:EndsWith(unit, "pet") then
+		self:RegisterUnitEventHandler("UNIT_PET", strsub(unit, 1, strlen(unit) - 3), allUpdate);
+	end
 
 	allUpdate(self);
 end;
