@@ -535,12 +535,12 @@ end;
 function OrlanHeal:BindUnitFrame(frame, unit)
 	frame.Button:SetAttribute("unit", unit);
 
-	self:RegisterUnitEventHandler(
-		"UNIT_HEALTH_FREQUENT", 
-		unit, 
-		function(orlanHeal)
-			orlanHeal:UpdateHealth(frame.Canvas.HealthBar, unit);
-		end);
+	local healthUpdate = function(orlanHeal)
+		orlanHeal:UpdateHealth(frame.Canvas.HealthBar, unit);
+	end;
+	self:RegisterUnitEventHandler("UNIT_HEALTH_FREQUENT", unit, healthUpdate);
+	self:RegisterUnitEventHandler("UNIT_MAXHEALTH", unit, healthUpdate);
+	self:RegisterUnitEventHandler("UNIT_HEAL_PREDICTION", unit, healthUpdate);
 	self:UpdateHealth(frame.Canvas.HealthBar, unit);
 end;
 
