@@ -7,8 +7,10 @@
 	self.EventSubscriptions = {};
 
 	function self.EventFrame:HandleEvent(event, arg1, ...)
-		if (event == "ADDON_LOADED") and (arg1 == "OrlanHeal") then
-			orlanHeal:HandleLoaded();
+		if event == "ADDON_LOADED" then
+			if arg1 == "OrlanHeal" then
+				orlanHeal:HandleLoaded();
+			end;
 		elseif (event == "ACTIVE_TALENT_GROUP_CHANGED") then
 			orlanHeal:HandleTalentGroupChanged();
 		elseif (event == "GROUP_ROSTER_UPDATE") or
@@ -32,6 +34,14 @@
 			if unitName and orlanHeal.EventSubscriptions[event][unitName] then
 				orlanHeal.EventSubscriptions[event][unitName](orlanHeal, ...);
 			end;
+		else
+			local arg2, arg3, arg4, arg5 = ...;
+			arg1 = arg1 or "nil";
+			arg2 = arg2 or "nil";
+			arg3 = arg3 or "nil";
+			arg4 = arg4 or "nil";
+			arg5 = arg5 or "nil";
+			print("Event: " .. event .. " Arg1: " .. arg1 .. " Arg2: " .. arg2 .. " Arg3: " .. arg3 .. " Arg4: " .. arg4 .. " Arg5: " .. arg5);
 		end;
 	end;
 
