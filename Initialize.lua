@@ -11,10 +11,9 @@
 			orlanHeal:HandleLoaded();
 		elseif (event == "ACTIVE_TALENT_GROUP_CHANGED") then
 			orlanHeal:HandleTalentGroupChanged();
-		elseif (event == "RAID_ROSTER_UPDATE") or
+		elseif (event == "GROUP_ROSTER_UPDATE") or
 				(event == "PARTY_CONVERTED_TO_RAID") or
 				(event == "PARTY_LEADER_CHANGED") or
-				(event == "PARTY_MEMBERS_CHANGED") or
 				(event == "ZONE_CHANGED_NEW_AREA") or
 				(event == "PLAYER_REGEN_ENABLED") or
 				(event == "PLAYER_ENTERING_BATTLEGROUND") or
@@ -92,8 +91,7 @@ function OrlanHeal:HandleLoaded()
 	self:UpdateCooldownFrames();
 	self:Show();
 
-	self.EventFrame:RegisterEvent("RAID_ROSTER_UPDATE");
-	self.EventFrame:RegisterEvent("PARTY_MEMBERS_CHANGED");
+	self.EventFrame:RegisterEvent("GROUP_ROSTER_UPDATE");
 	self.EventFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
 	self.EventFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
 	self.EventFrame:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND");
