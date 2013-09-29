@@ -4,8 +4,9 @@
 	self.ConfigVariableName = configVariableName;
 	self.CharacterConfigVariableName = characterConfigVariableName;
 	self.EventFrame = CreateFrame("Frame");
+	self.EventSubscriptions = {};
 
-	function self.EventFrame:HandleEvent(event, arg1)
+	function self.EventFrame:HandleEvent(event, arg1, ...)
 		if (event == "ADDON_LOADED") and (arg1 == "OrlanHeal") then
 			orlanHeal:HandleLoaded();
 		elseif (event == "ACTIVE_TALENT_GROUP_CHANGED") then
@@ -23,6 +24,14 @@
 				(event == "ROLE_CHANGED_INFORM") then
 			if not InCombatLockdown() then
 				orlanHeal:UpdateUnits();
+			end;
+		elseif orlanHeal.EventSubscriptions[event] then
+			if orlanHeal.EventSubscriptions[event][arg1] then
+				orlanHeal.EventSubscriptions[event][arg1](orlanHeal, ...);
+			end;
+			local unitName = orlanHeal:GetUnitNameAndRealm(arg1);
+			if unitName and orlanHeal.EventSubscriptions[event][unitName] then
+				orlanHeal.EventSubscriptions[event][unitName](orlanHeal, ...);
 			end;
 		end;
 	end;
