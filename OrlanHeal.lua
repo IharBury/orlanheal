@@ -550,9 +550,19 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 	end;
 	self:RegisterUnitEventHandler("UNIT_ABSORB_AMOUNT_CHANGED", unit, shieldUpdate);
 
+	local manaUpdate = function(orlanHeal)
+		orlanHeal:UpdateMana(frame.Canvas.ManaBar, unit);
+	end;
+	self:RegisterUnitEventHandler("UNIT_DISPLAYPOWER", unit, manaUpdate);
+	self:RegisterUnitEventHandler("UNIT_MAXPOWER", unit, manaUpdate);
+	self:RegisterUnitEventHandler("UNIT_POWER_BAR_HIDE", unit, manaUpdate);
+	self:RegisterUnitEventHandler("UNIT_POWER_BAR_SHOW", unit, manaUpdate);
+	self:RegisterUnitEventHandler("UNIT_POWER", unit, manaUpdate);
+
 	local allUpdate = function(orlanHeal)
 		healthUpdate(orlanHeal);
 		shieldUpdate(orlanHeal);
+		manaUpdate(orlanHeal);
 	end;
 	self:RegisterUnitEventHandler("UNIT_MAXHEALTH", unit, allUpdate);
 
@@ -881,7 +891,6 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		self:UpdateUnitAlpha(window.Canvas, unit, displayedGroup);
 		self:UpdateBackground(window.Canvas.BackgroundTexture, unit);
 		self:UpdateRange(window.Canvas.RangeBar, unit);
-		self:UpdateMana(window.Canvas.ManaBar, unit);
 		self:UpdateName(window.Canvas.NameBar, unit, displayedGroup);
 		self:UpdateBuffs(window.Canvas, unit);
 		self:UpdateDebuffs(window.Canvas, unit);
