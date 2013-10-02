@@ -555,13 +555,27 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 		shieldUpdate(orlanHeal);
 	end;
 	self:RegisterUnitEventHandler("UNIT_MAXHEALTH", unit, allUpdate);
-	if self:EndsWith(unit, "-pet") then
-		self:RegisterUnitEventHandler("UNIT_PET", strsub(unit, 1, strlen(unit) - 4), allUpdate);
-	elseif self:EndsWith(unit, "pet") then
-		self:RegisterUnitEventHandler("UNIT_PET", strsub(unit, 1, strlen(unit) - 3), allUpdate);
-	end
+
+	local petOwner = self:TryGetPetOwner(unit);
+	if petOwner then
+		self:RegisterUnitEventHandler("UNIT_PET", petOwner, allUpdate);
+	end;
 
 	allUpdate(self);
+end;
+
+function OrlanHeal:TryGetPetOwner(pet)
+	local owner;
+	if self:EndsWith(pet, "-pet") then
+		owner = strsub(pet, 1, strlen(pet) - 4);
+	elseif strsub(pet, 1, 7) == "raidpet" then
+		owner = "raid" .. strsub(pet, 8);
+	elseif strsub(pet, 1, 8) == "partypet" then
+		owner = "party" .. strsub(pet, 9);
+	elseif pet == "pet" then
+		owner = "player";
+	end;
+	return owner;
 end;
 
 function OrlanHeal:UpdateUnits()
