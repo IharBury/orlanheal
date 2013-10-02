@@ -559,10 +559,18 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 	self:RegisterUnitEventHandler("UNIT_POWER_BAR_SHOW", unit, manaUpdate);
 	self:RegisterUnitEventHandler("UNIT_POWER", unit, manaUpdate);
 
+	local buffUpdate = function(orlanHeal)
+		self:UpdateBuffs(frame.Canvas, unit);
+		self:UpdateDebuffs(frame.Canvas, unit);
+		self:UpdateBuffTimes(frame.Canvas, unit);
+	end;
+	self:RegisterUnitEventHandler("UNIT_AURA", unit, buffUpdate);
+
 	local allUpdate = function(orlanHeal)
 		healthUpdate(orlanHeal);
 		shieldUpdate(orlanHeal);
 		manaUpdate(orlanHeal);
+		buffUpdate(orlanHeal);
 	end;
 	self:RegisterUnitEventHandler("UNIT_MAXHEALTH", unit, allUpdate);
 
@@ -892,8 +900,7 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		self:UpdateBackground(window.Canvas.BackgroundTexture, unit);
 		self:UpdateRange(window.Canvas.RangeBar, unit);
 		self:UpdateName(window.Canvas.NameBar, unit, displayedGroup);
-		self:UpdateBuffs(window.Canvas, unit);
-		self:UpdateDebuffs(window.Canvas, unit);
+		self:UpdateBuffTimes(window.Canvas, unit);
 		self:UpdateUnitBorder(window.Canvas, unit);
 		self:UpdateTargetIcon(window.Canvas, unit);
 	end;
@@ -1088,6 +1095,30 @@ function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 	nameBar:SetTextColor(classColor.r, classColor.g, classColor.b, 1);
 end;
 
+function OrlanHeal:UpdateBuffTimes(canvas, unit)
+	if canvas.SpecificBuffs ~= nil then
+		for buffIndex = 0, 4 do
+			if canvas.SpecificBuffs[buffIndex] ~= nill then
+				self:ShowBuff(canvas.SpecificBuffs[buffIndex]);
+			end;
+		end;
+	end;
+
+	if canvas.OtherBuffs ~= nil then
+		for buffIndex = 0, 4 do
+			if canvas.OtherBuffs[buffIndex] ~= nill then
+				self:ShowBuff(canvas.OtherBuffs[buffIndex]);
+			end;
+		end;
+	end;
+
+	local slotIndex = 0;
+	while canvas.Debuffs.Slots[slotIndex + 1] do
+		self:ShowBuff(canvas.Debuffs[slotIndex]);
+		slotIndex = slotIndex + 1;
+	end;
+end;
+
 function OrlanHeal:UpdateBuffs(canvas, unit)
 	local goodBuffCount = 0;
 	local goodBuffs = {};
@@ -1126,7 +1157,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	if canvas.SpecificBuffs ~= nil then
 		for buffIndex = 0, 4 do
 			if canvas.SpecificBuffs[buffIndex] ~= nill then
-				self:ShowBuff(canvas.SpecificBuffs[buffIndex], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, buffIndex + 1));
+				canvas.SpecificBuffs[buffIndex].CurrentBuff = self:GetLastBuffOfKind(goodBuffs, goodBuffCount, buffIndex + 1);
 			end;
 		end;
 	end;
@@ -1134,7 +1165,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	if canvas.OtherBuffs ~= nil then
 		for buffIndex = 0, 4 do
 			if canvas.OtherBuffs[buffIndex] ~= nill then
-				self:ShowBuff(canvas.OtherBuffs[buffIndex], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 0));
+				canvas.OtherBuffs[buffIndex].CurrentBuff = self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 0);
 			end;
 		end;
 	end;
@@ -1183,10 +1214,7 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 
 	local slotIndex = 0;
 	while canvas.Debuffs.Slots[slotIndex + 1] do
-		self:ShowBuff(
-			canvas.Debuffs[slotIndex], 
-			self:GetLastBuffOfKind(specialDebuffs, specialDebuffCount, canvas.Debuffs.Slots[slotIndex + 1]));
-
+		canvas.Debuffs[slotIndex].CurrentBuff = self:GetLastBuffOfKind(specialDebuffs, specialDebuffCount, canvas.Debuffs.Slots[slotIndex + 1]);
 		slotIndex = slotIndex + 1;
 	end;
 end;
@@ -1203,26 +1231,26 @@ function OrlanHeal:GetLastBuffOfKind(buffs, buffCount, kind)
 	return nil;
 end;
 
-function OrlanHeal:ShowBuff(texture, buff)
-	if buff == nil then
+function OrlanHeal:ShowBuff(texture)
+	if texture.CurrentBuff == nil then
 		texture.Image:SetTexture(0, 0, 0, 0);
 		texture.Time:SetTexture(0, 0, 0, 0);
 		texture.Count:SetText("");
 	else
-		texture.Image:SetTexture(buff.Icon);
+		texture.Image:SetTexture(texture.CurrentBuff.Icon);
 
-		if buff.Expires == 0 then
+		if texture.CurrentBuff.Expires == 0 then
 			texture.Time:SetTexture(0, 0, 0, 0);
-		elseif buff.Expires <= GetTime() + 3 then
+		elseif texture.CurrentBuff.Expires <= GetTime() + 3 then
 			texture.Time:SetTexture(1, 0, 0, 0.3);
-		elseif buff.Expires <= GetTime() + 6 then
+		elseif texture.CurrentBuff.Expires <= GetTime() + 6 then
 			texture.Time:SetTexture(1, 1, 0, 0.3);
 		else
 			texture.Time:SetTexture(0, 0, 0, 0);
 		end;
 
-		if (buff.Count > 1) then
-			texture.Count:SetText(buff.Count);
+		if (texture.CurrentBuff.Count > 1) then
+			texture.Count:SetText(texture.CurrentBuff.Count);
 		else
 			texture.Count:SetText("");
 		end;
