@@ -92,10 +92,14 @@ end;
 
 function OrlanHeal:SetGroupCount(newGroupCount)
 	if self:RequestNonCombat() then
+		if self.IsInStartUpMode then
+			self.IsInStartUpMode = false;
+			self.IsBossWindowVisible = false;
+		end;
+
 		self.GroupCount = newGroupCount;
 		self.VisibleGroupCount = newGroupCount;
 		self.IsNameBindingEnabled = false;
-		self.IsInStartUpMode = false;
 		self:UpdateVisibleGroupCount();
 		self:UpdateUnits();
 		self:UpdateSwitches();
