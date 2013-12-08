@@ -84,6 +84,7 @@
 	self.VisibleGroupCount = 9;
 	self.IsInStartUpMode = true;
 	self.IsTankWindowVisible = false;
+	self.IsBossWindowVisible = true;
 	self.IsNameBindingEnabled = false;
 	self.IsUnitUpdateRequired = false;
 
