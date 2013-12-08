@@ -576,6 +576,7 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 		buffUpdate(orlanHeal);
 	end;
 	self:RegisterUnitEventHandler("UNIT_MAXHEALTH", unit, allUpdate);
+	self:RegisterUnitEventHandler("UNIT_NAME_UPDATE", unit, allUpdate);
 
 	local petOwner = self:TryGetPetOwner(unit);
 	if petOwner then
