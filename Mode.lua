@@ -89,6 +89,37 @@ function OrlanHeal:CreateSetupButton(raidWindow)
 	return button;
 end;
 
+function OrlanHeal:CreateBossSwitch(raidWindow)
+	local button = CreateFrame("Button", nil, raidWindow);
+	button:SetPoint(
+		"TOPLEFT", 
+		raidWindow, 
+		"BOTTOMLEFT", 
+		9 * (self.GroupCountSwitchWidth + self.GroupCountSwitchHorizontalSpacing), 
+		-self.GroupCountSwitchHeight - 2 * self.GroupCountSwitchVerticalSpacing);
+	button:SetHeight(self.GroupCountSwitchHeight);
+	button:SetWidth(self.GroupCountSwitchWidth);
+	button:SetNormalFontObject("GameFontNormalSmall");
+	button:SetText("Bos");
+	button:SetAlpha(self.RaidAlpha);
+
+	local normalTexture = button:CreateTexture();
+	normalTexture:SetAllPoints();
+	normalTexture:SetTexture(0, 0, 0, 1);
+	button:SetNormalTexture(normalTexture);
+
+	local orlanHeal = self;
+	button:SetScript(
+		"OnClick",
+		function()
+			orlanHeal:ToggleBosses();
+		end);
+
+	button:Hide();
+
+	return button;
+end;
+
 function OrlanHeal:CreateGroupCountSwitch(raidWindow, size, index)
 	local button = CreateFrame("Button", nil, raidWindow);
 	button:SetPoint(
@@ -151,6 +182,7 @@ end;
 function OrlanHeal:UpdateSwitches()
 	self:UpdateGroupCountSwitches();
 	self:UpdateTankSwitch();
+	self:UpdateBossSwitch();
 	self:UpdateNameBindingSwitch();
 end;
 
@@ -183,6 +215,17 @@ function OrlanHeal:UpdateTankSwitch()
 
 	local texture = self.RaidWindow.TankSwitch:GetNormalTexture();
 	if self.IsTankWindowVisible then
+		texture:SetTexture(0.5, 1, 0.5, 1);
+	else
+		texture:SetTexture(0, 0, 0, 1);
+	end;
+end;
+
+function OrlanHeal:UpdateBossSwitch()
+	self.RaidWindow.BossSwitch:Show();
+
+	local texture = self.RaidWindow.BossSwitch:GetNormalTexture();
+	if self.IsBossWindowVisible then
 		texture:SetTexture(0.5, 1, 0.5, 1);
 	else
 		texture:SetTexture(0, 0, 0, 1);

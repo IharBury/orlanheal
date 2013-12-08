@@ -276,7 +276,8 @@ OrlanHeal.VeryCriticalDebuffs =
 	[123963] = true, -- Удар кор'тика
 	[132222] = true, -- Destabilizing Energies
 	[142863] = true, -- Weak Ancient Barrier
-	[144574] = true -- Оскверненная тюрьма
+	[144574] = true, -- Оскверненная тюрьма
+	[147383] = true -- Истощение
 };
 
 OrlanHeal.GoodCriticalDebuffs =

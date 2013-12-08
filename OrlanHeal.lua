@@ -68,6 +68,7 @@ function OrlanHeal:CreateRaidWindow()
 	raidWindow.TankSwitch = self:CreateTankSwitch(raidWindow);
 	raidWindow.NameBindingSwitch = self:CreateNameBindingSwitch(raidWindow);
 	raidWindow.SetupButton = self:CreateSetupButton(raidWindow);
+	raidWindow.BossSwitch = self:CreateBossSwitch(raidWindow);
 
 	return raidWindow;
 end;
@@ -507,21 +508,23 @@ function OrlanHeal:RequestNonCombat()
 end;
 
 function OrlanHeal:GetGroupCountWithTanks()
-	local groupCountWithTanks;
+	local groupCountWithTanks = self.GroupCount;
 	if self.IsTankWindowVisible then
-		groupCountWithTanks = self.GroupCount + 1;
-	else
-		groupCountWithTanks = self.GroupCount;
+		groupCountWithTanks = groupCountWithTanks + 1;
+	end;
+	if self.IsBossWindowVisible then
+		groupCountWithTanks = groupCountWithTanks + 1;
 	end;
 	return groupCountWithTanks;
 end;
 
 function OrlanHeal:GetExtraGroupAtStartCount()
-	local extraGroupAtStartCount;
+	local extraGroupAtStartCount = 0;
 	if self.IsTankWindowVisible then
-		extraGroupAtStartCount = 1;
-	else
-		extraGroupAtStartCount = 0;
+		extraGroupAtStartCount = extraGroupAtStartCount + 1;
+	end;
+	if self.IsBossWindowVisible then
+		extraGroupAtStartCount = extraGroupAtStartCount + 1;
 	end;
 	return extraGroupAtStartCount;
 end;
@@ -635,6 +638,10 @@ function OrlanHeal:UpdateUnits()
 	if self.IsTankWindowVisible then
 		self:FinishTankSetup();
 	end;
+
+	if self.IsBossWindowVisible then
+		self:SetupBosses();
+	end;
 end;
 
 function OrlanHeal:SetupTank(unitBinding)
@@ -726,6 +733,15 @@ function OrlanHeal:SetupFreeRaidSlot(unitNumber, groupPlayerCounts)
 				pet);
 			break;
 		end;
+	end;
+end;
+
+function OrlanHeal:SetupBosses()
+	for unitNumber = 1, 5 do
+		local boss = "boss" .. unitNumber;
+		local visibleGroupIndex = self:GetExtraGroupAtStartCount() - 1;
+		self:BindUnitFrame(self.RaidWindow.Groups[visibleGroupIndex].Players[unitNumber - 1], boss);
+		self:BindUnitFrame(self.RaidWindow.Groups[visibleGroupIndex].Players[unitNumber - 1].Pet, "");
 	end;
 end;
 

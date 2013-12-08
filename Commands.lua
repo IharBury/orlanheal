@@ -23,6 +23,8 @@ function SlashCmdList.ORLANHEAL(message, editbox)
 		OrlanHeal:SetVisibleGroupCount(1);
 	elseif message == "tanks" then
 		OrlanHeal:ToggleTanks();
+	elseif message == "bosses" then
+		OrlanHeal:ToggleBosses();
 	elseif message == "byname" then
 		OrlanHeal:SetNameBinding();
 	elseif message == "setup" then
@@ -37,6 +39,14 @@ function OrlanHeal:ToggleTanks()
 		self:HideTanks();
 	else
 		self:ShowTanks();
+	end;
+end;
+
+function OrlanHeal:ToggleBosses()
+	if self.IsBossWindowVisible then
+		self:HideBosses();
+	else
+		self:ShowBosses();
 	end;
 end;
 
@@ -109,6 +119,26 @@ function OrlanHeal:HideTanks()
 		self:UpdateVisibleGroupCount();
 		self:UpdateUnits();
 		self:UpdateTankSwitch();
+		self:UpdateCooldownFrames();
+	end;
+end;
+
+function OrlanHeal:ShowBosses()
+	if self:RequestNonCombat() then
+		self.IsBossWindowVisible = true;
+		self:UpdateVisibleGroupCount();
+		self:UpdateUnits();
+		self:UpdateBossSwitch();
+		self:UpdateCooldownFrames();
+	end;
+end;
+
+function OrlanHeal:HideBosses()
+	if self:RequestNonCombat() then
+		self.IsBossWindowVisible = false;
+		self:UpdateVisibleGroupCount();
+		self:UpdateUnits();
+		self:UpdateBossSwitch();
 		self:UpdateCooldownFrames();
 	end;
 end;
