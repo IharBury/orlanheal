@@ -402,7 +402,7 @@ end;
 
 function OrlanHeal.Monk.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local result;
-	if (spellId == 119611) and UnitIsUnit("player", caster) then
+	if (spellId == 119611) and caster and UnitIsUnit("player", caster) then
 		result = 1;
 	end;
 	return result;
