@@ -1,5 +1,5 @@
 ## Interface: 60000
-## X-Min-Interface: 50200
+## X-Min-Interface: 60000
 ## Title: OrlanHeal
 ## Version: 4.1.0
 ## Notes: 
