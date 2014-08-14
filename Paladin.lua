@@ -209,7 +209,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	EternalFlame =
 	{
 		SpellId = 85673, -- Word of Glory
-		AuraId = 114163, -- Eternal Flame
+		AuraId = 156322, -- Eternal Flame
 		IsReverse = true,
 		Update = OrlanHeal.UpdateRaidBuffCooldown
 	},
@@ -381,7 +381,7 @@ function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 			(spellId == 1038) or  -- Длань спасения
 			(spellId == 114039) then -- Hand of Purity
 		buffKind = 1;
-	elseif (spellId == 114163) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- свой Eternal Flame
+	elseif (spellId == 156322) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- свой Eternal Flame
 			(spellId == 20925) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- свой Sacred Shield
 		buffKind = 2;
 	end;
