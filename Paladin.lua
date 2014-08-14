@@ -57,7 +57,6 @@ OrlanHeal.Paladin.AvailableSpells =
 	20473, -- Holy Shock
 	633, -- Lay on Hands
 	85673, -- Word of Glory
-	1038, -- Hand of Salvation
 	82326, -- Holy Light
 	53563, -- Beacon of Light
 	6940, -- Hand of Sacrifice
@@ -150,11 +149,6 @@ OrlanHeal.Paladin.CooldownOptions =
 	HandOfFreedom =
 	{
 		SpellId = 1044, -- Hand of Freedom
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	HandOfSalvation =
-	{
-		SpellId = 1038, -- Hand of Salvation
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HammerOfJustice =
@@ -288,7 +282,6 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["2"] = 19750; -- Flash of Light
 	config["3"] = 1022; -- Hand of Protection
 	config["shift2"] = 53563; -- Beacon of Light
-	config["shift3"] = 1038; -- Hand of Salvation
 	config["control2"] = 85673; -- Word of Glory
 	config["control3"] = 6940; -- Hand of Sacrifice
 	config["alt1"] = 4987; -- Cleanse
@@ -376,9 +369,6 @@ function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
 	if (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- своя Частица Света
 			(spellId == 1022) or -- Длань защиты
-			(spellId == 5599) or -- Длань защиты
-			(spellId == 10278) or -- Длань защиты
-			(spellId == 1038) or  -- Длань спасения
 			(spellId == 114039) then -- Hand of Purity
 		buffKind = 1;
 	elseif (spellId == 156322) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- свой Eternal Flame
