@@ -283,6 +283,7 @@ OrlanHeal.VeryCriticalDebuffs =
 OrlanHeal.GoodCriticalDebuffs =
 {
 	[106200] = true, -- Blood Corruption: Earth
+	[142865] = true, -- Strong Ancient Barrier
 	[144717] = true, -- Взгляд внутрь себя
 	[144724] = true, -- Взгляд внутрь себя
 	[144725] = true, -- Взгляд внутрь себя
