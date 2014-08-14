@@ -901,7 +901,7 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 	        end;
 
 		if UnitInBattleground("player") ~= nil then
-			if (UnitIsConnected(unit) ~= 1) or
+			if (not UnitIsConnected(unit)) or
 					(UnitIsCorpse(unit) == 1) or 
 					(UnitIsDeadOrGhost(unit) == 1) or
 					(not UnitInRange(unit) and not UnitIsUnit(unit, "player")) or
@@ -1058,7 +1058,7 @@ end;
 function OrlanHeal:UpdateHealth(healthBar, unit)
 	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit), UnitGetIncomingHeals(unit), UnitGetIncomingHeals(unit, "player"));
 
-	if UnitIsConnected(unit) ~= 1 then
+	if not UnitIsConnected(unit) then
 		self:SetStatusBarCurrentColor(healthBar, { r = 0, g = 0, b = 0 });
 	else
 		self:SetStatusBarCurrentColor(healthBar, { r = 0.2, g = 0.75, b = 0.2 });
@@ -1066,7 +1066,7 @@ function OrlanHeal:UpdateHealth(healthBar, unit)
 end;
 
 function OrlanHeal:UpdateMana(manaBar, unit)
-	if (UnitPowerType(unit) == SPELL_POWER_MANA) and (UnitIsConnected(unit) == 1) then
+	if (UnitPowerType(unit) == SPELL_POWER_MANA) and UnitIsConnected(unit) then
 		manaBar:Show();
 		self:UpdateStatusBar(manaBar, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA));
 	else
