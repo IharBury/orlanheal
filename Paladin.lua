@@ -64,23 +64,16 @@ OrlanHeal.Paladin.AvailableSpells =
 	59542, -- Дар наауру
 	20217, -- Blessing of Kings
 	7328, -- Redemption
-	31789, -- Righteous Defense
 	19740, -- Blessing of Might
 	82327, -- Holy Radiance
 	20925, -- Sacred Shield
 	114039, -- Hand of Purity
 	114165, -- Holy Prism
-	114157, -- Execution Sentence
-	110501 -- Symbiosis
+	114157 -- Execution Sentence
 };
 
 OrlanHeal.Paladin.CooldownOptions =
 {
-	HolyRadiance =
-	{
-		SpellId = 82327, -- Holy Radiance
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	LightOfDawn =
 	{
 		SpellId = 85222, -- Light of Dawn
@@ -93,24 +86,13 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	AvengingWrath =
 	{
-		SpellId = 31884, -- Avenging Wrath
+		SpellId = 31842, -- Avenging Wrath
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	AuraMastery =
 	{
-		SpellId = 31821, -- Aura Mastery / Devotion Aura
+		SpellId = 31821, -- Devotion Aura
 		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	DivinePlea =
-	{
-		SpellId = 54428, -- Divine Plea
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	SealOfInsight =
-	{
-		SpellId = 20165, -- Seal of Insight
-		IsReverse = true,
-		Update = OrlanHeal.UpdatePlayerBuffCooldown
 	},
 	GiftOfTheNaaru =
 	{
@@ -169,11 +151,6 @@ OrlanHeal.Paladin.CooldownOptions =
 	CrusaderStrike =
 	{
 		SpellId = 35395, -- Crusader Strike
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	DivineFavor =
-	{
-		SpellId = 31842, -- Divine Favor
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HammerOfWrath =
@@ -243,11 +220,6 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 114157, -- Execution Sentence
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	GuardianOfAncientKings =
-	{
-		SpellId = 86669, -- Guardian of Ancient Kings
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	BlindingLight =
 	{
 		SpellId = 115750, -- Blinding Light
@@ -267,11 +239,6 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 105809, -- Holy Avenger
 		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	Symbiosis =
-	{
-		SpellId = 110501,
-		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -289,31 +256,24 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["alt3"] = 633; -- Lay on Hands
 	config["controlalt1"] = 82327; -- Holy Radiance
 	config["controlalt2"] = 20925; -- Sacred Shield
-	config["controlalt3"] = 110501; -- Symbiosis
 	config["altshift1"] = 114039; -- Hand of Purity
 	config["altshift3"] = 7328; -- Redemption
 
 	config["cooldown1"] = "Cleanse";
 	config["cooldown2"] = "BeaconOfLight";
-	config["cooldown3"] = "HolyRadiance";
 	config["cooldown4"] = "LightOfDawn";
 	config["cooldown5"] = "LayOnHands";
 	config["cooldown6"] = "AvengingWrath";
-	config["cooldown7"] = "DivineFavor";
-	config["cooldown8"] = "GuardianOfAncientKings";
 	config["cooldown9"] = "AuraMastery";
-	config["cooldown10"] = "DivinePlea";
 	config["cooldown11"] = "HandOfProtection";
 	config["cooldown12"] = "HandOfPurity";
 	config["cooldown13"] = "HandOfSacrifice";
-	config["cooldown14"] = "HandOfSalvation";
 	config["cooldown15"] = "HandOfFreedom";
 	config["cooldown16"] = "HolyPrism";
 	config["cooldown17"] = "BlindingLight";
 	config["cooldown18"] = "SpeedOfLight";
 	config["cooldown19"] = "Repentance";
 	config["cooldown20"] = "SacredShield";
-	config["cooldown21"] = "Symbiosis";
 	config["cooldown22"] = orlanHeal:GetRacialCooldown();
 
 	config["controlalt1update"] = 1;
@@ -369,6 +329,7 @@ function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
 	if (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- своя Частица Света
 			(spellId == 1022) or -- Длань защиты
+			(spellId == 6940) or -- Hand of Sacrifice
 			(spellId == 114039) then -- Hand of Purity
 		buffKind = 1;
 	elseif (spellId == 156322) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- свой Eternal Flame
