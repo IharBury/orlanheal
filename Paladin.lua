@@ -373,15 +373,15 @@ OrlanHeal.Paladin.PlayerSpecificBuffCount = 2;
 
 function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
-	if (spellId == 53563) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- своя Частица Света
+	if (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- своя Частица Света
 			(spellId == 1022) or -- Длань защиты
 			(spellId == 5599) or -- Длань защиты
 			(spellId == 10278) or -- Длань защиты
 			(spellId == 1038) or  -- Длань спасения
 			(spellId == 114039) then -- Hand of Purity
 		buffKind = 1;
-	elseif (spellId == 114163) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- свой Eternal Flame
-			(spellId == 20925) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) then -- свой Sacred Shield
+	elseif (spellId == 114163) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- свой Eternal Flame
+			(spellId == 20925) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- свой Sacred Shield
 		buffKind = 2;
 	end;
 

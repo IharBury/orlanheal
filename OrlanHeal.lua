@@ -902,10 +902,10 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 
 		if UnitInBattleground("player") ~= nil then
 			if (not UnitIsConnected(unit)) or
-					(UnitIsCorpse(unit) == 1) or 
-					(UnitIsDeadOrGhost(unit) == 1) or
+					UnitIsCorpse(unit) or 
+					UnitIsDeadOrGhost(unit) or
 					(not UnitInRange(unit) and not UnitIsUnit(unit, "player")) or
-					(UnitCanAssist("player", unit) ~= 1) then
+					not UnitCanAssist("player", unit) then
 		                window.Canvas:Hide();
         		        return;
 			end;
@@ -1046,9 +1046,9 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 		rangeBar:SetTexture(0.2, 0.2, 0.75, 1);
 	elseif not UnitInRange(unit) and not UnitIsUnit(unit, "player") then
 		rangeBar:SetTexture(0.75, 0.2, 0.2, 1);
-	elseif CheckInteractDistance(unit, 4) ~= 1 then
+	elseif not CheckInteractDistance(unit, 4) then
 		rangeBar:SetTexture(0.75, 0.45, 0.2, 1);
-	elseif CheckInteractDistance(unit, 2) ~= 1 then
+	elseif not CheckInteractDistance(unit, 2) then
 		rangeBar:SetTexture(0.75, 0.75, 0.2, 1);
 	else
 		rangeBar:SetTexture(0.2, 0.75, 0.2, 1);
@@ -1115,7 +1115,7 @@ end;
 function OrlanHeal:UpdateBuffTimes(canvas, unit)
 	if canvas.SpecificBuffs ~= nil then
 		for buffIndex = 0, 4 do
-			if canvas.SpecificBuffs[buffIndex] ~= nill then
+			if canvas.SpecificBuffs[buffIndex] ~= nil then
 				self:ShowBuff(canvas.SpecificBuffs[buffIndex]);
 			end;
 		end;
@@ -1123,7 +1123,7 @@ function OrlanHeal:UpdateBuffTimes(canvas, unit)
 
 	if canvas.OtherBuffs ~= nil then
 		for buffIndex = 0, 4 do
-			if canvas.OtherBuffs[buffIndex] ~= nill then
+			if canvas.OtherBuffs[buffIndex] ~= nil then
 				self:ShowBuff(canvas.OtherBuffs[buffIndex]);
 			end;
 		end;
@@ -1173,7 +1173,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 
 	if canvas.SpecificBuffs ~= nil then
 		for buffIndex = 0, 4 do
-			if canvas.SpecificBuffs[buffIndex] ~= nill then
+			if canvas.SpecificBuffs[buffIndex] ~= nil then
 				canvas.SpecificBuffs[buffIndex].CurrentBuff = self:GetLastBuffOfKind(goodBuffs, goodBuffCount, buffIndex + 1);
 			end;
 		end;
@@ -1181,7 +1181,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 
 	if canvas.OtherBuffs ~= nil then
 		for buffIndex = 0, 4 do
-			if canvas.OtherBuffs[buffIndex] ~= nill then
+			if canvas.OtherBuffs[buffIndex] ~= nil then
 				canvas.OtherBuffs[buffIndex].CurrentBuff = self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 0);
 			end;
 		end;
@@ -1192,7 +1192,7 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 	local specialDebuffCount = 0;
 	local specialDebuffs = {};
 	local buffIndex = 1;
-	local canAssist = UnitCanAssist("player", unit) == 1;
+	local canAssist = UnitCanAssist("player", unit);
 	while true do
 		local name, _, icon, count, dispelType, duration, expires, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
 		if name == nil then break; end;
