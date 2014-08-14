@@ -51,7 +51,6 @@ end;
 
 OrlanHeal.Paladin.AvailableSpells =
 {
-	635, -- Holy Light
 	19750, -- Flash of Light
 	1022, -- Hand of Protection
 	4987, -- Cleanse
@@ -59,7 +58,7 @@ OrlanHeal.Paladin.AvailableSpells =
 	633, -- Lay on Hands
 	85673, -- Word of Glory
 	1038, -- Hand of Salvation
-	82326, -- Divine Light
+	82326, -- Holy Light
 	53563, -- Beacon of Light
 	6940, -- Hand of Sacrifice
 	1044, -- Hand of Freedom
@@ -285,12 +284,11 @@ OrlanHeal.Paladin.CooldownOptions =
 function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 
-	config["1"] = 635; -- Holy Light
+	config["1"] = 82326; -- Holy Light
 	config["2"] = 19750; -- Flash of Light
 	config["3"] = 1022; -- Hand of Protection
 	config["shift2"] = 53563; -- Beacon of Light
 	config["shift3"] = 1038; -- Hand of Salvation
-	config["control1"] = 82326; -- Divine Light
 	config["control2"] = 85673; -- Word of Glory
 	config["control3"] = 6940; -- Hand of Sacrifice
 	config["alt1"] = 4987; -- Cleanse
@@ -333,6 +331,9 @@ end;
 function OrlanHeal.Paladin.LoadConfig(orlanHeal)
 	if (orlanHeal.Config["controlalt1update"] ~= 1) and (orlanHeal.Config["controlalt1"] == "") then
 		orlanHeal.Config["controlalt1"] = 82327; -- Holy Radiance
+	end;
+	if orlanHeal.Config["1"] == 635 then -- legacy Holy Light
+		orlanHeal.Config["1"] = 82326; -- Holy Light
 	end;
 	orlanHeal.Config["controlalt1update"] = 1;
 end;
