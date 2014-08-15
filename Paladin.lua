@@ -59,6 +59,8 @@ OrlanHeal.Paladin.AvailableSpells =
 	85673, -- Word of Glory
 	82326, -- Holy Light
 	53563, -- Beacon of Light
+	156910, -- Частица Веры
+	157007, -- Beacon of Insight
 	6940, -- Hand of Sacrifice
 	1044, -- Hand of Freedom
 	59542, -- Дар наауру
@@ -195,6 +197,16 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 53563, -- Beacon of Light
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
+	BeaconOfFaith =
+	{
+		SpellId = 156910, -- Beacon of Faith
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	BeaconOfInsight =
+	{
+		SpellId = 157007, -- Beacon of Insight
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
 	SpeedOfLight =
 	{
 		SpellId = 85499, -- Speed of Light
@@ -239,6 +251,11 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 105809, -- Holy Avenger
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	TurnEvil =
+	{
+		SpellId = 10326, -- Turn Evil
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -249,12 +266,12 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["2"] = 19750; -- Flash of Light
 	config["3"] = 1022; -- Hand of Protection
 	config["shift2"] = 53563; -- Beacon of Light
+	config["control1"] = 82327; -- Holy Radiance
 	config["control2"] = 85673; -- Word of Glory
 	config["control3"] = 6940; -- Hand of Sacrifice
 	config["alt1"] = 4987; -- Cleanse
 	config["alt2"] = 20473; -- Holy Shock
 	config["alt3"] = 633; -- Lay on Hands
-	config["controlalt1"] = 82327; -- Holy Radiance
 	config["controlalt2"] = 20925; -- Sacred Shield
 	config["altshift1"] = 114039; -- Hand of Purity
 	config["altshift3"] = 7328; -- Redemption
@@ -287,6 +304,9 @@ function OrlanHeal.Paladin.LoadConfig(orlanHeal)
 	end;
 	if orlanHeal.Config["1"] == 635 then -- legacy Holy Light
 		orlanHeal.Config["1"] = 82326; -- Holy Light
+		if orlanHeal.Config["control1"] == 82326 then -- Holy Light
+			orlanHeal.Config["control1"] = 82327; -- Holy Radiance
+		end;
 	end;
 	orlanHeal.Config["controlalt1update"] = 1;
 end;
@@ -328,6 +348,8 @@ OrlanHeal.Paladin.PlayerSpecificBuffCount = 2;
 function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
 	if (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- своя Частица Света
+			(spellId == 156910) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- своя Частица Веры
+			(spellId == 157007) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- own Beacon of Insight
 			(spellId == 1022) or -- Длань защиты
 			(spellId == 6940) or -- Hand of Sacrifice
 			(spellId == 114039) then -- Hand of Purity
