@@ -206,7 +206,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	BeaconOfInsight =
 	{
 		SpellId = 157007, -- Beacon of Insight
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateRaidBuffCooldown
 	},
 	SpeedOfLight =
 	{
