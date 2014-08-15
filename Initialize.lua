@@ -65,13 +65,16 @@
 		print("OrlanHeal: " .. className .. " class support in not completely implemented yet.");
 	end;
 
-	C_Timer.NewTicker(
-		1.0 / orlanHeal.FrameRate,
-		function()
-			if orlanHeal.RaidWindow:IsShown() then
+	self.ElapsedAfterUpdate = 0;
+	function self.EventFrame:HandleUpdate(elapsed)
+		if orlanHeal.RaidWindow:IsShown() then
+			orlanHeal.ElapsedAfterUpdate = orlanHeal.ElapsedAfterUpdate + elapsed;
+			if orlanHeal.ElapsedAfterUpdate > 1.0 / orlanHeal.FrameRate then
 				orlanHeal:UpdateStatus();
+				orlanHeal.ElapsedAfterUpdate = 0;
 			end;
-		end);
+		end;
+	end;
 
 	self.EventFrame:RegisterEvent("ADDON_LOADED");
 	self.EventFrame:SetScript("OnEvent", self.EventFrame.HandleEvent);
