@@ -326,17 +326,9 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 	end;
 	duration = duration or 0;
 	expirationTime = expirationTime or 0;
-	if expirationTime ~= window.Off then
-		window.Off = expirationTime;
-		if (duration ~= 0) and (expirationTime ~= 0) then
-			window:SetCooldown(expirationTime - duration, duration);
-		else
-			window:SetCooldown(0, 10);
-		end;
-	end;
 
 	if (window.Cooldown.SpellId and 
-				FindSpellBookSlotBySpellID(window.Cooldown.SpellId) and 
+				IsSpellKnown(window.Cooldown.SpellId) and 
 				((duration ~= 0) or 
 					window.Cooldown.IsReverse or 
 					IsUsableSpell(window.Cooldown.SpellId))) or
@@ -345,10 +337,23 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 			window.Cooldown.MacroText then
 		window.Dark = false;
 		window:SetReverse(isReverse);
+		window:SetHideCountdownNumbers(false);
+
+		if expirationTime ~= window.Off then
+			window.Off = expirationTime;
+			if (duration ~= 0) and (expirationTime ~= 0) then
+				window:SetCooldown(expirationTime - duration, duration);
+			else
+				window:SetCooldown(GetTime() - 20, 10);
+			end;
+		end;
 	else
-		window:SetReverse(true);
+		window:SetReverse(false);
 		if not window.Dark then
-			window:SetCooldown(0, 10);
+			local time = GetTime();
+			window.Off = time + 10000000;
+			window:SetCooldown(time, 10000000);
+			window:SetHideCountdownNumbers(true);
 			window.Dark = true;
 		end;
 	end;
