@@ -189,6 +189,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	SacredShield =
 	{
 		SpellId = 20925, -- Sacred Shield
+		AuraId = 148039, -- Sacred Shield
 		IsReverse = true,
 		Update = OrlanHeal.UpdateRaidBuffCooldown
 	},
@@ -266,6 +267,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["2"] = 19750; -- Flash of Light
 	config["3"] = 1022; -- Hand of Protection
 	config["shift2"] = 53563; -- Beacon of Light
+	config["shift3"] = 157007; -- Beacon of Insight
 	config["control1"] = 82327; -- Holy Radiance
 	config["control2"] = 85673; -- Word of Glory
 	config["control3"] = 6940; -- Hand of Sacrifice
@@ -274,24 +276,29 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["alt3"] = 633; -- Lay on Hands
 	config["controlalt2"] = 20925; -- Sacred Shield
 	config["altshift1"] = 114039; -- Hand of Purity
+	config["altshift2"] = 156910; -- Beacon of Faith
 	config["altshift3"] = 7328; -- Redemption
 
 	config["cooldown1"] = "Cleanse";
-	config["cooldown2"] = "BeaconOfLight";
-	config["cooldown4"] = "LightOfDawn";
-	config["cooldown5"] = "LayOnHands";
-	config["cooldown6"] = "AvengingWrath";
-	config["cooldown9"] = "AuraMastery";
+	config["cooldown2"] = "BeaconOfInsight";
+	config["cooldown3"] = "LightOfDawn";
+	config["cooldown4"] = "SpeedOfLight";
+	config["cooldown5"] = "SacredShield";
+	config["cooldown6"] = "LayOnHands";
+	config["cooldown7"] = "AvengingWrath"; 
+	config["cooldown8"] = "DivineShield"; 
+	config["cooldown9"] = "DivineProtection"; 
+	config["cooldown10"] = "AuraMastery";
 	config["cooldown11"] = "HandOfProtection";
 	config["cooldown12"] = "HandOfPurity";
 	config["cooldown13"] = "HandOfSacrifice";
-	config["cooldown15"] = "HandOfFreedom";
+	config["cooldown14"] = "HandOfFreedom";
+	config["cooldown15"] = "BlindingLight";
 	config["cooldown16"] = "HolyPrism";
-	config["cooldown17"] = "BlindingLight";
-	config["cooldown18"] = "SpeedOfLight";
+	config["cooldown17"] = "LightsHammer";
+	config["cooldown18"] = "ExecutionSentence";
 	config["cooldown19"] = "Repentance";
-	config["cooldown20"] = "SacredShield";
-	config["cooldown22"] = orlanHeal:GetRacialCooldown();
+	config["cooldown20"] = orlanHeal:GetRacialCooldown();
 
 	config["controlalt1update"] = 1;
 
@@ -307,6 +314,9 @@ function OrlanHeal.Paladin.LoadConfig(orlanHeal)
 		if orlanHeal.Config["control1"] == 82326 then -- Holy Light
 			orlanHeal.Config["control1"] = 82327; -- Holy Radiance
 		end;
+	end;
+	if (orlanHeal.Config["shift3"] == "") or (orlanHeal.Config["shift3"] == 1038) then
+		orlanHeal.Config["shift3"] = 157007; -- Beacon of Insight
 	end;
 	orlanHeal.Config["controlalt1update"] = 1;
 end;
