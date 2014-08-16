@@ -212,28 +212,51 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["control3"] = 20484; -- Возрождение
 	config["alt1"] = 88423; -- Nature's Cure
 	config["alt2"] = 774; -- Омоложение
+	config["alt3"] = 102351; -- Cenarion Ward
 	config["controlalt1"] = "17116,5185"; -- Instant Целительное прикосновение
 	config["controlalt2"] = "17116,8936"; -- Instant Восстановление
+	config["altshift1"] = 102693; -- Force of Nature
+	config["altshift2"] = 102401; -- Wild Charge
 	config["altshift3"] = 50769; -- Revive
 
 	config["cooldown1"] = "Lifebloom";
 	config["cooldown2"] = "Swiftmend";
 	config["cooldown3"] = "WildGrowth";
+	config["cooldown4"] = "Genesis";
 	config["cooldown5"] = "NaturesCure";
+
 	config["cooldown6"] = "Barkskin";
 	config["cooldown7"] = "Ironbark";
 	config["cooldown8"] = "MightOfUrsoc";
 	config["cooldown9"] = "MightyBash";
 	config["cooldown10"] = "Tranquility";
+
 	config["cooldown11"] = "Incarnation";
 	config["cooldown12"] = "Dash";
 	config["cooldown13"] = "Growl";
 	config["cooldown14"] = "NaturesSwiftness";
 	config["cooldown15"] = "Rebirth";
+
 	config["cooldown16"] = "HeartOfTheWild";
 	config["cooldown17"] = "Prowl";
 	config["cooldown18"] = "StampedingRoar";
-	config["cooldown23"] = orlanHeal:GetRacialCooldown();
+	config["cooldown19"] = "Typhoon";
+	config["cooldown20"] = "ForceOfNature";
+
+	config["cooldown21"] = "Renewal";
+	config["cooldown22"] = "MassEntanglement";
+	config["cooldown23"] = "DisorientingRoar";
+	config["cooldown24"] = "EntanglingRoots";
+	config["cooldown25"] = "InstantEntanglingRoots";
+
+	config["cooldown26"] = "WildCharge";
+	config["cooldown27"] = "DisplacerBeast";
+	config["cooldown28"] = "UrsolsVortex";
+	config["cooldown29"] = "NaturesVigil";
+	config["cooldown30"] = "CenarionWard";
+
+	config["cooldown31"] = "FaerieSwarm";
+	config["cooldown32"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
