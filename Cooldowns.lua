@@ -195,6 +195,36 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 	self:UpdateCooldown(window, duration, expirationTime, displayedCharges, displayedCharges);
 end;
 
+function OrlanHeal:UpdateAbilitySequenceCooldown(window)
+	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	local expirationTime;
+	if start and duration and (duration ~= 0) and (enabled == 1) then
+		expirationTime = start + duration;
+	else
+		start = nil;
+		duration = nil;
+		expirationTime = nil;
+	end;
+
+	local prefixStart, prefixDuration, prefixEnabled = GetSpellCooldown(window.Cooldown.PrefixSpellId);
+	local prefixExpirationTime;
+	if prefixStart and prefixDuration and (prefixDuration ~= 0) and (prefixEnabled == 1) then
+		prefixExpirationTime = prefixStart + prefixDuration;
+	else
+		prefixStart = nil;
+		prefixDuration = nil;
+		prefixExpirationTime = nil;
+	end;
+
+	if prefixExpirationTime and ((not expirationTime) or (expirationTime < prefixExpirationTime)) then
+		start = prefixStart;
+		duration = prefixDuration;
+		expirationTime = prefixExpirationTime;
+	end;
+
+	self:UpdateCooldown(window, duration, expirationTime, window.Cooldown.Sign, true);
+end;
+
 function OrlanHeal:UpdateItemCooldown(window)
 	local start, duration, enabled = GetInventoryItemCooldown("player", GetInventorySlotInfo(window.Cooldown.SlotName));
 	local expirationTime;
@@ -360,7 +390,7 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 		end;
 	end;
 
-	if count and ((count > 1) or alwaysDisplayCount) then
+	if count and (((type(count) == "number") and (count > 1)) or alwaysDisplayCount) then
 		window.Count:SetText(count);
 	else
 		window.Count:SetText("");

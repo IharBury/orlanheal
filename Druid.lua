@@ -196,6 +196,20 @@ OrlanHeal.Druid.CooldownOptions =
 	{
 		SpellId = 124974,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	EntanglingRoots =
+	{
+		SpellId = 339,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	InstantEntanglingRoots =
+	{
+		MacroText = "/cast " .. GetSpellInfo(132158) .. "\n/cast " .. GetSpellInfo(339),
+		Caption = "Instant " .. GetSpellInfo(339),
+		SpellId = 339, -- Entangling Roots
+		PrefixSpellId = 132158, -- Nature's Swiftness
+		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+		Sign = "I"
 	}
 };
 
