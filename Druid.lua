@@ -278,7 +278,9 @@ function OrlanHeal.Druid.UpdateRaidBorder(orlanHeal)
 	local isSwiftmendReady = IsSpellKnown(18562) and (swiftmendCooldown < 1.5);
 	local isWildGrowthReady = IsSpellKnown(48438) and (wildGrowthCooldown < 1.5);
 	local clearcastingSpellName = GetSpellInfo(16870);
-	if lifebloomExpirationTime and (lifebloomExpirationTime - GetTime() < 4) then
+	if lifebloomExpirationTime 
+			and (lifebloomExpirationTime - GetTime() < 4) 
+			and not orlanHeal:HasGlyph(121840) then -- Glyph of Blooming
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha);
 	elseif UnitBuff("player", clearcastingSpellName) then
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
