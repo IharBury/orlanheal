@@ -78,11 +78,6 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 6795,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	NaturesGrasp =
-	{
-		SpellId = 16689,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	Prowl =
 	{
 		SpellId = 5215,
