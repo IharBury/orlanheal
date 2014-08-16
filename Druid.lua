@@ -155,7 +155,7 @@ OrlanHeal.Druid.CooldownOptions =
 	},
 	HeartOfTheWild =
 	{
-		SpellId = 108288,
+		SpellId = 108294,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	NaturesVigil =
