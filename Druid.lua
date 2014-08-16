@@ -138,16 +138,6 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 132469,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Incarnation =
-	{
-		SpellId = 106731,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	ForceOfNature =
-	{
-		SpellId = 106737,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	DisorientingRoar =
 	{
 		SpellId = 99,
