@@ -337,15 +337,17 @@ end;
 function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 	local infusionOfLightSpellName = GetSpellInfo(54149);
 	local daybreakSpellName = GetSpellInfo(88819);
+	local enhancedHolyShockName = GetSpellInfo(160002);
 	local power = orlanHeal.Paladin.GetEffectiveHolyPower();
 
 	if orlanHeal.Paladin.IsUrgentToSpendHolyPower() and orlanHeal:IsSpellReady(85673) then -- Word of Glory
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.3, 1, 0.3, orlanHeal.RaidBorderAlpha);
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.5, 1, 0.5, orlanHeal.RaidBorderAlpha);
 	elseif (power >= 3) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
 	elseif UnitBuff("player", infusionOfLightSpellName) then -- Infusion of Light
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha);
-	elseif UnitBuff("player", daybreakSpellName) -- Daybreak
+	elseif (UnitBuff("player", daybreakSpellName) -- Daybreak
+				or UnitBuff("player", enhancedHolyShockName)) -- Enhanced Holy Shock
 			and orlanHeal:IsSpellReady(20473) then -- Holy Shock
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
 	elseif orlanHeal:IsSpellReady(20473) then -- Holy Shock
