@@ -6,7 +6,6 @@ OrlanHeal.Druid.AvailableSpells =
 {
 	774, -- Омоложение
 	8936, -- Восстановление
-	50464, -- Покровительство природы
 	18562, -- Быстрое восстановление
 	33763, -- Жизнецвет
 	5185, -- Целительное прикосновение
@@ -20,19 +19,13 @@ OrlanHeal.Druid.AvailableSpells =
 	88423, -- Nature's Cure
 	110309, -- Symbiosis
 	102401, -- Wild Charge
+	145205, -- Wild Mushroom
 	{
 		type = "macro",
 		caption = "Instant " .. GetSpellInfo(8936), -- Восстановление
 		group = GetSpellInfo(132158), -- Природная стремительность
 		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 8936),
 		key = "17116,8936"
-	},
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(50464), -- Покровительство природы
-		group = GetSpellInfo(132158), -- Природная стремительность
-		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 50464),
-		key = "17116,50464"
 	},
 	{
 		type = "macro",
@@ -129,16 +122,6 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 106898,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	WildMushroom =
-	{
-		SpellId = 88747,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	WildMushroomBloom =
-	{
-		SpellId = 102791,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	Symbiosis =
 	{
 		SpellId = 110309,
@@ -219,12 +202,12 @@ OrlanHeal.Druid.CooldownOptions =
 function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 
-	config["1"] = 50464; -- Покровительство природы
+	config["1"] = 5185; -- Целительное прикосновение
 	config["2"] = 8936; -- Восстановление
 	config["3"] = 48438; -- Буйный рост
 	config["shift2"] = 33763; -- Жизнецвет
 	config["shift3"] = 102342; -- Ironbark
-	config["control1"] = 5185; -- Целительное прикосновение
+	config["control1"] = 145205; -- Wild Mushroom
 	config["control2"] = 18562; -- Быстрое восстановление
 	config["control3"] = 20484; -- Возрождение
 	config["alt1"] = 88423; -- Nature's Cure
@@ -255,8 +238,6 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown18"] = "StampedingRoar";
 	config["cooldown19"] = "NaturesGrasp";
 	config["cooldown20"] = "Symbiosis";
-	config["cooldown21"] = "WildMushroom";
-	config["cooldown22"] = "WildMushroomBloom";
 	config["cooldown23"] = orlanHeal:GetRacialCooldown();
 
 	return config;
