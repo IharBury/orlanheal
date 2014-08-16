@@ -278,7 +278,10 @@ function OrlanHeal.Druid.UpdateRaidBorder(orlanHeal)
 	local _, wildGrowthCooldown = GetSpellCooldown(48438);
 	local isSwiftmendReady = IsSpellKnown(18562) and (swiftmendCooldown < 1.5);
 	local isWildGrowthReady = IsSpellKnown(48438) and (wildGrowthCooldown < 1.5);
-	if lifebloomExpirationTime and (lifebloomExpirationTime - GetTime() < 3) then
+	local clearcastingSpellName = GetSpellInfo(16870);
+	if UnitBuff("player", clearcastingSpellName) then
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha);
+	elseif lifebloomExpirationTime and (lifebloomExpirationTime - GetTime() < 3) then
 		if isSwiftmendReady then
 			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.5, 0, orlanHeal.RaidBorderAlpha);
 		else
