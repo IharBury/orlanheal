@@ -257,6 +257,11 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 10326, -- Turn Evil
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HammerOfJustice =
+	{
+		SpellId = 853, -- Hammer of Justice
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -293,12 +298,13 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown12"] = "HandOfPurity";
 	config["cooldown13"] = "HandOfSacrifice";
 	config["cooldown14"] = "HandOfFreedom";
-	config["cooldown15"] = "BlindingLight";
+	config["cooldown15"] = "HammerOfJustice";
 	config["cooldown16"] = "HolyPrism";
 	config["cooldown17"] = "LightsHammer";
 	config["cooldown18"] = "ExecutionSentence";
 	config["cooldown19"] = "Repentance";
-	config["cooldown20"] = orlanHeal:GetRacialCooldown();
+	config["cooldown20"] = "BlindingLight";
+	config["cooldown21"] = orlanHeal:GetRacialCooldown();
 
 	config["controlalt1update"] = 1;
 
