@@ -15,7 +15,6 @@ OrlanHeal.Druid.AvailableSpells =
 	1126, -- Mark of the Wild
 	50769, -- Revive
 	88423, -- Nature's Cure
-	110309, -- Symbiosis
 	102401, -- Wild Charge
 	145205, -- Wild Mushroom
 	{
@@ -107,11 +106,6 @@ OrlanHeal.Druid.CooldownOptions =
 	StampedingRoar =
 	{
 		SpellId = 106898,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	Symbiosis =
-	{
-		SpellId = 110309,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	DisplacerBeast =
