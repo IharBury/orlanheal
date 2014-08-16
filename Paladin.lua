@@ -312,19 +312,6 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 end;
 
 function OrlanHeal.Paladin.LoadConfig(orlanHeal)
-	if (orlanHeal.Config["controlalt1update"] ~= 1) and (orlanHeal.Config["controlalt1"] == "") then
-		orlanHeal.Config["controlalt1"] = 82327; -- Holy Radiance
-	end;
-	if orlanHeal.Config["1"] == 635 then -- legacy Holy Light
-		orlanHeal.Config["1"] = 82326; -- Holy Light
-		if orlanHeal.Config["control1"] == 82326 then -- Holy Light
-			orlanHeal.Config["control1"] = 82327; -- Holy Radiance
-		end;
-	end;
-	if (orlanHeal.Config["shift3"] == "") or (orlanHeal.Config["shift3"] == 1038) then
-		orlanHeal.Config["shift3"] = 157007; -- Beacon of Insight
-	end;
-	orlanHeal.Config["controlalt1update"] = 1;
 end;
 
 function OrlanHeal.Paladin.GetConfigPresets(orlanHeal)

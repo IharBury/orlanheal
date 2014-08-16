@@ -187,9 +187,9 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 106707, -- Faerie Swarm
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	IncarnationTreeOfLife =
+	Incarnation =
 	{
-		SpellId = 33891,
+		SpellId = 33891, -- Incarnation: Tree of Life
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	ForceOfNature =
@@ -219,7 +219,6 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown1"] = "Lifebloom";
 	config["cooldown2"] = "Swiftmend";
 	config["cooldown3"] = "WildGrowth";
-	config["cooldown4"] = "Innervate";
 	config["cooldown5"] = "NaturesCure";
 	config["cooldown6"] = "Barkskin";
 	config["cooldown7"] = "Ironbark";
@@ -234,8 +233,6 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown16"] = "HeartOfTheWild";
 	config["cooldown17"] = "Prowl";
 	config["cooldown18"] = "StampedingRoar";
-	config["cooldown19"] = "NaturesGrasp";
-	config["cooldown20"] = "Symbiosis";
 	config["cooldown23"] = orlanHeal:GetRacialCooldown();
 
 	return config;
