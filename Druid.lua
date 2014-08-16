@@ -10,7 +10,6 @@ OrlanHeal.Druid.AvailableSpells =
 	33763, -- Жизнецвет
 	5185, -- Целительное прикосновение
 	20484, -- Возрождение
-	29166, -- Озарение
 	467, -- Шипы
 	48438, -- Буйный рост
 	102342, -- Ironbark
@@ -43,11 +42,6 @@ OrlanHeal.Druid.CooldownOptions =
 	Rebirth =
 	{
 		SpellId = 20484,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	Innervate =
-	{
-		SpellId = 29166,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Lifebloom =
@@ -240,7 +234,6 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["control3"] = 20484; -- Возрождение
 	config["alt1"] = 88423; -- Nature's Cure
 	config["alt2"] = 774; -- Омоложение
-	config["alt3"] = 29166; -- Озарение
 	config["controlalt1"] = "17116,5185"; -- Instant Целительное прикосновение
 	config["controlalt2"] = "17116,8936"; -- Instant Восстановление
 	config["altshift3"] = 50769; -- Revive
