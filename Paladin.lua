@@ -361,20 +361,21 @@ function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 	end;
 end;
 
-OrlanHeal.Paladin.PlayerSpecificBuffCount = 2;
+OrlanHeal.Paladin.PlayerSpecificBuffCount = 3;
 
 function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
 	if (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- своя Частица Света
-			(spellId == 156910) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- своя Частица Веры
-			(spellId == 157007) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- own Beacon of Insight
+			(spellId == 156910) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- своя Частица Веры
+		buffKind = 1;
+	elseif (spellId == 157007) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- own Beacon of Insight
 			(spellId == 1022) or -- Длань защиты
 			(spellId == 6940) or -- Hand of Sacrifice
 			(spellId == 114039) then -- Hand of Purity
-		buffKind = 1;
+		buffKind = 2;
 	elseif (spellId == 156322) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- свой Eternal Flame
 			(spellId == 20925) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- свой Sacred Shield
-		buffKind = 2;
+		buffKind = 3;
 	end;
 
 	return buffKind;
