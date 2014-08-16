@@ -1304,3 +1304,13 @@ end;
 function OrlanHeal:ResetEventHandlers()
 	self.EventSubscriptions = {};
 end;
+
+function OrlanHeal:HasGlyph(glyphId)
+	for socket = 1, NUM_GLYPH_SLOTS do
+		local _, _, _, currentGlyphId = GetGlyphSocketInfo(socket);
+		if currentGlyphId == glyphId then
+			return true;
+		end;
+	end;
+	return false;
+end;
