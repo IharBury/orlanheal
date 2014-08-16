@@ -302,21 +302,17 @@ function OrlanHeal.Druid.UpdateRaidBorder(orlanHeal)
 	end;
 end;
 
-OrlanHeal.Druid.PlayerSpecificBuffCount = 3;
+OrlanHeal.Druid.PlayerSpecificBuffCount = 4;
 
 function OrlanHeal.Druid.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
-	if spellId == 774 then -- Омоложение
-		if (caster ~= nil) and UnitIsUnit(caster, "player") then -- своё
-			buffKind = 1;
-		else
-			buffKind = 4;
-		end;
-	elseif spellId == 8936 then -- Восстановление
+	if (spellId == 774) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- своё Омоложение
+		buffKind = 1;
+	elseif (spellId == 155777) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- own Rejuvenation (Germination)
 		buffKind = 2;
-	elseif spellId == 33763 and (caster ~= nil) and UnitIsUnit(caster, "player") then -- свой Жизнецвет
+	elseif spellId == 8936 then -- Восстановление
 		buffKind = 3;
-	elseif spellId == 467 then -- Шипы
+	elseif spellId == 33763 and (caster ~= nil) and UnitIsUnit(caster, "player") then -- свой Жизнецвет
 		buffKind = 4;
 	end;
 	return buffKind;
