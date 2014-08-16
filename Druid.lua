@@ -210,6 +210,11 @@ OrlanHeal.Druid.CooldownOptions =
 		PrefixSpellId = 132158, -- Nature's Swiftness
 		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
 		Sign = "I"
+	},
+	Genesis =
+	{
+		SpellId = 145518, -- Genesis
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
