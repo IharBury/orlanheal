@@ -34,7 +34,8 @@ OrlanHeal.Druid.AvailableSpells =
 		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 5185),
 		key = "17116,5185"
 	},
-	102351 -- Cenarion Ward
+	102351, -- Cenarion Ward
+	102693 -- Force of Nature
 }
 
 OrlanHeal.Druid.CooldownOptions =
@@ -212,6 +213,16 @@ OrlanHeal.Druid.CooldownOptions =
 	FaerieSwarm =
 	{
 		SpellId = 106707, -- Faerie Swarm
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	IncarnationTreeOfLife =
+	{
+		SpellId = 33891,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	ForceOfNature =
+	{
+		SpellId = 102693,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
