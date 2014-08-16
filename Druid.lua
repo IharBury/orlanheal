@@ -208,6 +208,11 @@ OrlanHeal.Druid.CooldownOptions =
 	{
 		SpellId = 145518, -- Genesis
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	FaerieSwarm =
+	{
+		SpellId = 106707, -- Faerie Swarm
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
