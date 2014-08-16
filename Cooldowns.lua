@@ -349,7 +349,9 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 		end;
 	else
 		window:SetReverse(false);
-		if not window.Dark or not window:GetCooldownDuration() then
+		if not window.Dark 
+				or not window:GetCooldownDuration()
+				or window:GetCooldownDuration() == 0 then
 			local time = GetTime();
 			window.Off = time + 10000000;
 			window:SetCooldown(time, 10000000);
