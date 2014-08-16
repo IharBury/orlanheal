@@ -194,7 +194,13 @@ OrlanHeal.Druid.CooldownOptions =
 	},
 	ForceOfNature =
 	{
-		SpellId = 102693,
+		SpellId = 102693, -- Force of Nature
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	WildMushroom =
+	{
+		MacroText = "/cast " .. GetSpellInfo(145205),
+		SpellId = 145205, -- Wild Mushroom
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
@@ -256,7 +262,8 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown30"] = "CenarionWard";
 
 	config["cooldown31"] = "FaerieSwarm";
-	config["cooldown32"] = orlanHeal:GetRacialCooldown();
+	config["cooldown32"] = "WildMushroom";
+	config["cooldown33"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
