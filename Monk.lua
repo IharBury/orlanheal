@@ -256,14 +256,6 @@ OrlanHeal.Monk.CooldownOptions =
 		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
 		Group = GetSpellInfo(116670)
 	},
-	GlyphedUplift =
-	{
-		MacroText = "/cast " .. GetSpellInfo(116670),
-		SpellId = 130316,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Caption = "Glyphed " .. GetSpellInfo(130316),
-		Group = GetSpellInfo(116670)
-	},
 	ThunderFocusTea =
 	{
 		SpellId = 116680,
@@ -276,15 +268,6 @@ OrlanHeal.Monk.CooldownOptions =
 		ChiCost = (OrlanHeal.Monk.GetChiCost(116680) or 0) + (OrlanHeal.Monk.GetChiCost(116670) or 0),
 		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
 		Caption = "Refreshing " .. GetSpellInfo(116670), -- Uplift
-		Group = GetSpellInfo(116670)
-	},
-	GlyphedRefreshingUplift =
-	{
-		MacroText = OrlanHeal:BuildCastSequenceMacro(116680, 116670), -- Thunder Focus Tea + Uplift
-		SpellId = 119607, -- Different visual for Renewing Mist
-		ChiCost = OrlanHeal.Monk.GetChiCost(116680),
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
-		Caption = "Glyphed Refreshing " .. GetSpellInfo(116670), -- Uplift
 		Group = GetSpellInfo(116670)
 	},
 	TigerPalm =
