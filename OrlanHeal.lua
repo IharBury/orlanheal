@@ -1290,7 +1290,11 @@ function OrlanHeal:BuildClickName(hasControl, hasShift, hasAlt, buttonBinding)
 end;
 
 function OrlanHeal:BuildCastSequenceMacro(spellId1, spellId2)
-	return "/cast " .. GetSpellInfo(spellId1) .. "\n/cast [target=mouseover] " .. GetSpellInfo(spellId2);
+	return "/cast " .. GetSpellInfo(spellId1) .. "\n" .. self:BuildMouseOverCastMacro(spellId2);
+end;
+
+function OrlanHeal:BuildMouseOverCastMacro(spellId)
+	return "/cast [target=mouseover] " .. GetSpellInfo(spellId);
 end;
 
 function OrlanHeal:RegisterUnitEventHandler(event, unit, handler)

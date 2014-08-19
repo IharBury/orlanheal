@@ -13,6 +13,8 @@
 			end;
 		elseif (event == "ACTIVE_TALENT_GROUP_CHANGED") then
 			orlanHeal:HandleTalentGroupChanged();
+		elseif (event == "PLAYER_TALENT_UPDATE") then
+			orlanHeal:SetupCooldowns();
 		elseif (event == "GROUP_ROSTER_UPDATE") or
 				(event == "PARTY_CONVERTED_TO_RAID") or
 				(event == "PARTY_LEADER_CHANGED") or
@@ -113,6 +115,7 @@ function OrlanHeal:HandleLoaded()
 	self.EventFrame:RegisterEvent("PLAYER_ROLES_ASSIGNED");
 	self.EventFrame:RegisterEvent("ROLE_CHANGED_INFORM");
 	self.EventFrame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED");
+	self.EventFrame:RegisterEvent("PLAYER_TALENT_UPDATE");
 end;
 
 OrlanHeal:Initialize("OrlanHealGlobalConfig", "OrlanHealConfig");

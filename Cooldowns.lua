@@ -178,8 +178,9 @@ function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(window)
 end;
 
 function OrlanHeal:UpdateAbilityCooldown(window)
-	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
-	local currentCharges, maxCharges = GetSpellCharges(GetSpellInfo(window.Cooldown.SpellId));
+	local spellName = GetSpellInfo(window.Cooldown.SpellId);
+	local start, duration, enabled = GetSpellCooldown(spellName);
+	local currentCharges, maxCharges = GetSpellCharges(spellName);
 	local displayedCharges;
 	if (maxCharges and (maxCharges > 1)) then
 		displayedCharges = currentCharges;
