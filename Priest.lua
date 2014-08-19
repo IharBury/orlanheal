@@ -96,31 +96,12 @@ OrlanHeal.Priest.AvailableSpells =
 	47540, -- Исповедь
 	10060, -- Придание сил
 	73325, -- Духовное рвение
-	{
-		type = "macro",
-		caption = "Critical " .. GetSpellInfo(2061), -- Быстрое исцеление
-		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2061),
-		key = "89485,2061"
-	},
-	{
-		type = "macro",
-		caption = "Critical " .. GetSpellInfo(2060), -- Великое исцеление
-		group = GetSpellInfo(89485), -- Внутреннее сосредоточение
-		macrotext = OrlanHeal:BuildCastSequenceMacro(89485, 2060),
-		key = "89485,2060"
-	},
 	108968, -- Void Shift
 	596 -- Prayer of Healing
 }
 
 OrlanHeal.Priest.CooldownOptions =
 {
-	InnerFocus =
-	{
-		SpellId = 89485,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	PowerWordShield =
 	{
 		SpellId = 17,
@@ -412,11 +393,8 @@ function OrlanHeal.Priest.GetDisciplineDefaultConfig(orlanHeal)
 
 	config["3"] = 33206; -- Pain Suppression
 	config["control2"] = 47540; -- Penance
-	config["controlaltshift1"] = "89485,2060"; -- Critical Greater Heal
-	config["controlaltshift2"] = "89485,2061"; -- Critical Flash Heal
 
 	config["cooldown3"] = "Penance";
-	config["cooldown6"] = "InnerFocus";
 	config["cooldown10"] = "Archangel";
 	config["cooldown11"] = "PowerWordBarrier";
 	config["cooldown12"] = "SpiritShell";
