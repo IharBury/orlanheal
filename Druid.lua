@@ -32,7 +32,8 @@ OrlanHeal.Druid.AvailableSpells =
 		key = "17116,5185"
 	},
 	102351, -- Cenarion Ward
-	102693 -- Force of Nature
+	102693, -- Force of Nature
+	145518 -- Genesis
 }
 
 OrlanHeal.Druid.CooldownOptions =
@@ -203,6 +204,7 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["alt3"] = 102351; -- Cenarion Ward
 	config["controlalt1"] = "17116,5185"; -- Instant Целительное прикосновение
 	config["controlalt2"] = "17116,8936"; -- Instant Восстановление
+	config["controlalt3"] = 145518; -- Genesis
 	config["altshift1"] = 102693; -- Force of Nature
 	config["altshift2"] = 102401; -- Wild Charge
 	config["altshift3"] = 50769; -- Revive
