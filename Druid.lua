@@ -134,19 +134,10 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 175682, -- Nature's Control
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	DisorientingRoar =
+	UrsolsPower =
 	{
-		SpellId = 99,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	UrsolsVortex =
-	{
-		SpellId = 102793,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	MightyBash =
-	{
-		SpellId = 5211,
+		MacroText = "/cast " .. GetSpellInfo(175683),
+		SpellId = 175683, -- Ursol's Power
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HeartOfTheWild =
@@ -221,38 +212,30 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown3"] = "WildGrowth";
 	config["cooldown4"] = "Genesis";
 	config["cooldown5"] = "NaturesCure";
-
 	config["cooldown6"] = "Barkskin";
 	config["cooldown7"] = "Ironbark";
 	config["cooldown8"] = "MightOfUrsoc";
-	config["cooldown9"] = "MightyBash";
+	config["cooldown9"] = "UrsolsPower";
 	config["cooldown10"] = "Tranquility";
-
 	config["cooldown11"] = "Incarnation";
 	config["cooldown12"] = "Dash";
 	config["cooldown13"] = "Growl";
 	config["cooldown14"] = "NaturesSwiftness";
 	config["cooldown15"] = "Rebirth";
-
 	config["cooldown16"] = "HeartOfTheWild";
 	config["cooldown17"] = "Prowl";
 	config["cooldown18"] = "StampedingRoar";
 	config["cooldown19"] = "NaturesControl";
 	config["cooldown20"] = "ForceOfNature";
-
 	config["cooldown21"] = "Renewal";
-	config["cooldown23"] = "DisorientingRoar";
-	config["cooldown24"] = "EntanglingRoots";
-	config["cooldown25"] = "InstantEntanglingRoots";
-
+	config["cooldown22"] = "EntanglingRoots";
+	config["cooldown23"] = "InstantEntanglingRoots";
+	config["cooldown24"] = "DisplacerBeast";
+	config["cooldown25"] = "WildMushroom";
 	config["cooldown26"] = "WildCharge";
-	config["cooldown27"] = "DisplacerBeast";
-	config["cooldown28"] = "UrsolsVortex";
-	config["cooldown29"] = "NaturesVigil";
-	config["cooldown30"] = "CenarionWard";
-
-	config["cooldown32"] = "WildMushroom";
-	config["cooldown33"] = orlanHeal:GetRacialCooldown();
+	config["cooldown27"] = "NaturesVigil";
+	config["cooldown28"] = "CenarionWard";
+	config["cooldown29"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
