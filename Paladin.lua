@@ -70,7 +70,12 @@ OrlanHeal.Paladin.AvailableSpells =
 	82327, -- Holy Radiance
 	20925, -- Sacred Shield
 	114039, -- Hand of Purity
-	114165, -- Holy Prism
+	{
+		type = "macro",
+		caption = GetSpellInfo(175699), -- Weapons of Light
+		macrotext = OrlanHeal:BuildMouseOverCastMacro(175699),
+		key = 175699
+	},
 	114157 -- Execution Sentence
 };
 
@@ -218,19 +223,10 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 114039, -- Hand of Purity
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	HolyPrism =
+	WeaponsOfTheLight =
 	{
-		SpellId = 114165, -- Holy Prism
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	LightsHammer =
-	{
-		SpellId = 114158, -- Light's Hammer
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	ExecutionSentence =
-	{
-		SpellId = 114157, -- Execution Sentence
+		MacroText = "/cast " .. GetSpellInfo(175699),
+		SpellId = 175699, -- Weapons of the Light
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	BlindingLight =
@@ -279,6 +275,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["alt1"] = 4987; -- Cleanse
 	config["alt2"] = 20473; -- Holy Shock
 	config["alt3"] = 633; -- Lay on Hands
+	config["controlalt1"] = 175699; -- Weapons of Light
 	config["controlalt2"] = 20925; -- Sacred Shield
 	config["altshift1"] = 114039; -- Hand of Purity
 	config["altshift2"] = 156910; -- Beacon of Faith
@@ -299,14 +296,10 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown13"] = "HandOfSacrifice";
 	config["cooldown14"] = "HandOfFreedom";
 	config["cooldown15"] = "HammerOfJustice";
-	config["cooldown16"] = "HolyPrism";
-	config["cooldown17"] = "LightsHammer";
-	config["cooldown18"] = "ExecutionSentence";
-	config["cooldown19"] = "Repentance";
-	config["cooldown20"] = "BlindingLight";
-	config["cooldown21"] = orlanHeal:GetRacialCooldown();
-
-	config["controlalt1update"] = 1;
+	config["cooldown16"] = "WeaponsOfTheLight";
+	config["cooldown17"] = "Repentance";
+	config["cooldown18"] = "BlindingLight";
+	config["cooldown19"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
