@@ -18,7 +18,6 @@ end;
 
 OrlanHeal.Shaman.AvailableSpells =
 {
-	331, -- Волна исцеления
 	974, -- Щит земли
 	51886, -- Очищение духа
 	8004, -- Исцеляющий всплеск
@@ -27,13 +26,6 @@ OrlanHeal.Shaman.AvailableSpells =
 	77472, -- Великая волна исцеления
 	61295, -- Быстрина
 	73680, -- Высвободить чары стихий
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(331), -- Волна исцеления
-		group = GetSpellInfo(16188), -- Природная стремительность
-		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 331),
-		key = "16188,331"
-	},
 	{
 		type = "macro",
 		caption = "Instant " .. GetSpellInfo(8004), -- Исцеляющий всплеск
@@ -328,7 +320,6 @@ OrlanHeal.Shaman.CooldownOptions =
 function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 
-	config["1"] = 331; -- Волна исцеления
 	config["2"] = 8004; -- Исцеляющий всплеск
 	config["3"] = 73680; -- Высвободить чары стихий
 	config["shift2"] = 974; -- Щит земли
