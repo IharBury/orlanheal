@@ -128,14 +128,10 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 102351,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	MassEntanglement =
+	NaturesControl =
 	{
-		SpellId = 102359,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	Typhoon =
-	{
-		SpellId = 132469,
+		MacroText = "/cast " .. GetSpellInfo(175682),
+		SpellId = 175682, -- Nature's Control
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	DisorientingRoar =
@@ -180,11 +176,6 @@ OrlanHeal.Druid.CooldownOptions =
 	Genesis =
 	{
 		SpellId = 145518, -- Genesis
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	FaerieSwarm =
-	{
-		SpellId = 106707, -- Faerie Swarm
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Incarnation =
@@ -246,11 +237,10 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown16"] = "HeartOfTheWild";
 	config["cooldown17"] = "Prowl";
 	config["cooldown18"] = "StampedingRoar";
-	config["cooldown19"] = "Typhoon";
+	config["cooldown19"] = "NaturesControl";
 	config["cooldown20"] = "ForceOfNature";
 
 	config["cooldown21"] = "Renewal";
-	config["cooldown22"] = "MassEntanglement";
 	config["cooldown23"] = "DisorientingRoar";
 	config["cooldown24"] = "EntanglingRoots";
 	config["cooldown25"] = "InstantEntanglingRoots";
@@ -261,7 +251,6 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown29"] = "NaturesVigil";
 	config["cooldown30"] = "CenarionWard";
 
-	config["cooldown31"] = "FaerieSwarm";
 	config["cooldown32"] = "WildMushroom";
 	config["cooldown33"] = orlanHeal:GetRacialCooldown();
 
