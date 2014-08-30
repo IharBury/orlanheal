@@ -178,6 +178,11 @@ function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(window)
 end;
 
 function OrlanHeal:UpdateAbilityCooldown(window)
+	if not IsSpellKnown(window.Cooldown.SpellId) then
+		self:UpdateCooldown(window);
+		return;
+	end;
+
 	local spellName = GetSpellInfo(window.Cooldown.SpellId);
 	local start, duration, enabled = GetSpellCooldown(spellName);
 	local currentCharges, maxCharges = GetSpellCharges(spellName);
@@ -400,54 +405,6 @@ end;
 
 OrlanHeal.CommonCooldownOptions =
 {
-	Lifeblood1 =
-	{
-		SpellId = 81708, -- Lifeblood (Rank 1)
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Lifeblood"
-	},
-	Lifeblood2 =
-	{
-		SpellId = 55428, -- Lifeblood (Rank 2)
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Lifeblood"
-	},
-	Lifeblood3 =
-	{
-		SpellId = 55480, -- Lifeblood (Rank 3)
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Lifeblood"
-	},
-	Lifeblood4 =
-	{
-		SpellId = 55500, -- Lifeblood (Rank 4)
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Lifeblood"
-	},
-	Lifeblood5 =
-	{
-		SpellId = 55501, -- Lifeblood (Rank 5)
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Lifeblood"
-	},
-	Lifeblood6 =
-	{
-		SpellId = 55502, -- Lifeblood (Rank 6)
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Lifeblood"
-	},
-	Lifeblood7 =
-	{
-		SpellId = 55503, -- Lifeblood (Rank 7)
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Lifeblood"
-	},
-	Lifeblood8 =
-	{
-		SpellId = 74497, -- Lifeblood (Rank 8)
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Lifeblood"
-	},
 	Back =
 	{
 		SlotName = "BackSlot",
