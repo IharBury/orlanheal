@@ -23,7 +23,7 @@ OrlanHeal.Shaman.AvailableSpells =
 	8004, -- Исцеляющий всплеск
 	546, -- Хождение по воде
 	1064, -- Цепное исцеление
-	77472, -- Великая волна исцеления
+	77472, -- Healing Wave
 	61295, -- Быстрина
 	73680, -- Высвободить чары стихий
 	{
@@ -53,9 +53,16 @@ OrlanHeal.Shaman.AvailableSpells =
 
 OrlanHeal.Shaman.CooldownOptions =
 {
+	LightningShield =
+	{
+		SpellId = 324, -- Lightning Shield
+		IsReverse = true,
+		Update = OrlanHeal.UpdatePlayerBuffCooldown
+	},
 	WaterShield =
 	{
-		SpellId = 52127, -- Водный щит
+		SpellId = 324, -- Lightning Shield
+		AuraId = 52127, -- Water Shield
 		IsReverse = true,
 		Update = OrlanHeal.UpdatePlayerBuffCooldown
 	},
@@ -69,12 +76,6 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 16188, -- Природная стремительность
 		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	ManaTideTotem =
-	{
-		SpellId = 16190, -- Тотем прилива маны
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Water Totems"
 	},
 	HealingStreamTotem =
 	{
@@ -243,12 +244,6 @@ OrlanHeal.Shaman.CooldownOptions =
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Air Totems"
 	},
-	StormlashTotem =
-	{
-		SpellId = 120668,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Air Totems"
-	},
 	WindwalkTotem =
 	{
 		SpellId = 108273,
@@ -264,13 +259,6 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 108287,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	EarthlivingWeapon =
-	{
-		SpellId = 51730, -- Оружие жизни земли
-		IsReverse = true,
-		Duration = 60 * 60,
-		Update = OrlanHeal.UpdateMainHandTemporaryEnchantCooldown
 	},
 	Ascendance =
 	{
@@ -304,38 +292,36 @@ OrlanHeal.Shaman.CooldownOptions =
 		SpellId = 117014,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Symbiosis =
-	{
-		SpellId = 110504,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	CleanseSpirit =
 	{
 		SpellId = 51886,
 		DispelId = 77130,
 		Update = OrlanHeal.Shaman.UpdateDispelCooldown
+	},
+	TotemicRecall =
+	{
+		SpellId = 36936,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
 function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 
+	config["1"] = 77472; -- Healing Wave
 	config["2"] = 8004; -- Исцеляющий всплеск
 	config["3"] = 73680; -- Высвободить чары стихий
 	config["shift2"] = 974; -- Щит земли
 	config["shift3"] = 546; -- Хождение по воде
-	config["control1"] = 77472; -- Великая волна исцеления
+	config["control1"] = "16188,77472"; -- Instant Healing Wave
 	config["control2"] = 61295; -- Быстрина
-	config["control3"] = "16188,77472"; -- Instant Великая волна исцеления
 	config["alt1"] = 51886; -- Очищение духа
 	config["alt2"] = 1064; -- Цепное исцеление
 	config["alt3"] = "16188,1064"; -- Instant Цепное исцеление
 	config["altshift3"] = 2008; -- Ancestral Spirit
 
 	config["cooldown1"] = "WaterShield";
-	config["cooldown2"] = "EarthlivingWeapon";
 	config["cooldown3"] = "EarthShield";
-	config["cooldown4"] = "ManaTideTotem";
 	config["cooldown5"] = "SpiritLinkTotem";
 	config["cooldown6"] = "HealingRain";
 	config["cooldown7"] = "UnleashElements";
@@ -352,13 +338,11 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["cooldown14"] = "ElementalMastery";
 	config["cooldown15"] = "HealingStreamTotem";
 	config["cooldown16"] = "GroundingTotem";
-	config["cooldown17"] = "StormlashTotem";
 	config["cooldown18"] = "EarthbindTotem";
 	config["cooldown19"] = "TremorTotem";
 	config["cooldown20"] = "EarthElementalTotem";
 	config["cooldown21"] = "FireElementalTotem";
 	config["cooldown22"] = "CleanseSpirit";
-	config["cooldown23"] = "Symbiosis";
 	config["cooldown24"] = orlanHeal:GetRacialCooldown();
 
 	return config;

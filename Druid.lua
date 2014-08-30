@@ -89,11 +89,6 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 102342,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	MightOfUrsoc =
-	{
-		SpellId = 106922,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	NaturesCure =
 	{
 		SpellId = 88423,
@@ -216,7 +211,7 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown5"] = "NaturesCure";
 	config["cooldown6"] = "Barkskin";
 	config["cooldown7"] = "Ironbark";
-	config["cooldown8"] = "MightOfUrsoc";
+	config["cooldown8"] = "WildCharge";
 	config["cooldown9"] = "UrsolsPower";
 	config["cooldown10"] = "Tranquility";
 	config["cooldown11"] = "Incarnation";
@@ -234,10 +229,9 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown23"] = "InstantEntanglingRoots";
 	config["cooldown24"] = "DisplacerBeast";
 	config["cooldown25"] = "WildMushroom";
-	config["cooldown26"] = "WildCharge";
-	config["cooldown27"] = "NaturesVigil";
-	config["cooldown28"] = "CenarionWard";
-	config["cooldown29"] = orlanHeal:GetRacialCooldown();
+	config["cooldown26"] = "NaturesVigil";
+	config["cooldown27"] = "CenarionWard";
+	config["cooldown28"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
