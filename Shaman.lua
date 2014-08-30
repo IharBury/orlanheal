@@ -3,19 +3,6 @@
 OrlanHeal.Shaman.IsSupported = true;
 OrlanHeal.Shaman.GiftOfTheNaaruSpellId = 59547;
 
-function OrlanHeal.Shaman.UpdateDispelCooldown(orlanHeal, window)
-	local start, duration, enabled = GetSpellCooldown(window.Cooldown.DispelId);
-	local expirationTime;
-	if start and duration and (duration ~= 0) and (enabled == 1) then
-		expirationTime = start + duration;
-	else
-		start = nil;
-		duration = nil;
-		expirationTime = nil;
-	end;
-	orlanHeal:UpdateCooldown(window, duration, expirationTime);
-end;
-
 OrlanHeal.Shaman.AvailableSpells =
 {
 	974, -- Щит земли
@@ -25,25 +12,25 @@ OrlanHeal.Shaman.AvailableSpells =
 	1064, -- Цепное исцеление
 	77472, -- Healing Wave
 	61295, -- Быстрина
-	73680, -- Высвободить чары стихий
+	73685, -- Высвободить чары жизни
 	{
 		type = "macro",
 		caption = "Instant " .. GetSpellInfo(8004), -- Исцеляющий всплеск
-		group = GetSpellInfo(16188), -- Природная стремительность
+		group = GetSpellInfo(16188), -- Ancestral Swiftness
 		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 8004),
 		key = "16188,8004"
 	},
 	{
 		type = "macro",
 		caption = "Instant " .. GetSpellInfo(1064), -- Цепное исцеление
-		group = GetSpellInfo(16188), -- Природная стремительность
+		group = GetSpellInfo(16188), -- Ancestral Swiftness
 		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 1064),
 		key = "16188,1064"
 	},
 	{
 		type = "macro",
-		caption = "Instant " .. GetSpellInfo(77472), -- Великая волна исцеления
-		group = GetSpellInfo(16188), -- Природная стремительность
+		caption = "Instant " .. GetSpellInfo(77472), -- Healing Wave
+		group = GetSpellInfo(16188), -- Ancestral Swiftness
 		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 77472),
 		key = "16188,77472"
 	},
@@ -53,6 +40,86 @@ OrlanHeal.Shaman.AvailableSpells =
 
 OrlanHeal.Shaman.CooldownOptions =
 {
+	InstantChainLightning =
+	{
+		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(421),
+		Caption = "Instant " .. GetSpellInfo(421),
+		SpellId = 421, -- Chain Lightning
+		PrefixSpellId = 16188, -- Ancestral Swiftness
+		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+		Sign = "I",
+		Group = GetSpellInfo(16188)
+	},
+	InstantLightningBolt =
+	{
+		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(403),
+		Caption = "Instant " .. GetSpellInfo(403),
+		SpellId = 403, -- Lightning Bolt
+		PrefixSpellId = 16188, -- Ancestral Swiftness
+		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+		Sign = "I",
+		Group = GetSpellInfo(16188)
+	},
+	InstantHealingRain =
+	{
+		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(73920),
+		Caption = "Instant " .. GetSpellInfo(73920),
+		SpellId = 73920, -- Healing Rain
+		PrefixSpellId = 16188, -- Ancestral Swiftness
+		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+		Sign = "I",
+		Group = GetSpellInfo(16188)
+	},
+	InstantGhostWolf =
+	{
+		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(2645),
+		Caption = "Instant " .. GetSpellInfo(2645),
+		SpellId = 2645, -- Ghost Wolf
+		PrefixSpellId = 16188, -- Ancestral Swiftness
+		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+		Sign = "I",
+		Group = GetSpellInfo(16188)
+	},
+	InstantHealingSurge =
+	{
+		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(8004),
+		Caption = "Instant " .. GetSpellInfo(8004),
+		SpellId = 8004, -- Healing Surge
+		PrefixSpellId = 16188, -- Ancestral Swiftness
+		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+		Sign = "I",
+		Group = GetSpellInfo(16188)
+	},
+	InstantElementalBlast =
+	{
+		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(117014),
+		Caption = "Instant " .. GetSpellInfo(117014),
+		SpellId = 117014, -- Elemental Blast
+		PrefixSpellId = 16188, -- Ancestral Swiftness
+		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+		Sign = "I",
+		Group = GetSpellInfo(16188)
+	},
+	InstantChainHeal =
+	{
+		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(1064),
+		Caption = "Instant " .. GetSpellInfo(1064),
+		SpellId = 1064, -- Chain Heal
+		PrefixSpellId = 16188, -- Ancestral Swiftness
+		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+		Sign = "I",
+		Group = GetSpellInfo(16188)
+	},
+	InstantHealingWave =
+	{
+		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(77472),
+		Caption = "Instant " .. GetSpellInfo(77472),
+		SpellId = 77472, -- Healing Wave
+		PrefixSpellId = 16188, -- Ancestral Swiftness
+		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+		Sign = "I",
+		Group = GetSpellInfo(16188)
+	},
 	LightningShield =
 	{
 		SpellId = 324, -- Lightning Shield
@@ -72,10 +139,11 @@ OrlanHeal.Shaman.CooldownOptions =
 		IsReverse = true,
 		Update = OrlanHeal.UpdateRaidBuffCooldown
 	},
-	NaturesSwiftness =
+	AncestralSwiftness =
 	{
-		SpellId = 16188, -- Природная стремительность
-		Update = OrlanHeal.UpdateAbilityCooldown
+		SpellId = 16188, -- Ancestral Swiftness
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = GetSpellInfo(16188)
 	},
 	HealingStreamTotem =
 	{
@@ -128,9 +196,9 @@ OrlanHeal.Shaman.CooldownOptions =
 			return race == "Orc";
 		end
 	},
-	UnleashElements =
+	UnleashLife =
 	{
-		SpellId = 73680,
+		SpellId = 73685,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HealingRain =
@@ -221,6 +289,7 @@ OrlanHeal.Shaman.CooldownOptions =
 	LavaBurst =
 	{
 		SpellId = 51505,
+		MacroText = "/cast " .. GetSpellInfo(51505),
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	PrimalStrike =
@@ -282,6 +351,18 @@ OrlanHeal.Shaman.CooldownOptions =
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Water Totems"
 	},
+	CloudburstTotem =
+	{
+		SpellId = 157153,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Water Totems"
+	},
+	StormElementalTotem =
+	{
+		SpellId = 152256,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Air Totems"
+	},
 	AncestralGuidance =
 	{
 		SpellId = 108281,
@@ -295,12 +376,26 @@ OrlanHeal.Shaman.CooldownOptions =
 	CleanseSpirit =
 	{
 		SpellId = 51886,
-		DispelId = 77130,
-		Update = OrlanHeal.Shaman.UpdateDispelCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	TotemicRecall =
 	{
 		SpellId = 36936,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Purge =
+	{
+		SpellId = 370,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	RainOfFrogs =
+	{
+		SpellId = 147709,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	SummonElementalFamiliar =
+	{
+		SpellId = 148118,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
@@ -310,7 +405,7 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 
 	config["1"] = 77472; -- Healing Wave
 	config["2"] = 8004; -- Исцеляющий всплеск
-	config["3"] = 73680; -- Высвободить чары стихий
+	config["3"] = 73685; -- Высвободить чары жизни
 	config["shift2"] = 974; -- Щит земли
 	config["shift3"] = 546; -- Хождение по воде
 	config["control1"] = "16188,77472"; -- Instant Healing Wave
@@ -324,7 +419,7 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["cooldown3"] = "EarthShield";
 	config["cooldown5"] = "SpiritLinkTotem";
 	config["cooldown6"] = "HealingRain";
-	config["cooldown7"] = "UnleashElements";
+	config["cooldown7"] = "UnleashLife";
 	config["cooldown8"] = "Riptide";
 	config["cooldown9"] = "SpiritwalkersGrace";
 	if UnitFactionGroup("player") == "Alliance" then
@@ -360,18 +455,18 @@ end;
 
 function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
 	local isRiptideReady = orlanHeal:IsSpellReady(61295);
-	local isNaturesSwiftnessReady = orlanHeal:IsSpellReady(16188);
+	local isAncestralSwiftnessReady = orlanHeal:IsSpellReady(16188);
 	local spiritwalkersGraceSpellName = GetSpellInfo(79206);
 	if UnitBuff("player", spiritwalkersGraceSpellName) then
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
 	elseif isRiptideReady then
-		if isNaturesSwiftnessReady then
+		if isAncestralSwiftnessReady then
 			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
 		else
 			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
 		end;
 	else
-		if isNaturesSwiftnessReady then
+		if isAncestralSwiftnessReady then
 			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha);
 		else
 			if orlanHeal:IsSpellReady(79206) then -- Spiritwalker's Grace
