@@ -124,20 +124,23 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 324, -- Lightning Shield
 		IsReverse = true,
-		Update = OrlanHeal.UpdatePlayerBuffCooldown
+		Update = OrlanHeal.UpdatePlayerBuffCooldown,
+		Group = "Shield"
 	},
 	WaterShield =
 	{
 		SpellId = 324, -- Lightning Shield
 		AuraId = 52127, -- Water Shield
 		IsReverse = true,
-		Update = OrlanHeal.UpdatePlayerBuffCooldown
+		Update = OrlanHeal.UpdatePlayerBuffCooldown,
+		Group = "Shield"
 	},
 	EarthShield =
 	{
 		SpellId = 974, -- Щит земли
 		IsReverse = true,
-		Update = OrlanHeal.UpdateRaidBuffCooldown
+		Update = OrlanHeal.UpdateRaidBuffCooldown,
+		Group = "Shield"
 	},
 	AncestralSwiftness =
 	{
@@ -221,12 +224,6 @@ OrlanHeal.Shaman.CooldownOptions =
 	{
 		SpellId = 556,
 		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	EarthShock =
-	{
-		SpellId = 8042,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Shock"
 	},
 	FlameShock =
 	{
@@ -416,7 +413,9 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["altshift3"] = 2008; -- Ancestral Spirit
 
 	config["cooldown1"] = "WaterShield";
+	config["cooldown2"] = "WindShear";
 	config["cooldown3"] = "EarthShield";
+	config["cooldown4"] = "CleanseSpirit";
 	config["cooldown5"] = "SpiritLinkTotem";
 	config["cooldown6"] = "HealingRain";
 	config["cooldown7"] = "UnleashLife";
@@ -433,12 +432,23 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["cooldown14"] = "ElementalMastery";
 	config["cooldown15"] = "HealingStreamTotem";
 	config["cooldown16"] = "GroundingTotem";
+	config["cooldown17"] = "CallOfTheElements";
 	config["cooldown18"] = "EarthbindTotem";
 	config["cooldown19"] = "TremorTotem";
-	config["cooldown20"] = "EarthElementalTotem";
-	config["cooldown21"] = "FireElementalTotem";
-	config["cooldown22"] = "CleanseSpirit";
-	config["cooldown24"] = orlanHeal:GetRacialCooldown();
+	config["cooldown20"] = "CloudburstTotem";
+	config["cooldown21"] = "StormElementalTotem";
+	config["cooldown22"] = "EarthElementalTotem";
+	config["cooldown23"] = "FireElementalTotem";
+	config["cooldown24"] = "HealingTideTotem";
+	config["cooldown25"] = "TotemicRecall";
+	config["cooldown26"] = "Purge";
+	config["cooldown27"] = "Hex";
+	config["cooldown28"] = "StoneBulwarkTotem";
+	config["cooldown29"] = "AncestralSwiftness";
+	config["cooldown30"] = "AncestralGuidance";
+	config["cooldown31"] = "WindwalkTotem";
+	config["cooldown32"] = "ElementalBlast";
+	config["cooldown33"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
