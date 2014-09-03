@@ -3,21 +3,14 @@ OrlanHeal.Monk = {};
 OrlanHeal.Monk.IsSupported = true;
 OrlanHeal.Monk.GiftOfTheNaaruSpellId = 121093;
 
-function OrlanHeal.Monk.GetChiCost(spellId)
-	local _, _, _, cost, _, powerType = GetSpellInfo(spellId);
-	if powerType ~= SPELL_POWER_CHI then
-		cost = nil;
-	end;
-	return cost;
-end;
-
 function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window)
 	local power = UnitPower("player", SPELL_POWER_CHI);
-	local cost = window.Cooldown.ChiCost or orlanHeal.Monk.GetChiCost(window.Cooldown.SpellId);
+	local cost = window.Cooldown.ChiCost;
 	if not cost then
 		orlanHeal:UpdateAbilityCooldown(window);
 	elseif power >= cost then
-		local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+		local spellName = GetSpellInfo(window.Cooldown.SpellId);
+		local start, duration, enabled = GetSpellCooldown(spellName);
 		local expirationTime;
 		if start and duration and (duration ~= 0) and (enabled == 1) then
 			expirationTime = start + duration;
@@ -28,12 +21,7 @@ function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window)
 		end;
 		orlanHeal:UpdateCooldown(window, duration, expirationTime, power, true);
 	else
-		window:SetReverse(true);
-		if not window.Dark then
-			window:SetCooldown(0, 10);
-			window.Dark = true;
-		end;
-		window.Count:SetText(power);
+		orlanHeal:UpdateCooldown(window, nil, nil, power, true);
 	end;
 end;
 
@@ -246,7 +234,8 @@ OrlanHeal.Monk.CooldownOptions =
 	Uplift =
 	{
 		SpellId = 116670,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
+		ChiCost = 2
 	},
 	ThunderFocusTea =
 	{
