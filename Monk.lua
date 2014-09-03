@@ -245,7 +245,8 @@ OrlanHeal.Monk.CooldownOptions =
 	TigerPalm =
 	{
 		SpellId = 100787,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
+		ChiCost = 1
 	},
 	TouchOfDeath =
 	{
@@ -306,7 +307,7 @@ function OrlanHeal.Monk.GetDefaultConfig(orlanHeal)
 	config["cooldown14"] = "ZenMeditation";
 	config["cooldown15"] = "Uplift";
 	config["cooldown17"] = "ThunderFocusTea";
-	config["cooldown18"] = "TigerPalm";
+	config["cooldown18"] = "TigerPalm"; -- убрать?
 	config["cooldown19"] = "EnvelopingMist";
 	config["cooldown20"] = "Roll";
 	config["cooldown21"] = "TigersLust";
