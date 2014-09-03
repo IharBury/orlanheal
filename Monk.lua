@@ -5,14 +5,14 @@ OrlanHeal.Monk.GiftOfTheNaaruSpellId = 121093;
 
 function OrlanHeal.Monk.GetChiCost(spellId)
 	local _, _, _, cost, _, powerType = GetSpellInfo(spellId);
-	if powerType ~= SPELL_POWER_LIGHT_FORCE then
+	if powerType ~= SPELL_POWER_CHI then
 		cost = nil;
 	end;
 	return cost;
 end;
 
 function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window)
-	local power = UnitPower("player", SPELL_POWER_LIGHT_FORCE);
+	local power = UnitPower("player", SPELL_POWER_CHI);
 	local cost = window.Cooldown.ChiCost or orlanHeal.Monk.GetChiCost(window.Cooldown.SpellId);
 	if not cost then
 		orlanHeal:UpdateAbilityCooldown(window);
@@ -38,7 +38,7 @@ function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window)
 end;
 
 function OrlanHeal.Monk.UpdateChiRaidBuffCooldown(orlanHeal, window)
-	local power = UnitPower("player", SPELL_POWER_LIGHT_FORCE);
+	local power = UnitPower("player", SPELL_POWER_CHI);
 	local duration, expirationTime = orlanHeal:GetRaidBuffCooldown(window.Cooldown.AuraId or window.Cooldown.SpellId);
 	orlanHeal:UpdateCooldown(window, duration, expirationTime, power, true);
 end;
@@ -197,17 +197,10 @@ OrlanHeal.Monk.CooldownOptions =
 		SpellId = 115203,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	GrappleWeapon =
-	{
-		SpellId = 117368,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	HealingSphere =
+	DetonateChi =
 	{
 		SpellId = 115460,
-		AuraId = 124458,
-		AlwaysShowCount = true,
-		Update = OrlanHeal.UpdatePlayerBuffCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	LifeCocoon =
 	{
@@ -253,22 +246,12 @@ OrlanHeal.Monk.CooldownOptions =
 	Uplift =
 	{
 		SpellId = 116670,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
-		Group = GetSpellInfo(116670)
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
 	},
 	ThunderFocusTea =
 	{
 		SpellId = 116680,
 		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
-	},
-	RefreshingUplift =
-	{
-		MacroText = OrlanHeal:BuildCastSequenceMacro(116680, 116670), -- Thunder Focus Tea + Uplift
-		SpellId = 119607, -- Different visual for Renewing Mist
-		ChiCost = (OrlanHeal.Monk.GetChiCost(116680) or 0) + (OrlanHeal.Monk.GetChiCost(116670) or 0),
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown,
-		Caption = "Refreshing " .. GetSpellInfo(116670), -- Uplift
-		Group = GetSpellInfo(116670)
 	},
 	TigerPalm =
 	{
@@ -287,19 +270,19 @@ OrlanHeal.Monk.CooldownOptions =
 	},
 	ZenPilgrimage =
 	{
+		MacroText = "/cast " .. GetSpellInfo(126892),
 		SpellId = 126892,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	ZenPilgrimageReturn =
-	{
-		MacroText = "/cast " .. GetSpellInfo(126895),
-		SpellId = 126895,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	SurgingMist =
 	{
 		MacroText = "/cast " .. GetSpellInfo(116694),
 		SpellId = 116694,
+		Update = OrlanHeal.Monk.UpdateAbilityCooldown
+	},
+	Jab =
+	{
+		SpellId = 100780,
 		Update = OrlanHeal.Monk.UpdateAbilityCooldown
 	}
 };
@@ -328,12 +311,11 @@ function OrlanHeal.Monk.GetDefaultConfig(orlanHeal)
 	config["cooldown8"] = "Revival";
 	config["cooldown9"] = "DampenHarm";
 	config["cooldown10"] = "ManaTea";
-	config["cooldown11"] = "HealingSphere";
+	config["cooldown11"] = "DetonateChi";
 	config["cooldown12"] = "Paralysis";
-	config["cooldown13"] = "Provoke";
+	config["cooldown13"] = "Provoke"; -- убрать?
 	config["cooldown14"] = "ZenMeditation";
 	config["cooldown15"] = "Uplift";
-	config["cooldown16"] = "RefreshingUplift";
 	config["cooldown17"] = "ThunderFocusTea";
 	config["cooldown18"] = "TigerPalm";
 	config["cooldown19"] = "EnvelopingMist";
@@ -341,9 +323,10 @@ function OrlanHeal.Monk.GetDefaultConfig(orlanHeal)
 	config["cooldown21"] = "TigersLust";
 	config["cooldown22"] = "ChiWave";
 	config["cooldown23"] = "TouchOfDeath";
-	config["cooldown24"] = "GrappleWeapon";
 	config["cooldown25"] = "LegSweep";
 	config["cooldown26"] = orlanHeal:GetRacialCooldown();
+
+	-- SurgingMist
 
 	return config;
 end;
@@ -361,8 +344,8 @@ function OrlanHeal.Monk.GetSpecificDebuffKind(orlanHeal, spellId)
 end;
 
 function OrlanHeal.Monk.UpdateRaidBorder(orlanHeal)
-	local power = UnitPower("player", SPELL_POWER_LIGHT_FORCE);
-	local maxPower = UnitPowerMax("player", SPELL_POWER_LIGHT_FORCE);
+	local power = UnitPower("player", SPELL_POWER_CHI);
+	local maxPower = UnitPowerMax("player", SPELL_POWER_CHI);
 	if (power < maxPower) and orlanHeal:IsSpellReady(115151) then -- Renewing Mist
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
 	elseif power >= 3 then
