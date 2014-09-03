@@ -286,7 +286,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown3"] = "LightOfDawn";
 	config["cooldown4"] = "SpeedOfLight";
 	config["cooldown5"] = "SacredShield";
-	config["cooldown6"] = "LayOnHands";
+	config["cooldown6"] = "HolyAvenger";
 	config["cooldown7"] = "AvengingWrath"; 
 	config["cooldown8"] = "DivineShield"; 
 	config["cooldown9"] = "DivineProtection"; 
@@ -299,7 +299,8 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown16"] = "WeaponsOfTheLight";
 	config["cooldown17"] = "Repentance";
 	config["cooldown18"] = "BlindingLight";
-	config["cooldown19"] = orlanHeal:GetRacialCooldown();
+	config["cooldown19"] = "LayOnHands";
+	config["cooldown20"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
