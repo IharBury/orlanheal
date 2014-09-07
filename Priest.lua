@@ -64,7 +64,10 @@ OrlanHeal.Priest.AvailableSpells =
 		caption = GetSpellInfo(175702), -- Divine Burst
 		macrotext = OrlanHeal:BuildMouseOverCastMacro(175702),
 		key = 175702
-	}
+	},
+	152118, -- Clarity of Will
+	152116, -- Saving Grace
+	126123 -- Confession
 }
 
 OrlanHeal.Priest.CooldownOptions =
@@ -295,11 +298,13 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["altshift1"] = 73325; -- Leap of Faith
 	config["altshift2"] = 596; -- Prayer of Healing
 	config["altshift3"] = 2006; -- Resurrection
+	config["control1"] = 34861; -- Circle of Healing
 	config["control2"] = 88625; -- Holy Word: Chastise
 	config["control3"] = 33076; -- Prayer of Mending
+	config["controlalt1"] = 152116; -- Saving Grace
 	config["controlalt2"] = 1706; -- Levitate
 	config["controlalt3"] = 32546; -- Binding Heal
-	config["controlaltshift1"] = 34861; -- Circle of Healing
+	config["controlaltshift2"] = 126123; -- Confession
 	config["controlshift1"] = 2096; -- Mind Vision
 
 	config["cooldown1"] = "Purify";
@@ -310,22 +315,21 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["cooldown6"] = "CircleOfHealing";
 	config["cooldown7"] = "PowerInfusion";
 	config["cooldown8"] = "LeapOfFaith";
+	config["cooldown9"] = "DivineBurst";
 	config["cooldown10"] = "DivineHymn";
+	config["cooldown11"] = "HolyFire";
+	config["cooldown12"] = "AngelicFeather";
+	config["cooldown13"] = "DesperatePrayer";
+	config["cooldown14"] = "SpectralGuise";
+	config["cooldown15"] = "DispelMagic";
 	config["cooldown16"] = "HolyWordChastise";
 	config["cooldown17"] = "ShadowyGrasp";
 	config["cooldown18"] = "Fade";
 	config["cooldown19"] = "FearWard";
 	config["cooldown20"] = "GuardianSpirit";
-	config["cooldown21"] = "HolyFire";
+	config["cooldown23"] = "ShackleUndead";
 	config["cooldown24"] = "MassDispel";
-	config["cooldown27"] = "AngelicFeather";
-	config["cooldown28"] = orlanHeal:GetRacialCooldown();
-
-	-- ShackleUndead (both)
-	-- DispelMagic (both)
-	-- DesperatePrayer (both)
-	-- SpectralGuise (both)
-	-- DivineBurst (both)
+	config["cooldown25"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
@@ -336,19 +340,16 @@ function OrlanHeal.Priest.GetDisciplineDefaultConfig(orlanHeal)
 	config["3"] = 33206; -- Pain Suppression
 	config["control2"] = 47540; -- Penance
 	config["controlalt3"] = "";
-	config["controlaltshift1"] = "";
-	config["alt2"] = "";
+	config["control1"] = "";
+	config["alt2"] = 152118; -- Clarity of Will
 
 	config["cooldown3"] = "Penance";
-	config["cooldown6"] = "";
+	config["cooldown6"] = "HolyNova";
 	config["cooldown10"] = "Archangel";
-	config["cooldown11"] = "PowerWordBarrier";
-	config["cooldown12"] = "SpiritShell";
-	config["cooldown16"] = "";
+	config["cooldown16"] = "Silence";
 	config["cooldown20"] = "PainSuppression";
-	config["cooldown22"] = "HolyNova";
-
-	-- Silence
+	config["cooldown21"] = "PowerWordBarrier";
+	config["cooldown22"] = "SpiritShell";
 
 	return config;
 end;
