@@ -43,12 +43,13 @@ function OrlanHeal:CreateCooldown(parent, index)
 	local countSize = self.CooldownCountSize;
 	cooldown.Count = cooldown.Button:CreateFontString(nil, "ARTWORK", "GameFontNormal");
 	cooldown.Count:SetHeight(countSize);
-	cooldown.Count:SetWidth(countSize);
+	cooldown.Count:SetWidth(countSize * 3);
 	cooldown.Count:SetTextColor(1, 1, 1, 1);
 	cooldown.Count:SetShadowColor(0, 0, 0, 1);
 	cooldown.Count:SetShadowOffset(-1, -1);
 	cooldown.Count:SetTextHeight(countSize);
 	cooldown.Count:SetPoint("BOTTOMRIGHT", cooldown, "BOTTOMRIGHT", 0, 0);
+	cooldown.Count:SetJustifyH("RIGHT");
 
 	return cooldown;
 end;
@@ -356,21 +357,21 @@ function OrlanHeal:GetRacialCooldown()
 	return cooldown;
 end;
 
-function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alwaysDisplayCount, isReverse)
+function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alwaysDisplayCount, isReverse, isOff)
 	if isReverse == nil then
 		isReverse = window.Cooldown.IsReverse;
 	end;
 	duration = duration or 0;
 	expirationTime = expirationTime or 0;
 
-	if (window.Cooldown.SpellId and 
-				IsSpellKnown(window.Cooldown.SpellId) and 
-				((duration ~= 0) or 
-					window.Cooldown.IsReverse or 
-					IsUsableSpell(window.Cooldown.SpellId))) or
-			(window.Cooldown.SlotName and 
-				GetInventoryItemID("player", GetInventorySlotInfo(window.Cooldown.SlotName))) or
-			window.Cooldown.MacroText then
+	local isPotentiallyUsableSpell = window.Cooldown.SpellId and
+		IsSpellKnown(window.Cooldown.SpellId) and 
+		((duration ~= 0) or 
+			window.Cooldown.IsReverse or 
+			IsUsableSpell(window.Cooldown.SpellId));
+	local isUsableItem = window.Cooldown.SlotName and 
+		GetInventoryItemID("player", GetInventorySlotInfo(window.Cooldown.SlotName));
+	if (not isOff) and (isPotentiallyUsableSpell or isUsableItem or window.Cooldown.MacroText) then
 		window.Dark = false;
 		window:SetReverse(isReverse);
 		window:SetHideCountdownNumbers(false);
