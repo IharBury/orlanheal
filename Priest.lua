@@ -368,7 +368,7 @@ function OrlanHeal.Priest.GetConfigPresets(orlanHeal)
 end;
 
 function OrlanHeal.Priest.UpdateRaidBorder(orlanHeal)
-	if UnitBuff("player", GetSpellInfo(114255)) then -- From Darkness, Comes Light
+	if UnitBuff("player", GetSpellInfo(114255)) then -- Surge of Light
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
 	elseif UnitBuff("player", GetSpellInfo(123266)) or UnitBuff("player", GetSpellInfo(123267)) then -- Divine Insight
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha);
