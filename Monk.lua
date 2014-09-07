@@ -3,12 +3,32 @@ OrlanHeal.Monk = {};
 OrlanHeal.Monk.IsSupported = true;
 OrlanHeal.Monk.GiftOfTheNaaruSpellId = 121093;
 
-function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window)
-	local power = UnitPower("player", SPELL_POWER_CHI);
-	local cost = window.Cooldown.ChiCost;
-	if not cost then
+function OrlanHeal.Monk.IsTalentConditionSatisfied(orlanHeal, window)
+	if window.Cooldown.TalentRow and window.Cooldown.TalentColumn then
+		local _, _, _, hasTalent = GetTalentInfo(window.Cooldown.TalentRow, window.Cooldown.TalentColumn, GetActiveSpecGroup());
+		return window.Cooldown.TalentCondition == hasTalent;
+	else
+		return true;
+	end;
+end;
+
+function OrlanHeal.Monk.UpdateTouchOfDeathCooldown(orlanHeal, window)
+	if orlanHeal:HasGlyph(123391) then
 		orlanHeal:UpdateAbilityCooldown(window);
-	elseif power >= cost then
+	else
+		orlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window);
+	end
+end;
+
+function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window, chiCost)
+	local power = UnitPower("player", SPELL_POWER_CHI);
+	local cost = chiCost or window.Cooldown.ChiCost;
+	local isTalentConditionSatisfied = orlanHeal.Monk.IsTalentConditionSatisfied(orlanHeal, window);
+	if not isTalentConditionSatisfied then
+		orlanHeal:UpdateCooldown(window, nil, nil, nil, nil, nil, true);
+	elseif (not cost) or (cost == 0) then
+		orlanHeal:UpdateAbilityCooldown(window);
+	else
 		local spellName = GetSpellInfo(window.Cooldown.SpellId);
 		local start, duration, enabled = GetSpellCooldown(spellName);
 		local expirationTime;
@@ -19,9 +39,11 @@ function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window)
 			duration = nil;
 			expirationTime = nil;
 		end;
-		orlanHeal:UpdateCooldown(window, duration, expirationTime, power, true);
-	else
-		orlanHeal:UpdateCooldown(window, nil, nil, power, true);
+		if power >= cost then
+			orlanHeal:UpdateCooldown(window, duration, expirationTime);
+		else
+			orlanHeal:UpdateCooldown(window, duration, expirationTime, power .. "/" .. cost, true);
+		end;
 	end;
 end;
 
@@ -49,9 +71,6 @@ end;
 OrlanHeal.Monk.AvailableSpells =
 {
 	121093, -- Gift of the Naaru
-	115098, -- Chi Wave
-	124081, -- Zen Sphere
-	123986, -- Chi Burst
 	115450, -- Detox
 	124682, -- Enveloping Mist
 	116849, -- Life Cocoon
@@ -72,7 +91,27 @@ OrlanHeal.Monk.AvailableSpells =
 		macrotext = OrlanHeal:BuildCastSequenceMacro(116680, 116694),
 		key = "116680,116694",
 		group = GetSpellInfo(116694)
-	}
+	},
+	115921, -- Legacy of the Emperor
+	{
+		type = "macro",
+		caption = GetSpellInfo(175693), -- Chi Shaping
+		macrotext = OrlanHeal:BuildMouseOverCastMacro(175693),
+		key = 175693
+	},
+	{
+		type = "macro",
+		caption = GetSpellInfo(175697), -- Disabling Technique
+		macrotext = OrlanHeal:BuildMouseOverCastMacro(175697),
+		key = 175697
+	},
+	{
+		type = "macro",
+		caption = GetSpellInfo(157675), -- Chi Explosion
+		macrotext = OrlanHeal:BuildMouseOverCastMacro(157675),
+		key = 157675
+	},
+	115072 -- Expel Harm
 };
 
 OrlanHeal.Monk.CooldownOptions =
@@ -107,37 +146,11 @@ OrlanHeal.Monk.CooldownOptions =
 	TigersLust =
 	{
 		SpellId = 116841,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
-	},
-	ChiWave =
-	{
-		SpellId = 115098,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
-	},
-	ZenSphere =
-	{
-		SpellId = 124081,
-		Update = OrlanHeal.Monk.UpdateChiRaidBuffCooldown,
-		IsReverse = true
-	},
-	ChiBurst =
-	{
-		SpellId = 123986,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	ChiBrew =
 	{
 		SpellId = 115399,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	ChargingOxWave =
-	{
-		SpellId = 119392,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	LegSweep =
-	{
-		SpellId = 119381,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	DampenHarm =
@@ -153,7 +166,7 @@ OrlanHeal.Monk.CooldownOptions =
 	RushingJadeWind =
 	{
 		SpellId = 116847,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	InvokeXuenTheWhiteTiger =
 	{
@@ -173,6 +186,7 @@ OrlanHeal.Monk.CooldownOptions =
 	EnvelopingMist =
 	{
 		SpellId = 124682,
+		ChiCost = 3,
 		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
 	},
 	ExpelHarm =
@@ -240,7 +254,7 @@ OrlanHeal.Monk.CooldownOptions =
 	ThunderFocusTea =
 	{
 		SpellId = 116680,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	TigerPalm =
 	{
@@ -251,12 +265,8 @@ OrlanHeal.Monk.CooldownOptions =
 	TouchOfDeath =
 	{
 		SpellId = 115080,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
-	},
-	ZenMeditation =
-	{
-		SpellId = 115176,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		ChiCost = 3,
+		Update = OrlanHeal.Monk.UpdateTouchOfDeathCooldown
 	},
 	ZenPilgrimage =
 	{
@@ -268,12 +278,86 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		MacroText = "/cast " .. GetSpellInfo(116694),
 		SpellId = 116694,
-		Update = OrlanHeal.Monk.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Jab =
 	{
 		SpellId = 100780,
-		Update = OrlanHeal.Monk.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	LegacyOfTheEmperor =
+	{
+		SpellId = 115921,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	NimbleBrew =
+	{
+		SpellId = 137562,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	CracklingJadeLightning =
+	{
+		SpellId = 117952,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	SpinningCraneKick =
+	{
+		SpellId = 101546,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Transcendence =
+	{
+		SpellId = 101643,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = GetSpellInfo(101643) -- Transcendence
+	},
+	TranscendenceTransfer =
+	{
+		SpellId = 119996,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = GetSpellInfo(101643) -- Transcendence
+	},
+	RisingSunKick =
+	{
+		SpellId = 107428,
+		ChiCost = 2,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	ChiShaping =
+	{
+		MacroText = "/cast " .. GetSpellInfo(175693),
+		SpellId = 175693, -- Chi Shaping
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DisablingTechnique =
+	{
+		MacroText = "/cast " .. GetSpellInfo(175697),
+		SpellId = 175697, -- Disabling Technique
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	BlackoutKick =
+	{
+		SpellId = 100784,
+		ChiCost = 2,
+		TalentRow = 7,
+		TalentColumn = 2,
+		TalentCondition = false,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	ChiExplosion =
+	{
+		MacroText = "/cast " .. GetSpellInfo(157675),
+		SpellId = 157675, -- Chi Explosion
+		ChiCost = 1,
+		TalentRow = 7,
+		TalentColumn = 2,
+		TalentCondition = true,
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+	},
+	BreathOfTheSerpent =
+	{
+		SpellId = 157535,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -283,40 +367,48 @@ function OrlanHeal.Monk.GetDefaultConfig(orlanHeal)
 	config["1"] = 115175; -- Soothing Mist
 	config["2"] = 116694; -- Surging Mist
 	config["3"] = 116849; -- Life Cocoon
-	config["shift2"] = 115098; -- Chi Wave
+	config["shift2"] = 175693; -- Chi Shaping
+	config["shift3"] = 157675; -- Chi Explosion
 	config["control1"] = 124682; -- Enveloping Mist
 	config["control2"] = "116680,116694"; -- Thunder Focus Tea + Surging Mist
 	config["control3"] = 116841; -- Tiger's Lust
 	config["alt1"] = 115450; -- Detox
 	config["alt2"] = 115151; -- Renewing Mist
+	config["alt3"] = 175697; -- Disabling Technique
 	config["altshift3"] = 115178; -- Resuscitate
+	config["controlalt1"] = 115072; -- Expel Harm
 
 	config["cooldown1"] = "Detox";
 	config["cooldown2"] = "SpearHandStrike";
 	config["cooldown3"] = "SummonJadeSerpentStatue";
 	config["cooldown4"] = "RenewingMist";
 	config["cooldown5"] = "ExpelHarm";
-	config["cooldown6"] = "FortifyingBrew";
-	config["cooldown7"] = "LifeCocoon";
-	config["cooldown8"] = "Revival";
-	config["cooldown9"] = "DampenHarm";
+	config["cooldown6"] = "DetonateChi";
+	config["cooldown7"] = "Revival";
+	config["cooldown8"] = "ChiExplosion";
+	config["cooldown9"] = "BreathOfTheSerpent";
 	config["cooldown10"] = "ManaTea";
-	config["cooldown11"] = "DetonateChi";
-	config["cooldown12"] = "Paralysis";
-	config["cooldown13"] = "Provoke"; -- убрать?
-	config["cooldown14"] = "ZenMeditation";
+	config["cooldown11"] = "LifeCocoon";
+	config["cooldown12"] = "FortifyingBrew";
+	config["cooldown13"] = "DampenHarm";
+	config["cooldown14"] = "DiffuseMagic";
 	config["cooldown15"] = "Uplift";
+	config["cooldown16"] = "SpinningCraneKick";
 	config["cooldown17"] = "ThunderFocusTea";
-	config["cooldown18"] = "TigerPalm"; -- убрать?
+	config["cooldown18"] = "ChiBrew";
 	config["cooldown19"] = "EnvelopingMist";
 	config["cooldown20"] = "Roll";
 	config["cooldown21"] = "TigersLust";
-	config["cooldown22"] = "ChiWave";
+	config["cooldown22"] = "ChiShaping";
 	config["cooldown23"] = "TouchOfDeath";
-	config["cooldown25"] = "LegSweep";
-	config["cooldown26"] = orlanHeal:GetRacialCooldown();
-
-	-- SurgingMist
+	config["cooldown24"] = "Paralysis";
+	config["cooldown25"] = "DisablingTechnique";
+	config["cooldown26"] = "SurgingMist";
+	config["cooldown27"] = "NimbleBrew";
+	config["cooldown28"] = "Transcendence";
+	config["cooldown29"] = "TranscendenceTransfer";
+	config["cooldown30"] = "InvokeXuenTheWhiteTiger";
+	config["cooldown31"] = orlanHeal:GetRacialCooldown();
 
 	return config;
 end;
