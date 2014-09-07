@@ -43,12 +43,12 @@ function OrlanHeal:CreateCooldown(parent, index)
 	local countSize = self.CooldownCountSize;
 	cooldown.Count = cooldown.Button:CreateFontString(nil, "ARTWORK", "GameFontNormal");
 	cooldown.Count:SetHeight(countSize);
-	cooldown.Count:SetWidth(countSize * 3);
 	cooldown.Count:SetTextColor(1, 1, 1, 1);
 	cooldown.Count:SetShadowColor(0, 0, 0, 1);
 	cooldown.Count:SetShadowOffset(-1, -1);
 	cooldown.Count:SetTextHeight(countSize);
-	cooldown.Count:SetPoint("BOTTOMRIGHT", cooldown, "BOTTOMRIGHT", 0, 0);
+	cooldown.Count:SetPoint("BOTTOMRIGHT", cooldown, "BOTTOMRIGHT", -2, 0);
+	cooldown.Count:SetPoint("BOTTOMLEFT", cooldown, "BOTTOMLEFT", 2, 0);
 	cooldown.Count:SetJustifyH("RIGHT");
 
 	return cooldown;
@@ -245,8 +245,7 @@ function OrlanHeal:UpdateItemCooldown(window)
 	self:UpdateCooldown(window, duration, expirationTime, nil, nil, nil, enabled == 0);
 
 	if not window.LastTextureUpdate or (window.LastTextureUpdate < time() - 5) then
-		local slotId;
-		slotId, texture = GetInventorySlotInfo(window.Cooldown.SlotName);
+		local slotId, texture = GetInventorySlotInfo(window.Cooldown.SlotName);
 		texture = GetInventoryItemTexture("player", slotId) or texture;
 		window.Background:SetTexture(texture);
 		window.LastTextureUpdate = time();
