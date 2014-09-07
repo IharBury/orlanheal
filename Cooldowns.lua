@@ -242,7 +242,7 @@ function OrlanHeal:UpdateItemCooldown(window)
 		duration = nil;
 		expirationTime = nil;
 	end;
-	self:UpdateCooldown(window, duration, expirationTime);
+	self:UpdateCooldown(window, duration, expirationTime, nil, nil, nil, enabled == 0);
 
 	if not window.LastTextureUpdate or (window.LastTextureUpdate < time() - 5) then
 		local slotId;
