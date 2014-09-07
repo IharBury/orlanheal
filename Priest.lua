@@ -13,31 +13,22 @@ function OrlanHeal.Priest.UpdateHolyWordCooldown(orlanHeal, window)
 end;
 
 function OrlanHeal.Priest.UpdateArchangelCooldown(orlanHeal, window)
-	local buff2Name = GetSpellInfo(81661); -- Приверженность (2 очка таланта)
-	local _, _, _, count2 = UnitBuff("player", buff2Name);
-	local count = count2;
+	local buffName = GetSpellInfo(81661); -- Приверженность
+	local _, _, _, count, _, buffDuration, buffExpires = UnitBuff("player", buffName);
 
-	if count then
-		local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
-		local expirationTime;
-		if start and duration and (duration ~= 0) and (enabled == 1) then
-			expirationTime = start + duration;
-		else
-			start = nil;
-			duration = nil;
-			expirationTime = nil;
-		end;
-		orlanHeal:UpdateCooldown(window, duration, expirationTime, count, true);
+	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	local expirationTime, isReverse;
+	if start and duration and (duration ~= 0) and (enabled == 1) then
+		expirationTime = start + duration;
+	elseif buffExpires then
+		duration = buffDuration;
+		expirationTime = buffExpires;
+		isReverse = true;
 	else
-		window:SetReverse(true);
-		window.Count:SetText("");
-
-		if not window.Dark then
-			window.Dark = true;
-			window.Off = 0;
-			window:SetCooldown(0, 10);
-		end;		
+		duration = nil;
+		expirationTime = nil;
 	end;
+	orlanHeal:UpdateCooldown(window, duration, expirationTime, count, true, isReverse, not count);
 end;
 
 OrlanHeal.Priest.AvailableSpells =
@@ -56,7 +47,6 @@ OrlanHeal.Priest.AvailableSpells =
 	2096, -- Внутреннее зрение
 	47540, -- Исповедь
 	47788, -- Оберегающий дух
-	10060, -- Придание сил
 	33206, -- Подавление боли
 	59544, -- Дар Наару
 	{
@@ -67,11 +57,14 @@ OrlanHeal.Priest.AvailableSpells =
 	},
 	34861, -- Круг исцеления
 	33076, -- Молитва восстановления
-	47540, -- Исповедь
-	10060, -- Придание сил
-	73325, -- Духовное рвение
 	596, -- Prayer of Healing
-	21562 -- Power Word: Fortitude
+	21562, -- Power Word: Fortitude
+	{
+		type = "macro",
+		caption = GetSpellInfo(175702), -- Divine Burst
+		macrotext = OrlanHeal:BuildMouseOverCastMacro(175702),
+		key = 175702
+	}
 }
 
 OrlanHeal.Priest.CooldownOptions =
@@ -109,7 +102,8 @@ OrlanHeal.Priest.CooldownOptions =
 	PrayerOfHealing =
 	{
 		SpellId = 596,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Prayer"
 	},
 	CircleOfHealing =
 	{
@@ -119,7 +113,8 @@ OrlanHeal.Priest.CooldownOptions =
 	DesperatePrayer =
 	{
 		SpellId = 19236,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Prayer"
 	},
 	Shadowfiend =
 	{
@@ -130,7 +125,8 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 33076,
 		AuraId = 41635,
-		Update = OrlanHeal.UpdateRaidBuffAbilityCooldown
+		Update = OrlanHeal.UpdateRaidBuffAbilityCooldown,
+		Group = "Prayer"
 	},
 	GuardianSpirit =
 	{
@@ -178,11 +174,6 @@ OrlanHeal.Priest.CooldownOptions =
 		SpellId = 14914,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	PsychicScream =
-	{
-		SpellId = 8122,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	Purify =
 	{
 		SpellId = 527,
@@ -197,19 +188,10 @@ OrlanHeal.Priest.CooldownOptions =
 			return race == "BloodElf";
 		end
 	},
-	ShadowWordDeath =
+	ShadowyGrasp =
 	{
-		SpellId = 32379,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	VoidTendrils =
-	{
-		SpellId = 108920,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	DominateMind =
-	{
-		SpellId = 605,
+		MacroText = "/cast " .. GetSpellInfo(175701),
+		SpellId = 175701,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	AngelicFeather =
@@ -222,9 +204,10 @@ OrlanHeal.Priest.CooldownOptions =
 		SpellId = 112833,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Cascade =
+	DivineBurst =
 	{
-		SpellId = 121135,
+		MacroText = "/cast " .. GetSpellInfo(175702),
+		SpellId = 175702,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	DivineStar =
@@ -291,6 +274,11 @@ OrlanHeal.Priest.CooldownOptions =
 	{
 		SpellId = 528,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Silence =
+	{
+		SpellId = 15487,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -301,6 +289,7 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["3"] = 47788; -- Guardian Spirit
 	config["alt1"] = 527; -- Purify
 	config["alt2"] = 139; -- Renew
+	config["alt3"] = 175702; -- Divine Burst
 	config["shift2"] = 17; -- Power Word: Shield
 	config["shift3"] = 6346; -- Fear Ward
 	config["altshift1"] = 73325; -- Leap of Faith
@@ -308,7 +297,6 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["altshift3"] = 2006; -- Resurrection
 	config["control2"] = 88625; -- Holy Word: Chastise
 	config["control3"] = 33076; -- Prayer of Mending
-	config["controlalt1"] = 10060; -- Power Infusion
 	config["controlalt2"] = 1706; -- Levitate
 	config["controlalt3"] = 32546; -- Binding Heal
 	config["controlaltshift1"] = 34861; -- Circle of Healing
@@ -324,20 +312,20 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["cooldown8"] = "LeapOfFaith";
 	config["cooldown10"] = "DivineHymn";
 	config["cooldown16"] = "HolyWordChastise";
-	config["cooldown17"] = "DominateMind";
+	config["cooldown17"] = "ShadowyGrasp";
 	config["cooldown18"] = "Fade";
 	config["cooldown19"] = "FearWard";
 	config["cooldown20"] = "GuardianSpirit";
 	config["cooldown21"] = "HolyFire";
-	config["cooldown22"] = "HolyNova";
-	config["cooldown23"] = "PsychicScream";
 	config["cooldown24"] = "MassDispel";
-	config["cooldown25"] = "ShadowWordDeath";
 	config["cooldown27"] = "AngelicFeather";
 	config["cooldown28"] = orlanHeal:GetRacialCooldown();
 
 	-- ShackleUndead (both)
 	-- DispelMagic (both)
+	-- DesperatePrayer (both)
+	-- SpectralGuise (both)
+	-- DivineBurst (both)
 
 	return config;
 end;
@@ -347,18 +335,20 @@ function OrlanHeal.Priest.GetDisciplineDefaultConfig(orlanHeal)
 
 	config["3"] = 33206; -- Pain Suppression
 	config["control2"] = 47540; -- Penance
-	config["controlalt3"] = nil;
-	config["controlaltshift1"] = nil;
-	config["alt2"] = nil;
+	config["controlalt3"] = "";
+	config["controlaltshift1"] = "";
+	config["alt2"] = "";
 
 	config["cooldown3"] = "Penance";
-	config["cooldown6"] = nil;
+	config["cooldown6"] = "";
 	config["cooldown10"] = "Archangel";
 	config["cooldown11"] = "PowerWordBarrier";
 	config["cooldown12"] = "SpiritShell";
-	config["cooldown16"] = nil;
+	config["cooldown16"] = "";
 	config["cooldown20"] = "PainSuppression";
+	config["cooldown22"] = "HolyNova";
 
+	-- Silence
 
 	return config;
 end;
