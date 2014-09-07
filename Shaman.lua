@@ -449,6 +449,8 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["cooldown31"] = "WindwalkTotem";
 	config["cooldown32"] = "ElementalBlast";
 	config["cooldown33"] = orlanHeal:GetRacialCooldown();
+	config["cooldown34"] = "Trinket0";
+	config["cooldown35"] = "Trinket1";
 
 	return config;
 end;
