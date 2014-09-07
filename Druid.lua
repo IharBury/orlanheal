@@ -158,7 +158,7 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 339, -- Entangling Roots
 		PrefixSpellId = 132158, -- Nature's Swiftness
 		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
-		Sign = "I"
+		Sign = "Inst."
 	},
 	Genesis =
 	{
