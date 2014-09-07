@@ -409,6 +409,8 @@ function OrlanHeal.Monk.GetDefaultConfig(orlanHeal)
 	config["cooldown29"] = "TranscendenceTransfer";
 	config["cooldown30"] = "InvokeXuenTheWhiteTiger";
 	config["cooldown31"] = orlanHeal:GetRacialCooldown();
+	config["cooldown32"] = "Trinket0";
+	config["cooldown33"] = "Trinket1";
 
 	return config;
 end;

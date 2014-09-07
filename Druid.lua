@@ -232,6 +232,8 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown26"] = "NaturesVigil";
 	config["cooldown27"] = "CenarionWard";
 	config["cooldown28"] = orlanHeal:GetRacialCooldown();
+	config["cooldown29"] = "Trinket0";
+	config["cooldown30"] = "Trinket1";
 
 	return config;
 end;

@@ -330,6 +330,8 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["cooldown23"] = "ShackleUndead";
 	config["cooldown24"] = "MassDispel";
 	config["cooldown25"] = orlanHeal:GetRacialCooldown();
+	config["cooldown26"] = "Trinket0";
+	config["cooldown27"] = "Trinket1";
 
 	return config;
 end;
