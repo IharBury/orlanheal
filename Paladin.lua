@@ -300,9 +300,10 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown17"] = "Repentance";
 	config["cooldown18"] = "BlindingLight";
 	config["cooldown19"] = "LayOnHands";
-	config["cooldown20"] = orlanHeal:GetRacialCooldown();
-	config["cooldown21"] = "Trinket0";
-	config["cooldown22"] = "Trinket1";
+	config["cooldown20"] = "TurnEvil";
+	config["cooldown21"] = orlanHeal:GetRacialCooldown();
+	config["cooldown22"] = "Trinket0";
+	config["cooldown23"] = "Trinket1";
 
 	return config;
 end;
