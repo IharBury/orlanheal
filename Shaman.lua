@@ -70,16 +70,6 @@ OrlanHeal.Shaman.CooldownOptions =
 		Sign = "I",
 		Group = GetSpellInfo(16188)
 	},
-	InstantGhostWolf =
-	{
-		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(2645),
-		Caption = "Instant " .. GetSpellInfo(2645),
-		SpellId = 2645, -- Ghost Wolf
-		PrefixSpellId = 16188, -- Ancestral Swiftness
-		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
-		Sign = "I",
-		Group = GetSpellInfo(16188)
-	},
 	InstantHealingSurge =
 	{
 		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(8004),
@@ -444,13 +434,16 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["cooldown26"] = "Purge";
 	config["cooldown27"] = "Hex";
 	config["cooldown28"] = "StoneBulwarkTotem";
-	config["cooldown29"] = "AncestralSwiftness";
+	config["cooldown29"] = "WindwalkTotem";
 	config["cooldown30"] = "AncestralGuidance";
-	config["cooldown31"] = "WindwalkTotem";
+	config["cooldown31"] = "ChainHeal";
 	config["cooldown32"] = "ElementalBlast";
-	config["cooldown33"] = orlanHeal:GetRacialCooldown();
-	config["cooldown34"] = "Trinket0";
-	config["cooldown35"] = "Trinket1";
+	config["cooldown33"] = "InstantElementalBlast";
+	config["cooldown34"] = "InstantHealingRain";
+	config["cooldown35"] = "AncestralSwiftness";
+	config["cooldown36"] = orlanHeal:GetRacialCooldown();
+	config["cooldown37"] = "Trinket0";
+	config["cooldown38"] = "Trinket1";
 
 	return config;
 end;
