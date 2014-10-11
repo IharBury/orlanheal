@@ -1149,10 +1149,8 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 		if not buffKind then
 			if (self.SavingAbilities[spellId]) then
 				buffKind = -1;
-			elseif (self.ShieldAbilities[spellId]) then
+			elseif (caster ~= nil) and UnitIsUnit(caster, "player") then
 				buffKind = -2;
-			elseif (self.HealingBuffs[spellId]) then
-				buffKind = -3;
 			end;
 		end;
 

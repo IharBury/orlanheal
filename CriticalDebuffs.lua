@@ -1,5 +1,8 @@
 ﻿OrlanHeal.CriticalDebuffs =
 {
+	[30884] = true, -- Nature's Guardian
+
+	[48743] = true, -- Death Pact
 	[49026] = true, -- Fixate
 
 	[66237] = true, -- Incinerate Flesh
@@ -257,7 +260,10 @@
 	[144330] = true, -- Железная тюрьма
 	[144331] = true, -- Железная тюрьма
 	[144351] = true, -- Знак самонадеянности
-	[145561] = true -- Знак убийцы
+	[145561] = true, -- Знак убийцы
+
+	[161199] = true, -- Debilitating Fixation
+	[161200] = true  -- Debilitating Fixation
 };
 
 OrlanHeal.VeryCriticalDebuffs =

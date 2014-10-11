@@ -13,6 +13,7 @@
 	[9943] = true, -- Spell Reflection
 	[10074] = true, -- Spell Reflection
 	[10278] = true, -- Hand of Protection
+	[11426] = true, -- Ice Barrier
 	[12975] = true, -- Last Stand
 	[13007] = true, -- Divine Protection
 	[15062] = true, -- Shield Wall
@@ -20,6 +21,8 @@
 	[19263] = true, -- Deterrence
 	[20233] = true, -- Lay on Hands
 	[20236] = true, -- Lay on Hands
+	[20594] = true, -- Stoneform
+	[20711] = true, -- Spirit of Redemption
 	[21118] = true, -- Spell Reflection
 	[21878] = true, -- Evasion
 	[22812] = true, -- Barkskin
@@ -67,6 +70,7 @@
 	[48153] = true, -- Guardian Spirit
 	[48707] = true, -- Anti-Magic Shell
 	[48792] = true, -- Icebound Fortitude
+	[48982] = true, -- Rune Tap
 	[49028] = true, -- Dancing Rune Weapon
 	[49222] = true, -- Bone Shield
 	[49766] = true, -- Dispersion
@@ -112,6 +116,8 @@
 	[71550] = true, -- Divine Shield
 	[74001] = true, -- Combat Readiness
 	[74002] = true, -- Combat Insight
+	[76577] = true, -- Smoke Bomb
+	[79008] = true, -- Elusiveness
 	[81162] = true, -- Will of the Necropolis
 	[81256] = true, -- Dancing Rune Weapon
 	[81549] = true, -- Cloak of Shadows
@@ -130,6 +136,7 @@
 	[98007] = true, -- Spirit Link Totem
 	[98008] = true, -- Spirit Link Totem
 	[102342] = true, -- Ironbark
+	[102351] = true, -- Cenarion Ward
 	[104773] = true, -- Unending Resolve
 	[105737] = true, -- Might of Ursoc
 	[106922] = true, -- Might of Ursoc
@@ -148,12 +155,15 @@
 	[110791] = true, -- Evasion
 	[110909] = true, -- Alter Time
 	[110913] = true, -- Dark Bargain
+	[110959] = true, -- Greater Invisibility
 	[112833] = true, -- Spectral Guise
 	[113002] = true, -- Spell Reflection
 	[113072] = true, -- Might of Ursoc
 	[113075] = true, -- Barkskin
 	[113306] = true, -- Survival Instincts
 	[113613] = true, -- Growl
+	[114028] = true, -- Mass Spell Reflection
+	[114029] = true, -- Safeguard
 	[114030] = true, -- Vigilance
 	[114039] = true, -- Hand of Purity
 	[114168] = true, -- Dark Apotheosis
@@ -177,11 +187,13 @@
 	[122286] = true, -- Savage Defense
 	[122289] = true, -- Feint
 	[122291] = true, -- Unending Resolve
+	[122470] = true, -- Touch of Karma
 	[122507] = true, -- Rallying Cry
 	[122710] = true, -- Vigilance
 	[122783] = true, -- Diffuse Magic
 	[122844] = true, -- Pain Suppression
 	[122845] = true, -- Guardian Spirit
+	[124081] = true, -- Zen Sphere
 	[124280] = true, -- Touch of Karma
 	[125174] = true, -- Touch of Karma
 	[126453] = true, -- Elusive Brew
@@ -190,5 +202,7 @@
 	[128919] = true, -- Evasion
 	[129035] = true, -- Pain Suppression
 	[131523] = true, -- Zen Meditation
-	[132404] = true -- Shield Block
+	[132404] = true, -- Shield Block
+	[155835] = true, -- Bristling Fur
+	[157913] = true -- Evanesce
 };
