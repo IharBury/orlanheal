@@ -261,9 +261,23 @@
 	[144331] = true, -- Железная тюрьма
 	[144351] = true, -- Знак самонадеянности
 	[145561] = true, -- Знак убийцы
+	[149975] = true, -- Dancing Flames
+
+	[150032] = true, -- Withering Flames
+	[155365] = true, -- Pin Down
+	[156842] = true, -- Corruption
+	[156964] = true, -- Immolate
+	[157059] = true, -- Rune of Grasping Earth
 
 	[161199] = true, -- Debilitating Fixation
-	[161200] = true  -- Debilitating Fixation
+	[161200] = true, -- Debilitating Fixation
+	[162184] = true, -- Expel Magic: Shadow
+	[162185] = true, -- Expel Magic: Fire
+	[162418] = true, -- Feeding Frenzy
+	[167615] = true, -- Pierced Armor
+	[169376] = true, -- Venomous Sting
+
+	[175020] = true -- Impaled
 };
 
 OrlanHeal.VeryCriticalDebuffs =
@@ -283,7 +297,12 @@ OrlanHeal.VeryCriticalDebuffs =
 	[132222] = true, -- Destabilizing Energies
 	[142863] = true, -- Weak Ancient Barrier
 	[144574] = true, -- Оскверненная тюрьма
-	[147383] = true -- Истощение
+	[147383] = true, -- Истощение
+	[155399] = true, -- Conflagration
+	[156238] = true, -- Arcane Wrath
+	[156954] = true, -- Unstable Affliction
+	[158315] = true, -- Dark Hunt
+	[161242] = true -- Caustic Energy
 };
 
 OrlanHeal.GoodCriticalDebuffs =
