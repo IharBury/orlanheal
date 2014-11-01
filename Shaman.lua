@@ -462,8 +462,12 @@ function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
 	local isRiptideReady = orlanHeal:IsSpellReady(61295);
 	local isAncestralSwiftnessReady = orlanHeal:IsSpellReady(16188);
 	local spiritwalkersGraceSpellName = GetSpellInfo(79206);
+	local harmonyOfTheElementsSpellName = GetSpellInfo(167703);
+
 	if UnitBuff("player", spiritwalkersGraceSpellName) then
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
+	elseif UnitBuff("player", harmonyOfTheElementsSpellName) and orlanHeal:IsSpellReady(1064) then -- Chain Heal
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 1, orlanHeal.RaidBorderAlpha); -- magenta
 	elseif isRiptideReady then
 		if isAncestralSwiftnessReady then
 			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
