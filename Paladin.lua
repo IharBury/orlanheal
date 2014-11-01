@@ -321,25 +321,31 @@ end;
 function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 	local infusionOfLightSpellName = GetSpellInfo(54149);
 	local daybreakSpellName = GetSpellInfo(88819);
-	local enhancedHolyShockName = GetSpellInfo(160002);
+	local enhancedHolyShockSpellName = GetSpellInfo(160002);
+	local lightsFavorSpellName = GetSpellInfo(166781);
+	local lawfulWordsSpellName = GetSpellInfo(166780);
 	local power = orlanHeal.Paladin.GetEffectiveHolyPower();
 
-	if orlanHeal.Paladin.IsUrgentToSpendHolyPower() and orlanHeal:IsSpellReady(85673) then -- Word of Glory
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.5, 1, 0.5, orlanHeal.RaidBorderAlpha);
+	if UnitBuff("player", lightsFavorSpellName) and orlanHeal:IsSpellReady(85222) then -- Light of Dawn
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 1, orlanHeal.RaidBorderAlpha); -- magenta
+	elseif UnitBuff("player", lawfulWordsSpellName) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 1, orlanHeal.RaidBorderAlpha); -- cyan
+	elseif orlanHeal.Paladin.IsUrgentToSpendHolyPower() and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.5, 1, 0.5, orlanHeal.RaidBorderAlpha); -- light green
 	elseif (power >= 3) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha); -- green
 	elseif UnitBuff("player", infusionOfLightSpellName) then -- Infusion of Light
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha);
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha); -- blue
 	elseif (UnitBuff("player", daybreakSpellName) -- Daybreak
-				or UnitBuff("player", enhancedHolyShockName)) -- Enhanced Holy Shock
+				or UnitBuff("player", enhancedHolyShockSpellName)) -- Enhanced Holy Shock
 			and orlanHeal:IsSpellReady(20473) then -- Holy Shock
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha); -- white
 	elseif orlanHeal:IsSpellReady(20473) then -- Holy Shock
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha); -- yellow
 	elseif (power == 2) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.5, 0, orlanHeal.RaidBorderAlpha);
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.5, 0, orlanHeal.RaidBorderAlpha); -- orange
 	elseif (power == 1) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha);
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha); -- red
 	else
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
 	end;
