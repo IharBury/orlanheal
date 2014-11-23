@@ -797,13 +797,17 @@ end;
 
 function OrlanHeal:SaveSetup()
 	if self:RequestNonCombat() then
-		for key, value in pairs(self.PendingConfig) do
-			self.Config[key] = value;
-		end;
-
-		self.Config.Size = self.SetupWindow.SizeWindow:GetValue() / 1000;
+		self:MovePendingConfigToConfig();
 		self:ApplyConfig();
 	end;
+end;
+
+function OrlanHeal:MovePendingConfigToConfig()
+	for key, value in pairs(self.PendingConfig) do
+		self.Config[key] = value;
+	end;
+
+	self.Config.Size = self.SetupWindow.SizeWindow:GetValue() / 1000;
 end;
 
 function OrlanHeal:SaveSetupAs(name)
@@ -813,10 +817,11 @@ function OrlanHeal:SaveSetupAs(name)
 		elseif self.ConfigSet[name] then
 			print("OrlanHeal: Duplicate config name.");
 		else
+			self.Config = {};
+			self:SaveSetup();
 			local talentGroup = GetActiveSpecGroup();
 			self.CharacterConfig[talentGroup] = name;
 			self.ConfigSet[name] = self.Config;
-			self:SaveSetup();
 			self:Setup();
 		end;
 	end;
