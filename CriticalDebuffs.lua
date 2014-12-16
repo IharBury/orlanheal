@@ -274,6 +274,7 @@
 	[162184] = true, -- Expel Magic: Shadow
 	[162185] = true, -- Expel Magic: Fire
 	[162418] = true, -- Feeding Frenzy
+	[162497] = true, -- On the Hunt
 	[167615] = true, -- Pierced Armor
 	[169376] = true, -- Venomous Sting
 
@@ -302,7 +303,11 @@ OrlanHeal.VeryCriticalDebuffs =
 	[156238] = true, -- Arcane Wrath
 	[156954] = true, -- Unstable Affliction
 	[158315] = true, -- Dark Hunt
-	[161242] = true -- Caustic Energy
+	[158986] = true, -- Berserker Rush
+	[159002] = true, -- Berserker Rush
+	[159004] = true, -- Berserker Rush
+	[161242] = true, -- Caustic Energy
+	[170211] = true -- Berserker Rush
 };
 
 OrlanHeal.GoodCriticalDebuffs =
