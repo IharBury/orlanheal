@@ -380,7 +380,7 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 			if (duration ~= 0) and (expirationTime ~= 0) then
 				window:SetCooldown(expirationTime - duration, duration);
 			else
-				window:SetCooldown(GetTime() - 20, 10);
+				window:SetCooldown(GetTime() - 1, 1);
 			end;
 		end;
 	else
