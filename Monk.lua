@@ -13,11 +13,7 @@ function OrlanHeal.Monk.IsTalentConditionSatisfied(orlanHeal, window)
 end;
 
 function OrlanHeal.Monk.UpdateTouchOfDeathCooldown(orlanHeal, window)
-	if orlanHeal:HasGlyph(123391) then
-		orlanHeal:UpdateAbilityCooldown(window);
-	else
-		orlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window);
-	end
+	orlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window);
 end;
 
 function OrlanHeal.Monk.UpdateChiAbilityCooldown(orlanHeal, window, chiCost)
@@ -266,7 +262,7 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		SpellId = 115080,
 		ChiCost = 3,
-		Update = OrlanHeal.Monk.UpdateTouchOfDeathCooldown
+		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
 	},
 	ZenPilgrimage =
 	{

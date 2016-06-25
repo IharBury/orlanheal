@@ -4,36 +4,19 @@ OrlanHeal.Druid.IsSupported = true;
 
 OrlanHeal.Druid.AvailableSpells =
 {
-	774, -- Омоложение
-	8936, -- Восстановление
-	18562, -- Быстрое восстановление
-	33763, -- Жизнецвет
-	5185, -- Целительное прикосновение
-	20484, -- Возрождение
-	48438, -- Буйный рост
+	774, -- Rejuvenation
+	8936, -- Regrowth
+	18562, -- Swiftmend
+	33763, -- Lifebloom
+	5185, -- Healing Touch
+	20484, -- Rebirth
+	48438, -- Wild Growth
 	102342, -- Ironbark
-	1126, -- Mark of the Wild
 	50769, -- Revive
 	88423, -- Nature's Cure
 	102401, -- Wild Charge
-	145205, -- Wild Mushroom
---	{
---		type = "macro",
---		caption = "Instant " .. GetSpellInfo(8936), -- Восстановление
---		group = GetSpellInfo(132158), -- Природная стремительность
---		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 8936),
---		key = "17116,8936"
---	},
---	{
---		type = "macro",
---		caption = "Instant " .. GetSpellInfo(5185), -- Целительное прикосновение
---		group = GetSpellInfo(132158), -- Природная стремительность
---		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 5185),
---		key = "17116,5185"
---	},
 	102351, -- Cenarion Ward
-	102693, -- Force of Nature
-	145518 -- Genesis
+	29166 -- Innervate
 }
 
 OrlanHeal.Druid.CooldownOptions =
@@ -94,11 +77,6 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 88423,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	StampedingRoar =
-	{
-		SpellId = 106898,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	DisplacerBeast =
 	{
 		SpellId = 102280,
@@ -107,11 +85,6 @@ OrlanHeal.Druid.CooldownOptions =
 	WildCharge =
 	{
 		SpellId = 102401,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	NaturesSwiftness =
-	{
-		SpellId = 132158,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Renewal =
@@ -130,39 +103,9 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 175682, -- Nature's Control
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
---	UrsolsPower =
---	{
---		MacroText = "/cast " .. GetSpellInfo(175683),
---		SpellId = 175683, -- Ursol's Power
---		Update = OrlanHeal.UpdateAbilityCooldown
---	},
-	HeartOfTheWild =
-	{
-		SpellId = 108294,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	NaturesVigil =
-	{
-		SpellId = 124974,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	EntanglingRoots =
 	{
 		SpellId = 339,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
---	InstantEntanglingRoots =
---	{
---		MacroText = "/cast " .. GetSpellInfo(132158) .. "\n/cast " .. GetSpellInfo(339),
---		Caption = "Instant " .. GetSpellInfo(339),
---		SpellId = 339, -- Entangling Roots
---		PrefixSpellId = 132158, -- Nature's Swiftness
---		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
---		Sign = "Inst."
---	},
-	Genesis =
-	{
-		SpellId = 145518, -- Genesis
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Incarnation =
@@ -170,15 +113,39 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 33891, -- Incarnation: Tree of Life
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	ForceOfNature =
+	Efflorescence =
 	{
-		SpellId = 102693, -- Force of Nature
+		SpellId = 145205, -- Efflorescence
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	WildMushroom =
+	FrenziedRegeneration =
 	{
-		MacroText = "/cast " .. GetSpellInfo(145205),
-		SpellId = 145205, -- Wild Mushroom
+		SpellId = 22842, -- Frenzied Regeneration
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Innervate =
+	{
+		SpellId = 29166, -- Innervate
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Mangle =
+	{
+		SpellId = 33917, -- Mangle
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	UrsolsVortex =
+	{
+		SpellId = 102793, -- Ursol's Vortex
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Starsurge =
+	{
+		SpellId = 197626, -- Starsurge
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Flourish =
+	{
+		SpellId = 197721, -- Flourish
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
@@ -186,54 +153,48 @@ OrlanHeal.Druid.CooldownOptions =
 function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 
-	config["1"] = 5185; -- Целительное прикосновение
-	config["2"] = 8936; -- Восстановление
-	config["3"] = 48438; -- Буйный рост
-	config["shift2"] = 33763; -- Жизнецвет
+	config["1"] = 5185; -- Healing Touch
+	config["2"] = 8936; -- Regrowth
+	config["3"] = 48438; -- Wild Growth
+	config["shift2"] = 33763; -- Lifebloom
 	config["shift3"] = 102342; -- Ironbark
-	config["control1"] = 145205; -- Wild Mushroom
-	config["control2"] = 18562; -- Быстрое восстановление
-	config["control3"] = 20484; -- Возрождение
+	config["control1"] = 29166; -- Innervate
+	config["control2"] = 18562; -- Swiftmend
+	config["control3"] = 20484; -- Rebirth
 	config["alt1"] = 88423; -- Nature's Cure
-	config["alt2"] = 774; -- Омоложение
+	config["alt2"] = 774; -- Rejuvenation
 	config["alt3"] = 102351; -- Cenarion Ward
-	config["controlalt1"] = "17116,5185"; -- Instant Целительное прикосновение
-	config["controlalt2"] = "17116,8936"; -- Instant Восстановление
-	config["controlalt3"] = 145518; -- Genesis
-	config["altshift1"] = 102693; -- Force of Nature
 	config["altshift2"] = 102401; -- Wild Charge
 	config["altshift3"] = 50769; -- Revive
 
 	config["cooldown1"] = "Lifebloom";
 	config["cooldown2"] = "Swiftmend";
 	config["cooldown3"] = "WildGrowth";
-	config["cooldown4"] = "Genesis";
+	config["cooldown4"] = "Flourish";
 	config["cooldown5"] = "NaturesCure";
 	config["cooldown6"] = "Barkskin";
 	config["cooldown7"] = "Ironbark";
 	config["cooldown8"] = "WildCharge";
-	config["cooldown9"] = "UrsolsPower";
+	config["cooldown9"] = "Innervate";
 	config["cooldown10"] = "Tranquility";
 	config["cooldown11"] = "Incarnation";
 	config["cooldown12"] = "Dash";
 	config["cooldown13"] = "Growl";
-	config["cooldown14"] = "NaturesSwiftness";
+	config["cooldown14"] = "FrenziedRegeneration";
 	config["cooldown15"] = "Rebirth";
-	config["cooldown16"] = "HeartOfTheWild";
-	config["cooldown17"] = "Prowl";
-	config["cooldown18"] = "StampedingRoar";
-	config["cooldown19"] = "NaturesControl";
-	config["cooldown20"] = "ForceOfNature";
+	config["cooldown16"] = "Prowl";
+	config["cooldown17"] = "UrsolsVortex";
+	config["cooldown18"] = "NaturesControl";
+	config["cooldown19"] = "Mangle";
+	config["cooldown20"] = "Starsurge";
 	config["cooldown21"] = "Renewal";
 	config["cooldown22"] = "EntanglingRoots";
-	config["cooldown23"] = "InstantEntanglingRoots";
+	config["cooldown23"] = "CenarionWard";
 	config["cooldown24"] = "DisplacerBeast";
-	config["cooldown25"] = "WildMushroom";
-	config["cooldown26"] = "NaturesVigil";
-	config["cooldown27"] = "CenarionWard";
-	config["cooldown28"] = orlanHeal:GetRacialCooldown();
-	config["cooldown29"] = "Trinket0";
-	config["cooldown30"] = "Trinket1";
+	config["cooldown25"] = "Efflorescence";
+	config["cooldown26"] = orlanHeal:GetRacialCooldown();
+	config["cooldown27"] = "Trinket0";
+	config["cooldown28"] = "Trinket1";
 
 	return config;
 end;
@@ -256,8 +217,7 @@ function OrlanHeal.Druid.UpdateRaidBorder(orlanHeal)
 	local isWildGrowthReady = IsSpellKnown(48438) and (wildGrowthCooldown < 1.5);
 	local clearcastingSpellName = GetSpellInfo(16870);
 	if lifebloomExpirationTime 
-			and (lifebloomExpirationTime - GetTime() < 4) 
-			and not orlanHeal:HasGlyph(121840) then -- Glyph of Blooming
+			and (lifebloomExpirationTime - GetTime() < 4) then
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha);
 	elseif UnitBuff("player", clearcastingSpellName) then
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
@@ -276,13 +236,13 @@ OrlanHeal.Druid.PlayerSpecificBuffCount = 4;
 
 function OrlanHeal.Druid.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
-	if (spellId == 774) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- своё Омоложение
+	if (spellId == 774) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- own Rejuvenation
 		buffKind = 1;
 	elseif (spellId == 155777) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- own Rejuvenation (Germination)
 		buffKind = 2;
-	elseif spellId == 8936 then -- Восстановление
+	elseif spellId == 8936 then -- Regrowth
 		buffKind = 3;
-	elseif spellId == 33763 and (caster ~= nil) and UnitIsUnit(caster, "player") then -- свой Жизнецвет
+	elseif spellId == 33763 and (caster ~= nil) and UnitIsUnit(caster, "player") then -- own Lifebloom
 		buffKind = 4;
 	end;
 	return buffKind;
