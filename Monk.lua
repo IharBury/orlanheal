@@ -93,24 +93,24 @@ OrlanHeal.Monk.AvailableSpells =
 		group = GetSpellInfo(116694)
 	},
 	115921, -- Legacy of the Emperor
-	{
-		type = "macro",
-		caption = GetSpellInfo(175693), -- Chi Shaping
-		macrotext = OrlanHeal:BuildMouseOverCastMacro(175693),
-		key = 175693
-	},
+--	{
+--		type = "macro",
+--		caption = GetSpellInfo(175693), -- Chi Shaping
+--		macrotext = OrlanHeal:BuildMouseOverCastMacro(175693),
+--		key = 175693
+--	},
 	{
 		type = "macro",
 		caption = GetSpellInfo(175697), -- Disabling Technique
 		macrotext = OrlanHeal:BuildMouseOverCastMacro(175697),
 		key = 175697
 	},
-	{
-		type = "macro",
-		caption = GetSpellInfo(157675), -- Chi Explosion
-		macrotext = OrlanHeal:BuildMouseOverCastMacro(157675),
-		key = 157675
-	},
+--	{
+--		type = "macro",
+--		caption = GetSpellInfo(157675), -- Chi Explosion
+--		macrotext = OrlanHeal:BuildMouseOverCastMacro(157675),
+--		key = 157675
+--	},
 	115072 -- Expel Harm
 };
 
@@ -323,12 +323,12 @@ OrlanHeal.Monk.CooldownOptions =
 		ChiCost = 2,
 		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
 	},
-	ChiShaping =
-	{
-		MacroText = "/cast " .. GetSpellInfo(175693),
-		SpellId = 175693, -- Chi Shaping
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
+--	ChiShaping =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(175693),
+--		SpellId = 175693, -- Chi Shaping
+--		Update = OrlanHeal.UpdateAbilityCooldown
+--	},
 	DisablingTechnique =
 	{
 		MacroText = "/cast " .. GetSpellInfo(175697),
@@ -344,16 +344,16 @@ OrlanHeal.Monk.CooldownOptions =
 		TalentCondition = false,
 		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
 	},
-	ChiExplosion =
-	{
-		MacroText = "/cast " .. GetSpellInfo(157675),
-		SpellId = 157675, -- Chi Explosion
-		ChiCost = 1,
-		TalentRow = 7,
-		TalentColumn = 2,
-		TalentCondition = true,
-		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
-	},
+--	ChiExplosion =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(157675),
+--		SpellId = 157675, -- Chi Explosion
+--		ChiCost = 1,
+--		TalentRow = 7,
+--		TalentColumn = 2,
+--		TalentCondition = true,
+--		Update = OrlanHeal.Monk.UpdateChiAbilityCooldown
+--	},
 	BreathOfTheSerpent =
 	{
 		SpellId = 157535,

@@ -13,103 +13,103 @@ OrlanHeal.Shaman.AvailableSpells =
 	77472, -- Healing Wave
 	61295, -- Быстрина
 	73685, -- Высвободить чары жизни
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(8004), -- Исцеляющий всплеск
-		group = GetSpellInfo(16188), -- Ancestral Swiftness
-		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 8004),
-		key = "16188,8004"
-	},
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(1064), -- Цепное исцеление
-		group = GetSpellInfo(16188), -- Ancestral Swiftness
-		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 1064),
-		key = "16188,1064"
-	},
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(77472), -- Healing Wave
-		group = GetSpellInfo(16188), -- Ancestral Swiftness
-		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 77472),
-		key = "16188,77472"
-	},
+--	{
+--		type = "macro",
+--		caption = "Instant " .. GetSpellInfo(8004), -- Исцеляющий всплеск
+--		group = GetSpellInfo(16188), -- Ancestral Swiftness
+--		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 8004),
+--		key = "16188,8004"
+--	},
+--	{
+--		type = "macro",
+--		caption = "Instant " .. GetSpellInfo(1064), -- Цепное исцеление
+--		group = GetSpellInfo(16188), -- Ancestral Swiftness
+--		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 1064),
+--		key = "16188,1064"
+--	},
+--	{
+--		type = "macro",
+--		caption = "Instant " .. GetSpellInfo(77472), -- Healing Wave
+--		group = GetSpellInfo(16188), -- Ancestral Swiftness
+--		macrotext = OrlanHeal:BuildCastSequenceMacro(16188, 77472),
+--		key = "16188,77472"
+--	},
 	2008, -- Ancestral Spirit
 	59547 -- Gift of the Naaru
 };
 
 OrlanHeal.Shaman.CooldownOptions =
 {
-	InstantChainLightning =
-	{
-		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(421),
-		Caption = "Instant " .. GetSpellInfo(421),
-		SpellId = 421, -- Chain Lightning
-		PrefixSpellId = 16188, -- Ancestral Swiftness
-		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
-		Sign = "I",
-		Group = GetSpellInfo(16188)
-	},
-	InstantLightningBolt =
-	{
-		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(403),
-		Caption = "Instant " .. GetSpellInfo(403),
-		SpellId = 403, -- Lightning Bolt
-		PrefixSpellId = 16188, -- Ancestral Swiftness
-		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
-		Sign = "I",
-		Group = GetSpellInfo(16188)
-	},
-	InstantHealingRain =
-	{
-		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(73920),
-		Caption = "Instant " .. GetSpellInfo(73920),
-		SpellId = 73920, -- Healing Rain
-		PrefixSpellId = 16188, -- Ancestral Swiftness
-		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
-		Sign = "I",
-		Group = GetSpellInfo(16188)
-	},
-	InstantHealingSurge =
-	{
-		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(8004),
-		Caption = "Instant " .. GetSpellInfo(8004),
-		SpellId = 8004, -- Healing Surge
-		PrefixSpellId = 16188, -- Ancestral Swiftness
-		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
-		Sign = "I",
-		Group = GetSpellInfo(16188)
-	},
-	InstantElementalBlast =
-	{
-		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(117014),
-		Caption = "Instant " .. GetSpellInfo(117014),
-		SpellId = 117014, -- Elemental Blast
-		PrefixSpellId = 16188, -- Ancestral Swiftness
-		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
-		Sign = "I",
-		Group = GetSpellInfo(16188)
-	},
-	InstantChainHeal =
-	{
-		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(1064),
-		Caption = "Instant " .. GetSpellInfo(1064),
-		SpellId = 1064, -- Chain Heal
-		PrefixSpellId = 16188, -- Ancestral Swiftness
-		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
-		Sign = "I",
-		Group = GetSpellInfo(16188)
-	},
-	InstantHealingWave =
-	{
-		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(77472),
-		Caption = "Instant " .. GetSpellInfo(77472),
-		SpellId = 77472, -- Healing Wave
-		PrefixSpellId = 16188, -- Ancestral Swiftness
-		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
-		Sign = "I",
-		Group = GetSpellInfo(16188)
-	},
+--	InstantChainLightning =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(421),
+--		Caption = "Instant " .. GetSpellInfo(421),
+--		SpellId = 421, -- Chain Lightning
+--		PrefixSpellId = 16188, -- Ancestral Swiftness
+--		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+--		Sign = "I",
+--		Group = GetSpellInfo(16188)
+--	},
+--	InstantLightningBolt =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(403),
+--		Caption = "Instant " .. GetSpellInfo(403),
+--		SpellId = 403, -- Lightning Bolt
+--		PrefixSpellId = 16188, -- Ancestral Swiftness
+--		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+--		Sign = "I",
+--		Group = GetSpellInfo(16188)
+--	},
+--	InstantHealingRain =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(73920),
+--		Caption = "Instant " .. GetSpellInfo(73920),
+--		SpellId = 73920, -- Healing Rain
+--		PrefixSpellId = 16188, -- Ancestral Swiftness
+--		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+--		Sign = "I",
+--		Group = GetSpellInfo(16188)
+--	},
+--	InstantHealingSurge =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(8004),
+--		Caption = "Instant " .. GetSpellInfo(8004),
+--		SpellId = 8004, -- Healing Surge
+--		PrefixSpellId = 16188, -- Ancestral Swiftness
+--		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+--		Sign = "I",
+--		Group = GetSpellInfo(16188)
+--	},
+--	InstantElementalBlast =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(117014),
+--		Caption = "Instant " .. GetSpellInfo(117014),
+--		SpellId = 117014, -- Elemental Blast
+--		PrefixSpellId = 16188, -- Ancestral Swiftness
+--		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+--		Sign = "I",
+--		Group = GetSpellInfo(16188)
+--	},
+--	InstantChainHeal =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(1064),
+--		Caption = "Instant " .. GetSpellInfo(1064),
+--		SpellId = 1064, -- Chain Heal
+--		PrefixSpellId = 16188, -- Ancestral Swiftness
+--		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+--		Sign = "I",
+--		Group = GetSpellInfo(16188)
+--	},
+--	InstantHealingWave =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(16188) .. "\n/cast " .. GetSpellInfo(77472),
+--		Caption = "Instant " .. GetSpellInfo(77472),
+--		SpellId = 77472, -- Healing Wave
+--		PrefixSpellId = 16188, -- Ancestral Swiftness
+--		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+--		Sign = "I",
+--		Group = GetSpellInfo(16188)
+--	},
 	LightningShield =
 	{
 		SpellId = 324, -- Lightning Shield

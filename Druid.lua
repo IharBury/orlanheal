@@ -17,20 +17,20 @@ OrlanHeal.Druid.AvailableSpells =
 	88423, -- Nature's Cure
 	102401, -- Wild Charge
 	145205, -- Wild Mushroom
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(8936), -- Восстановление
-		group = GetSpellInfo(132158), -- Природная стремительность
-		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 8936),
-		key = "17116,8936"
-	},
-	{
-		type = "macro",
-		caption = "Instant " .. GetSpellInfo(5185), -- Целительное прикосновение
-		group = GetSpellInfo(132158), -- Природная стремительность
-		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 5185),
-		key = "17116,5185"
-	},
+--	{
+--		type = "macro",
+--		caption = "Instant " .. GetSpellInfo(8936), -- Восстановление
+--		group = GetSpellInfo(132158), -- Природная стремительность
+--		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 8936),
+--		key = "17116,8936"
+--	},
+--	{
+--		type = "macro",
+--		caption = "Instant " .. GetSpellInfo(5185), -- Целительное прикосновение
+--		group = GetSpellInfo(132158), -- Природная стремительность
+--		macrotext = OrlanHeal:BuildCastSequenceMacro(132158, 5185),
+--		key = "17116,5185"
+--	},
 	102351, -- Cenarion Ward
 	102693, -- Force of Nature
 	145518 -- Genesis
@@ -130,12 +130,12 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 175682, -- Nature's Control
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	UrsolsPower =
-	{
-		MacroText = "/cast " .. GetSpellInfo(175683),
-		SpellId = 175683, -- Ursol's Power
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
+--	UrsolsPower =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(175683),
+--		SpellId = 175683, -- Ursol's Power
+--		Update = OrlanHeal.UpdateAbilityCooldown
+--	},
 	HeartOfTheWild =
 	{
 		SpellId = 108294,
@@ -151,15 +151,15 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 339,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	InstantEntanglingRoots =
-	{
-		MacroText = "/cast " .. GetSpellInfo(132158) .. "\n/cast " .. GetSpellInfo(339),
-		Caption = "Instant " .. GetSpellInfo(339),
-		SpellId = 339, -- Entangling Roots
-		PrefixSpellId = 132158, -- Nature's Swiftness
-		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
-		Sign = "Inst."
-	},
+--	InstantEntanglingRoots =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(132158) .. "\n/cast " .. GetSpellInfo(339),
+--		Caption = "Instant " .. GetSpellInfo(339),
+--		SpellId = 339, -- Entangling Roots
+--		PrefixSpellId = 132158, -- Nature's Swiftness
+--		Update = OrlanHeal.UpdateAbilitySequenceCooldown,
+--		Sign = "Inst."
+--	},
 	Genesis =
 	{
 		SpellId = 145518, -- Genesis

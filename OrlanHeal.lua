@@ -21,7 +21,7 @@ function OrlanHeal:CreateRaidWindow()
 	local background = raidWindow:CreateTexture();
 	background:SetPoint("TOPLEFT", 3, -3);
 	background:SetPoint("BOTTOMRIGHT", -3, 3);
-	background:SetTexture(0, 0, 0, self.RaidAlpha);
+	background:SetColorTexture(0, 0, 0, self.RaidAlpha);
 
 	raidWindow:SetPoint("CENTER", 0, 0);
 	raidWindow:SetFrameStrata(self.RaidWindowStrata);
@@ -96,10 +96,10 @@ function OrlanHeal:CreateBorder(window, thickness, offset)
 end;
 
 function OrlanHeal:SetBorderColor(window, r, g, b, a)
-	window.TopBorder:SetTexture(r, g, b, a);
-	window.BottomBorder:SetTexture(r, g, b, a);
-	window.LeftBorder:SetTexture(r, g, b, a);
-	window.RightBorder:SetTexture(r, g, b, a);
+	window.TopBorder:SetColorTexture(r, g, b, a);
+	window.BottomBorder:SetColorTexture(r, g, b, a);
+	window.LeftBorder:SetColorTexture(r, g, b, a);
+	window.RightBorder:SetColorTexture(r, g, b, a);
 end;
 
 function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
@@ -107,7 +107,7 @@ function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
 
 	local background = groupWindow:CreateTexture();
 	background:SetAllPoints();
-	background:SetTexture(0, 0, 0, self.GroupAlpha);
+	background:SetColorTexture(0, 0, 0, self.GroupAlpha);
 
 	groupWindow:SetHeight(self.GroupHeight);
 	groupWindow:SetWidth(self.GroupWidth);
@@ -251,7 +251,7 @@ function OrlanHeal:CreateBlankCanvas(parent)
 	parent.Canvas = CreateFrame("Frame", nil, parent);
 	parent.Canvas:SetAllPoints();
 	parent.Canvas.BackgroundTexture = parent.Canvas:CreateTexture(nil, "BACKGROUND");
-	parent.Canvas.BackgroundTexture:SetTexture(0.2, 0.2, 0.2, 1);
+	parent.Canvas.BackgroundTexture:SetColorTexture(0.2, 0.2, 0.2, 1);
 	parent.Canvas.BackgroundTexture:SetAllPoints();
 end;
 
@@ -282,7 +282,7 @@ function OrlanHeal:CreateStatusBar(parent, backgroundColor, currentColor, incomi
 
 	bar.Background = bar:CreateTexture(nil, "BACKGROUND");
 	bar.Background:SetAllPoints();
-	bar.Background:SetTexture(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1);
+	bar.Background:SetColorTexture(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1);
 
 	bar.Current = bar:CreateTexture();
 	bar.Current:SetPoint("TOPLEFT", 0, 0);
@@ -290,22 +290,22 @@ function OrlanHeal:CreateStatusBar(parent, backgroundColor, currentColor, incomi
 	self:SetStatusBarCurrentColor(bar, currentColor);
 
 	bar.Incoming = bar:CreateTexture();
-	bar.Incoming:SetTexture(incomingColor.r, incomingColor.g, incomingColor.b, 1);
+	bar.Incoming:SetColorTexture(incomingColor.r, incomingColor.g, incomingColor.b, 1);
 
 	bar.YourIncoming = bar:CreateTexture();
-	bar.YourIncoming:SetTexture(yourIncomingColor.r, yourIncomingColor.g, yourIncomingColor.b, 1);
+	bar.YourIncoming:SetColorTexture(yourIncomingColor.r, yourIncomingColor.g, yourIncomingColor.b, 1);
 
 	bar.Overincoming = bar:CreateTexture();
 	bar.Overincoming:SetPoint("TOPRIGHT", overincomingWidth, 0);
 	bar.Overincoming:SetPoint("BOTTOMRIGHT", overincomingWidth, 0);
 	bar.Overincoming:SetWidth(overincomingWidth);
-	bar.Overincoming:SetTexture(overincomingColor.r, overincomingColor.g, overincomingColor.b, 1);
+	bar.Overincoming:SetColorTexture(overincomingColor.r, overincomingColor.g, overincomingColor.b, 1);
 
 	return bar;
 end;
 
 function OrlanHeal:SetStatusBarCurrentColor(bar, currentColor)
-	bar.Current:SetTexture(currentColor.r, currentColor.g, currentColor.b, 1);
+	bar.Current:SetColorTexture(currentColor.r, currentColor.g, currentColor.b, 1);
 end;
 
 function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue, incomingValue, yourIncomingValue)
@@ -846,7 +846,7 @@ function OrlanHeal:UpdatePlayerRoleIcon(player)
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
 			player.Canvas.Role:SetTexCoord(20/64, 39/64, 22/64, 41/64);
 		else
-			player.Canvas.Role:SetTexture(0, 0, 0, 0);
+			player.Canvas.Role:SetColorTexture(0, 0, 0, 0);
 		end;
 	end;
 end;
@@ -861,7 +861,7 @@ function OrlanHeal:UpdateTargetIcon(canvas, unit)
 		local bottom = top + 1 / 4;
 		canvas.Target:SetTexCoord(left, right, top, bottom);
 	else
-		canvas.Target:SetTexture(0, 0, 0, 0);
+		canvas.Target:SetColorTexture(0, 0, 0, 0);
 	end;
 end;
 
@@ -1003,17 +1003,17 @@ end;
 
 function OrlanHeal:UpdateBackground(background, unit)
 	if not UnitIsConnected(unit) then
-		background:SetTexture(0, 0, 0, 1);
+		background:SetColorTexture(0, 0, 0, 1);
 	elseif UnitIsCorpse(unit) or UnitIsDeadOrGhost(unit) then
-		background:SetTexture(0.1, 0.1, 0.1, 1);
+		background:SetColorTexture(0.1, 0.1, 0.1, 1);
 	else
 		local debuffSignificance = self:GetUnitCriticalDebuffSignificance(unit);
 		if debuffSignificance == 2 then
-			background:SetTexture(0.2, 0.2, 1, 1);
+			background:SetColorTexture(0.2, 0.2, 1, 1);
 		elseif debuffSignificance == -1 then
-			background:SetTexture(0.2, 1, 0.2, 1);
+			background:SetColorTexture(0.2, 1, 0.2, 1);
 		elseif debuffSignificance == 1 then
-			background:SetTexture(0.8, 0.8, 0.8, 1);
+			background:SetColorTexture(0.8, 0.8, 0.8, 1);
 		else
 			local health = UnitHealth(unit);
 			if not health then
@@ -1025,13 +1025,13 @@ function OrlanHeal:UpdateBackground(background, unit)
 			end;
 
 			if health / maxHealth < 0.5 then
-				background:SetTexture(0.6, 0.2, 0.2, 1);
+				background:SetColorTexture(0.6, 0.2, 0.2, 1);
 			elseif health / maxHealth < 0.75 then
-				background:SetTexture(0.6, 0.4, 0.2, 1);
+				background:SetColorTexture(0.6, 0.4, 0.2, 1);
 			elseif health / maxHealth < 0.9 then
-				background:SetTexture(0.4, 0.4, 0.2, 1);
+				background:SetColorTexture(0.4, 0.4, 0.2, 1);
 			else
-				background:SetTexture(0.2, 0.2, 0.2, 1);
+				background:SetColorTexture(0.2, 0.2, 0.2, 1);
 			end;
 		end;
 	end;
@@ -1039,19 +1039,19 @@ end;
 
 function OrlanHeal:UpdateRange(rangeBar, unit)
 	if not UnitIsConnected(unit) then
-		rangeBar:SetTexture(0, 0, 0, 1);
+		rangeBar:SetColorTexture(0, 0, 0, 1);
 	elseif UnitIsCorpse(unit) or UnitIsDeadOrGhost(unit) then
-		rangeBar:SetTexture(0.4, 0.4, 0.4, 1);
+		rangeBar:SetColorTexture(0.4, 0.4, 0.4, 1);
 	elseif not UnitCanAssist("player", unit) then
-		rangeBar:SetTexture(0.2, 0.2, 0.75, 1);
+		rangeBar:SetColorTexture(0.2, 0.2, 0.75, 1);
 	elseif not UnitInRange(unit) and not UnitIsUnit(unit, "player") then
-		rangeBar:SetTexture(0.75, 0.2, 0.2, 1);
+		rangeBar:SetColorTexture(0.75, 0.2, 0.2, 1);
 	elseif not CheckInteractDistance(unit, 4) then
-		rangeBar:SetTexture(0.75, 0.45, 0.2, 1);
+		rangeBar:SetColorTexture(0.75, 0.45, 0.2, 1);
 	elseif not CheckInteractDistance(unit, 2) then
-		rangeBar:SetTexture(0.75, 0.75, 0.2, 1);
+		rangeBar:SetColorTexture(0.75, 0.75, 0.2, 1);
 	else
-		rangeBar:SetTexture(0.2, 0.75, 0.2, 1);
+		rangeBar:SetColorTexture(0.2, 0.75, 0.2, 1);
 	end;
 end;
 
@@ -1248,20 +1248,20 @@ end;
 
 function OrlanHeal:ShowBuff(texture)
 	if texture.CurrentBuff == nil then
-		texture.Image:SetTexture(0, 0, 0, 0);
-		texture.Time:SetTexture(0, 0, 0, 0);
+		texture.Image:SetColorTexture(0, 0, 0, 0);
+		texture.Time:SetColorTexture(0, 0, 0, 0);
 		texture.Count:SetText("");
 	else
 		texture.Image:SetTexture(texture.CurrentBuff.Icon);
 
 		if texture.CurrentBuff.Expires == 0 then
-			texture.Time:SetTexture(0, 0, 0, 0);
+			texture.Time:SetColorTexture(0, 0, 0, 0);
 		elseif texture.CurrentBuff.Expires <= GetTime() + 3 then
-			texture.Time:SetTexture(1, 0, 0, 0.3);
+			texture.Time:SetColorTexture(1, 0, 0, 0.3);
 		elseif texture.CurrentBuff.Expires <= GetTime() + 6 then
-			texture.Time:SetTexture(1, 1, 0, 0.3);
+			texture.Time:SetColorTexture(1, 1, 0, 0.3);
 		else
-			texture.Time:SetTexture(0, 0, 0, 0);
+			texture.Time:SetColorTexture(0, 0, 0, 0);
 		end;
 
 		if (texture.CurrentBuff.Count > 1) then

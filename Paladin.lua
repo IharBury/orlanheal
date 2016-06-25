@@ -3,80 +3,23 @@
 OrlanHeal.Paladin.IsSupported = true;
 OrlanHeal.Paladin.GiftOfTheNaaruSpellId = 59542;
 
-function OrlanHeal.Paladin.GetEffectiveHolyPower()
-	local power = UnitPower("player", SPELL_POWER_HOLY_POWER);
-	if UnitBuff("player", GetSpellInfo(90174)) then -- Divine Purpose
-		power = power + 3;
-	end;
-	return power;
-end;
-
-function OrlanHeal.Paladin.IsUrgentToSpendHolyPower()
-	local _, _, _, _, _, _, expiration = UnitBuff("player", GetSpellInfo(90174)); -- Divine Purpose
-	local timeLeft;
-	if expiration then
-		timeLeft = expiration - GetTime();
-	end;
-	local power = UnitPower("player", SPELL_POWER_HOLY_POWER);
-	local maxPower = UnitPowerMax("player", SPELL_POWER_HOLY_POWER);
-	return (power == maxPower) or (timeLeft and (timeLeft < 2));
-end;
-
-function OrlanHeal.Paladin.UpdateHolyPowerScalingAbilityCooldown(orlanHeal, window)
-	local power = orlanHeal.Paladin.GetEffectiveHolyPower();
-	if power >= 1 then
-		local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
-		local expirationTime;
-		if start and duration and (duration ~= 0) and (enabled == 1) then
-			expirationTime = start + duration;
-		else
-			start = nil;
-			duration = nil;
-			expirationTime = nil;
-		end;
-		local abilityPower = power;
-		if power > 3 then
-			abilityPower = 3;
-		end;
-		orlanHeal:UpdateCooldown(window, duration, expirationTime, abilityPower, true);
-	else
-		window:SetReverse(true);
-		if not window.Dark then
-			window:SetCooldown(0, 10);
-			window.Dark = true;
-		end;
-		window.Count:SetText(0);
-	end;
-end;
-
 OrlanHeal.Paladin.AvailableSpells =
 {
 	19750, -- Flash of Light
-	1022, -- Hand of Protection
+	1022, -- Blessing of Protection
 	4987, -- Cleanse
 	20473, -- Holy Shock
 	633, -- Lay on Hands
-	85673, -- Word of Glory
 	82326, -- Holy Light
 	53563, -- Beacon of Light
-	156910, -- Частица Веры
-	157007, -- Beacon of Insight
-	6940, -- Hand of Sacrifice
-	1044, -- Hand of Freedom
+	156910, -- Beacon of Faith
+	6940, -- Blessing of Sacrifice
+	1044, -- Blessing of Freedom
 	59542, -- Дар наауру
-	20217, -- Blessing of Kings
 	7328, -- Redemption
-	19740, -- Blessing of Might
-	82327, -- Holy Radiance
-	20925, -- Sacred Shield
-	114039, -- Hand of Purity
-	{
-		type = "macro",
-		caption = GetSpellInfo(175699), -- Weapons of Light
-		macrotext = OrlanHeal:BuildMouseOverCastMacro(175699),
-		key = 175699
-	},
-	114157 -- Execution Sentence
+	114165, -- Holy Prism
+	183998, -- Light of the Martyr
+ 	223306 -- Bestow Faith
 };
 
 OrlanHeal.Paladin.CooldownOptions =
@@ -84,7 +27,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	LightOfDawn =
 	{
 		SpellId = 85222, -- Light of Dawn
-		Update = OrlanHeal.Paladin.UpdateHolyPowerScalingAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	LayOnHands =
 	{
@@ -110,11 +53,6 @@ OrlanHeal.Paladin.CooldownOptions =
 			return race == "Draenei";
 		end
 	},
-	Rebuke =
-	{
-		SpellId = 96231, -- Rebuke
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	DivineProtection =
 	{
 		SpellId = 498, -- Divine Protection
@@ -127,17 +65,17 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	HandOfSacrifice =
 	{
-		SpellId = 6940, -- Hand of Sacrifice
+		SpellId = 6940, -- Blessing of Sacrifice
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HandOfProtection =
 	{
-		SpellId = 1022, -- Hand of Protection
+		SpellId = 1022, -- Blessing of Protection
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HandOfFreedom =
 	{
-		SpellId = 1044, -- Hand of Freedom
+		SpellId = 1044, -- Blessing of Freedom
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HammerOfJustice =
@@ -160,11 +98,6 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 35395, -- Crusader Strike
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	HammerOfWrath =
-	{
-		SpellId = 24275, -- Hammer of Wrath
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	Judgment =
 	{
 		SpellId = 20271, -- Judgment
@@ -181,22 +114,8 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	Reckoning =
 	{
-		SpellId = 62124, -- Reckoning
+		SpellId = 62124, -- Hand of Reckoning
 		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	EternalFlame =
-	{
-		SpellId = 85673, -- Word of Glory
-		AuraId = 156322, -- Eternal Flame
-		IsReverse = true,
-		Update = OrlanHeal.UpdateRaidBuffCooldown
-	},
-	SacredShield =
-	{
-		SpellId = 20925, -- Sacred Shield
-		AuraId = 148039, -- Sacred Shield
-		IsReverse = true,
-		Update = OrlanHeal.UpdateRaidBuffCooldown
 	},
 	BeaconOfLight =
 	{
@@ -206,27 +125,6 @@ OrlanHeal.Paladin.CooldownOptions =
 	BeaconOfFaith =
 	{
 		SpellId = 156910, -- Beacon of Faith
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	BeaconOfInsight =
-	{
-		SpellId = 157007, -- Beacon of Insight
-		Update = OrlanHeal.UpdateRaidBuffCooldown
-	},
-	SpeedOfLight =
-	{
-		SpellId = 85499, -- Speed of Light
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	HandOfPurity =
-	{
-		SpellId = 114039, -- Hand of Purity
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	WeaponsOfTheLight =
-	{
-		MacroText = "/cast " .. GetSpellInfo(175699),
-		SpellId = 175699, -- Weapons of the Light
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	BlindingLight =
@@ -249,14 +147,34 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 105809, -- Holy Avenger
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	TurnEvil =
+	BestowFaith =
 	{
-		SpellId = 10326, -- Turn Evil
+		SpellId = 223306, -- Bestow Faith
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	HammerOfJustice =
+	Consecration =
 	{
-		SpellId = 853, -- Hammer of Justice
+		SpellId = 26573, -- Consecration
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DivineSteed =
+	{
+		SpellId = 205656, -- Divine Steed
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HolyPrism =
+	{
+		SpellId = 114165, -- Holy Prism
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	LightsHammer =
+	{
+		SpellId = 114158, -- Light's Hammer
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	RuleOfLaw =
+	{
+		SpellId = 214202, -- Rule of Law
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
@@ -266,41 +184,39 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 
 	config["1"] = 82326; -- Holy Light
 	config["2"] = 19750; -- Flash of Light
-	config["3"] = 1022; -- Hand of Protection
+	config["3"] = 1022; -- Blessing of Protection
 	config["shift2"] = 53563; -- Beacon of Light
-	config["shift3"] = 157007; -- Beacon of Insight
-	config["control1"] = 82327; -- Holy Radiance
-	config["control2"] = 85673; -- Word of Glory
-	config["control3"] = 6940; -- Hand of Sacrifice
+	config["shift3"] = 1044; -- Blessing of Freedom
+	config["control1"] = 114165; -- Holy Prism
+	config["control2"] = 183998; -- Light of the Martyr
+	config["control3"] = 6940; -- Blessing of Sacrifice
 	config["alt1"] = 4987; -- Cleanse
 	config["alt2"] = 20473; -- Holy Shock
 	config["alt3"] = 633; -- Lay on Hands
-	config["controlalt1"] = 175699; -- Weapons of Light
-	config["controlalt2"] = 20925; -- Sacred Shield
-	config["altshift1"] = 114039; -- Hand of Purity
+	config["controlalt1"] = 223306; -- Bestow Faith
 	config["altshift2"] = 156910; -- Beacon of Faith
 	config["altshift3"] = 7328; -- Redemption
 
 	config["cooldown1"] = "Cleanse";
-	config["cooldown2"] = "BeaconOfInsight";
+	config["cooldown2"] = "Judgment";
 	config["cooldown3"] = "LightOfDawn";
-	config["cooldown4"] = "SpeedOfLight";
-	config["cooldown5"] = "SacredShield";
+	config["cooldown4"] = "HolyPrism";
+	config["cooldown5"] = "LightsHammer";
 	config["cooldown6"] = "HolyAvenger";
 	config["cooldown7"] = "AvengingWrath"; 
 	config["cooldown8"] = "DivineShield"; 
 	config["cooldown9"] = "DivineProtection"; 
 	config["cooldown10"] = "AuraMastery";
-	config["cooldown11"] = "HandOfProtection";
-	config["cooldown12"] = "HandOfPurity";
+	config["cooldown11"] = "BestowFaith";
+	config["cooldown12"] = "HandOfProtection";
 	config["cooldown13"] = "HandOfSacrifice";
 	config["cooldown14"] = "HandOfFreedom";
 	config["cooldown15"] = "HammerOfJustice";
-	config["cooldown16"] = "WeaponsOfTheLight";
+	config["cooldown16"] = "DivineSteed";
 	config["cooldown17"] = "Repentance";
 	config["cooldown18"] = "BlindingLight";
 	config["cooldown19"] = "LayOnHands";
-	config["cooldown20"] = "TurnEvil";
+	config["cooldown20"] = "RuleOfLaw";
 	config["cooldown21"] = orlanHeal:GetRacialCooldown();
 	config["cooldown22"] = "Trinket0";
 	config["cooldown23"] = "Trinket1";
@@ -318,54 +234,74 @@ function OrlanHeal.Paladin.GetConfigPresets(orlanHeal)
 		};
 end;
 
+function OrlanHeal.Paladin.HaveHolyShockDivinePurpose()
+	local index = 1;
+	while true do
+		local spellId = select(11, UnitAura("player", index));
+		if not spellId then
+			break;
+		end;
+
+		if spellId == 216411 then
+			return true;
+		end;
+
+		index = index + 1;
+	end;
+
+	return false;
+end;
+
+function OrlanHeal.Paladin.HaveLightOfDawnDivinePurpose()
+	local index = 1;
+	while true do
+		local spellId = select(11, UnitAura("player", index));
+		if not spellId then
+			break;
+		end;
+
+		if spellId == 216413 then
+			return true;
+		end;
+
+		index = index + 1;
+	end;
+
+	return false;
+end;
+
 function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 	local infusionOfLightSpellName = GetSpellInfo(54149);
-	local daybreakSpellName = GetSpellInfo(88819);
-	local enhancedHolyShockSpellName = GetSpellInfo(160002);
 	local lightsFavorSpellName = GetSpellInfo(166781);
 	local lawfulWordsSpellName = GetSpellInfo(166780);
-	local power = orlanHeal.Paladin.GetEffectiveHolyPower();
 
 	if UnitBuff("player", lightsFavorSpellName) and orlanHeal:IsSpellReady(85222) then -- Light of Dawn
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 1, orlanHeal.RaidBorderAlpha); -- magenta
-	elseif UnitBuff("player", lawfulWordsSpellName) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+	elseif UnitBuff("player", lawfulWordsSpellName) and orlanHeal:IsSpellReady(19750) then -- Flash of Light
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 1, orlanHeal.RaidBorderAlpha); -- cyan
-	elseif orlanHeal.Paladin.IsUrgentToSpendHolyPower() and orlanHeal:IsSpellReady(85673) then -- Word of Glory
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.5, 1, 0.5, orlanHeal.RaidBorderAlpha); -- light green
-	elseif (power >= 3) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
+	elseif orlanHeal.Paladin.HaveLightOfDawnDivinePurpose() then
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha); -- green
 	elseif UnitBuff("player", infusionOfLightSpellName) then -- Infusion of Light
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha); -- blue
-	elseif (UnitBuff("player", daybreakSpellName) -- Daybreak
-				or UnitBuff("player", enhancedHolyShockSpellName)) -- Enhanced Holy Shock
-			and orlanHeal:IsSpellReady(20473) then -- Holy Shock
+	elseif orlanHeal.Paladin.HaveHolyShockDivinePurpose() then
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha); -- white
 	elseif orlanHeal:IsSpellReady(20473) then -- Holy Shock
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha); -- yellow
-	elseif (power == 2) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.5, 0, orlanHeal.RaidBorderAlpha); -- orange
-	elseif (power == 1) and orlanHeal:IsSpellReady(85673) then -- Word of Glory
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha); -- red
 	else
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
 	end;
 end;
 
-OrlanHeal.Paladin.PlayerSpecificBuffCount = 3;
+OrlanHeal.Paladin.PlayerSpecificBuffCount = 2;
 
 function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
 	if (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- своя Частица Света
 			(spellId == 156910) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- своя Частица Веры
 		buffKind = 1;
-	elseif (spellId == 157007) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- own Beacon of Insight
-			(spellId == 1022) or -- Длань защиты
-			(spellId == 6940) or -- Hand of Sacrifice
-			(spellId == 114039) then -- Hand of Purity
+	elseif		(spellId == 1022) or -- Blessing of Protection
+			(spellId == 6940) then -- Blessing of Sacrifice
 		buffKind = 2;
-	elseif (spellId == 156322) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- свой Eternal Flame
-			(spellId == 20925) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- свой Sacred Shield
-		buffKind = 3;
 	end;
 
 	return buffKind;
