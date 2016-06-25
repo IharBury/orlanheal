@@ -14,7 +14,7 @@
 
 	local normalTexture = button:CreateTexture();
 	normalTexture:SetAllPoints();
-	normalTexture:SetTexture(0, 0, 0, 1);
+	normalTexture:SetColorTexture(0, 0, 0, 1);
 	button:SetNormalTexture(normalTexture);
 
 	local orlanHeal = self;
@@ -45,7 +45,7 @@ function OrlanHeal:CreateNameBindingSwitch(raidWindow)
 
 	local normalTexture = button:CreateTexture();
 	normalTexture:SetAllPoints();
-	normalTexture:SetTexture(0, 0, 0, 1);
+	normalTexture:SetColorTexture(0, 0, 0, 1);
 	button:SetNormalTexture(normalTexture);
 
 	local orlanHeal = self;
@@ -76,7 +76,7 @@ function OrlanHeal:CreateSetupButton(raidWindow)
 
 	local normalTexture = button:CreateTexture();
 	normalTexture:SetAllPoints();
-	normalTexture:SetTexture(0, 0, 0, 1);
+	normalTexture:SetColorTexture(0, 0, 0, 1);
 	button:SetNormalTexture(normalTexture);
 
 	local orlanHeal = self;
@@ -105,7 +105,7 @@ function OrlanHeal:CreateBossSwitch(raidWindow)
 
 	local normalTexture = button:CreateTexture();
 	normalTexture:SetAllPoints();
-	normalTexture:SetTexture(0, 0, 0, 1);
+	normalTexture:SetColorTexture(0, 0, 0, 1);
 	button:SetNormalTexture(normalTexture);
 
 	local orlanHeal = self;
@@ -136,7 +136,7 @@ function OrlanHeal:CreateGroupCountSwitch(raidWindow, size, index)
 
 	local normalTexture = button:CreateTexture();
 	normalTexture:SetAllPoints();
-	normalTexture:SetTexture(0, 0, 0, 1);
+	normalTexture:SetColorTexture(0, 0, 0, 1);
 	button:SetNormalTexture(normalTexture);
 
 	local orlanHeal = self;
@@ -166,7 +166,7 @@ function OrlanHeal:CreateVisibleGroupCountSwitch(raidWindow, size, index)
 
 	local normalTexture = button:CreateTexture();
 	normalTexture:SetAllPoints();
-	normalTexture:SetTexture(0, 0, 0, 1);
+	normalTexture:SetColorTexture(0, 0, 0, 1);
 	button:SetNormalTexture(normalTexture);
 
 	local orlanHeal = self;
@@ -190,9 +190,9 @@ function OrlanHeal:UpdateGroupCountSwitches()
 	for size = 5, 40, 5 do
 		local groupCountTexture = self.RaidWindow.GroupCountSwitches[size]:GetNormalTexture();
 		if self.GroupCount == size / 5 then
-			groupCountTexture:SetTexture(0.5, 1, 0.5, 1);
+			groupCountTexture:SetColorTexture(0.5, 1, 0.5, 1);
 		else
-			groupCountTexture:SetTexture(0, 0, 0, 1);
+			groupCountTexture:SetColorTexture(0, 0, 0, 1);
 		end;
 
 		if size > self.GroupCount * 5 then
@@ -202,9 +202,9 @@ function OrlanHeal:UpdateGroupCountSwitches()
 
 			local visibleGroupCountTexture = self.RaidWindow.VisibleGroupCountSwitches[size]:GetNormalTexture();
 			if (self.VisibleGroupCount == size / 5) and not self.IsNameBindingEnabled then
-				visibleGroupCountTexture:SetTexture(1, 0.5, 0.5, 1);
+				visibleGroupCountTexture:SetColorTexture(1, 0.5, 0.5, 1);
 			else
-				visibleGroupCountTexture:SetTexture(0, 0, 0, 1);
+				visibleGroupCountTexture:SetColorTexture(0, 0, 0, 1);
 			end;
 		end;
 	end;
@@ -215,9 +215,9 @@ function OrlanHeal:UpdateTankSwitch()
 
 	local texture = self.RaidWindow.TankSwitch:GetNormalTexture();
 	if self.IsTankWindowVisible then
-		texture:SetTexture(0.5, 1, 0.5, 1);
+		texture:SetColorTexture(0.5, 1, 0.5, 1);
 	else
-		texture:SetTexture(0, 0, 0, 1);
+		texture:SetColorTexture(0, 0, 0, 1);
 	end;
 end;
 
@@ -226,9 +226,9 @@ function OrlanHeal:UpdateBossSwitch()
 
 	local texture = self.RaidWindow.BossSwitch:GetNormalTexture();
 	if self.IsBossWindowVisible then
-		texture:SetTexture(0.5, 1, 0.5, 1);
+		texture:SetColorTexture(0.5, 1, 0.5, 1);
 	else
-		texture:SetTexture(0, 0, 0, 1);
+		texture:SetColorTexture(0, 0, 0, 1);
 	end;
 end;
 
@@ -237,8 +237,8 @@ function OrlanHeal:UpdateNameBindingSwitch()
 
 	local texture = self.RaidWindow.NameBindingSwitch:GetNormalTexture();
 	if self.IsNameBindingEnabled then
-		texture:SetTexture(1, 0.5, 0.5, 1);
+		texture:SetColorTexture(1, 0.5, 0.5, 1);
 	else
-		texture:SetTexture(0, 0, 0, 1);
+		texture:SetColorTexture(0, 0, 0, 1);
 	end;
 end;

@@ -5,8 +5,7 @@ OrlanHeal.Priest.GiftOfTheNaaruSpellId = 59544;
 
 function OrlanHeal.Priest.UpdateHolyWordCooldown(orlanHeal, window)
 	if not window.LastTextureUpdate or (window.LastTextureUpdate < time() - 5) then
-		local _, _, texture = GetSpellInfo(window.Cooldown.SpellId);
-		window.Background:SetTexture(texture);
+		window.Background:SetTexture(GetSpellTexture(window.Cooldown.SpellId));
 		window.LastTextureUpdate = time();
 	end;
 	orlanHeal:UpdateAbilityCooldown(window);
@@ -59,12 +58,12 @@ OrlanHeal.Priest.AvailableSpells =
 	33076, -- Молитва восстановления
 	596, -- Prayer of Healing
 	21562, -- Power Word: Fortitude
-	{
-		type = "macro",
-		caption = GetSpellInfo(175702), -- Divine Burst
-		macrotext = OrlanHeal:BuildMouseOverCastMacro(175702),
-		key = 175702
-	},
+--	{
+--		type = "macro",
+--		caption = GetSpellInfo(175702), -- Divine Burst
+--		macrotext = OrlanHeal:BuildMouseOverCastMacro(175702),
+--		key = 175702
+--	},
 	152118, -- Clarity of Will
 	152116, -- Saving Grace
 	126123 -- Confession
@@ -191,12 +190,12 @@ OrlanHeal.Priest.CooldownOptions =
 			return race == "BloodElf";
 		end
 	},
-	ShadowyGrasp =
-	{
-		MacroText = "/cast " .. GetSpellInfo(175701),
-		SpellId = 175701,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
+--	ShadowyGrasp =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(175701),
+--		SpellId = 175701,
+--		Update = OrlanHeal.UpdateAbilityCooldown
+--	},
 	AngelicFeather =
 	{
 		SpellId = 121536,
@@ -207,12 +206,12 @@ OrlanHeal.Priest.CooldownOptions =
 		SpellId = 112833,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	DivineBurst =
-	{
-		MacroText = "/cast " .. GetSpellInfo(175702),
-		SpellId = 175702,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
+--	DivineBurst =
+--	{
+--		MacroText = "/cast " .. GetSpellInfo(175702),
+--		SpellId = 175702,
+--		Update = OrlanHeal.UpdateAbilityCooldown
+--	},
 	DivineStar =
 	{
 		SpellId = 110744,

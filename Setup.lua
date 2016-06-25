@@ -7,7 +7,7 @@
 
 	local background = setupWindow:CreateTexture(nil, "BACKGROUND");
 	background:SetAllPoints();
-	background:SetTexture(0, 0, 0, 0.6);
+	background:SetColorTexture(0, 0, 0, 0.6);
 
 	setupWindow:SetHeight(self.SetupWindowHeight);
 	setupWindow:SetWidth(self.SetupWindowWidth);
