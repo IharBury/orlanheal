@@ -33,9 +33,10 @@
 		"OnClick",
 		function()
 			if orlanHeal:RequestNonCombat() then
-				local talentGroup = GetActiveSpecGroup();
-				orlanHeal.CharacterConfig[talentGroup] = UIDropDownMenu_GetSelectedValue(configSelectWindow);
-				orlanHeal:LoadTalentGroupConfig();
+				local spec = GetSpecialization();
+				orlanHeal.CharacterConfig[spec] = UIDropDownMenu_GetSelectedValue(configSelectWindow);
+				orlanHeal.LoadedSpec = nil;
+				orlanHeal:LoadSpecConfig();
 				orlanHeal:ApplyConfig();
 				orlanHeal:Setup();
 			end;
@@ -274,8 +275,8 @@ end;
 
 function OrlanHeal:InitializeConfigSelectWindow(configSelectWindow)
 	UIDropDownMenu_Initialize(configSelectWindow, self.HandleConfigInit);
-	local talentGroup = GetActiveSpecGroup();
-	self:SetConfigSelectWindowSelectedValue(configSelectWindow, self.CharacterConfig[talentGroup]);
+	local spec = GetSpecialization();
+	self:SetConfigSelectWindowSelectedValue(configSelectWindow, self.CharacterConfig[spec]);
 end;
 
 function OrlanHeal.HandleConfigInit(configSelectWindow, level)
@@ -697,22 +698,29 @@ function OrlanHeal:LoadConfigSet()
 		_G[self.CharacterConfigVariableName] = self.CharacterConfig;
 	end;
 
-	self:LoadTalentGroupConfig();
+	self.LoadedSpec = nil;
+	self:LoadSpecConfig();
 end;
 
-function OrlanHeal:LoadTalentGroupConfig()
-	local talentGroup = GetActiveSpecGroup();
-	if not self.CharacterConfig[talentGroup] then
-		self.CharacterConfig[talentGroup] = self.CharacterConfig[1];
+function OrlanHeal:LoadSpecConfig()
+	local spec = GetSpecialization() or 1;
+	if spec ~= self.LoadedSpec then
+		if not self.CharacterConfig[spec] then
+			self.CharacterConfig[spec] = self.CharacterConfig[1] or
+				self.CharacterConfig[2] or
+				self.CharacterConfig[3] or
+				self.CharacterConfig[4];
+		end;
+
+		self.Config = self.ConfigSet[self.CharacterConfig[spec]];
+		self.LoadedSpec = spec;
+		self:LoadConfig();
 	end;
-
-	self.Config = self.ConfigSet[self.CharacterConfig[talentGroup]];
-	self:LoadConfig();
 end;
 
-function OrlanHeal:HandleTalentGroupChanged()
+function OrlanHeal:HandleSpecChanged()
 	self:CancelSetup();
-	self:LoadTalentGroupConfig();
+	self:LoadSpecConfig();
 	self:ApplyConfig();
 end;
 
@@ -819,8 +827,8 @@ function OrlanHeal:SaveSetupAs(name)
 		else
 			self.Config = {};
 			self:SaveSetup();
-			local talentGroup = GetActiveSpecGroup();
-			self.CharacterConfig[talentGroup] = name;
+			local spec = GetSpecialization();
+			self.CharacterConfig[spec] = name;
 			self.ConfigSet[name] = self.Config;
 			self:Setup();
 		end;
