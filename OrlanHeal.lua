@@ -12,7 +12,6 @@ end;
 function OrlanHeal:CreateRaidWindow()
 	local orlanHeal = self;
 	local raidWindow = CreateFrame("Frame", self.RaidWindowName, UIParent);
-	raidWindow:SetScale(self.Config.Size * self.Scale);
 
 	function raidWindow:HandleDragStop()
 		self:StopMovingOrSizing();
@@ -69,6 +68,8 @@ function OrlanHeal:CreateRaidWindow()
 	raidWindow.NameBindingSwitch = self:CreateNameBindingSwitch(raidWindow);
 	raidWindow.SetupButton = self:CreateSetupButton(raidWindow);
 	raidWindow.BossSwitch = self:CreateBossSwitch(raidWindow);
+
+	raidWindow:SetScale(self.Config.Size * self.Scale);
 
 	return raidWindow;
 end;
