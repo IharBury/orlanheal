@@ -688,7 +688,7 @@ function OrlanHeal:LoadConfigSet()
 	_G[self.CharacterConfigVariableName] = _G[self.CharacterConfigVariableName] or {};
 	self.CharacterConfig = _G[self.CharacterConfigVariableName];
 
-	if not self.CharacterConfig[1] then
+	if not self.CharacterConfig[1] or not self.ConfigSet[self.CharacterConfig[1]] then
 		local _, class = UnitClass("player");
 		self.CharacterConfig.class = class;
 
