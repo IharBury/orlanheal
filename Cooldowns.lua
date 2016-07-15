@@ -192,7 +192,7 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 		displayedCharges = currentCharges;
 	end;
 	local expirationTime;
-	if start and duration and (duration ~= 0) and (enabled == 1) then
+	if start and (start ~= 0) and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
 	else
 		start = nil;
@@ -205,7 +205,7 @@ end;
 function OrlanHeal:UpdateAbilitySequenceCooldown(window)
 	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 	local expirationTime;
-	if start and duration and (duration ~= 0) and (enabled == 1) then
+	if start and (start ~= 0) and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
 	else
 		start = nil;
@@ -215,7 +215,7 @@ function OrlanHeal:UpdateAbilitySequenceCooldown(window)
 
 	local prefixStart, prefixDuration, prefixEnabled = GetSpellCooldown(window.Cooldown.PrefixSpellId);
 	local prefixExpirationTime;
-	if prefixStart and prefixDuration and (prefixDuration ~= 0) and (prefixEnabled == 1) then
+	if prefixStart and (prefixStart ~= 0) and prefixDuration and (prefixDuration ~= 0) and (prefixEnabled == 1) then
 		prefixExpirationTime = prefixStart + prefixDuration;
 	else
 		prefixStart = nil;
@@ -261,7 +261,7 @@ function OrlanHeal:UpdateRaidBuffAbilityCooldown(window)
 	local _, _, count = self:GetRaidBuffCooldown(window.Cooldown.AuraId or window.Cooldown.SpellId);
 	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 	local expirationTime;
-	if start and duration and (duration ~= 0) and (enabled == 1) then
+	if start and (start ~= 0) and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
 	else
 		start = nil;

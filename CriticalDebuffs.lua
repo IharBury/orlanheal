@@ -203,6 +203,7 @@
 	[114556] = true, -- Purgatory
 	[115999] = true, -- Куклы вуду
 	[116000] = true, -- Куклы вуду
+	[116888] = true, -- Shroud of Purgatory
 	[117949] = true, -- Closed Circuit
 	[118135] = true, -- Pinned Down
 	[119946] = true, -- Ravage
