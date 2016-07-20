@@ -357,9 +357,9 @@ function OrlanHeal:GetRacialCooldown()
 end;
 
 function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alwaysDisplayCount, isReverse, isOff)
-	if not window:CanChangeProtectedState() then
-		return;
-	end;
+--	if not window:CanChangeProtectedState() then
+--		return;
+--	end;
 
 	if isReverse == nil then
 		isReverse = window.Cooldown.IsReverse;

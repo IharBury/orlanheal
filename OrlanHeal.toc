@@ -1,7 +1,7 @@
 ## Interface: 70000
 ## X-Min-Interface: 70000
 ## Title: OrlanHeal
-## Version: 6.0.0
+## Version: 6.0.1
 ## Notes: 
 ## SavedVariables: OrlanHealGlobalConfig
 ## SavedVariablesPerCharacter: OrlanHealConfig
