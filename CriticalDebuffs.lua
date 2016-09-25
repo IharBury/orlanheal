@@ -279,7 +279,15 @@
 	[167615] = true, -- Pierced Armor
 	[169376] = true, -- Venomous Sting
 
-	[175020] = true -- Impaled
+	[175020] = true, -- Impaled
+
+	[198006] = true, -- Focused Gaze
+
+	[203096] = true, -- Rot
+	[203770] = true, -- Defiled Vines
+	[209469] = true, -- Touch of Corruption
+	[210315] = true, -- Nightmare Brambles
+	[215288] = true -- Web of Pain
 };
 
 OrlanHeal.VeryCriticalDebuffs =
@@ -308,7 +316,10 @@ OrlanHeal.VeryCriticalDebuffs =
 	[159002] = true, -- Berserker Rush
 	[159004] = true, -- Berserker Rush
 	[161242] = true, -- Caustic Energy
-	[170211] = true -- Berserker Rush
+	[170211] = true, -- Berserker Rush
+	[204463] = true, -- Volatile Rot
+	[206651] = true, -- Darkening Soul
+	[209158] = true -- Blackening Soul
 };
 
 OrlanHeal.GoodCriticalDebuffs =
@@ -332,5 +343,6 @@ OrlanHeal.GoodCriticalDebuffs =
 	[146835] = true, -- Взгляд внутрь себя
 	[146836] = true, -- Взгляд внутрь себя
 	[146837] = true, -- Взгляд внутрь себя
-	[149011] = true -- Consumed Courage
+	[149011] = true, -- Consumed Courage
+	[208431] = true -- Corruption: Descent into Madness
 };
