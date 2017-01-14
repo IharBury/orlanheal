@@ -159,7 +159,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	DivineSteed =
 	{
-		SpellId = 205656, -- Divine Steed
+		SpellId = 190784, -- Divine Steed
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HolyPrism =
