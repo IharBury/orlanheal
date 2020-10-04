@@ -6,19 +6,20 @@ OrlanHeal.Paladin.GiftOfTheNaaruSpellId = 59542;
 OrlanHeal.Paladin.AvailableSpells =
 {
 	19750, -- Flash of Light
+	82326, -- Holy Light
+	633, -- Lay on Hands
+	53563, -- Beacon of Light
+	1044, -- Blessing of Freedom
+	183998, -- Light of the Martyr
+	85673, -- Word of Glory
 	1022, -- Blessing of Protection
 	4987, -- Cleanse
 	20473, -- Holy Shock
-	633, -- Lay on Hands
-	82326, -- Holy Light
-	53563, -- Beacon of Light
-	156910, -- Beacon of Faith
 	6940, -- Blessing of Sacrifice
-	1044, -- Blessing of Freedom
-	59542, -- Дар наауру
+	156910, -- Beacon of Faith
+	59542, -- Gift of the Naaru
 	7328, -- Redemption
 	114165, -- Holy Prism
-	183998, -- Light of the Martyr
  	223306 -- Bestow Faith
 };
 
@@ -184,16 +185,17 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 
 	config["1"] = 82326; -- Holy Light
 	config["2"] = 19750; -- Flash of Light
-	config["3"] = 1022; -- Blessing of Protection
+	config["3"] = 633; -- Lay on Hands
 	config["shift2"] = 53563; -- Beacon of Light
 	config["shift3"] = 1044; -- Blessing of Freedom
-	config["control1"] = 114165; -- Holy Prism
-	config["control2"] = 183998; -- Light of the Martyr
-	config["control3"] = 6940; -- Blessing of Sacrifice
+	config["control1"] = 183998; -- Light of the Martyr
+	config["control2"] = 85673; -- Word of Glory
+	config["control3"] = 1022; -- Blessing of Protection
 	config["alt1"] = 4987; -- Cleanse
 	config["alt2"] = 20473; -- Holy Shock
-	config["alt3"] = 633; -- Lay on Hands
+	config["alt3"] = 6940; -- Blessing of Sacrifice
 	config["controlalt1"] = 223306; -- Bestow Faith
+	config["controlalt2"] = 114165; -- Holy Prism
 	config["altshift2"] = 156910; -- Beacon of Faith
 	config["altshift3"] = 7328; -- Redemption
 
