@@ -37,12 +37,12 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	AvengingWrath =
 	{
-		SpellId = 31842, -- Avenging Wrath
+		SpellId = 31884, -- Avenging Wrath
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	AuraMastery =
 	{
-		SpellId = 31821, -- Devotion Aura
+		SpellId = 31821, -- Aura Mastery
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	GiftOfTheNaaru =
@@ -177,6 +177,36 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 214202, -- Rule of Law
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HammerOfWrath =
+	{
+		SpellId = 24275, -- Hammer of Wrath
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	TurnEvil =
+	{
+		SpellId = 10326, -- Turn Evil
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Seraphim =
+	{
+		SpellId = 152262, -- Seraphim
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	AvengingCrusader =
+	{
+		SpellId = 216331, -- Avenging Crusader
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	BeaconOfVirtue =
+	{
+		SpellId = 200025, -- Beacon of Virtue
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DivineFavor =
+	{
+		SpellId = 210294, -- Divine Favor
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -201,27 +231,32 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 
 	config["cooldown1"] = "Cleanse";
 	config["cooldown2"] = "Judgment";
-	config["cooldown3"] = "LightOfDawn";
-	config["cooldown4"] = "HolyPrism";
-	config["cooldown5"] = "LightsHammer";
-	config["cooldown6"] = "HolyAvenger";
-	config["cooldown7"] = "AvengingWrath"; 
-	config["cooldown8"] = "DivineShield"; 
-	config["cooldown9"] = "DivineProtection"; 
-	config["cooldown10"] = "AuraMastery";
-	config["cooldown11"] = "BestowFaith";
-	config["cooldown12"] = "HandOfProtection";
-	config["cooldown13"] = "HandOfSacrifice";
-	config["cooldown14"] = "HandOfFreedom";
-	config["cooldown15"] = "HammerOfJustice";
-	config["cooldown16"] = "DivineSteed";
-	config["cooldown17"] = "Repentance";
-	config["cooldown18"] = "BlindingLight";
-	config["cooldown19"] = "LayOnHands";
-	config["cooldown20"] = "RuleOfLaw";
-	config["cooldown21"] = orlanHeal:GetRacialCooldown();
-	config["cooldown22"] = "Trinket0";
-	config["cooldown23"] = "Trinket1";
+	config["cooldown3"] = "HolyPrism";
+	config["cooldown4"] = "LightsHammer";
+	config["cooldown5"] = "HolyAvenger";
+	config["cooldown6"] = "AvengingWrath"; 
+	config["cooldown7"] = "Seraphim";
+	config["cooldown8"] = "AvengingCrusader";
+	config["cooldown9"] = "DivineShield"; 
+	config["cooldown10"] = "DivineProtection"; 
+	config["cooldown11"] = "AuraMastery";
+	config["cooldown12"] = "BestowFaith";
+	config["cooldown13"] = "HandOfProtection";
+	config["cooldown14"] = "HandOfSacrifice";
+	config["cooldown15"] = "HandOfFreedom";
+	config["cooldown16"] = "HammerOfJustice";
+	config["cooldown17"] = "DivineSteed";
+	config["cooldown18"] = "Repentance";
+	config["cooldown19"] = "BlindingLight";
+	config["cooldown20"] = "TurnEvil";
+	config["cooldown21"] = "LayOnHands";
+	config["cooldown22"] = "RuleOfLaw";
+	config["cooldown23"] = "HammerOfWrath";
+	config["cooldown24"] = "BeaconOfVirtue";
+	config["cooldown25"] = orlanHeal:GetRacialCooldown();
+	config["cooldown26"] = "Trinket0";
+	config["cooldown27"] = "Trinket1";
+	config["cooldown28"] = "DivineFavor";
 
 	return config;
 end;
