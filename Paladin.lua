@@ -234,56 +234,10 @@ function OrlanHeal.Paladin.GetConfigPresets(orlanHeal)
 		};
 end;
 
-function OrlanHeal.Paladin.HaveHolyShockDivinePurpose()
-	local index = 1;
-	while true do
-		local spellId = select(11, UnitAura("player", index));
-		if not spellId then
-			break;
-		end;
-
-		if spellId == 216411 then
-			return true;
-		end;
-
-		index = index + 1;
-	end;
-
-	return false;
-end;
-
-function OrlanHeal.Paladin.HaveLightOfDawnDivinePurpose()
-	local index = 1;
-	while true do
-		local spellId = select(11, UnitAura("player", index));
-		if not spellId then
-			break;
-		end;
-
-		if spellId == 216413 then
-			return true;
-		end;
-
-		index = index + 1;
-	end;
-
-	return false;
-end;
-
 function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
-	local infusionOfLightSpellName = GetSpellInfo(54149);
-	local lightsFavorSpellName = GetSpellInfo(166781);
-	local lawfulWordsSpellName = GetSpellInfo(166780);
-
-	if UnitBuff("player", lightsFavorSpellName) and orlanHeal:IsSpellReady(85222) then -- Light of Dawn
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 1, orlanHeal.RaidBorderAlpha); -- magenta
-	elseif UnitBuff("player", lawfulWordsSpellName) and orlanHeal:IsSpellReady(19750) then -- Flash of Light
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 1, orlanHeal.RaidBorderAlpha); -- cyan
-	elseif orlanHeal.Paladin.HaveLightOfDawnDivinePurpose() then
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha); -- green
-	elseif UnitBuff("player", infusionOfLightSpellName) then -- Infusion of Light
+	if orlanHeal:PlayerHasBuff(54149) then -- Infusion of Light
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha); -- blue
-	elseif orlanHeal.Paladin.HaveHolyShockDivinePurpose() then
+	elseif orlanHeal:PlayerHasBuff(223817) then -- Divine Purpose
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha); -- white
 	elseif orlanHeal:IsSpellReady(20473) then -- Holy Shock
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha); -- yellow

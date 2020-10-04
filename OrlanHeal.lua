@@ -546,7 +546,8 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 	local healthUpdate = function(orlanHeal)
 		orlanHeal:UpdateHealth(frame.Canvas.HealthBar, unit);
 	end;
-	self:RegisterUnitEventHandler("UNIT_HEALTH_FREQUENT", unit, healthUpdate);
+	self:RegisterUnitEventHandler("UNIT_HEALTH", unit, healthUpdate);
+	self:RegisterUnitEventHandler("UNIT_MAXHEALTH", unit, healthUpdate);
 	self:RegisterUnitEventHandler("UNIT_HEAL_PREDICTION", unit, healthUpdate);
 
 	local shieldUpdate = function(orlanHeal)
@@ -561,7 +562,8 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 	self:RegisterUnitEventHandler("UNIT_MAXPOWER", unit, manaUpdate);
 	self:RegisterUnitEventHandler("UNIT_POWER_BAR_HIDE", unit, manaUpdate);
 	self:RegisterUnitEventHandler("UNIT_POWER_BAR_SHOW", unit, manaUpdate);
-	self:RegisterUnitEventHandler("UNIT_POWER", unit, manaUpdate);
+	self:RegisterUnitEventHandler("UNIT_POWER_UPDATE", unit, manaUpdate);
+	self:RegisterUnitEventHandler("UNIT_POWER_FREQUENT", unit, manaUpdate);
 
 	local buffUpdate = function(orlanHeal)
 		self:UpdateBuffs(frame.Canvas, unit);
@@ -578,6 +580,7 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 	end;
 	self:RegisterUnitEventHandler("UNIT_MAXHEALTH", unit, allUpdate);
 	self:RegisterUnitEventHandler("UNIT_NAME_UPDATE", unit, allUpdate);
+	self:RegisterUnitEventHandler("PLAYER_FLAGS_CHANGED", unit, allUpdate);
 
 	local petOwner = self:TryGetPetOwner(unit);
 	if petOwner then
@@ -948,7 +951,7 @@ function OrlanHeal:GetUnitCriticalDebuffSignificance(unit)
 	local result = 0;
 
 	while true do
-		local _, _, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
+		local spellId = select(10, UnitAura(unit, buffIndex, "HARMFUL"));
 		if spellId == nil then break; end;
 
 		if self.VeryCriticalDebuffs[spellId] then
@@ -975,7 +978,7 @@ function OrlanHeal:UnitCriticalDebuffDuration(unit)
 	local maxTimeSpent, minTimeLeft;
 
 	while true do
-		local _, _, _, _, _, duration, expiration, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
+		local _, _, _, _, duration, expiration, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
 		if spellId == nil then break; end;
 
 		if self.CriticalDebuffs[spellId] or self.VeryCriticalDebuffs[spellId] or self.GoodCriticalDebuffs[spellId] then
@@ -1105,10 +1108,12 @@ function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 	end;
 
 	nameBar:SetText(text);
-	local _, class = UnitClassBase(unit);
+	local class = UnitClassBase(unit);
 	local classColor = RAID_CLASS_COLORS[class];
 	if classColor == nil then
 		classColor = { r = 0.4, g = 0.4, b = 0.4 };
+	else
+		classColor = { r = classColor.r, g = classColor.g, b = classColor.b }
 	end;
 	nameBar:SetTextColor(classColor.r, classColor.g, classColor.b, 1);
 end;
@@ -1142,7 +1147,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	local goodBuffs = {};
 	local buffIndex = 1;
 	while true do
-		local name, _, icon, count, _, duration, expires, caster, _, shouldConsolidate, spellId = 
+		local name, icon, count, _, duration, expires, caster, _, shouldConsolidate, spellId = 
 			UnitAura(unit, buffIndex, "HELPFUL");
 		if name == nil then break; end;
 
@@ -1193,7 +1198,7 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 	local buffIndex = 1;
 	local canAssist = UnitCanAssist("player", unit);
 	while true do
-		local name, _, icon, count, dispelType, duration, expires, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
+		local name, icon, count, dispelType, duration, expires, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
 		if name == nil then break; end;
 
 		local buffKind = self.Class.GetSpecificDebuffKind(self, spellId);
@@ -1306,4 +1311,22 @@ end;
 
 function OrlanHeal:ResetEventHandlers()
 	self.EventSubscriptions = {};
+end;
+
+function OrlanHeal:PlayerHasBuff(id)
+	local index = 1;
+	while true do
+		local spellId = select(11, UnitAura("player", index));
+		if not spellId then
+			break;
+		end;
+
+		if spellId == id then
+			return true;
+		end;
+
+		index = index + 1;
+	end;
+
+	return false;
 end;

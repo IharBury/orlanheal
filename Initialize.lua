@@ -16,7 +16,6 @@
 		elseif (event == "PLAYER_TALENT_UPDATE") then
 			orlanHeal:SetupCooldowns();
 		elseif (event == "GROUP_ROSTER_UPDATE") or
-				(event == "PARTY_CONVERTED_TO_RAID") or
 				(event == "PARTY_LEADER_CHANGED") or
 				(event == "ZONE_CHANGED_NEW_AREA") or
 				(event == "PLAYER_REGEN_ENABLED") or
@@ -50,14 +49,14 @@
 	local className, class = UnitClass("player");
 	if class == "PALADIN" then
 		self.Class = self.Paladin;
-	elseif class == "PRIEST" then
-		self.Class = self.Priest;
-	elseif class == "SHAMAN" then
-		self.Class = self.Shaman;
-	elseif class == "DRUID" then
-		self.Class = self.Druid;
-	elseif class == "MONK" then
-		self.Class = self.Monk;
+--	elseif class == "PRIEST" then
+--		self.Class = self.Priest;
+--	elseif class == "SHAMAN" then
+--		self.Class = self.Shaman;
+--	elseif class == "DRUID" then
+--		self.Class = self.Druid;
+--	elseif class == "MONK" then
+--		self.Class = self.Monk;
 	else
 		self.Class = self.Paladin;
 		print("OrlanHeal: " .. className .. " class is not supported.");
@@ -109,7 +108,6 @@ function OrlanHeal:HandleLoaded()
 	self.EventFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
 	self.EventFrame:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND");
 	self.EventFrame:RegisterEvent("PLAYER_ENTERING_WORLD");
-	self.EventFrame:RegisterEvent("PARTY_CONVERTED_TO_RAID");
 	self.EventFrame:RegisterEvent("PARTY_LEADER_CHANGED");
 	self.EventFrame:RegisterEvent("LFG_ROLE_UPDATE");
 	self.EventFrame:RegisterEvent("PLAYER_ROLES_ASSIGNED");

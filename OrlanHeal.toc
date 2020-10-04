@@ -1,7 +1,6 @@
-## Interface: 70100
-## X-Min-Interface: 70000
+## Interface: 900001
 ## Title: OrlanHeal
-## Version: 6.0.2
+## Version: 7.0.0-alpha
 ## Notes: 
 ## SavedVariables: OrlanHealGlobalConfig
 ## SavedVariablesPerCharacter: OrlanHealConfig
@@ -19,9 +18,9 @@ Cooldowns.lua
 Commands.lua
 
 Paladin.lua
-Priest.lua
-Shaman.lua
-Druid.lua
-Monk.lua
+#Priest.lua
+#Shaman.lua
+#Druid.lua
+#Monk.lua
 
 Initialize.lua
