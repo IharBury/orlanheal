@@ -237,18 +237,56 @@ function OrlanHeal.Paladin.GetConfigPresets(orlanHeal)
 end;
 
 function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
+	local holyPower = UnitPower("player", Enum.PowerType.HolyPower);
+	local maxHolyPower = UnitPowerMax("player", Enum.PowerType.HolyPower);
+
 	if orlanHeal:PlayerHasBuff(54149) then -- Infusion of Light
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha); -- blue
-	elseif orlanHeal:PlayerHasBuff(223817) then -- Divine Purpose
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.5, 0.5, 0.5, orlanHeal.RaidBorderAlpha); -- grey
+	elseif (holyPower == maxHolyPower) or orlanHeal:PlayerHasBuff(223817) then -- Divine Purpose
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha); -- white
-	elseif orlanHeal:IsSpellReady(20473) then -- Holy Shock
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha); -- yellow
+	elseif holyPower >= 3 then
+		if orlanHeal.Paladin:CanUseHolyPowerGenerator(20473) then -- Holy Shock
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0.5, orlanHeal.RaidBorderAlpha); -- light yellow
+		elseif orlanHeal.Paladin:CanUseTargetedHolyPowerGenerator(24275) then -- Hammer of Wrath
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.5, 0.5, 1, orlanHeal.RaidBorderAlpha); -- light blue
+		elseif orlanHeal.Paladin:CanUseTargetedHolyPowerGenerator(35395) then -- Crusader Strike
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.5, 0.5, orlanHeal.RaidBorderAlpha); -- light red
+		else
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha); -- green
+		end;
+	elseif orlanHeal.Paladin:CanUseHolyPowerGenerator(20473) then -- Holy Shock
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.7, 0.7, 0, orlanHeal.RaidBorderAlpha); -- yellow
+	elseif orlanHeal.Paladin:CanUseTargetedHolyPowerGenerator(24275) then -- Hammer of Wrath
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha); -- blue
+	elseif orlanHeal.Paladin:CanUseTargetedHolyPowerGenerator(35395) then -- Crusader Strike
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha); -- red
 	else
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
 	end;
 end;
 
 OrlanHeal.Paladin.PlayerSpecificBuffCount = 2;
+
+function OrlanHeal.Paladin.CanUseHolyPowerGenerator(self, id)
+	local usable, noMana = IsUsableSpell(id);
+	if (not usable) or noMana then
+		return false;
+	end;
+	local cooldownStart = GetSpellCooldown(id);
+	return cooldownStart == 0;
+end;
+
+function OrlanHeal.Paladin.CanUseTargetedHolyPowerGenerator(self, id)
+	if not self:CanUseHolyPowerGenerator(id) then
+		return false;
+	end;
+	local name = GetSpellInfo(id);
+	if not name then
+		return false;
+	end;
+	local inRange = IsSpellInRange(name, "target");
+	return inRange == 1;
+end;
 
 function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
