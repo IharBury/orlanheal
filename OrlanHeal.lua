@@ -1316,7 +1316,7 @@ end;
 function OrlanHeal:PlayerHasBuff(id)
 	local index = 1;
 	while true do
-		local spellId = select(11, UnitAura("player", index));
+		local spellId = select(10, UnitAura("player", index));
 		if not spellId then
 			break;
 		end;
