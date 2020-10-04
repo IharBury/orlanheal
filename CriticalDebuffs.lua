@@ -286,8 +286,19 @@
 	[203096] = true, -- Rot
 	[203770] = true, -- Defiled Vines
 	[209469] = true, -- Touch of Corruption
+
 	[210315] = true, -- Nightmare Brambles
-	[215288] = true -- Web of Pain
+	[215288] = true, -- Web of Pain
+
+	[320788] = true, -- Frozen Binds
+	[322563] = true, -- Marked Prey
+	[322977] = true, -- Sinlight Visions
+	[323437] = true, -- Stigma of Pride
+	[325552] = true, -- Cytotoxic Slash
+
+	[333492] = true, -- Necrotic Ichor
+	[333493] = true, -- Necrotic Breath
+	[339237] = true -- Sinlight Visions
 };
 
 OrlanHeal.VeryCriticalDebuffs =
