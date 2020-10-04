@@ -1070,9 +1070,9 @@ function OrlanHeal:UpdateHealth(healthBar, unit)
 end;
 
 function OrlanHeal:UpdateMana(manaBar, unit)
-	if (UnitPowerType(unit) == SPELL_POWER_MANA) and UnitIsConnected(unit) then
+	if (UnitPowerType(unit) == Enum.PowerType.Mana) and UnitIsConnected(unit) then
 		manaBar:Show();
-		self:UpdateStatusBar(manaBar, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA));
+		self:UpdateStatusBar(manaBar, UnitPower(unit, Enum.PowerType.Mana), UnitPowerMax(unit, Enum.PowerType.Mana));
 	else
 		manaBar:Hide();
 	end;
