@@ -300,7 +300,8 @@ function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 	end;
 end;
 
-OrlanHeal.Paladin.PlayerSpecificBuffCount = 2;
+OrlanHeal.Paladin.PlayerSpecificBuffCount = 3;
+OrlanHeal.Paladin.PlayerSpecificDebuffCount = 1;
 
 function OrlanHeal.Paladin.CanUseHolyPowerGenerator(self, id)
 	local usable, noMana = IsUsableSpell(id);
@@ -325,12 +326,15 @@ end;
 
 function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
-	if (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- своя Частица Света
-			(spellId == 156910) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- своя Частица Веры
+	if (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- own Beacon of Light
+			(spellId == 156910) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- own Beacon of Faith
+			(spellId == 200025) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- own Beacon of Virtue
 		buffKind = 1;
-	elseif		(spellId == 1022) or -- Blessing of Protection
-			(spellId == 6940) then -- Blessing of Sacrifice
+	elseif spellId == 287280 then -- Glimmer of Light
 		buffKind = 2;
+	elseif (spellId == 1022) or -- Blessing of Protection
+			(spellId == 6940) then -- Blessing of Sacrifice
+		buffKind = 3;
 	end;
 
 	return buffKind;
@@ -344,4 +348,9 @@ OrlanHeal.Paladin.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Paladin.PetDebuffSlots = { 1, 0 };
 
 function OrlanHeal.Paladin.GetSpecificDebuffKind(orlanHeal, spellId)
+	local debuffKind;
+	if spellId == 25771 then
+		debuffKind = 1;
+	end;
+	return debuffKind;
 end;
