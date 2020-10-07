@@ -275,9 +275,7 @@ function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 	local holyPower = UnitPower("player", Enum.PowerType.HolyPower);
 	local maxHolyPower = UnitPowerMax("player", Enum.PowerType.HolyPower);
 
-	if orlanHeal:PlayerHasBuff(54149) then -- Infusion of Light
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.5, 0.5, 0.5, orlanHeal.RaidBorderAlpha); -- grey
-	elseif (holyPower == maxHolyPower) or orlanHeal:PlayerHasBuff(223819) then -- Divine Purpose
+	if (holyPower == maxHolyPower) or orlanHeal:PlayerHasBuff(223819) then -- Divine Purpose
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha); -- white
 	elseif holyPower >= 3 then
 		if orlanHeal.Paladin:CanUseHolyPowerGenerator(20473) then -- Holy Shock
