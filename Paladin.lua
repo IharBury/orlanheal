@@ -306,8 +306,8 @@ function OrlanHeal.Paladin.CanUseHolyPowerGenerator(self, id)
 	if (not usable) or noMana then
 		return false;
 	end;
-	local cooldownStart = GetSpellCooldown(id);
-	return cooldownStart == 0;
+	local cooldownStart, cooldownDuration = GetSpellCooldown(id);
+	return cooldownStart == 0 or cooldownDuration <= 1.5;
 end;
 
 function OrlanHeal.Paladin.CanUseTargetedHolyPowerGenerator(self, id)
