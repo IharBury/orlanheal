@@ -77,9 +77,8 @@
 		end;
 	end;
 
-	self.EventFrame:RegisterEvent("ADDON_LOADED");
 	self.EventFrame:SetScript("OnEvent", self.EventFrame.HandleEvent);
-	self.EventFrame:SetScript("OnUpdate", self.EventFrame.HandleUpdate);
+	self.EventFrame:RegisterEvent("ADDON_LOADED");
 
 	self.GroupCount = 9;
 	self.VisibleGroupCount = 9;
@@ -93,6 +92,8 @@
 end;
 
 function OrlanHeal:HandleLoaded()
+	self.EventFrame:SetScript("OnUpdate", self.EventFrame.HandleUpdate);
+
 	self:LoadConfigSet();
 
 	self.RaidWindow = self:CreateRaidWindow();
