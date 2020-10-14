@@ -1330,3 +1330,22 @@ function OrlanHeal:PlayerHasBuff(id)
 
 	return false;
 end;
+
+function OrlanHeal:PlayerBuffStackCount(id)
+	local index = 1;
+	while true do
+		local auraValues = {UnitAura("player", index)};
+		local spellId = auraValues[10];
+		if not spellId then
+			break;
+		end;
+
+		if spellId == id then
+			return auraValues[3];
+		end;
+
+		index = index + 1;
+	end;
+
+	return 0;
+end;

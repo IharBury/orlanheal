@@ -202,6 +202,31 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 	self:UpdateCooldown(window, duration, expirationTime, displayedCharges, displayedCharges);
 end;
 
+function OrlanHeal:UpdateScalableAbilityCooldown(window)
+	if not IsSpellKnown(window.Cooldown.SpellId) then
+		self:UpdateCooldown(window);
+		return;
+	end;
+
+	local spellName = GetSpellInfo(window.Cooldown.SpellId);
+	local start, duration, enabled = GetSpellCooldown(spellName);
+	local currentCharges, maxCharges = GetSpellCharges(spellName);
+	local scalingBuffStackCount = self:PlayerBuffStackCount(window.Cooldown.ScalingBuffId);
+	local displayedCharges = "(" .. scalingBuffStackCount .. ")";
+	if (maxCharges and (maxCharges > 1)) then
+		displayedCharges = currentCharges .. " " .. displayedCharges;
+	end;
+	local expirationTime;
+	if start and (start ~= 0) and duration and (duration ~= 0) and (enabled == 1) then
+		expirationTime = start + duration;
+	else
+		start = nil;
+		duration = nil;
+		expirationTime = nil;
+	end;
+	self:UpdateCooldown(window, duration, expirationTime, displayedCharges, true);
+end;
+
 function OrlanHeal:UpdateAbilitySequenceCooldown(window)
 	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 	local expirationTime;
@@ -651,8 +676,9 @@ OrlanHeal.CommonCooldownOptions =
 	},
 	ConcentratedFlame =
 	{
-		SpellId = 299353,
-		Update = OrlanHeal.UpdateAbilityCooldown,
+		SpellId = 295373,
+		ScalingBuffId = 295378,
+		Update = OrlanHeal.UpdateScalableAbilityCooldown,
 		Group = "Azerite Essence"
 	}
 };

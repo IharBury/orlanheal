@@ -115,7 +115,7 @@
 	},
 	{
 		type = "spell",
-		spell = 299353, -- Concentrated Flame
+		spell = 295373, -- Concentrated Flame
 		group = "Azerite Essence"
 	}
 };
