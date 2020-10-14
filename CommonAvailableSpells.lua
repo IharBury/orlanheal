@@ -107,5 +107,15 @@
 		item = "WristSlot",
 		caption = WRISTSLOT,
 		group = "Use"
+	},
+	{
+		type = "spell",
+		spell = 297375, -- Spirit of Preservation
+		group = "Azerite Essence"
+	},
+	{
+		type = "spell",
+		spell = 299353, -- Concentrated Flame
+		group = "Azerite Essence"
 	}
 };

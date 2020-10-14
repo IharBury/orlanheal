@@ -642,5 +642,17 @@ OrlanHeal.CommonCooldownOptions =
 			local _, race = UnitRace("player");
 			return race == "Pandaren";
 		end
+	},
+	SpiritOfPreservation =
+	{
+		SpellId = 297375,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Azerite Essence"
+	},
+	ConcentratedFlame =
+	{
+		SpellId = 299353,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = "Azerite Essence"
 	}
 };
