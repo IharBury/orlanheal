@@ -729,6 +729,8 @@ function OrlanHeal:GetRacialSpell()
 	local _, race = UnitRace("player");
 	if race == "Draenei" then
 		spell = self.Class.GiftOfTheNaaruSpellId;
+	elseif race == "Vulpera" then
+		spell = 312411;
 	end;
 	return spell;
 end;

@@ -377,6 +377,8 @@ function OrlanHeal:GetRacialCooldown()
 		cooldown = "RocketJump";
 	elseif race == "Pandaren" then
 		cooldown = "QuakingPalm";
+	elseif race == "Vulpera" then
+		cooldown = "BagOfTricks";
 	end;
 	return cooldown;
 end;

@@ -49,8 +49,8 @@
 	local className, class = UnitClass("player");
 	if class == "PALADIN" then
 		self.Class = self.Paladin;
---	elseif class == "PRIEST" then
---		self.Class = self.Priest;
+	elseif class == "PRIEST" then
+		self.Class = self.Priest;
 --	elseif class == "SHAMAN" then
 --		self.Class = self.Shaman;
 --	elseif class == "DRUID" then

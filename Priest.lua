@@ -9,13 +9,11 @@ OrlanHeal.Priest.AvailableSpells =
 	527, -- Purify
 	{
 		type = "spell",
-		spell = 17,  -- Power Word: Shield
-		group = select(2, GetSpecializationInfo(1)) -- Discipline
+		spell = 17  -- Power Word: Shield
 	},
 	{
 		type = "spell",
-		spell = 2061, -- Flash Heal
-		group = select(2, GetSpecializationInfo(2)) -- Holy
+		spell = 2061 -- Flash Heal
 	},
 	{
 		type = "spell",
@@ -227,6 +225,15 @@ OrlanHeal.Priest.CooldownOptions =
 			return race == "BloodElf";
 		end
 	},
+	BagOfTricks =
+	{
+		SpellId = 312411,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Vulpera";
+		end
+	},
 	AngelicFeather =
 	{
 		SpellId = 121536,
@@ -321,18 +328,25 @@ OrlanHeal.Priest.CooldownOptions =
 		SpellId = 200183,
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = select(2, GetSpecializationInfo(2)) -- Holy
+	},
+	PowerWordRadiance =
+	{
+		SpellId = 194509,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = select(2, GetSpecializationInfo(1)) -- Discipline
 	}
 };
 
 function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 	config["1"] = 2060; -- Heal -- Holy
-	config["2"] = 2061; -- Flash Heal -- Holy
+	config["2"] = 2061; -- Flash Heal
 	config["3"] = 47788; -- Guardian Spirit -- Holy
 	config["alt1"] = 527; -- Purify
 	config["alt2"] = 139; -- Renew -- Holy
 	config["alt3"] = 2050; -- Holy Word: Serenity -- Holy
-	config["shift2"] = 33076; -- Prayer of Mending -- Holy
+	config["shift2"] = 17; -- Power Word: Shield
+	-- config["shift2"] = 33076; -- Prayer of Mending -- Holy
 	config["shift3"] = 214121; -- Body and Mind -- Holy
 	config["altshift1"] = 73325; -- Leap of Faith
 	config["altshift2"] = 596; -- Prayer of Healing -- Holy
@@ -378,20 +392,18 @@ function OrlanHeal.Priest.GetDisciplineDefaultConfig(orlanHeal)
 	local config = orlanHeal.Class.GetDefaultConfig(orlanHeal);
 
 	config["1"] = 200829; -- Plea
-	config["2"] = 186263; -- Shadow Mend
+	-- config["2"] = 186263; -- Shadow Mend
 	config["3"] = 33206; -- Pain Suppression
 	config["alt2"] = 152118; -- Clarity of Will
 	config["alt3"] = "";
-	config["shift2"] = 17; -- Power Word: Shield
 	config["shift3"] = "";
 	config["altshift2"] = "";
 	config["control1"] = 194509; -- Power Word: Radiance
 	config["control2"] = 47540; -- Penance
 	config["controlshift1"] = 2096; -- Mind Vision
 
-	config["cooldown2"] = "PowerWordShield";
+	config["cooldown2"] = "PowerWordRadiance";
 	config["cooldown3"] = "Penance";
-	config["cooldown4"] = "";
 	config["cooldown5"] = "Shadowfiend";
 	config["cooldown6"] = "PowerWordSolace";
 	config["cooldown7"] = "PowerInfusion";
@@ -418,11 +430,16 @@ function OrlanHeal.Priest.GetConfigPresets(orlanHeal)
 end;
 
 function OrlanHeal.Priest.UpdateRaidBorder(orlanHeal)
-	if UnitBuff("player", GetSpellInfo(114255)) then -- Surge of Light
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
-	elseif orlanHeal:IsSpellReady(47540) -- Penance
-		and select(4, GetTalentInfo(1, 1, 1)) then -- The Penitent
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
+	local isPenanceReady = orlanHeal:IsSpellReady(47540);
+	local isRadianceReady = orlanHeal:IsSpellReady(194509);
+	if isPenanceReady then
+		if isRadianceReady then
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha); -- white
+		else
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.7, 0.7, 0, orlanHeal.RaidBorderAlpha); -- yellow
+		end;
+	elseif isRadianceReady then
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha); -- green
 	else
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
 	end;
@@ -447,8 +464,13 @@ OrlanHeal.Priest.PoisonDebuffKind = 2;
 OrlanHeal.Priest.DiseaseDebuffKind = 1;
 OrlanHeal.Priest.MagicDebuffKind = 1;
 OrlanHeal.Priest.CurseDebuffKind = 2;
-OrlanHeal.Priest.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
-OrlanHeal.Priest.PetDebuffSlots = { 2, 0 };
+OrlanHeal.Priest.PlayerDebuffSlots = { 1, 3, 0, 0, 0 };
+OrlanHeal.Priest.PetDebuffSlots = { 3, 0 };
 
 function OrlanHeal.Priest.GetSpecificDebuffKind(orlanHeal, spellId)
+	local buffKind;
+	if spellId == 6788 then -- Weakened Soul
+		buffKind = 3;
+	end
+	return buffKind;
 end;

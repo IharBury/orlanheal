@@ -18,7 +18,7 @@ Cooldowns.lua
 Commands.lua
 
 Paladin.lua
-#Priest.lua
+Priest.lua
 #Shaman.lua
 #Druid.lua
 #Monk.lua
