@@ -341,7 +341,8 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 	config["1"] = 2060; -- Heal -- Holy
 	config["2"] = 2061; -- Flash Heal
-	config["3"] = 47788; -- Guardian Spirit -- Holy
+	config["3"] = 33206; -- Pain Suppression
+	-- config["3"] = 47788; -- Guardian Spirit -- Holy
 	config["alt1"] = 527; -- Purify
 	config["alt2"] = 139; -- Renew -- Holy
 	config["alt3"] = 2050; -- Holy Word: Serenity -- Holy
@@ -376,7 +377,8 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["cooldown17"] = "Fade";
 	config["cooldown18"] = "DivineStar";
 	config["cooldown19"] = "Halo";
-	config["cooldown20"] = "GuardianSpirit"; -- Holy
+	config["cooldown20"] = "PainSuppression";
+	-- config["cooldown20"] = "GuardianSpirit"; -- Holy
 	config["cooldown21"] = "HolyWordSerenity"; -- Holy
 	config["cooldown22"] = "MindControl";
 	config["cooldown23"] = "ShackleUndead";
@@ -393,7 +395,6 @@ function OrlanHeal.Priest.GetDisciplineDefaultConfig(orlanHeal)
 
 	config["1"] = 200829; -- Plea
 	-- config["2"] = 186263; -- Shadow Mend
-	config["3"] = 33206; -- Pain Suppression
 	config["alt2"] = 152118; -- Clarity of Will
 	config["alt3"] = "";
 	config["shift3"] = "";
@@ -406,13 +407,12 @@ function OrlanHeal.Priest.GetDisciplineDefaultConfig(orlanHeal)
 	config["cooldown3"] = "Penance";
 	config["cooldown5"] = "Shadowfiend";
 	config["cooldown6"] = "PowerWordSolace";
-	config["cooldown7"] = "PowerInfusion";
+	-- config["cooldown7"] = "PowerInfusion";
 	config["cooldown9"] = "";
 	config["cooldown10"] = "Rapture";
 	config["cooldown11"] = "Schism";
 	config["cooldown13"] = "";
 	config["cooldown16"] = "PsychicScream";
-	config["cooldown20"] = "PainSuppression";
 	config["cooldown21"] = "PowerWordBarrier";
 
 	return config;
