@@ -255,5 +255,5 @@ OrlanHeal.Druid.CurseDebuffKind = 1;
 OrlanHeal.Druid.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Druid.PetDebuffSlots = { 1, 0 };
 
-function OrlanHeal.Druid.GetSpecificDebuffKind(orlanHeal, spellId)
+function OrlanHeal.Druid.GetSpecificDebuffKind(orlanHeal, spellId, caster)
 end;

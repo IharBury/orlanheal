@@ -345,7 +345,7 @@ OrlanHeal.Paladin.CurseDebuffKind = 2;
 OrlanHeal.Paladin.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Paladin.PetDebuffSlots = { 1, 0 };
 
-function OrlanHeal.Paladin.GetSpecificDebuffKind(orlanHeal, spellId)
+function OrlanHeal.Paladin.GetSpecificDebuffKind(orlanHeal, spellId, caster)
 	local debuffKind;
 	if spellId == 25771 then
 		debuffKind = 1;

@@ -1198,10 +1198,10 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 	local buffIndex = 1;
 	local canAssist = UnitCanAssist("player", unit);
 	while true do
-		local name, icon, count, dispelType, duration, expires, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
+		local name, icon, count, dispelType, duration, expires, caster, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
 		if name == nil then break; end;
 
-		local buffKind = self.Class.GetSpecificDebuffKind(self, spellId);
+		local buffKind = self.Class.GetSpecificDebuffKind(self, spellId, caster);
 		if not buffKind then
 			if (dispelType == "Disease") and canAssist then
 				buffKind = self.Class.DiseaseDebuffKind;

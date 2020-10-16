@@ -472,7 +472,7 @@ OrlanHeal.Priest.CurseDebuffKind = 2;
 OrlanHeal.Priest.PlayerDebuffSlots = { 1, 3, 0, 0, 0 };
 OrlanHeal.Priest.PetDebuffSlots = { 3, 0 };
 
-function OrlanHeal.Priest.GetSpecificDebuffKind(orlanHeal, spellId)
+function OrlanHeal.Priest.GetSpecificDebuffKind(orlanHeal, spellId, caster)
 	local debuffKind;
 	if (spellId == 6788) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- own Weakened Soul
 		debuffKind = 3;

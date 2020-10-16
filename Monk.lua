@@ -274,7 +274,7 @@ OrlanHeal.Monk.CurseDebuffKind = 2;
 OrlanHeal.Monk.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Monk.PetDebuffSlots = { 1, 0 };
 
-function OrlanHeal.Monk.GetSpecificDebuffKind(orlanHeal, spellId)
+function OrlanHeal.Monk.GetSpecificDebuffKind(orlanHeal, spellId, caster)
 end;
 
 function OrlanHeal.Monk.UpdateRaidBorder(orlanHeal)

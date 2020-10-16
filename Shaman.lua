@@ -265,7 +265,7 @@ OrlanHeal.Shaman.CurseDebuffKind = 1;
 OrlanHeal.Shaman.PlayerDebuffSlots = { 1, 0, 0, 0, 0 };
 OrlanHeal.Shaman.PetDebuffSlots = { 1, 0 };
 
-function OrlanHeal.Shaman.GetSpecificDebuffKind(orlanHeal, spellId)
+function OrlanHeal.Shaman.GetSpecificDebuffKind(orlanHeal, spellId, caster)
 	local debuffKind;
 	return debuffKind;
 end;
