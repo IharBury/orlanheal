@@ -104,6 +104,11 @@ OrlanHeal.Priest.AvailableSpells =
 		type = "spell",
 		spell = 47540, -- Penance
 		group = select(2, GetSpecializationInfo(1)) -- Discipline
+	},
+	{
+		type = "spell",
+		spell = 47536, -- Rapture
+		group = select(2, GetSpecializationInfo(1)) -- Discipline
 	}
 }
 
@@ -397,7 +402,7 @@ function OrlanHeal.Priest.GetDisciplineDefaultConfig(orlanHeal)
 	-- config["2"] = 186263; -- Shadow Mend
 	config["alt2"] = 152118; -- Clarity of Will
 	config["alt3"] = "";
-	config["shift3"] = "";
+	config["shift3"] = 47536; -- Rapture
 	config["altshift2"] = "";
 	config["control1"] = 194509; -- Power Word: Radiance
 	config["control2"] = 47540; -- Penance
@@ -468,9 +473,9 @@ OrlanHeal.Priest.PlayerDebuffSlots = { 1, 3, 0, 0, 0 };
 OrlanHeal.Priest.PetDebuffSlots = { 3, 0 };
 
 function OrlanHeal.Priest.GetSpecificDebuffKind(orlanHeal, spellId)
-	local buffKind;
-	if spellId == 6788 then -- Weakened Soul
-		buffKind = 3;
+	local debuffKind;
+	if (spellId == 6788) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- own Weakened Soul
+		debuffKind = 3;
 	end
-	return buffKind;
+	return debuffKind;
 end;
