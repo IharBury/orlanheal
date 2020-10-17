@@ -279,22 +279,14 @@ function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha); -- white
 	elseif holyPower >= 3 then
 		if orlanHeal.Paladin:CanUseHolyPowerGenerator(20473) then -- Holy Shock
-			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0.5, orlanHeal.RaidBorderAlpha); -- light yellow
-		elseif orlanHeal.Paladin:CanUseTargetedHolyPowerGenerator(24275) then -- Hammer of Wrath
-			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.5, 0.5, 1, orlanHeal.RaidBorderAlpha); -- light blue
-		elseif orlanHeal.Paladin:CanUseTargetedHolyPowerGenerator(35395) then -- Crusader Strike
-			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.5, 0.5, orlanHeal.RaidBorderAlpha); -- light red
+			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.8, 0.5, orlanHeal.RaidBorderAlpha); -- orange
 		else
 			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha); -- green
 		end;
 	elseif orlanHeal.Paladin:CanUseHolyPowerGenerator(20473) then -- Holy Shock
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.7, 0.7, 0, orlanHeal.RaidBorderAlpha); -- yellow
-	elseif orlanHeal.Paladin:CanUseTargetedHolyPowerGenerator(24275) then -- Hammer of Wrath
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 1, orlanHeal.RaidBorderAlpha); -- blue
-	elseif orlanHeal.Paladin:CanUseTargetedHolyPowerGenerator(35395) then -- Crusader Strike
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha); -- red
 	else
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0); -- black
 	end;
 end;
 
