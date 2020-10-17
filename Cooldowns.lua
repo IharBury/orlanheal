@@ -393,6 +393,10 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 	end;
 	duration = duration or 0;
 	expirationTime = expirationTime or 0;
+	if duration <= 1.5 then
+		duration = 0;
+		expirationTime = 0;
+	end;
 
 	local isPotentiallyUsableSpell = window.Cooldown.SpellId and
 		IsSpellKnown(window.Cooldown.SpellId) and 
