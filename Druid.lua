@@ -34,7 +34,8 @@ OrlanHeal.Druid.CooldownOptions =
 	Swiftmend =
 	{
 		SpellId = 18562,
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAlwaysUsable = true
 	},
 	WildGrowth =
 	{
