@@ -7,14 +7,8 @@ OrlanHeal.Priest.AvailableSpells =
 {
 	1706, -- Levitate
 	527, -- Purify
-	{
-		type = "spell",
-		spell = 17  -- Power Word: Shield
-	},
-	{
-		type = "spell",
-		spell = 2061 -- Flash Heal
-	},
+	17, -- Power Word: Shield
+	2061, -- Flash Heal
 	{
 		type = "spell",
 		spell = 2060, -- Heal
@@ -37,11 +31,7 @@ OrlanHeal.Priest.AvailableSpells =
 		group = select(2, GetSpecializationInfo(2)) -- Holy
 	},
 	73325, -- Leap of Faith
-	{
-		type = "spell",
-		spell = 2096, -- Mind Vision
-		group = select(2, GetSpecializationInfo(1)) -- Discipline
-	},
+	2096, -- Mind Vision
 	{
 		type = "spell",
 		spell = 47540, -- Penance
@@ -65,18 +55,7 @@ OrlanHeal.Priest.AvailableSpells =
 	},
 	{
 		type = "spell",
-		spell = 152118, -- Clarity of Will
-		group = select(2, GetSpecializationInfo(1)) -- Discipline
-	},
-	126123, -- Confession
-	{
-		type = "spell",
 		spell = 2050, -- Holy Word: Serenity
-		group = select(2, GetSpecializationInfo(2)) -- Holy
-	},
-	{
-		type = "spell",
-		spell = 214121, -- Body and Mind
 		group = select(2, GetSpecializationInfo(2)) -- Holy
 	},
 	204263, -- Shining Force
@@ -84,11 +63,6 @@ OrlanHeal.Priest.AvailableSpells =
 		type = "spell",
 		spell = 204883, -- Circle of Healing
 		group = select(2, GetSpecializationInfo(2)) -- Holy
-	},
-	{
-		type = "spell",
-		spell = 200829, -- Plea
-		group = select(2, GetSpecializationInfo(1)) -- Discipline
 	},
 	{
 		type = "spell",
@@ -117,8 +91,7 @@ OrlanHeal.Priest.CooldownOptions =
 	PowerWordShield =
 	{
 		SpellId = 17,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = select(2, GetSpecializationInfo(1)) -- Discipline
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	PainSuppression =
 	{
@@ -150,8 +123,7 @@ OrlanHeal.Priest.CooldownOptions =
 	DesperatePrayer =
 	{
 		SpellId = 19236,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = select(2, GetSpecializationInfo(2)) -- Holy
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Shadowfiend =
 	{
@@ -180,8 +152,7 @@ OrlanHeal.Priest.CooldownOptions =
 	PowerInfusion =
 	{
 		SpellId = 10060,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = select(2, GetSpecializationInfo(1)) -- Discipline
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	PowerWordBarrier =
 	{
@@ -263,8 +234,7 @@ OrlanHeal.Priest.CooldownOptions =
 	HolyNova =
 	{
 		SpellId = 132157,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = select(2, GetSpecializationInfo(2)) -- Holy
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	ShackleUndead = 
 	{
@@ -284,8 +254,7 @@ OrlanHeal.Priest.CooldownOptions =
 	PsychicScream =
 	{
 		SpellId = 8122,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = select(2, GetSpecializationInfo(1)) -- Discipline
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Rapture =
 	{
@@ -316,12 +285,6 @@ OrlanHeal.Priest.CooldownOptions =
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = select(2, GetSpecializationInfo(2)) -- Holy
 	},
-	BodyAndMind =
-	{
-		SpellId = 214121,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = select(2, GetSpecializationInfo(2)) -- Holy
-	},
 	SymbolOfHope =
 	{
 		SpellId = 64901,
@@ -346,14 +309,12 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 	config["1"] = 2060; -- Heal -- Holy
 	config["2"] = 2061; -- Flash Heal
-	config["3"] = 33206; -- Pain Suppression
-	-- config["3"] = 47788; -- Guardian Spirit -- Holy
+	config["3"] = 47788; -- Guardian Spirit -- Holy
 	config["alt1"] = 527; -- Purify
 	config["alt2"] = 139; -- Renew -- Holy
 	config["alt3"] = 2050; -- Holy Word: Serenity -- Holy
 	config["shift2"] = 17; -- Power Word: Shield
-	-- config["shift2"] = 33076; -- Prayer of Mending -- Holy
-	config["shift3"] = 214121; -- Body and Mind -- Holy
+	config["shift3"] = 33076; -- Prayer of Mending -- Holy
 	config["altshift1"] = 73325; -- Leap of Faith
 	config["altshift2"] = 596; -- Prayer of Healing -- Holy
 	config["altshift3"] = 2006; -- Resurrection
@@ -361,21 +322,21 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["control2"] = 32546; -- Binding Heal -- Holy
 	config["control3"] = 204263; -- Shining Force
 	config["controlalt2"] = 1706; -- Levitate
-	config["controlaltshift2"] = 126123; -- Confession
+	config["controlshift1"] = 2096; -- Mind Vision
 
 	config["cooldown1"] = "Purify";
-	config["cooldown2"] = "BodyAndMind"; -- Holy
+	config["cooldown2"] = "PowerInfusion";
 	config["cooldown3"] = "Apotheosis"; -- Holy
 	config["cooldown4"] = "PrayerOfMending"; -- Holy
 	config["cooldown5"] = "SymbolOfHope"; -- Holy
 	config["cooldown6"] = "CircleOfHealing"; -- Holy
-	config["cooldown7"] = "HolyNova"; -- Holy
+	config["cooldown7"] = "HolyNova";
 	config["cooldown8"] = "LeapOfFaith";
 	config["cooldown9"] = "HolyWordSanctify"; -- Holy
 	config["cooldown10"] = "DivineHymn"; -- Holy
 	config["cooldown11"] = "HolyFire"; -- Holy
 	config["cooldown12"] = "AngelicFeather";
-	config["cooldown13"] = "DesperatePrayer"; -- Holy
+	config["cooldown13"] = "DesperatePrayer";
 	config["cooldown14"] = "ShiningForce";
 	config["cooldown15"] = "DispelMagic";
 	config["cooldown16"] = "HolyWordChastise"; -- Holy
@@ -383,14 +344,15 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["cooldown18"] = "DivineStar";
 	config["cooldown19"] = "Halo";
 	config["cooldown20"] = "PainSuppression";
-	-- config["cooldown20"] = "GuardianSpirit"; -- Holy
 	config["cooldown21"] = "HolyWordSerenity"; -- Holy
 	config["cooldown22"] = "MindControl";
 	config["cooldown23"] = "ShackleUndead";
 	config["cooldown24"] = "MassDispel";
-	config["cooldown25"] = orlanHeal:GetRacialCooldown();
-	config["cooldown26"] = "Trinket0";
-	config["cooldown27"] = "Trinket1";
+	config["cooldown25"] = "PsychicScream";
+	config["cooldown26"] = "GuardianSpirit"; -- Holy
+	config["cooldown27"] = orlanHeal:GetRacialCooldown();
+	config["cooldown28"] = "Trinket0";
+	config["cooldown29"] = "Trinket1";
 
 	return config;
 end;
@@ -398,27 +360,25 @@ end;
 function OrlanHeal.Priest.GetDisciplineDefaultConfig(orlanHeal)
 	local config = orlanHeal.Class.GetDefaultConfig(orlanHeal);
 
-	config["1"] = 200829; -- Plea
-	-- config["2"] = 186263; -- Shadow Mend
-	config["alt2"] = 152118; -- Clarity of Will
+	config["1"] = "";
+	config["3"] = 33206; -- Pain Suppression
+	config["alt2"] = "";
 	config["alt3"] = "";
 	config["shift3"] = 47536; -- Rapture
 	config["altshift2"] = "";
 	config["control1"] = 194509; -- Power Word: Radiance
 	config["control2"] = 47540; -- Penance
-	config["controlshift1"] = 2096; -- Mind Vision
 
-	config["cooldown2"] = "PowerWordRadiance";
 	config["cooldown3"] = "Penance";
+	config["cooldown4"] = "PowerWordRadiance";
 	config["cooldown5"] = "Shadowfiend";
 	config["cooldown6"] = "PowerWordSolace";
-	-- config["cooldown7"] = "PowerInfusion";
 	config["cooldown9"] = "";
 	config["cooldown10"] = "Rapture";
 	config["cooldown11"] = "Schism";
-	config["cooldown13"] = "";
-	config["cooldown16"] = "PsychicScream";
+	config["cooldown16"] = "";
 	config["cooldown21"] = "PowerWordBarrier";
+	config["cooldown26"] = "";
 
 	return config;
 end;
