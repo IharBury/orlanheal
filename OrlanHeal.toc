@@ -8,6 +8,7 @@ OrlanHeal.lua
 Constants.lua
 
 SavingAbilities.lua
+IgnoredBuffs.lua
 IgnoredDebuffs.lua
 CriticalDebuffs.lua
 CommonAvailableSpells.lua

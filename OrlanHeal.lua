@@ -1160,7 +1160,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 			end;
 		end;
 
-		if buffKind ~= nil then
+		if buffKind ~= nil and not self.IgnoredBuffs[spellId] then
 			goodBuffCount = goodBuffCount + 1;
 			goodBuffs[goodBuffCount] =
 			{
