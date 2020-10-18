@@ -53,8 +53,8 @@
 		self.Class = self.Priest;
 --	elseif class == "SHAMAN" then
 --		self.Class = self.Shaman;
---	elseif class == "DRUID" then
---		self.Class = self.Druid;
+	elseif class == "DRUID" then
+		self.Class = self.Druid;
 --	elseif class == "MONK" then
 --		self.Class = self.Monk;
 	else

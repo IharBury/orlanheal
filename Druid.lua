@@ -8,7 +8,6 @@ OrlanHeal.Druid.AvailableSpells =
 	8936, -- Regrowth
 	18562, -- Swiftmend
 	33763, -- Lifebloom
-	5185, -- Healing Touch
 	20484, -- Rebirth
 	48438, -- Wild Growth
 	102342, -- Ironbark
@@ -77,11 +76,6 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 88423,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	DisplacerBeast =
-	{
-		SpellId = 102280,
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	WildCharge =
 	{
 		SpellId = 102401,
@@ -118,11 +112,6 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 145205, -- Efflorescence
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	FrenziedRegeneration =
-	{
-		SpellId = 22842, -- Frenzied Regeneration
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	Innervate =
 	{
 		SpellId = 29166, -- Innervate
@@ -138,11 +127,6 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 102793, -- Ursol's Vortex
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Starsurge =
-	{
-		SpellId = 197626, -- Starsurge
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	Flourish =
 	{
 		SpellId = 197721, -- Flourish
@@ -153,7 +137,7 @@ OrlanHeal.Druid.CooldownOptions =
 function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 
-	config["1"] = 5185; -- Healing Touch
+	config["1"] = 774; -- Rejuvenation
 	config["2"] = 8936; -- Regrowth
 	config["3"] = 48438; -- Wild Growth
 	config["shift2"] = 33763; -- Lifebloom
@@ -162,7 +146,7 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["control2"] = 18562; -- Swiftmend
 	config["control3"] = 20484; -- Rebirth
 	config["alt1"] = 88423; -- Nature's Cure
-	config["alt2"] = 774; -- Rejuvenation
+	config["alt2"] = "";
 	config["alt3"] = 102351; -- Cenarion Ward
 	config["altshift2"] = 102401; -- Wild Charge
 	config["altshift3"] = 50769; -- Revive
@@ -180,17 +164,17 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown11"] = "Incarnation";
 	config["cooldown12"] = "Dash";
 	config["cooldown13"] = "Growl";
-	config["cooldown14"] = "FrenziedRegeneration";
+	config["cooldown14"] = "";
 	config["cooldown15"] = "Rebirth";
 	config["cooldown16"] = "Prowl";
 	config["cooldown17"] = "UrsolsVortex";
 	config["cooldown18"] = "NaturesControl";
 	config["cooldown19"] = "Mangle";
-	config["cooldown20"] = "Starsurge";
+	config["cooldown20"] = "";
 	config["cooldown21"] = "Renewal";
 	config["cooldown22"] = "EntanglingRoots";
 	config["cooldown23"] = "CenarionWard";
-	config["cooldown24"] = "DisplacerBeast";
+	config["cooldown24"] = "";
 	config["cooldown25"] = "Efflorescence";
 	config["cooldown26"] = orlanHeal:GetRacialCooldown();
 	config["cooldown27"] = "Trinket0";
@@ -215,11 +199,10 @@ function OrlanHeal.Druid.UpdateRaidBorder(orlanHeal)
 	local _, wildGrowthCooldown = GetSpellCooldown(48438);
 	local isSwiftmendReady = IsSpellKnown(18562) and (swiftmendCooldown < 1.5);
 	local isWildGrowthReady = IsSpellKnown(48438) and (wildGrowthCooldown < 1.5);
-	local clearcastingSpellName = GetSpellInfo(16870);
 	if lifebloomExpirationTime 
 			and (lifebloomExpirationTime - GetTime() < 4) then
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha);
-	elseif UnitBuff("player", clearcastingSpellName) then
+	elseif orlanHeal:PlayerHasBuff(16870) then -- Clearcasting
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
 	elseif isSwiftmendReady and isWildGrowthReady then
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
