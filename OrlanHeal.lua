@@ -870,14 +870,7 @@ function OrlanHeal:UpdateTargetIcon(canvas, unit)
 end;
 
 function OrlanHeal:IsSpellReady(spellId)
-	local result = false;
-
-	local spellName = GetSpellInfo(spellId);
-	if IsUsableSpell(spellName) then
-		result = self:IsSpellNotOnCooldown(spellId);
-	end;
-
-	return result;
+	return IsUsableSpell(spellId) and self:IsSpellNotOnCooldown(spellId);
 end;
 
 function OrlanHeal:IsSpellNotOnCooldown(spellId)

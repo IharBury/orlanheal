@@ -194,7 +194,7 @@ OrlanHeal.Priest.CooldownOptions =
 	},
 	ArcaneTorrent =
 	{
-		SpellId = 28730, -- Arcane Torrent
+		SpellId = 232633, -- Arcane Torrent
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		IsAvailable = function()
 			local _, race = UnitRace("player");

@@ -106,7 +106,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	ArcaneTorrent =
 	{
-		SpellId = 28730, -- Arcane Torrent
+		SpellId = 155145, -- Arcane Torrent
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		IsAvailable = function()
 			local _, race = UnitRace("player");
@@ -181,7 +181,8 @@ OrlanHeal.Paladin.CooldownOptions =
 	HammerOfWrath =
 	{
 		SpellId = 24275, -- Hammer of Wrath
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAlwaysUsable = true
 	},
 	TurnEvil =
 	{
@@ -304,10 +305,6 @@ end;
 
 function OrlanHeal.Paladin.CanUseTargetedHolyPowerGenerator(self, id)
 	if not self:CanUseHolyPowerGenerator(id) then
-		return false;
-	end;
-	local name = GetSpellInfo(id);
-	if not name then
 		return false;
 	end;
 	local inRange = IsSpellInRange(name, "target");

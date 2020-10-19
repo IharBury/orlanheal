@@ -158,11 +158,8 @@ function OrlanHeal:UpdateCooldownFrames()
 end;
 
 function OrlanHeal:UpdatePlayerBuffCooldown(window)
-	local spellName = GetSpellInfo(window.Cooldown.AuraId or window.Cooldown.SpellId);
-	if spellName then
-		local _, _, _, count, _, duration, expirationTime = UnitBuff("player", spellName);
-		self:UpdateCooldown(window, duration, expirationTime, count, window.Cooldown.AlwaysShowCount);
-	end;
+	local _, _, _, count, _, duration, expirationTime = UnitBuff("player", window.Cooldown.AuraId or window.Cooldown.SpellId);
+	self:UpdateCooldown(window, duration, expirationTime, count, window.Cooldown.AlwaysShowCount);
 end;
 
 function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(window)
@@ -184,12 +181,19 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 		return;
 	end;
 
-	local spellName = GetSpellInfo(window.Cooldown.SpellId);
-	local start, duration, enabled = GetSpellCooldown(spellName);
-	local currentCharges, maxCharges = GetSpellCharges(spellName);
-	local displayedCharges;
+	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	local currentCharges, maxCharges = GetSpellCharges(window.Cooldown.SpellId);
+	local displayedCharges = "";
+	if window.Cooldown.ScalingBuffId then
+		local scalingBuffStackCount = self:PlayerBuffStackCount(window.Cooldown.ScalingBuffId);
+		displayedCharges = "(" .. scalingBuffStackCount .. ")";
+	end;
 	if (maxCharges and (maxCharges > 1)) then
-		displayedCharges = currentCharges;
+		if displayedCharges == "" then
+			displayedCharges = currentCharges
+		else
+			displayedCharges = currentCharges .. " " .. displayedCharges;
+		end;
 	end;
 	local expirationTime;
 	if start and (start ~= 0) and duration and (duration ~= 0) and (enabled == 1) then
@@ -199,32 +203,7 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 		duration = nil;
 		expirationTime = nil;
 	end;
-	self:UpdateCooldown(window, duration, expirationTime, displayedCharges, displayedCharges);
-end;
-
-function OrlanHeal:UpdateScalableAbilityCooldown(window)
-	if not IsSpellKnown(window.Cooldown.SpellId) then
-		self:UpdateCooldown(window);
-		return;
-	end;
-
-	local spellName = GetSpellInfo(window.Cooldown.SpellId);
-	local start, duration, enabled = GetSpellCooldown(spellName);
-	local currentCharges, maxCharges = GetSpellCharges(spellName);
-	local scalingBuffStackCount = self:PlayerBuffStackCount(window.Cooldown.ScalingBuffId);
-	local displayedCharges = "(" .. scalingBuffStackCount .. ")";
-	if (maxCharges and (maxCharges > 1)) then
-		displayedCharges = currentCharges .. " " .. displayedCharges;
-	end;
-	local expirationTime;
-	if start and (start ~= 0) and duration and (duration ~= 0) and (enabled == 1) then
-		expirationTime = start + duration;
-	else
-		start = nil;
-		duration = nil;
-		expirationTime = nil;
-	end;
-	self:UpdateCooldown(window, duration, expirationTime, displayedCharges, true);
+	self:UpdateCooldown(window, duration, expirationTime, displayedCharges, displayedCharges ~= "");
 end;
 
 function OrlanHeal:UpdateAbilitySequenceCooldown(window)
@@ -335,7 +314,7 @@ end;
 function OrlanHeal:GetPlayerCastUnitBuffCooldown(unit, spellId)
 	local i = 1;
 	while true do
-		local _, _, _, count, _, duration, expirationTime, _, _, _, buffId = UnitBuff(unit, i, "PLAYER");
+		local _, _, count, _, duration, expirationTime, _, _, _, buffId = UnitBuff(unit, i, "PLAYER");
 		if not buffId then
 			return;
 		end;
@@ -685,7 +664,7 @@ OrlanHeal.CommonCooldownOptions =
 	{
 		SpellId = 295373,
 		ScalingBuffId = 295378,
-		Update = OrlanHeal.UpdateScalableAbilityCooldown,
+		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = "Azerite Essence"
 	}
 };

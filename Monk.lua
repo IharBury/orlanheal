@@ -278,12 +278,9 @@ function OrlanHeal.Monk.GetSpecificDebuffKind(orlanHeal, spellId, caster)
 end;
 
 function OrlanHeal.Monk.UpdateRaidBorder(orlanHeal)
-	local lifecyclesEnvelopingMistSpellName = GetSpellInfo(197919); -- Lifecycles (Enveloping Mist)
-	local lifecyclesVivifySpellName = GetSpellInfo(197916); -- Lifecycles (Vivify)
-
-	if UnitBuff("player", lifecyclesEnvelopingMistSpellName) then
+	if orlanHeal:PlayerHasBuff(197919) then -- Lifecycles (Enveloping Mist)
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
-	elseif UnitBuff("player", lifecyclesVivifySpellName) then
+	elseif orlanHeal:PlayerHasBuff(197916) then -- Lifecycles (Vivify)
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha);
 	else
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0);

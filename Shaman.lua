@@ -232,13 +232,9 @@ end;
 
 function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
 	local isRiptideReady = orlanHeal:IsSpellReady(61295);
-	local spiritwalkersGraceSpellName = GetSpellInfo(79206);
-	local harmonyOfTheElementsSpellName = GetSpellInfo(167703);
 
-	if UnitBuff("player", spiritwalkersGraceSpellName) then
+	if orlanHeal:PlayerHasBuff(79206) then -- Spiritwalker's Grace
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha);
-	elseif UnitBuff("player", harmonyOfTheElementsSpellName) and orlanHeal:IsSpellReady(1064) then -- Chain Heal
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 1, orlanHeal.RaidBorderAlpha); -- magenta
 	elseif isRiptideReady then
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha);
 	elseif orlanHeal:IsSpellReady(79206) then -- Spiritwalker's Grace
