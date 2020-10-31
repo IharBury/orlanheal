@@ -111,7 +111,8 @@ OrlanHeal.Druid.CooldownOptions =
 	Efflorescence =
 	{
 		SpellId = 145205, -- Efflorescence
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateTotemCooldown,
+		TotemIndex = 1
 	},
 	Innervate =
 	{
@@ -165,7 +166,7 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown11"] = "Incarnation";
 	config["cooldown12"] = "Dash";
 	config["cooldown13"] = "Growl";
-	config["cooldown14"] = "";
+	config["cooldown14"] = "Efflorescence";
 	config["cooldown15"] = "Rebirth";
 	config["cooldown16"] = "Prowl";
 	config["cooldown17"] = "UrsolsVortex";
@@ -176,7 +177,7 @@ function OrlanHeal.Druid.GetDefaultConfig(orlanHeal)
 	config["cooldown22"] = "EntanglingRoots";
 	config["cooldown23"] = "CenarionWard";
 	config["cooldown24"] = "";
-	config["cooldown25"] = "Efflorescence";
+	config["cooldown25"] = "";
 	config["cooldown26"] = orlanHeal:GetRacialCooldown();
 	config["cooldown27"] = "Trinket0";
 	config["cooldown28"] = "Trinket1";

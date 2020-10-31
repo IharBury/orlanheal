@@ -156,7 +156,8 @@ OrlanHeal.Paladin.CooldownOptions =
 	Consecration =
 	{
 		SpellId = 26573, -- Consecration
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateTotemCooldown,
+		TotemIndex = 1
 	},
 	DivineSteed =
 	{

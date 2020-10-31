@@ -206,6 +206,31 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 	self:UpdateCooldown(window, duration, expirationTime, displayedCharges, displayedCharges ~= "");
 end;
 
+function OrlanHeal:UpdateTotemCooldown(window)
+	if not IsSpellKnown(window.Cooldown.SpellId) then
+		self:UpdateCooldown(window);
+		return;
+	end;
+
+	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	local expirationTime, isReverse;
+	if start and (start ~= 0) and duration and (duration ~= 0) and (enabled == 1) then
+		expirationTime = start + duration;
+		isReverse = false
+	else
+		_, _, start, duration = GetTotemInfo(window.Cooldown.TotemIndex);
+		if start and (start ~= 0) and duration and (duration ~= 0) then
+			expirationTime = start + duration;
+		else
+			start = nil;
+			duration = nil;
+			expirationTime = nil;
+		end;
+		isReverse = true;
+	end;
+	self:UpdateCooldown(window, duration, expirationTime, nil, false, isReverse);
+end;
+
 function OrlanHeal:UpdateAbilitySequenceCooldown(window)
 	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 	local expirationTime;
