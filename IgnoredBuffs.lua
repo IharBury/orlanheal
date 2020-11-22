@@ -8,6 +8,7 @@ OrlanHeal.IgnoredBuffs =
     [186406] = true, -- Sign of the Critter
     [225788] = true, -- Sign of the Emissary
     [297412] = true, -- Devout Spirit
+    [310143] = true, -- Soulshape
     [311474] = true, -- Ace of Repose
     [311475] = true, -- Two of Repose
     [311476] = true, -- Three of Repose

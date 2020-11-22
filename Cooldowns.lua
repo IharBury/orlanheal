@@ -65,7 +65,7 @@ function OrlanHeal:SetupCooldown(window, cooldown)
 		local effectId = cooldown.AuraId or cooldown.SpellId;
 		local texture;
 		if effectId then
-			texture = GetSpellTexture(effectId);
+			_, texture = GetSpellTexture(effectId);
 		elseif cooldown.SlotName then
 			local slotId;
 			slotId, texture = GetInventorySlotInfo(cooldown.SlotName);
@@ -176,8 +176,8 @@ function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(window)
 end;
 
 function OrlanHeal:UpdateAbilityCooldown(window)
-	if not IsSpellKnown(window.Cooldown.SpellId) then
-		self:UpdateCooldown(window);
+	if not self:IsSpellOverridesKnown(window.Cooldown) then
+		self:UpdateCooldown(window, nil, nil, nil, nil, nil, true);
 		return;
 	end;
 
@@ -207,8 +207,8 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 end;
 
 function OrlanHeal:UpdateTotemCooldown(window)
-	if not IsSpellKnown(window.Cooldown.SpellId) then
-		self:UpdateCooldown(window);
+	if not self:IsSpellOverridesKnown(window.Cooldown) then
+		self:UpdateCooldown(window, nil, nil, nil, nil, nil, true);
 		return;
 	end;
 
@@ -403,7 +403,7 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 	end;
 
 	local isPotentiallyUsableSpell = window.Cooldown.SpellId and
-		IsSpellKnown(window.Cooldown.SpellId) and 
+		self:IsSpellOverridesKnown(window.Cooldown) and 
 		((duration ~= 0) or 
 			window.Cooldown.IsReverse or 
 			IsUsableSpell(window.Cooldown.SpellId) or
@@ -438,9 +438,26 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 
 	if count and (((type(count) == "number") and (count > 1)) or alwaysDisplayCount) then
 		window.Count:SetText(count);
+	elseif window.Cooldown.Label then
+		window.Count:SetText(window.Cooldown.Label);
 	else
 		window.Count:SetText("");
 	end;
+end;
+
+function OrlanHeal:IsSpellOverridesKnown(cooldown)
+	if not IsSpellKnownOrOverridesKnown(cooldown.SpellId) then
+		return false;
+	end;
+	if not cooldown.OverridenBy then
+		return true;
+	end;
+	for _, overrideSpellId in pairs(cooldown.OverridenBy) do
+		if IsSpellKnownOrOverridesKnown(overrideSpellId) then
+			return false;
+		end;
+	end;
+	return true;
 end;
 
 OrlanHeal.CommonCooldownOptions =

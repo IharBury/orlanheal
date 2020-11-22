@@ -209,6 +209,53 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 210294, -- Divine Favor
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Soulshape = {
+		SpellId = 310143, -- Soulshape
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Flicker = {
+		MacroText = "/cast " .. GetSpellInfo(324701), -- Flicker
+		SpellId = 324701, -- Flicker
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	BlessingOfWinter = {
+		MacroText = "/cast " .. GetSpellInfo(328281), -- Blessing of Winter
+		SpellId = 328281, -- Blessing of Winter
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	BlessingOfSpring = {
+		MacroText = "/cast " .. GetSpellInfo(328282), -- Blessing of Spring
+		SpellId = 328282, -- Blessing of Spring
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	BlessingOfSpringSelf = {
+		Label = "S",
+		Caption = GetSpellInfo(328282) .. " (self)", -- Blessing of Spring
+		MacroText = OrlanHeal:BuildSelfCastMacro(328282), -- Blessing of Spring
+		SpellId = 328282, -- Blessing of Spring
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	BlessingOfSummer = {
+		SpellId = 328620, -- Blessing of Summer
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		OverridenBy = {
+			328622, -- Blessing of Autumn
+			328281, -- Blessing of Winter
+			328282 -- Blessing of Spring
+		}
+	},
+	BlessingOfAutumn = {
+		MacroText = "/cast " .. GetSpellInfo(328622), -- Blessing of Autumn
+		SpellId = 328622, -- Blessing of Autumn
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	BlessingOfAutumnSelf = {
+		Label = "S",
+		Caption = GetSpellInfo(328622) .. " (self)", -- Blessing of Autumn
+		MacroText = OrlanHeal:BuildSelfCastMacro(328622), -- Blessing of Autumn
+		SpellId = 328622, -- Blessing of Autumn
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 

@@ -1294,6 +1294,10 @@ function OrlanHeal:BuildMouseOverCastMacro(spellId)
 	return "/cast [target=mouseover] " .. GetSpellInfo(spellId);
 end;
 
+function OrlanHeal:BuildSelfCastMacro(spellId)
+	return "/cast [target=player] " .. GetSpellInfo(spellId);
+end;
+
 function OrlanHeal:RegisterUnitEventHandler(event, unit, handler)
 	if not self.EventSubscriptions[event] then
 		self.EventFrame:RegisterEvent(event);
