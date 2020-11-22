@@ -20,8 +20,8 @@ Commands.lua
 
 Paladin.lua
 Priest.lua
-#Shaman.lua
+Shaman.lua
 Druid.lua
-#Monk.lua
+Monk.lua
 
 Initialize.lua

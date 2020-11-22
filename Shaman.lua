@@ -13,7 +13,8 @@ OrlanHeal.Shaman.AvailableSpells =
 	61295, -- Riptide
 	73685, -- Unleash Life
 	2008, -- Ancestral Spirit
-	59547 -- Gift of the Naaru
+	59547, -- Gift of the Naaru
+	974 -- Earth Shield
 };
 
 OrlanHeal.Shaman.CooldownOptions =
@@ -142,12 +143,6 @@ OrlanHeal.Shaman.CooldownOptions =
 		SpellId = 370,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	DisablingTotem =
-	{
-		MacroText = "/cast " .. GetSpellInfo(216965),
-		SpellId = 216965, -- Disabling Totem
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	GustOfWind =
 	{
 		SpellId = 192063,
@@ -165,13 +160,19 @@ OrlanHeal.Shaman.CooldownOptions =
 	},
 	EarthenShieldTotem =
 	{
-		SpellId = 198838,
+		SpellId = 198838, -- Earthen Wall Totem
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Wellspring =
 	{
 		SpellId = 197995,
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	EarthShield =
+	{
+		SpellId = 974,
+		IsReverse = true,
+		Update = OrlanHeal.UpdateRaidBuffCooldown
 	}
 };
 
@@ -181,6 +182,7 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["1"] = 77472; -- Healing Wave
 	config["2"] = 8004; -- Healing Surge
 	config["3"] = 73685; -- Unleash Life
+	config["shift2"] = 974; -- Earth Shield
 	config["shift3"] = 546; -- Water Walking
 	config["control2"] = 61295; -- Riptide
 	config["alt1"] = 77130; -- Purify Spirit
@@ -208,7 +210,7 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["cooldown15"] = "AncestralGuidance";
 	config["cooldown16"] = "HealingTideTotem";
 	config["cooldown17"] = "WindRushTotem";
-	config["cooldown18"] = "DisablingTotem";
+	config["cooldown18"] = "EarthShield";
 	config["cooldown19"] = "CloudburstTotem";
 	config["cooldown20"] = "HealingStreamTotem";
 	config["cooldown21"] = "Purge";
@@ -244,12 +246,15 @@ function OrlanHeal.Shaman.UpdateRaidBorder(orlanHeal)
 	end;
 end;
 
-OrlanHeal.Shaman.PlayerSpecificBuffCount = 1;
+OrlanHeal.Shaman.PlayerSpecificBuffCount = 2;
 
 function OrlanHeal.Shaman.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
 	if spellId == 61295 then -- Riptide
 		buffKind = 1;
+	elseif spellId == 974 -- Earth Shield
+		or spellId == 192106 then -- Lightning Shield
+		buffKind = 2;
 	end;
 	return buffKind;
 end;

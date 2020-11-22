@@ -11,15 +11,7 @@ OrlanHeal.Monk.AvailableSpells =
 	116849, -- Life Cocoon
 	115151, -- Renewing Mist
 	115178, -- Resuscitate
-	116694, -- Effuse
 	116841, -- Tiger's Lust
-	{
-		type = "macro",
-		caption = "300% " .. GetSpellInfo(116694), -- Effuse
-		macrotext = OrlanHeal:BuildCastSequenceMacro(116680, 116694),
-		key = "116680,116694",
-		group = GetSpellInfo(116680) -- Thunder Focus Tea
-	},
 	{
 		type = "macro",
 		caption = "No CD " .. GetSpellInfo(115151), -- Renewing Mist
@@ -220,12 +212,10 @@ OrlanHeal.Monk.CooldownOptions =
 function OrlanHeal.Monk.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 
-	config["1"] = 116694; -- Effuse
 	config["2"] = 116670; -- Vivify
 	config["3"] = 116849; -- Life Cocoon
 	config["shift2"] = 124682; -- Enveloping Mist
 	config["shift3"] = 124081; -- Zen Pulse
-	config["control1"] = "116680,116694"; -- Thunder Focus Tea + Effuse
 	config["control2"] = "116680,116670"; -- Thunder Focus Tea + Vivify
 	config["control3"] = 116841; -- Tiger's Lust
 	config["alt1"] = 115450; -- Detox
