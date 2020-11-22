@@ -20,7 +20,12 @@ OrlanHeal.Paladin.AvailableSpells =
 	59542, -- Gift of the Naaru
 	7328, -- Redemption
 	114165, -- Holy Prism
- 	223306 -- Bestow Faith
+	223306, -- Bestow Faith
+	{
+		type = "spell",
+		spell = 328620, -- Blessing of Summer
+		caption = GetSpellInfo(328278) -- Blessing of the Seasons
+	}
 };
 
 OrlanHeal.Paladin.CooldownOptions =
@@ -212,29 +217,34 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	Soulshape = {
 		SpellId = 310143, -- Soulshape
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
 	},
 	Flicker = {
 		MacroText = "/cast " .. GetSpellInfo(324701), -- Flicker
 		SpellId = 324701, -- Flicker
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
 	},
 	BlessingOfWinter = {
 		MacroText = "/cast " .. GetSpellInfo(328281), -- Blessing of Winter
 		SpellId = 328281, -- Blessing of Winter
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
 	},
 	BlessingOfSpring = {
 		MacroText = "/cast " .. GetSpellInfo(328282), -- Blessing of Spring
 		SpellId = 328282, -- Blessing of Spring
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
 	},
 	BlessingOfSpringSelf = {
 		Label = "S",
 		Caption = GetSpellInfo(328282) .. " (self)", -- Blessing of Spring
 		MacroText = OrlanHeal:BuildSelfCastMacro(328282), -- Blessing of Spring
 		SpellId = 328282, -- Blessing of Spring
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
 	},
 	BlessingOfSummer = {
 		SpellId = 328620, -- Blessing of Summer
@@ -243,19 +253,22 @@ OrlanHeal.Paladin.CooldownOptions =
 			328622, -- Blessing of Autumn
 			328281, -- Blessing of Winter
 			328282 -- Blessing of Spring
-		}
+		},
+		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
 	},
 	BlessingOfAutumn = {
 		MacroText = "/cast " .. GetSpellInfo(328622), -- Blessing of Autumn
 		SpellId = 328622, -- Blessing of Autumn
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
 	},
 	BlessingOfAutumnSelf = {
 		Label = "S",
 		Caption = GetSpellInfo(328622) .. " (self)", -- Blessing of Autumn
 		MacroText = OrlanHeal:BuildSelfCastMacro(328622), -- Blessing of Autumn
 		SpellId = 328622, -- Blessing of Autumn
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
 	}
 };
 
