@@ -1,6 +1,30 @@
 OrlanHeal.IgnoredBuffs = 
 {
+    [465] = true, -- Devotion Aura
+    [32223] = true, -- Crusader Aura
+    [72221] = true, -- Luck of the Draw
+    [139068] = true, -- Determination
+    [183435] = true, -- Retribution Aura
     [186406] = true, -- Sign of the Critter
     [225788] = true, -- Sign of the Emissary
+    [297412] = true, -- Devout Spirit
+    [311474] = true, -- Ace of Repose
+    [311475] = true, -- Two of Repose
+    [311476] = true, -- Three of Repose
+    [311477] = true, -- Four of Repose
+    [311478] = true, -- Five of Repose
+    [311479] = true, -- Six of Repose
+    [311480] = true, -- Seven of Repose
+    [311481] = true, -- Eight of Repose
+    [311483] = true, -- Ace of Voracity
+    [311484] = true, -- Two of Voracity
+    [311485] = true, -- Three of Voracity
+    [311486] = true, -- Four of Voracity
+    [311487] = true, -- Five of Voracity
+    [311488] = true, -- Six of Voracity
+    [311489] = true, -- Seven of Voracity
+    [311490] = true, -- Eight of Voracity
+    [317920] = true, -- Concentration Aura
+    [326396] = true, -- WoW's 16th Anniversary
 	[328136] = true -- Impressive Influence
 };
