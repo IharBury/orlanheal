@@ -446,6 +446,9 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 end;
 
 function OrlanHeal:IsSpellOverridesKnown(cooldown)
+	if cooldown.ForbidOverrides and not IsSpellKnown(cooldown.SpellId) then
+		return false;
+	end;
 	if not IsSpellKnownOrOverridesKnown(cooldown.SpellId) then
 		return false;
 	end;

@@ -200,15 +200,11 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 152262, -- Seraphim
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	AvengingCrusader =
-	{
-		SpellId = 216331, -- Avenging Crusader
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	BeaconOfVirtue =
 	{
 		SpellId = 200025, -- Beacon of Virtue
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		ForbidOverrides = true
 	},
 	DivineFavor =
 	{
@@ -298,7 +294,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown5"] = "HolyAvenger";
 	config["cooldown6"] = "AvengingWrath"; 
 	config["cooldown7"] = "Seraphim";
-	config["cooldown8"] = "AvengingCrusader";
+	config["cooldown8"] = "RuleOfLaw";
 	config["cooldown9"] = "DivineShield"; 
 	config["cooldown10"] = "DivineProtection"; 
 	config["cooldown11"] = "AuraMastery";
@@ -312,13 +308,12 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown19"] = "BlindingLight";
 	config["cooldown20"] = "TurnEvil";
 	config["cooldown21"] = "LayOnHands";
-	config["cooldown22"] = "RuleOfLaw";
+	config["cooldown22"] = "DivineFavor";
 	config["cooldown23"] = "HammerOfWrath";
 	config["cooldown24"] = "BeaconOfVirtue";
 	config["cooldown25"] = orlanHeal:GetRacialCooldown();
 	config["cooldown26"] = "Trinket0";
 	config["cooldown27"] = "Trinket1";
-	config["cooldown28"] = "DivineFavor";
 
 	return config;
 end;
