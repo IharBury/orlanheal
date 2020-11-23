@@ -290,14 +290,21 @@
 	[210315] = true, -- Nightmare Brambles
 	[215288] = true, -- Web of Pain
 
+	[320248] = true, -- Genetic Alteration
 	[320788] = true, -- Frozen Binds
+	[320790] = true, -- Frozen Binds
+	[321948] = true, -- Localized Explosive Contrivance
 	[322563] = true, -- Marked Prey
 	[322977] = true, -- Sinlight Visions
 	[323437] = true, -- Stigma of Pride
+	[323730] = true, -- Frozen Binds
 	[325552] = true, -- Cytotoxic Slash
+	[325725] = true, -- Cosmic Artifice
+	[329110] = true, -- Slime Injection
 
 	[333492] = true, -- Necrotic Ichor
 	[333493] = true, -- Necrotic Breath
+	[338853] = true, -- Rapid Growth
 	[339237] = true -- Sinlight Visions
 };
 
