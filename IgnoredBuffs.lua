@@ -26,6 +26,7 @@ OrlanHeal.IgnoredBuffs =
     [311489] = true, -- Seven of Voracity
     [311490] = true, -- Eight of Voracity
     [317920] = true, -- Concentration Aura
+    [324717] = true, -- Soul Remnant's Blessing
     [326396] = true, -- WoW's 16th Anniversary
 	[328136] = true -- Impressive Influence
 };

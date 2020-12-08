@@ -298,12 +298,15 @@
 	[322977] = true, -- Sinlight Visions
 	[323437] = true, -- Stigma of Pride
 	[323730] = true, -- Frozen Binds
+	[325361] = true, -- Glyph of Destruction
 	[325552] = true, -- Cytotoxic Slash
 	[325725] = true, -- Cosmic Artifice
+	[325908] = true, -- Shared Cognition
 	[329110] = true, -- Slime Injection
 
 	[333492] = true, -- Necrotic Ichor
 	[333493] = true, -- Necrotic Breath
+	[334765] = true, -- Soul Crusher
 	[338853] = true, -- Rapid Growth
 	[339237] = true -- Sinlight Visions
 };
@@ -337,7 +340,9 @@ OrlanHeal.VeryCriticalDebuffs =
 	[170211] = true, -- Berserker Rush
 	[204463] = true, -- Volatile Rot
 	[206651] = true, -- Darkening Soul
-	[209158] = true -- Blackening Soul
+	[209158] = true, -- Blackening Soul
+	[328897] = true, -- Exsanguinated
+	[329298] = true -- Gluttonous Miasma
 };
 
 OrlanHeal.GoodCriticalDebuffs =

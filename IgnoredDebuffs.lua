@@ -30,5 +30,10 @@
 	[72144] = true, -- Orange Blight Residue
 	[72145] = true, -- Green Blight Residue
 
-	[80354] = true -- Temporal Displacement
+	[80354] = true, -- Temporal Displacement
+
+	[296847] = true, -- Oppressive Aura
+
+	[331154] = true, -- Torment: Might of the Upper Reaches
+	[338906] = true -- The Jailer's Chains
 };
