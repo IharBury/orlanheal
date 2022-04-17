@@ -1,5 +1,7 @@
 ﻿OrlanHeal.CriticalDebuffs =
 {
+	[23370] = true, -- Slothful Corruption
+
 	[30884] = true, -- Nature's Guardian
 
 	[48743] = true, -- Death Pact
@@ -308,7 +310,18 @@
 	[333493] = true, -- Necrotic Breath
 	[334765] = true, -- Soul Crusher
 	[338853] = true, -- Rapid Growth
-	[339237] = true -- Sinlight Visions
+	[339237] = true, -- Sinlight Visions
+
+	[347283] = true, -- Predator's Howl
+
+	[350542] = true, -- Fragments of Destiny
+	[350828] = true, -- Deathlink
+
+	[353929] = true, -- Banshee's Bane
+	[353930] = true, -- Banshee's Bane
+	[354374] = true, -- Banshee's Bane
+	[357882] = true, -- Banshee's Bane
+	[365153] = true -- Dominating Will
 };
 
 OrlanHeal.VeryCriticalDebuffs =
