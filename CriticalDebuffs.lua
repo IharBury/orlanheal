@@ -355,7 +355,11 @@ OrlanHeal.VeryCriticalDebuffs =
 	[206651] = true, -- Darkening Soul
 	[209158] = true, -- Blackening Soul
 	[328897] = true, -- Exsanguinated
-	[329298] = true -- Gluttonous Miasma
+	[329298] = true, -- Gluttonous Miasma
+	[360687] = true, -- Runecarver's Deathtouch
+	[360698] = true, -- Runecarver's Deathtouch
+	[360700] = true, -- Runecarver's Deathtouch
+	[366893] = true -- Runecarver's Deathtouch
 };
 
 OrlanHeal.GoodCriticalDebuffs =
