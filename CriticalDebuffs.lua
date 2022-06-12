@@ -359,7 +359,9 @@ OrlanHeal.VeryCriticalDebuffs =
 	[360687] = true, -- Runecarver's Deathtouch
 	[360698] = true, -- Runecarver's Deathtouch
 	[360700] = true, -- Runecarver's Deathtouch
-	[366893] = true -- Runecarver's Deathtouch
+	[366893] = true, -- Runecarver's Deathtouch
+	[365294] = true, -- Crushing Prism
+	[365297] = true -- Crushing Prism
 };
 
 OrlanHeal.GoodCriticalDebuffs =
