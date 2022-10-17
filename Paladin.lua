@@ -25,7 +25,8 @@ OrlanHeal.Paladin.AvailableSpells =
 		type = "spell",
 		spell = 328620, -- Blessing of Summer
 		caption = GetSpellInfo(328278) -- Blessing of the Seasons
-	}
+	},
+	391054 -- Intercession
 };
 
 OrlanHeal.Paladin.CooldownOptions =
@@ -265,6 +266,14 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 328622, -- Blessing of Autumn
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
+	},
+	Rebuke = {
+		SpellId = 96231, -- Rebuke
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DivineToll = {
+		SpellId = 375576, -- Divine Toll
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -284,6 +293,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["alt3"] = 6940; -- Blessing of Sacrifice
 	config["controlalt1"] = 223306; -- Bestow Faith
 	config["controlalt2"] = 114165; -- Holy Prism
+	config["controlalt3"] = 391054; -- Intercession
 	config["altshift2"] = 156910; -- Beacon of Faith
 	config["altshift3"] = 7328; -- Redemption
 
@@ -314,6 +324,8 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown25"] = orlanHeal:GetRacialCooldown();
 	config["cooldown26"] = "Trinket0";
 	config["cooldown27"] = "Trinket1";
+	config["cooldown28"] = "Rebuke";
+	config["cooldown29"] = "DivineToll";
 
 	return config;
 end;
@@ -332,9 +344,14 @@ function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 	local holyPower = UnitPower("player", Enum.PowerType.HolyPower);
 	local maxHolyPower = UnitPowerMax("player", Enum.PowerType.HolyPower);
 
+	local holyPowerCost = 3;
+	if orlanHeal:PlayerHasBuff(384810) then -- Seal of Clarity
+		holyPowerCost = 2;
+	end;
+
 	if (holyPower == maxHolyPower) or orlanHeal:PlayerHasBuff(223819) then -- Divine Purpose
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha); -- white
-	elseif holyPower >= 3 then
+	elseif holyPower >= holyPowerCost then
 		if orlanHeal.Paladin:CanUseHolyPowerGenerator(20473) then -- Holy Shock
 			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.8, 0.5, orlanHeal.RaidBorderAlpha); -- orange
 		else
