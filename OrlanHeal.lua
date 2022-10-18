@@ -31,8 +31,6 @@ end;
 function OrlanHeal:Initialize(configName)
 	local orlanHeal = self;
 
-	local _, _, _, tocversion = GetBuildInfo();
-	self.IsCataclysm = tocversion >= 40000;
 	self.ConfigName = configName;
 	self.EventFrame = CreateFrame("Frame");
 
@@ -41,8 +39,7 @@ function OrlanHeal:Initialize(configName)
 	function self.EventFrame:HandleEvent(event, arg1)
 		if (event == "ADDON_LOADED") and (arg1 == "OrlanHeal") then
 			orlanHeal:HandleLoaded();
-		elseif (event == "RAID_ROSTER_UPDATE") or
-			(event == "PARTY_MEMBERS_CHANGED") or
+		elseif (event == "GROUP_ROSTER_UPDATE") or
 			(event == "ZONE_CHANGED_NEW_AREA") or
 			(event == "PLAYER_REGEN_ENABLED") or
 			(event == "PLAYER_ENTERING_BATTLEGROUND") or
@@ -121,19 +118,10 @@ function OrlanHeal:Initialize(configName)
 	self.VisibleGroupCount = 9;
 	self.IsInStartUpMode = true;
 
-	if self.IsCataclysm then
-		self.PlayerSpecificBuffCount = 1;
-		self.PlayerOtherBuffCount = 4;
-	else
-		self.PlayerSpecificBuffCount = 3;
-		self.PlayerOtherBuffCount = 2;
-	end;
+	self.PlayerSpecificBuffCount = 3;
+	self.PlayerOtherBuffCount = 2;
 
-	if self.IsCataclysm then
-		self.CooldownCount = 4;
-	else
-		self.CooldownCount = 2;
-	end;
+	self.CooldownCount = 3;
 	self.CooldownSize = 32;
 
 	self.RaidRoles = {};
@@ -809,7 +797,7 @@ function OrlanHeal:Initialize(configName)
 		[93706] = true, -- Pity Heal
 	};
 
-	self.IgnoredDebuffs = 
+	self.IgnoredDebuffs =
 	{
 		[58539] = true, -- Тело наблюдателя
 		[69127] = true, -- Холод Трона
@@ -927,53 +915,30 @@ function OrlanHeal:Initialize(configName)
 		[70126] = true -- Frost Beacon
 	};
 
-	if (self.IsCataclysm) then
-		self.AvailableSpells =
-		{
-			635, -- Holy Light
-			19750, -- Flash of Light
-			1022, -- Hand of Protection
-			4987, -- Cleanse
-			20473, -- Holy Shock
-			633, -- Lay on Hands
-			85673, -- Word of Glory
-			1038, -- Hand of Salvation
-			82326, -- Divine Light
-			53563, -- Beacon of Light
-			6940, -- Hand of Sacrifice
-			1044, -- Hand of Freedom
-			59542, -- Дар наауру
-			20217, -- Blessing of Kings
-			7328, -- Redemption
-			31789, -- Righteous Defense
-			19740 -- Blessing of Might
-		};
-	else
-		self.AvailableSpells = 
-		{
-			48785, -- Вспышка Света
-			48782, -- Свет Небес
-			10278, -- Длань защиты
-			4987, -- Очищение
-			48825, -- Шок небес
-			53601, -- Священный щит
-			53563, -- Частица Света
-			1038, -- Длань спасения
-			6940, -- Длань жертвенности
-			48788, -- Возложение рук
-			19752, -- Божественное вмешательство
-			1044, -- Длань свободы
-			48950, -- Искупление
-			59542, -- Дар наауру
-			25898, -- Великое благословение королей
-			48938, -- Великое благословение мудрости
-			48934, -- Великое благословение могущества
-			20217, -- Благословение королей
-			48936, -- Благословение мудрости
-			48932, -- Благословение могущества
-			31789 -- Праведная защита
-		};
-	end;
+	self.AvailableSpells =
+	{
+		48785, -- Вспышка Света
+		48782, -- Свет Небес
+		10278, -- Длань защиты
+		4987, -- Очищение
+		48825, -- Шок небес
+		53601, -- Священный щит
+		53563, -- Частица Света
+		1038, -- Длань спасения
+		6940, -- Длань жертвенности
+		48788, -- Возложение рук
+		19752, -- Божественное вмешательство
+		1044, -- Длань свободы
+		48950, -- Искупление
+		59542, -- Дар наауру
+		25898, -- Великое благословение королей
+		48938, -- Великое благословение мудрости
+		48934, -- Великое благословение могущества
+		20217, -- Благословение королей
+		48936, -- Благословение мудрости
+		48932, -- Благословение могущества
+		31789 -- Праведная защита
+	};
 end;
 
 function OrlanHeal:CreateSetupWindow()
@@ -985,7 +950,7 @@ function OrlanHeal:CreateSetupWindow()
 
 	local background = setupWindow:CreateTexture();
 	background:SetAllPoints();
-	background:SetTexture(0, 0, 0, 0.6);
+	background:SetColorTexture(0, 0, 0, 0.6);
 
 	setupWindow:SetHeight(340);
 	setupWindow:SetWidth(450);
@@ -1089,33 +1054,18 @@ function OrlanHeal:HandleSpellSelect(spellWindow, value)
 end;
 
 function OrlanHeal:LoadSetup()
-	if (self.IsCataclysm) then
-		self.Config["1"] = self.Config["1"] or 635; -- Holy Light
-		self.Config["2"] = self.Config["2"] or 19750; -- Flash of Light
-		self.Config["3"] = self.Config["3"] or 1022; -- Hand of Protection
-		self.Config["shift1"] = self.Config["shift1"] or "target";
-		self.Config["shift2"] = self.Config["shift2"] or 53563; -- Beacon of Light
-		self.Config["shift3"] = self.Config["shift3"] or 1038; -- Hand of Salvation
-		self.Config["control1"] = self.Config["control1"] or 82326; -- Divine Light
-		self.Config["control2"] = self.Config["control2"] or 85673; -- Word of Glory
-		self.Config["control3"] = self.Config["control3"] or 6940; -- Hand of Sacrifice
-		self.Config["alt1"] = self.Config["alt1"] or 4987; -- Cleanse
-		self.Config["alt2"] = self.Config["alt2"] or 20473; -- Holy Shock
-		self.Config["alt3"] = self.Config["alt3"] or 633; -- Lay on Hands
-	else
-		self.Config["1"] = self.Config["1"] or 48785; -- Вспышка Света
-		self.Config["2"] = self.Config["2"] or 48782; -- Свет Небес
-		self.Config["3"] = self.Config["3"] or 10278; -- Длань защиты
-		self.Config["shift1"] = self.Config["shift1"] or "target";
-		self.Config["shift2"] = self.Config["shift2"] or 53563; -- Частица Света
-		self.Config["shift3"] = self.Config["shift3"] or 1038; -- Длань спасения
-		self.Config["control1"] = self.Config["control1"] or 6940; -- Длань жертвенности
-		self.Config["control2"] = self.Config["control2"] or 48788; -- Возложение рук
-		self.Config["control3"] = self.Config["control3"] or 19752; -- Божественное вмешательство
-		self.Config["alt1"] = self.Config["alt1"] or 4987; -- Очищение
-		self.Config["alt2"] = self.Config["alt2"] or 48825; -- Шок небес
-		self.Config["alt3"] = self.Config["alt3"] or 53601; -- Священный щит
-	end
+	self.Config["1"] = self.Config["1"] or 48785; -- Вспышка Света
+	self.Config["2"] = self.Config["2"] or 48782; -- Свет Небес
+	self.Config["3"] = self.Config["3"] or 10278; -- Длань защиты
+	self.Config["shift1"] = self.Config["shift1"] or "target";
+	self.Config["shift2"] = self.Config["shift2"] or 53563; -- Частица Света
+	self.Config["shift3"] = self.Config["shift3"] or 1038; -- Длань спасения
+	self.Config["control1"] = self.Config["control1"] or 6940; -- Длань жертвенности
+	self.Config["control2"] = self.Config["control2"] or 48788; -- Возложение рук
+	self.Config["control3"] = self.Config["control3"] or 19752; -- Божественное вмешательство
+	self.Config["alt1"] = self.Config["alt1"] or 4987; -- Очищение
+	self.Config["alt2"] = self.Config["alt2"] or 48825; -- Шок небес
+	self.Config["alt3"] = self.Config["alt3"] or 53601; -- Священный щит
 end;
 
 function OrlanHeal:Setup()
@@ -1166,7 +1116,6 @@ function OrlanHeal:UpdateSpells()
 end;
 
 function OrlanHeal:CreateRaidWindow()
-	local orlanHeal = self;
 	local raidWindow = CreateFrame("Frame", self.RaidWindowName, UIParent);
 
 	function raidWindow:HandleDragStop()
@@ -1176,7 +1125,7 @@ function OrlanHeal:CreateRaidWindow()
 	local background = raidWindow:CreateTexture();
 	background:SetPoint("TOPLEFT", 3, -3);
 	background:SetPoint("BOTTOMRIGHT", -3, 3);
-	background:SetTexture(0, 0, 0, self.RaidAlpha);
+	background:SetColorTexture(0, 0, 0, self.RaidAlpha);
 
 	raidWindow:SetPoint("CENTER", 0, 0);
 	raidWindow:SetFrameStrata(self.RaidWindowStrata);
@@ -1243,7 +1192,7 @@ function OrlanHeal:CreateGroupCountSwitch(raidWindow, size, index)
 
 	local normalTexture = button:CreateTexture();
 	normalTexture:SetAllPoints();
-	normalTexture:SetTexture(0, 0, 0, 1);
+	normalTexture:SetColorTexture(0, 0, 0, 1);
 	button:SetNormalTexture(normalTexture);
 
 	local orlanHeal = self;
@@ -1273,7 +1222,7 @@ function OrlanHeal:CreateVisibleGroupCountSwitch(raidWindow, size, index)
 
 	local normalTexture = button:CreateTexture();
 	normalTexture:SetAllPoints();
-	normalTexture:SetTexture(0, 0, 0, 1);
+	normalTexture:SetColorTexture(0, 0, 0, 1);
 	button:SetNormalTexture(normalTexture);
 
 	local orlanHeal = self;
@@ -1328,10 +1277,10 @@ function OrlanHeal:CreateBorder(window, thickness, offset)
 end;
 
 function OrlanHeal:SetBorderColor(window, r, g, b, a)
-	window.TopBorder:SetTexture(r, g, b, a);
-	window.BottomBorder:SetTexture(r, g, b, a);
-	window.LeftBorder:SetTexture(r, g, b, a);
-	window.RightBorder:SetTexture(r, g, b, a);
+	window.TopBorder:SetColorTexture(r, g, b, a);
+	window.BottomBorder:SetColorTexture(r, g, b, a);
+	window.LeftBorder:SetColorTexture(r, g, b, a);
+	window.RightBorder:SetColorTexture(r, g, b, a);
 end;
 
 function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
@@ -1339,7 +1288,7 @@ function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
 
 	local background = groupWindow:CreateTexture();
 	background:SetAllPoints();
-	background:SetTexture(0, 0, 0, self.GroupAlpha);
+	background:SetColorTexture(0, 0, 0, self.GroupAlpha);
 
 	groupWindow:SetHeight(self.GroupHeight);
 	groupWindow:SetWidth(self.GroupWidth);
@@ -1487,7 +1436,7 @@ function OrlanHeal:CreateBlankCanvas(parent)
 	parent.Canvas = CreateFrame("Frame", nil, parent);
 	parent.Canvas:SetAllPoints();
 	parent.Canvas.BackgroundTexture = parent.Canvas:CreateTexture(nil, "BACKGROUND");
-	parent.Canvas.BackgroundTexture:SetTexture(0.2, 0.2, 0.2, 1);
+	parent.Canvas.BackgroundTexture:SetColorTexture(0.2, 0.2, 0.2, 1);
 	parent.Canvas.BackgroundTexture:SetAllPoints();
 end;
 
@@ -1508,101 +1457,44 @@ function OrlanHeal:CreateNameBar(parent, width)
 	parent.NameBar:SetTextHeight(self.NameFontHeight);
 end;
 
-function OrlanHeal:CreateStatusBar(parent, backgroundColor, currentColor, incomingColor, yourIncomingColor, overincomingColor, overincomingWidth)
-	incomingColor = incomingColor or { r = 0, g = 0, b = 0 };
-	yourIncomingColor = yourIncomingColor or { r = 0, g = 0, b = 0 };
-	overincomingColor = overincomingColor or { r = 0, g = 0, b = 0 };
-	overincomingWidth = overincomingWidth or 1;
-
+function OrlanHeal:CreateStatusBar(parent, backgroundColor, currentColor)
 	local bar = CreateFrame("Frame", nil, parent);
 
 	bar.Background = bar:CreateTexture(nil, "BACKGROUND");
 	bar.Background:SetAllPoints();
-	bar.Background:SetTexture(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1);
+	bar.Background:SetColorTexture(backgroundColor.r, backgroundColor.g, backgroundColor.b, 1);
 
 	bar.Current = bar:CreateTexture();
 	bar.Current:SetPoint("TOPLEFT", 0, 0);
 	bar.Current:SetPoint("BOTTOMLEFT", 0, 0);
 	self:SetStatusBarCurrentColor(bar, currentColor);
 
-	bar.Incoming = bar:CreateTexture();
-	bar.Incoming:SetTexture(incomingColor.r, incomingColor.g, incomingColor.b, 1);
-
-	bar.YourIncoming = bar:CreateTexture();
-	bar.YourIncoming:SetTexture(yourIncomingColor.r, yourIncomingColor.g, yourIncomingColor.b, 1);
-
-	bar.Overincoming = bar:CreateTexture();
-	bar.Overincoming:SetPoint("TOPRIGHT", overincomingWidth, 0);
-	bar.Overincoming:SetPoint("BOTTOMRIGHT", overincomingWidth, 0);
-	bar.Overincoming:SetWidth(overincomingWidth);
-	bar.Overincoming:SetTexture(overincomingColor.r, overincomingColor.g, overincomingColor.b, 1);
-
 	return bar;
 end;
 
 function OrlanHeal:SetStatusBarCurrentColor(bar, currentColor)
-	bar.Current:SetTexture(currentColor.r, currentColor.g, currentColor.b, 1);
+	bar.Current:SetColorTexture(currentColor.r, currentColor.g, currentColor.b, 1);
 end;
 
-function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue, incomingValue, yourIncomingValue)
+function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue)
 	local width = bar:GetWidth();
 
 	currentValue = currentValue or 0;
 	maxValue = maxValue or 1;
-	incomingValue = incomingValue or 0;
-	yourIncomingValue = yourIncomingValue or 0;
 	if (currentValue > maxValue) then
 		currentValue = maxValue;
 	end;
-	local isOverincoming = false;
-	if (currentValue + incomingValue > maxValue) then
-		incomingValue = maxValue - currentValue;
-		isOverincoming = true;
-	end;
-	if yourIncomingValue > incomingValue then
-		yourIncomingValue = incomingValue;
-	end;
 
 	local currentPosition = currentValue * width / maxValue;
-	local incomingPosition = (currentValue + incomingValue - yourIncomingValue) * width / maxValue;
-	local yourIncomingPosition = (currentValue + incomingValue) * width / maxValue;
 	
 	bar.Current:SetWidth(currentPosition);
-
-	bar.Incoming:SetPoint("TOPLEFT", currentPosition, 0);
-	bar.Incoming:SetPoint("BOTTOMLEFT", currentPosition, 0);
-	bar.Incoming:SetWidth(incomingPosition - currentPosition);
-	if (incomingPosition - currentPosition == 0) then
-		bar.Incoming:SetVertexColor(1, 1, 1, 0);
-	else
-		bar.Incoming:SetVertexColor(1, 1, 1, 1);
-	end;
-	
-	bar.YourIncoming:SetPoint("TOPLEFT", incomingPosition, 0);
-	bar.YourIncoming:SetPoint("BOTTOMLEFT", incomingPosition, 0);
-	bar.YourIncoming:SetWidth(yourIncomingPosition - incomingPosition);
-	if (yourIncomingPosition - incomingPosition == 0) then
-		bar.YourIncoming:SetVertexColor(1, 1, 1, 0);
-	else
-		bar.YourIncoming:SetVertexColor(1, 1, 1, 1);
-	end;
-
-	if isOverincoming then
-		bar.Overincoming:SetVertexColor(1, 1, 1, 1);
-	else
-		bar.Overincoming:SetVertexColor(1, 1, 1, 0);
-	end;
 end;
 
 function OrlanHeal:CreateHealthBar(parent, width)
 	parent.HealthBar = self:CreateStatusBar(
 		parent,
 		{ r = 0.4, g = 0.4, b = 0.4 },
-		{ r = 0.2, g = 0.75, b = 0.2 },
-		{ r = 0.75, g = 0.5, b = 0.2 },
-		{ r = 0.75, g = 0.75, b = 0.2 },
-		{ r = 1, g = 0.2, b = 0.2 },
-		3);
+		{ r = 0.2, g = 0.75, b = 0.2 });
 	parent.HealthBar:SetHeight(self.HealthHeight);
 	parent.HealthBar:SetWidth(width);
 	parent.HealthBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
@@ -1688,8 +1580,7 @@ function OrlanHeal:HandleLoaded()
 	self:UpdateVisibleGroupCount();
 	self:Show();
 
-	self.EventFrame:RegisterEvent("RAID_ROSTER_UPDATE");
-	self.EventFrame:RegisterEvent("PARTY_MEMBERS_CHANGED");
+	self.EventFrame:RegisterEvent("GROUP_ROSTER_UPDATE");
 	self.EventFrame:RegisterEvent("ZONE_CHANGED_NEW_AREA");
 	self.EventFrame:RegisterEvent("PLAYER_REGEN_ENABLED");
 	self.EventFrame:RegisterEvent("PLAYER_ENTERING_BATTLEGROUND");
@@ -1765,9 +1656,9 @@ function OrlanHeal:UpdateGroupCountSwitches()
 	for size = 5, 40, 5 do
 		local groupCountTexture = self.RaidWindow.GroupCountSwitches[size]:GetNormalTexture();
 		if self.GroupCount == size / 5 then
-			groupCountTexture:SetTexture(0.5, 1, 0.5, 1);
+			groupCountTexture:SetColorTexture(0.5, 1, 0.5, 1);
 		else
-			groupCountTexture:SetTexture(0, 0, 0, 1);
+			groupCountTexture:SetColorTexture(0, 0, 0, 1);
 		end;
 
 		if size > self.GroupCount * 5 then
@@ -1777,9 +1668,9 @@ function OrlanHeal:UpdateGroupCountSwitches()
 
 			local visibleGroupCountTexture = self.RaidWindow.VisibleGroupCountSwitches[size]:GetNormalTexture();
 			if self.VisibleGroupCount == size / 5 then
-				visibleGroupCountTexture:SetTexture(1, 0.5, 0.5, 1);
+				visibleGroupCountTexture:SetColorTexture(1, 0.5, 0.5, 1);
 			else
-				visibleGroupCountTexture:SetTexture(0, 0, 0, 1);
+				visibleGroupCountTexture:SetColorTexture(0, 0, 0, 1);
 			end;
 		end;
 	end;
@@ -1891,22 +1782,25 @@ function OrlanHeal:UpdateStatus()
 end;
 
 function OrlanHeal:UpdateCooldowns()
-	self:UpdatePlayerBuffCooldown(self.RaidWindow.Cooldowns[0], 53655); -- Judgements of the Pure
+	self:UpdatePlayerBuffCooldown(self.RaidWindow.Cooldowns[0], 54153); -- Judgements of the Pure
 	self:UpdateRaidBuffCooldown(self.RaidWindow.Cooldowns[1], 53563); -- Beacon of Light
-
-	if self.IsCataclysm then
-		self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[2], 82327); -- Holy Radiance
-		self:UpdateAbilityCooldown(self.RaidWindow.Cooldowns[3], 85222); -- Light of Dawn
-	end;
+	self:UpdateRaidBuffCooldown(self.RaidWindow.Cooldowns[2], 53601); -- Sacred Shield
 end;
 
 function OrlanHeal:UpdatePlayerBuffCooldown(cooldown, spellId)
-	local name, _, icon = GetSpellInfo(spellId);
+	local _, _, icon = GetSpellInfo(spellId);
 	cooldown.Background:SetTexture(icon);
 	cooldown:SetReverse(true);
 
-	local _, _, _, _, _, duration, expirationTime = UnitBuff("player", name);
-	self:UpdateCooldown(cooldown, duration, expirationTime);
+	local i = 1;
+	while true do
+		local _, _, _, _, duration, expirationTime, _, _, _, buffId = UnitBuff("player", i);
+		if (not buffId) or (buffId == spellId) then
+			self:UpdateCooldown(cooldown, duration, expirationTime);
+			return;
+		end;
+		i = i + 1
+	end;
 end;
 
 function OrlanHeal:UpdateAbilityCooldown(cooldown, spellId)
@@ -1973,7 +1867,7 @@ end;
 function OrlanHeal:GetPlayerCastUnitBuffCooldown(unit, spellId)
 	local i = 1;
 	while true do
-		local _, _, _, _, _, duration, expirationTime, _, _, _, buffId = UnitBuff(unit, i, "PLAYER");
+		local _, _, _, _, duration, expirationTime, _, _, _, buffId = UnitBuff(unit, i, "PLAYER");
 		if not buffId then
 			return;
 		end;
@@ -2011,14 +1905,7 @@ function OrlanHeal:UpdatePlayerRoleIcon(player)
 		local isTank = false;
 		local isHeal = false;
 		local isDPS = false;
-		if self.IsCataclysm then
-			role = UnitGroupRolesAssigned(unit);
-			isTank = role == "TANK";
-			isHeal = role == "HEALER";
-			isDPS = role == "DAMAGER";
-		else
-			isTank, isHeal, isDPS = UnitGroupRolesAssigned(unit);
-		end;
+		isTank, isHeal, isDPS = UnitGroupRolesAssigned(unit);
 
 		if isTank then
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
@@ -2030,7 +1917,7 @@ function OrlanHeal:UpdatePlayerRoleIcon(player)
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
 			player.Canvas.Role:SetTexCoord(20/64, 39/64, 22/64, 41/64);
 		else
-			player.Canvas.Role:SetTexture(0, 0, 0, 0);
+			player.Canvas.Role:SetColorTexture(0, 0, 0, 0);
 		end;
 	end;
 end;
@@ -2045,7 +1932,7 @@ function OrlanHeal:UpdateTargetIcon(canvas, unit)
 		local bottom = top + 1 / 4;
 		canvas.Target:SetTexCoord(left, right, top, bottom);
 	else
-		canvas.Target:SetTexture(0, 0, 0, 0);
+		canvas.Target:SetColorTexture(0, 0, 0, 0);
 	end;
 end;
 
@@ -2061,27 +1948,8 @@ function OrlanHeal:IsSpellReady(spellId)
 end;
 
 function OrlanHeal:UpdateRaidBorder()
-	if self.IsCataclysm
-			and UnitBuff("player", GetSpellInfo(54149)) then -- Infusion of Light
-		self:SetBorderColor(self.RaidWindow, 0, 0, 1, self.RaidBorderAlpha);
-	elseif self.IsCataclysm 
-			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 3)
-			and self:IsSpellReady(85673) then -- Word of Glory
-		self:SetBorderColor(self.RaidWindow, 0, 1, 0, self.RaidBorderAlpha);
-	elseif self.IsCataclysm
-			and UnitBuff("player", GetSpellInfo(88819)) -- Daybreak
-			and self:IsSpellReady(20473) then -- Holy Shock
-		self:SetBorderColor(self.RaidWindow, 1, 1, 1, self.RaidBorderAlpha);
-	elseif self:IsSpellReady(20473) then -- Holy Shock
+	if self:IsSpellReady(20473) then -- Holy Shock
 		self:SetBorderColor(self.RaidWindow, 1, 1, 0, self.RaidBorderAlpha);
-	elseif self.IsCataclysm 
-			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 2)
-			and self:IsSpellReady(85673) then -- Word of Glory
-		self:SetBorderColor(self.RaidWindow, 1, 0.5, 0, self.RaidBorderAlpha);
-	elseif self.IsCataclysm 
-			and (UnitPower("player", SPELL_POWER_HOLY_POWER) == 1)
-			and self:IsSpellReady(85673) then -- Word of Glory
-		self:SetBorderColor(self.RaidWindow, 1, 0, 0, self.RaidBorderAlpha);
 	else
 		self:SetBorderColor(self.RaidWindow, 0, 0, 0, 0);
 	end;
@@ -2107,11 +1975,11 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 	        end;
 
 		if UnitInBattleground("player") ~= nil then
-			if (UnitIsConnected(unit) ~= 1) or
-					(UnitIsCorpse(unit) == 1) or 
+			if (not UnitIsConnected(unit)) or
+					UnitIsCorpse(unit) or
 					(UnitIsDeadOrGhost(unit) == 1) or
-					(IsSpellInRange(GetSpellInfo(53563), unit) ~= 1) or -- Частица Света
-					(UnitCanAssist("player", unit) ~= 1) then
+					(not IsSpellInRange(GetSpellInfo(53563), unit)) or -- Частица Света
+					(not UnitCanAssist("player", unit)) then
 		                window.Canvas:Hide();
         		        return;
 			end;
@@ -2136,7 +2004,7 @@ function OrlanHeal:UpdateUnitBorder(canvas, unit)
 	local hasCriticalDebuff = false;
 
 	while true do
-		local _, _, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
+		local _, _, _, _, _, _, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
 		if spellId == nil then break; end;
 
 		if self.CriticalDebuffs[spellId] then
@@ -2162,72 +2030,61 @@ function OrlanHeal:UpdateUnitBorder(canvas, unit)
 end;
 
 function OrlanHeal:UpdateBackground(background, unit)
-	if UnitIsConnected(unit) ~= 1 then
-		background:SetTexture(0, 0, 0, 1);
-	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
-		background:SetTexture(0.1, 0.1, 0.1, 1);
+	if not UnitIsConnected(unit) then
+		background:SetColorTexture(0, 0, 0, 1);
+	elseif UnitIsCorpse(unit) or UnitIsDeadOrGhost(unit) then
+		background:SetColorTexture(0.1, 0.1, 0.1, 1);
 	else
 		local health = UnitHealth(unit);
 		local maxHealth = UnitHealthMax(unit);
 
 		if health / maxHealth < 0.5 then
-			background:SetTexture(0.6, 0.2, 0.2, 1);
+			background:SetColorTexture(0.6, 0.2, 0.2, 1);
 		elseif health / maxHealth < 0.75 then
-			background:SetTexture(0.6, 0.4, 0.2, 1);
+			background:SetColorTexture(0.6, 0.4, 0.2, 1);
 		elseif health / maxHealth < 0.9 then
-			background:SetTexture(0.4, 0.4, 0.2, 1);
+			background:SetColorTexture(0.4, 0.4, 0.2, 1);
 		else
-			background:SetTexture(0.2, 0.2, 0.2, 1);
+			background:SetColorTexture(0.2, 0.2, 0.2, 1);
 		end;
 	end;
 end;
 
 function OrlanHeal:IsInRedRangeOrCloser(unit)
-	return (IsSpellInRange(GetSpellInfo(53563), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(53563), unit) == 1); -- Частица Света
+	return (not IsSpellInRange(GetSpellInfo(53563), "player")) or IsSpellInRange(GetSpellInfo(53563), unit); -- Частица Света
 end;
 
 function OrlanHeal:IsInOrangeRangeOrCloser(unit)
 	local spellId = 48785; -- Вспышка Света
-	if (self.IsCataclysm) then
-		spellId = 635; -- Holy Light
-	end;
-
-	return (IsSpellInRange(GetSpellInfo(spellId), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(spellId), unit) == 1);
+	return (not IsSpellInRange(GetSpellInfo(spellId), "player")) or IsSpellInRange(GetSpellInfo(spellId), unit);
 end;
 
 function OrlanHeal:IsInYellowRangeOrCloser(unit)
-	return (IsSpellInRange(GetSpellInfo(1022), "player") ~= 1) or (IsSpellInRange(GetSpellInfo(1022), unit) == 1); -- Hand of Protection
+	return (not IsSpellInRange(GetSpellInfo(1022), "player")) or IsSpellInRange(GetSpellInfo(1022), unit); -- Hand of Protection
 end;
 
 function OrlanHeal:UpdateRange(rangeBar, unit)
-	if UnitIsConnected(unit) ~= 1 then
-		rangeBar:SetTexture(0, 0, 0, 1);
-	elseif (UnitIsCorpse(unit) == 1) or (UnitIsDeadOrGhost(unit) == 1) then
-		rangeBar:SetTexture(0.4, 0.4, 0.4, 1);
-	elseif (not self:IsInRedRangeOrCloser(unit)) or (UnitCanAssist("player", unit) ~= 1) then
-		rangeBar:SetTexture(0.2, 0.2, 0.75, 1);
+	if not UnitIsConnected(unit) then
+		rangeBar:SetColorTexture(0, 0, 0, 1);
+	elseif UnitIsCorpse(unit) or UnitIsDeadOrGhost(unit) then
+		rangeBar:SetColorTexture(0.4, 0.4, 0.4, 1);
+	elseif (not self:IsInRedRangeOrCloser(unit)) or (not UnitCanAssist("player", unit)) then
+		rangeBar:SetColorTexture(0.2, 0.2, 0.75, 1);
 	elseif not self:IsInOrangeRangeOrCloser(unit) then
-		rangeBar:SetTexture(0.75, 0.2, 0.2, 1);
+		rangeBar:SetColorTexture(0.75, 0.2, 0.2, 1);
 	elseif not self:IsInYellowRangeOrCloser(unit) then -- Длань Спасения
-		rangeBar:SetTexture(0.75, 0.45, 0.2, 1);
-	elseif CheckInteractDistance(unit, 2) ~= 1 then
-		rangeBar:SetTexture(0.75, 0.75, 0.2, 1);
+		rangeBar:SetColorTexture(0.75, 0.45, 0.2, 1);
+	elseif not CheckInteractDistance(unit, 2) then
+		rangeBar:SetColorTexture(0.75, 0.75, 0.2, 1);
 	else
-		rangeBar:SetTexture(0.2, 0.75, 0.2, 1);
+		rangeBar:SetColorTexture(0.2, 0.75, 0.2, 1);
 	end;
 end;
 
 function OrlanHeal:UpdateHealth(healthBar, unit)
-	local incoming = 0;
-	local yourIncoming = 0;
-	if self.IsCataclysm then
-		incoming = UnitGetIncomingHeals(unit);
-		yourIncoming = UnitGetIncomingHeals(unit, "player");
-	end;
+	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit));
 
-	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit), incoming, yourIncoming);
-
-	if UnitIsConnected(unit) ~= 1 then
+	if not UnitIsConnected(unit) then
 		self:SetStatusBarCurrentColor(healthBar, { r = 0, g = 0, b = 0 });
 	else
 		self:SetStatusBarCurrentColor(healthBar, { r = 0.2, g = 0.75, b = 0.2 });
@@ -2235,9 +2092,9 @@ function OrlanHeal:UpdateHealth(healthBar, unit)
 end;
 
 function OrlanHeal:UpdateMana(manaBar, unit)
-	if (UnitPowerType(unit) == SPELL_POWER_MANA) and (UnitIsConnected(unit) == 1) then
+	if (UnitPowerType(unit) == Enum.PowerType.Mana) and UnitIsConnected(unit) then
 		manaBar:Show();
-		self:UpdateStatusBar(manaBar, UnitPower(unit, SPELL_POWER_MANA), UnitPowerMax(unit, SPELL_POWER_MANA));
+		self:UpdateStatusBar(manaBar, UnitPower(unit, Enum.PowerType.Mana), UnitPowerMax(unit, Enum.PowerType.Mana));
 	else
 		manaBar:Hide();
 	end;
@@ -2261,7 +2118,7 @@ function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 	end;
 
 	nameBar:SetText(text);
-	local _, class = UnitClassBase(unit);
+	local class = UnitClassBase(unit);
 	local classColor = RAID_CLASS_COLORS[class];
 	if classColor == nil then
 		classColor = { r = 0.4, g = 0.4, b = 0.4 };
@@ -2274,25 +2131,20 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	local goodBuffs = {};
 	local buffIndex = 1;
 	while true do
-		local name, _, icon, count, _, duration, expires, caster, _, shouldConsolidate, spellId = 
-			UnitAura(unit, buffIndex, "HELPFUL");
+		local name, icon, count, _, duration, expires, caster, _, _, spellId = UnitAura(unit, buffIndex, "HELPFUL");
 		if name == nil then break; end;
 
 		local buffKind;
-		if spellId == 53601 and not self.IsCataclysm then -- Священный щит
+		if spellId == 53601 then -- Священный щит
 			buffKind = 1;
-		elseif (spellId == 66922) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) and not self.IsCataclysm then -- своя Вспышка Света
+		elseif (spellId == 66922) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- своя Вспышка Света
 			buffKind = 2;
-		elseif (spellId == 53563) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- своя Частица Света
+		elseif ((spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player")) or -- своя Частица Света
 			(spellId == 1022) or -- Длань защиты
 			(spellId == 5599) or -- Длань защиты
 			(spellId == 10278) or -- Длань защиты
 			(spellId == 1038) then -- Длань спасения
-			if self.IsCataclysm then
-				buffKind = 1;
-			else
-				buffKind = 3;
-			end;
+			buffKind = 3;
 		elseif (self.SavingAbilities[spellId]) then
 			buffKind = -1;
 		elseif (self.ShieldAbilities[spellId]) then
@@ -2318,7 +2170,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 
 	if canvas.SpecificBuffs ~= nil then
 		for buffIndex = 0, 4 do
-			if canvas.SpecificBuffs[buffIndex] ~= nill then
+			if canvas.SpecificBuffs[buffIndex] ~= nil then
 				self:ShowBuff(canvas.SpecificBuffs[buffIndex], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, buffIndex + 1));
 			end;
 		end;
@@ -2326,7 +2178,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 
 	if canvas.OtherBuffs ~= nil then
 		for buffIndex = 0, 4 do
-			if canvas.OtherBuffs[buffIndex] ~= nill then
+			if canvas.OtherBuffs[buffIndex] ~= nil then
 				self:ShowBuff(canvas.OtherBuffs[buffIndex], self:GetLastUsualBuff(goodBuffs, goodBuffCount));
 			end;
 		end;
@@ -2337,9 +2189,9 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 	local goodBuffCount = 0;
 	local goodBuffs = {};
 	local buffIndex = 1;
-	local canAssist = UnitCanAssist("player", unit) == 1;
+	local canAssist = UnitCanAssist("player", unit);
 	while true do
-		local name, _, icon, count, dispelType, duration, expires, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
+		local name, icon, count, dispelType, duration, expires, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
 		if name == nil then break; end;
 
 		local buffKind;
@@ -2369,28 +2221,28 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 	end;
 
 	if canvas.SpecificDebuffs ~= nil then
-		if canvas.SpecificDebuffs[0] ~= nill then
+		if canvas.SpecificDebuffs[0] ~= nil then
 			self:ShowBuff(canvas.SpecificDebuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 1));
 		end;
 
-		if canvas.SpecificDebuffs[1] ~= nill then
+		if canvas.SpecificDebuffs[1] ~= nil then
 			self:ShowBuff(canvas.SpecificDebuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 1));
 		end;
 
-		if canvas.SpecificDebuffs[2] ~= nill then
+		if canvas.SpecificDebuffs[2] ~= nil then
 			self:ShowBuff(canvas.SpecificDebuffs[2], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, 2));
 		end;
 	end;
 
-	if canvas.OtherDebuffs[2] ~= nill then
+	if canvas.OtherDebuffs[2] ~= nil then
 		self:ShowBuff(canvas.OtherDebuffs[2], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
 	end;
 
-	if canvas.OtherDebuffs[1] ~= nill then
+	if canvas.OtherDebuffs[1] ~= nil then
 		self:ShowBuff(canvas.OtherDebuffs[1], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
 	end;
 
-	if canvas.OtherDebuffs[0] ~= nill then
+	if canvas.OtherDebuffs[0] ~= nil then
 		self:ShowBuff(canvas.OtherDebuffs[0], self:GetLastBuffOfKind(goodBuffs, goodBuffCount, nil));
 	end;
 end;
@@ -2420,18 +2272,18 @@ end;
 
 function OrlanHeal:ShowBuff(texture, buff)
 	if buff == nil then
-		texture.Image:SetTexture(0, 0, 0, 0);
-		texture.Time:SetTexture(0, 0, 0, 0);
+		texture.Image:SetColorTexture(0, 0, 0, 0);
+		texture.Time:SetColorTexture(0, 0, 0, 0);
 		texture.Count:SetText("");
 	else
 		texture.Image:SetTexture(buff.Icon);
 
 		if buff.Expires <= GetTime() + 3 then
-			texture.Time:SetTexture(1, 0, 0, 0.3);
+			texture.Time:SetColorTexture(1, 0, 0, 0.3);
 		elseif buff.Expires <= GetTime() + 6 then
-			texture.Time:SetTexture(1, 1, 0, 0.3);
+			texture.Time:SetColorTexture(1, 1, 0, 0.3);
 		else
-			texture.Time:SetTexture(0, 0, 0, 0);
+			texture.Time:SetColorTexture(0, 0, 0, 0);
 		end;
 
 		if (buff.Count > 1) then
