@@ -1698,7 +1698,7 @@ function OrlanHeal:UpdateUnits()
 		self:SetupParty(self.GroupCount);
 	elseif UnitInRaid("player") ~= nil then
 		for unitNumber = 1, self.GroupCount * 5 do
-			if unitNumber <= GetNumRaidMembers() then
+			if unitNumber <= GetNumGroupMembers() then
 				local _, _, groupNumber = GetRaidRosterInfo(unitNumber);
 				self:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts);
 			else
@@ -1902,18 +1902,15 @@ function OrlanHeal:UpdatePlayerRoleIcon(player)
 		player.Canvas.Role:SetTexture("Interface\\GroupFrame\\UI-Group-MainAssistIcon");
 		player.Canvas.Role:SetTexCoord(0, 1, 0, 1);
 	else
-		local isTank = false;
-		local isHeal = false;
-		local isDPS = false;
-		isTank, isHeal, isDPS = UnitGroupRolesAssigned(unit);
+		local roleAssigned = UnitGroupRolesAssigned(unit);
 
-		if isTank then
+		if roleAssigned == "TANK" then
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
 			player.Canvas.Role:SetTexCoord(0, 19/64, 22/64, 41/64);
-		elseif isHeal then
+		elseif roleAssigned == "HEALER" then
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
 			player.Canvas.Role:SetTexCoord(20/64, 39/64, 1/64, 20/64);
-		elseif isDPS then
+		elseif roleAssigned == "DAMAGER" then
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
 			player.Canvas.Role:SetTexCoord(20/64, 39/64, 22/64, 41/64);
 		else
@@ -2051,16 +2048,16 @@ function OrlanHeal:UpdateBackground(background, unit)
 end;
 
 function OrlanHeal:IsInRedRangeOrCloser(unit)
-	return (not IsSpellInRange(GetSpellInfo(53563), "player")) or IsSpellInRange(GetSpellInfo(53563), unit); -- Частица Света
+	return (IsSpellInRange(GetSpellInfo(53563), "player") == nil) or (IsSpellInRange(GetSpellInfo(53563), unit) == 1); -- Частица Света
 end;
 
 function OrlanHeal:IsInOrangeRangeOrCloser(unit)
-	local spellId = 48785; -- Вспышка Света
-	return (not IsSpellInRange(GetSpellInfo(spellId), "player")) or IsSpellInRange(GetSpellInfo(spellId), unit);
+	local spellId = 19750; -- Вспышка Света
+	return (IsSpellInRange(GetSpellInfo(spellId), "player") == nil) or (IsSpellInRange(GetSpellInfo(spellId), unit) == 1);
 end;
 
 function OrlanHeal:IsInYellowRangeOrCloser(unit)
-	return (not IsSpellInRange(GetSpellInfo(1022), "player")) or IsSpellInRange(GetSpellInfo(1022), unit); -- Hand of Protection
+	return (IsSpellInRange(GetSpellInfo(1022), "player") == nil) or (IsSpellInRange(GetSpellInfo(1022), unit) == 1); -- Hand of Protection
 end;
 
 function OrlanHeal:UpdateRange(rangeBar, unit)
@@ -2072,7 +2069,7 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 		rangeBar:SetColorTexture(0.2, 0.2, 0.75, 1);
 	elseif not self:IsInOrangeRangeOrCloser(unit) then
 		rangeBar:SetColorTexture(0.75, 0.2, 0.2, 1);
-	elseif not self:IsInYellowRangeOrCloser(unit) then -- Длань Спасения
+	elseif not self:IsInYellowRangeOrCloser(unit) then
 		rangeBar:SetColorTexture(0.75, 0.45, 0.2, 1);
 	elseif not CheckInteractDistance(unit, 2) then
 		rangeBar:SetColorTexture(0.75, 0.75, 0.2, 1);
