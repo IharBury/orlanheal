@@ -1,7 +1,17 @@
 OrlanHeal.IgnoredBuffs =
 {
     [465] = true, -- Devotion Aura
+    [19746] = true, -- Concentration Aura
+    [25780] = true, -- Righteous Fury
     [32223] = true, -- Crusader Aura
+    [34767] = true, -- Summon Charger
+    [48942] = true, -- Devotion Aura
+    [48943] = true, -- Shadow Resistance Aura
+    [48945] = true, -- Frost Resistance Aura
+    [48947] = true, -- Fire Resistance Aura
+    [54043] = true, -- Retribution Aura
+    [57821] = true, -- Champion of the Kirin Tor
+    [57940] = true, -- Essence of Wintergrasp
     [72221] = true, -- Luck of the Draw
     [139068] = true, -- Determination
     [183435] = true, -- Retribution Aura
