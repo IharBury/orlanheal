@@ -1,4 +1,4 @@
-OrlanHeal.IgnoredBuffs = 
+OrlanHeal.IgnoredBuffs =
 {
     [465] = true, -- Devotion Aura
     [32223] = true, -- Crusader Aura

@@ -1,6 +1,6 @@
-## Interface: 90001
+## Interface: 30300
 ## Title: OrlanHeal
-## Version: 7.0.0-alpha
+## Version: 7.0.0-alpha-wotlk
 ## Notes: 
 ## SavedVariables: OrlanHealGlobalConfig
 ## SavedVariablesPerCharacter: OrlanHealConfig
@@ -22,6 +22,5 @@ Paladin.lua
 Priest.lua
 Shaman.lua
 Druid.lua
-Monk.lua
 
 Initialize.lua

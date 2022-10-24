@@ -11,7 +11,7 @@
 			if arg1 == "OrlanHeal" then
 				orlanHeal:HandleLoaded();
 			end;
-		elseif (event == "PLAYER_SPECIALIZATION_CHANGED") then
+		elseif (event == "ACTIVE_TALENT_GROUP_CHANGED") then
 			orlanHeal:HandleSpecChanged();
 		elseif (event == "PLAYER_TALENT_UPDATE") then
 			orlanHeal:SetupCooldowns();
@@ -55,8 +55,6 @@
 		self.Class = self.Shaman;
 	elseif class == "DRUID" then
 		self.Class = self.Druid;
-	elseif class == "MONK" then
-		self.Class = self.Monk;
 	else
 		self.Class = self.Paladin;
 		print("OrlanHeal: " .. className .. " class is not supported.");
@@ -114,7 +112,7 @@ function OrlanHeal:HandleLoaded()
 	self.EventFrame:RegisterEvent("PLAYER_ROLES_ASSIGNED");
 	self.EventFrame:RegisterEvent("ROLE_CHANGED_INFORM");
 	self.EventFrame:RegisterEvent("PLAYER_TALENT_UPDATE");
-	self.EventFrame:RegisterEvent("PLAYER_SPECIALIZATION_CHANGED");
+	self.EventFrame:RegisterEvent("ACTIVE_TALENT_GROUP_CHANGED");
 end;
 
 OrlanHeal:Initialize("OrlanHealGlobalConfig", "OrlanHealConfig");

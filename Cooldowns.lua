@@ -158,8 +158,15 @@ function OrlanHeal:UpdateCooldownFrames()
 end;
 
 function OrlanHeal:UpdatePlayerBuffCooldown(window)
-	local _, _, _, count, _, duration, expirationTime = UnitBuff("player", window.Cooldown.AuraId or window.Cooldown.SpellId);
-	self:UpdateCooldown(window, duration, expirationTime, count, window.Cooldown.AlwaysShowCount);
+	local i = 1;
+	while true do
+		local _, _, count, _, duration, expirationTime, _, _, _, buffId = UnitBuff("player", i);
+		if (not buffId) or (buffId == (window.Cooldown.AuraId or window.Cooldown.SpellId)) then
+			self:UpdateCooldown(window, duration, expirationTime, count, window.Cooldown.AlwaysShowCount);
+			return;
+		end;
+		i = i + 1
+	end;
 end;
 
 function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(window)

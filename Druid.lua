@@ -92,12 +92,6 @@ OrlanHeal.Druid.CooldownOptions =
 		SpellId = 102351,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	NaturesControl =
-	{
-		MacroText = "/cast " .. GetSpellInfo(175682),
-		SpellId = 175682, -- Nature's Control
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	EntanglingRoots =
 	{
 		SpellId = 339,

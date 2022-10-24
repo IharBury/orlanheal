@@ -33,7 +33,7 @@
 		"OnClick",
 		function()
 			if orlanHeal:RequestNonCombat() then
-				local spec = GetSpecialization();
+				local spec = GetActiveTalentGroup();
 				orlanHeal.CharacterConfig[spec] = UIDropDownMenu_GetSelectedValue(configSelectWindow);
 				orlanHeal.LoadedSpec = nil;
 				orlanHeal:LoadSpecConfig();
@@ -275,7 +275,7 @@ end;
 
 function OrlanHeal:InitializeConfigSelectWindow(configSelectWindow)
 	UIDropDownMenu_Initialize(configSelectWindow, self.HandleConfigInit);
-	local spec = GetSpecialization();
+	local spec = GetActiveTalentGroup();
 	self:SetConfigSelectWindowSelectedValue(configSelectWindow, self.CharacterConfig[spec]);
 end;
 
@@ -703,7 +703,7 @@ function OrlanHeal:LoadConfigSet()
 end;
 
 function OrlanHeal:LoadSpecConfig()
-	local spec = GetSpecialization() or 1;
+	local spec = GetActiveTalentGroup();
 	if spec ~= self.LoadedSpec then
 		if not self.CharacterConfig[spec] then
 			self.CharacterConfig[spec] = self.CharacterConfig[1] or
@@ -829,7 +829,7 @@ function OrlanHeal:SaveSetupAs(name)
 		else
 			self.Config = {};
 			self:SaveSetup();
-			local spec = GetSpecialization();
+			local spec = GetActiveTalentGroup();
 			self.CharacterConfig[spec] = name;
 			self.ConfigSet[name] = self.Config;
 			self:Setup();

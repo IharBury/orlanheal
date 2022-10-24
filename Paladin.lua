@@ -5,39 +5,28 @@ OrlanHeal.Paladin.GiftOfTheNaaruSpellId = 59542;
 
 OrlanHeal.Paladin.AvailableSpells =
 {
-	19750, -- Flash of Light
-	82326, -- Holy Light
-	633, -- Lay on Hands
+	48785, -- Flash of Light
+	48782, -- Holy Light
+	48788, -- Lay on Hands
 	53563, -- Beacon of Light
-	1044, -- Blessing of Freedom
-	183998, -- Light of the Martyr
-	85673, -- Word of Glory
-	1022, -- Blessing of Protection
+	1044, -- Hand of Freedom
+	10278, -- Hand of Protection
 	4987, -- Cleanse
-	20473, -- Holy Shock
-	6940, -- Blessing of Sacrifice
-	156910, -- Beacon of Faith
+	48825, -- Holy Shock
+	6940, -- Hand of Sacrifice
 	59542, -- Gift of the Naaru
-	7328, -- Redemption
-	114165, -- Holy Prism
-	223306, -- Bestow Faith
-	{
-		type = "spell",
-		spell = 328620, -- Blessing of Summer
-		caption = GetSpellInfo(328278) -- Blessing of the Seasons
-	}
+	48950, -- Redemption
+	1038, -- Hand of Salvation
+	19752, -- Divine Intervention
+	53601, -- Sacred Shield
+	31789 -- Righteous Defense
 };
 
 OrlanHeal.Paladin.CooldownOptions =
 {
-	LightOfDawn =
-	{
-		SpellId = 85222, -- Light of Dawn
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	LayOnHands =
 	{
-		SpellId = 633, -- Lay on Hands
+		SpellId = 48788, -- Lay on Hands
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	AvengingWrath =
@@ -71,27 +60,32 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	HandOfSacrifice =
 	{
-		SpellId = 6940, -- Blessing of Sacrifice
+		SpellId = 6940, -- Hand of Sacrifice
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HandOfProtection =
 	{
-		SpellId = 1022, -- Blessing of Protection
+		SpellId = 10278, -- Hand of Protection
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HandOfFreedom =
 	{
-		SpellId = 1044, -- Blessing of Freedom
+		SpellId = 1044, -- Hand of Freedom
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HandOfSalvation =
+	{
+		SpellId = 1038, -- Hand of Salvation
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HammerOfJustice =
 	{
-		SpellId = 853, -- Hammer of Justice
+		SpellId = 10308, -- Hammer of Justice
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HolyShock =
 	{
-		SpellId = 20473, -- Holy Shock
+		SpellId = 48825, -- Holy Shock
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Cleanse =
@@ -104,14 +98,24 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 35395, -- Crusader Strike
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
+	JudgmentOfJustice =
+	{
+		SpellId = 53407, -- Judgment of Justice
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
 	Judgment =
 	{
-		SpellId = 20271, -- Judgment
+		SpellId = 20271, -- Judgment of Light
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	JudgmentOfWisdom =
+	{
+		SpellId = 53408, -- Judgment of Wisdom
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	ArcaneTorrent =
 	{
-		SpellId = 155145, -- Arcane Torrent
+		SpellId = 28730, -- Arcane Torrent
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		IsAvailable = function()
 			local _, race = UnitRace("player");
@@ -126,67 +130,22 @@ OrlanHeal.Paladin.CooldownOptions =
 	BeaconOfLight =
 	{
 		SpellId = 53563, -- Beacon of Light
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	BeaconOfFaith =
-	{
-		SpellId = 156910, -- Beacon of Faith
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	BlindingLight =
-	{
-		SpellId = 115750, -- Blinding Light
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	Contemplation =
-	{
-		SpellId = 121183, -- Contemplation
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateRaidBuffCooldown
 	},
 	Repentance =
 	{
 		SpellId = 20066, -- Repentance
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	HolyAvenger =
-	{
-		SpellId = 105809, -- Holy Avenger
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	BestowFaith =
-	{
-		SpellId = 223306, -- Bestow Faith
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	Consecration =
 	{
-		SpellId = 26573, -- Consecration
+		SpellId = 48819, -- Consecration
 		Update = OrlanHeal.UpdateTotemCooldown,
 		TotemIndex = 1
 	},
-	DivineSteed =
-	{
-		SpellId = 190784, -- Divine Steed
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	HolyPrism =
-	{
-		SpellId = 114165, -- Holy Prism
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	LightsHammer =
-	{
-		SpellId = 114158, -- Light's Hammer
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	RuleOfLaw =
-	{
-		SpellId = 214202, -- Rule of Law
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	HammerOfWrath =
 	{
-		SpellId = 24275, -- Hammer of Wrath
+		SpellId = 48806, -- Hammer of Wrath
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		IsAlwaysUsable = true
 	},
@@ -195,125 +154,66 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 10326, -- Turn Evil
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Seraphim =
-	{
-		SpellId = 152262, -- Seraphim
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	BeaconOfVirtue =
-	{
-		SpellId = 200025, -- Beacon of Virtue
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		ForbidOverrides = true
-	},
 	DivineFavor =
 	{
-		SpellId = 210294, -- Divine Favor
+		SpellId = 20216, -- Divine Favor
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Soulshape = {
-		SpellId = 310143, -- Soulshape
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
+	DivineIntervention = {
+		SpellId = 19752, -- Divine Intervention
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Flicker = {
-		MacroText = "/cast " .. GetSpellInfo(324701), -- Flicker
-		SpellId = 324701, -- Flicker
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
+	DivinePlea = {
+		SpellId = 54428, -- Divine Plea
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	BlessingOfWinter = {
-		MacroText = "/cast " .. GetSpellInfo(328281), -- Blessing of Winter
-		SpellId = 328281, -- Blessing of Winter
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
+	HolyWrath = {
+		SpellId = 48817, -- Holy Wrath
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	BlessingOfSpring = {
-		MacroText = "/cast " .. GetSpellInfo(328282), -- Blessing of Spring
-		SpellId = 328282, -- Blessing of Spring
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
+	RighteousDefense = {
+		SpellId = 31789, -- RighteousDefense
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	BlessingOfSpringSelf = {
-		Label = "S",
-		Caption = GetSpellInfo(328282) .. " (self)", -- Blessing of Spring
-		MacroText = OrlanHeal:BuildSelfCastMacro(328282), -- Blessing of Spring
-		SpellId = 328282, -- Blessing of Spring
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
+	ShieldOfRighteousness = {
+		SpellId = 61411, -- Shield of Righteousness
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	BlessingOfSummer = {
-		SpellId = 328620, -- Blessing of Summer
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		OverridenBy = {
-			328622, -- Blessing of Autumn
-			328281, -- Blessing of Winter
-			328282 -- Blessing of Spring
-		},
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
+	JudgementsOfThePure = {
+		SpellId = 54155, -- Judgements of the Pure
+		Update = OrlanHeal.UpdatePlayerBuffCooldown
 	},
-	BlessingOfAutumn = {
-		MacroText = "/cast " .. GetSpellInfo(328622), -- Blessing of Autumn
-		SpellId = 328622, -- Blessing of Autumn
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
+	DivineIllumination = {
+		SpellId = 31842, -- Divine Illumination
+		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	BlessingOfAutumnSelf = {
-		Label = "S",
-		Caption = GetSpellInfo(328622) .. " (self)", -- Blessing of Autumn
-		MacroText = OrlanHeal:BuildSelfCastMacro(328622), -- Blessing of Autumn
-		SpellId = 328622, -- Blessing of Autumn
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
+	SacredShield = {
+		SpellId = 53601, -- Sacred Shield
+		Update = OrlanHeal.UpdateRaidBuffCooldown
 	}
 };
 
 function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	local config = orlanHeal:GetCommonDefaultConfig();
 
-	config["1"] = 82326; -- Holy Light
-	config["2"] = 19750; -- Flash of Light
-	config["3"] = 633; -- Lay on Hands
+	config["1"] = 48782; -- Holy Light
+	config["2"] = 48785; -- Flash of Light
+	config["3"] = 48788; -- Lay on Hands
 	config["shift2"] = 53563; -- Beacon of Light
-	config["shift3"] = 1044; -- Blessing of Freedom
-	config["control1"] = 183998; -- Light of the Martyr
-	config["control2"] = 85673; -- Word of Glory
-	config["control3"] = 1022; -- Blessing of Protection
+	config["shift3"] = 1038; -- Hand of Salvation
+	config["control2"] = 53601; -- Sacred Shield
+	config["control3"] = 10278; -- Hand of Protection
 	config["alt1"] = 4987; -- Cleanse
-	config["alt2"] = 20473; -- Holy Shock
-	config["alt3"] = 6940; -- Blessing of Sacrifice
-	config["controlalt1"] = 223306; -- Bestow Faith
-	config["controlalt2"] = 114165; -- Holy Prism
-	config["altshift2"] = 156910; -- Beacon of Faith
-	config["altshift3"] = 7328; -- Redemption
+	config["alt2"] = 48825; -- Holy Shock
+	config["alt3"] = 6940; -- Hand of Sacrifice
+	config["altshift3"] = 48950; -- Redemption
 
-	config["cooldown1"] = "Cleanse";
-	config["cooldown2"] = "Judgment";
-	config["cooldown3"] = "HolyPrism";
-	config["cooldown4"] = "LightsHammer";
-	config["cooldown5"] = "HolyAvenger";
-	config["cooldown6"] = "AvengingWrath"; 
-	config["cooldown7"] = "Seraphim";
-	config["cooldown8"] = "RuleOfLaw";
-	config["cooldown9"] = "DivineShield"; 
-	config["cooldown10"] = "DivineProtection"; 
-	config["cooldown11"] = "AuraMastery";
-	config["cooldown12"] = "BestowFaith";
-	config["cooldown13"] = "HandOfProtection";
-	config["cooldown14"] = "HandOfSacrifice";
-	config["cooldown15"] = "HandOfFreedom";
-	config["cooldown16"] = "HammerOfJustice";
-	config["cooldown17"] = "DivineSteed";
-	config["cooldown18"] = "Repentance";
-	config["cooldown19"] = "BlindingLight";
-	config["cooldown20"] = "TurnEvil";
-	config["cooldown21"] = "LayOnHands";
-	config["cooldown22"] = "DivineFavor";
-	config["cooldown23"] = "HammerOfWrath";
-	config["cooldown24"] = "BeaconOfVirtue";
-	config["cooldown25"] = orlanHeal:GetRacialCooldown();
-	config["cooldown26"] = "Trinket0";
-	config["cooldown27"] = "Trinket1";
+	config["cooldown1"] = "JudgementsOfThePure";
+	config["cooldown2"] = "BeaconOfLight";
+	config["cooldown3"] = "SacredShield";
+	config["cooldown4"] = orlanHeal:GetRacialCooldown();
+	config["cooldown5"] = "Trinket0";
+	config["cooldown6"] = "Trinket1";
 
 	return config;
 end;
@@ -329,19 +229,8 @@ function OrlanHeal.Paladin.GetConfigPresets(orlanHeal)
 end;
 
 function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
-	local holyPower = UnitPower("player", Enum.PowerType.HolyPower);
-	local maxHolyPower = UnitPowerMax("player", Enum.PowerType.HolyPower);
-
-	if (holyPower == maxHolyPower) or orlanHeal:PlayerHasBuff(223819) then -- Divine Purpose
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 1, orlanHeal.RaidBorderAlpha); -- white
-	elseif holyPower >= 3 then
-		if orlanHeal.Paladin:CanUseHolyPowerGenerator(20473) then -- Holy Shock
-			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0.8, 0.5, orlanHeal.RaidBorderAlpha); -- orange
-		else
-			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha); -- green
-		end;
-	elseif orlanHeal.Paladin:CanUseHolyPowerGenerator(20473) then -- Holy Shock
-		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.7, 0.7, 0, orlanHeal.RaidBorderAlpha); -- yellow
+	if orlanHeal:IsSpellReady(48825) then -- Holy Shock
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 1, 0, orlanHeal.RaidBorderAlpha); -- yellow
 	else
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 0, 0, 0); -- black
 	end;
@@ -350,33 +239,15 @@ end;
 OrlanHeal.Paladin.PlayerSpecificBuffCount = 3;
 OrlanHeal.Paladin.PlayerSpecificDebuffCount = 1;
 
-function OrlanHeal.Paladin.CanUseHolyPowerGenerator(self, id)
-	local usable, noMana = IsUsableSpell(id);
-	if (not usable) or noMana then
-		return false;
-	end;
-	local cooldownStart, cooldownDuration = GetSpellCooldown(id);
-	return cooldownStart == 0 or cooldownDuration <= 1.5;
-end;
-
-function OrlanHeal.Paladin.CanUseTargetedHolyPowerGenerator(self, id)
-	if not self:CanUseHolyPowerGenerator(id) then
-		return false;
-	end;
-	local inRange = IsSpellInRange(name, "target");
-	return inRange == 1;
-end;
-
 function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
-	if (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- own Beacon of Light
-			(spellId == 156910) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- own Beacon of Faith
-			(spellId == 200025) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- own Beacon of Virtue
+	if spellId == 53601 then -- Sacred Shield
 		buffKind = 1;
-	elseif spellId == 287280 then -- Glimmer of Light
+	elseif (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") then -- own Beacon of Light
 		buffKind = 2;
-	elseif (spellId == 1022) or -- Blessing of Protection
-			(spellId == 6940) then -- Blessing of Sacrifice
+	elseif (spellId == 10278) or -- Hand of Protection
+	        (spellId == 1038) or -- Hand of Salvation
+			(spellId == 6940) then -- Hand of Sacrifice
 		buffKind = 3;
 	end;
 
@@ -392,7 +263,7 @@ OrlanHeal.Paladin.PetDebuffSlots = { 1, 0 };
 
 function OrlanHeal.Paladin.GetSpecificDebuffKind(orlanHeal, spellId, caster)
 	local debuffKind;
-	if spellId == 25771 then
+	if spellId == 25771 then -- Forbearance
 		debuffKind = 1;
 	end;
 	return debuffKind;
