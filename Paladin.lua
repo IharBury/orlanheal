@@ -274,6 +274,10 @@ OrlanHeal.Paladin.CooldownOptions =
 	DivineToll = {
 		SpellId = 375576, -- Divine Toll
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	Intercession = {
+		SpellId = 391054, -- Intercession
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
