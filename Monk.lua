@@ -1,6 +1,6 @@
 OrlanHeal.Monk = {};
 
-OrlanHeal.Monk.IsSupported = true;
+OrlanHeal.Monk.IsSupported = false;
 OrlanHeal.Monk.GiftOfTheNaaruSpellId = 121093;
 
 OrlanHeal.Monk.AvailableSpells =

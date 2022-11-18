@@ -57,6 +57,8 @@
 		self.Class = self.Druid;
 	elseif class == "MONK" then
 		self.Class = self.Monk;
+	elseif class == "EVOKER" then
+		self.Class = self.Evoker;
 	else
 		self.Class = self.Paladin;
 		print("OrlanHeal: " .. className .. " class is not supported.");

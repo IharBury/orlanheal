@@ -23,5 +23,6 @@ Priest.lua
 Shaman.lua
 Druid.lua
 Monk.lua
+Evoker.lua
 
 Initialize.lua
