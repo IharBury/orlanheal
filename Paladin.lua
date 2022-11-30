@@ -21,6 +21,7 @@ OrlanHeal.Paladin.AvailableSpells =
 	7328, -- Redemption
 	114165, -- Holy Prism
 	223306, -- Bestow Faith
+	148039, -- Barrier of Faith
 	{
 		type = "spell",
 		spell = 328620, -- Blessing of Summer
@@ -31,6 +32,11 @@ OrlanHeal.Paladin.AvailableSpells =
 
 OrlanHeal.Paladin.CooldownOptions =
 {
+	BarrierOfFaith =
+	{
+		SpellId = 148039, -- Barrier of Faith
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
 	LightOfDawn =
 	{
 		SpellId = 85222, -- Light of Dawn
