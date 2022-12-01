@@ -32,6 +32,11 @@ OrlanHeal.Paladin.AvailableSpells =
 
 OrlanHeal.Paladin.CooldownOptions =
 {
+	TyrsDeliverence =
+	{
+		SpellId = 200652, -- Tyr's Deliverence
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
 	BarrierOfFaith =
 	{
 		SpellId = 148039, -- Barrier of Faith
