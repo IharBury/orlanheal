@@ -143,7 +143,6 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateBlankCanvas(playerWindow);
 	self:CreateRangeBar(playerWindow.Canvas);
 	self:CreateHealthBar(playerWindow.Canvas, self.PlayerStatusWidth);
-	self:CreateShieldBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateManaBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateBuffs(
@@ -273,12 +272,7 @@ function OrlanHeal:CreateNameBar(parent, width)
 	parent.NameBar:SetTextHeight(self.NameFontHeight);
 end;
 
-function OrlanHeal:CreateStatusBar(parent, backgroundColor, currentColor, incomingColor, yourIncomingColor, overincomingColor, overincomingWidth)
-	incomingColor = incomingColor or { r = 0, g = 0, b = 0 };
-	yourIncomingColor = yourIncomingColor or { r = 0, g = 0, b = 0 };
-	overincomingColor = overincomingColor or { r = 0, g = 0, b = 0 };
-	overincomingWidth = overincomingWidth or 1;
-
+function OrlanHeal:CreateStatusBar(parent, backgroundColor, currentColor)
 	local bar = CreateFrame("Frame", nil, parent);
 
 	bar.Background = bar:CreateTexture(nil, "BACKGROUND");
@@ -290,18 +284,6 @@ function OrlanHeal:CreateStatusBar(parent, backgroundColor, currentColor, incomi
 	bar.Current:SetPoint("BOTTOMLEFT", 0, 0);
 	self:SetStatusBarCurrentColor(bar, currentColor);
 
-	bar.Incoming = bar:CreateTexture();
-	bar.Incoming:SetColorTexture(incomingColor.r, incomingColor.g, incomingColor.b, 1);
-
-	bar.YourIncoming = bar:CreateTexture();
-	bar.YourIncoming:SetColorTexture(yourIncomingColor.r, yourIncomingColor.g, yourIncomingColor.b, 1);
-
-	bar.Overincoming = bar:CreateTexture();
-	bar.Overincoming:SetPoint("TOPRIGHT", overincomingWidth, 0);
-	bar.Overincoming:SetPoint("BOTTOMRIGHT", overincomingWidth, 0);
-	bar.Overincoming:SetWidth(overincomingWidth);
-	bar.Overincoming:SetColorTexture(overincomingColor.r, overincomingColor.g, overincomingColor.b, 1);
-
 	return bar;
 end;
 
@@ -309,7 +291,7 @@ function OrlanHeal:SetStatusBarCurrentColor(bar, currentColor)
 	bar.Current:SetColorTexture(currentColor.r, currentColor.g, currentColor.b, 1);
 end;
 
-function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue, incomingValue, yourIncomingValue)
+function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue)
 	local width = bar:GetWidth();
 
 	currentValue = currentValue or 0;
@@ -317,23 +299,11 @@ function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue, incomingValue, y
 	if maxValue == 0 then
 		maxValue = 1;
 	end;
-	incomingValue = incomingValue or 0;
-	yourIncomingValue = yourIncomingValue or 0;
 	if (currentValue > maxValue) then
 		currentValue = maxValue;
 	end;
-	local isOverincoming = false;
-	if (currentValue + incomingValue > maxValue) then
-		incomingValue = maxValue - currentValue;
-		isOverincoming = true;
-	end;
-	if yourIncomingValue > incomingValue then
-		yourIncomingValue = incomingValue;
-	end;
 
 	local currentPosition = currentValue * width / maxValue;
-	local incomingPosition = (currentValue + incomingValue - yourIncomingValue) * width / maxValue;
-	local yourIncomingPosition = (currentValue + incomingValue) * width / maxValue;
 
 	if currentPosition > 0 then
 		bar.Current:Show();	
@@ -341,41 +311,13 @@ function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue, incomingValue, y
 	else
 		bar.Current:Hide();
 	end;
-
-	bar.Incoming:SetPoint("TOPLEFT", currentPosition, 0);
-	bar.Incoming:SetPoint("BOTTOMLEFT", currentPosition, 0);
-	bar.Incoming:SetWidth(incomingPosition - currentPosition);
-	if (incomingPosition - currentPosition == 0) then
-		bar.Incoming:SetVertexColor(1, 1, 1, 0);
-	else
-		bar.Incoming:SetVertexColor(1, 1, 1, 1);
-	end;
-	
-	bar.YourIncoming:SetPoint("TOPLEFT", incomingPosition, 0);
-	bar.YourIncoming:SetPoint("BOTTOMLEFT", incomingPosition, 0);
-	bar.YourIncoming:SetWidth(yourIncomingPosition - incomingPosition);
-	if (yourIncomingPosition - incomingPosition == 0) then
-		bar.YourIncoming:SetVertexColor(1, 1, 1, 0);
-	else
-		bar.YourIncoming:SetVertexColor(1, 1, 1, 1);
-	end;
-
-	if isOverincoming then
-		bar.Overincoming:SetVertexColor(1, 1, 1, 1);
-	else
-		bar.Overincoming:SetVertexColor(1, 1, 1, 0);
-	end;
 end;
 
 function OrlanHeal:CreateHealthBar(parent, width)
 	parent.HealthBar = self:CreateStatusBar(
 		parent,
 		{ r = 0.4, g = 0.4, b = 0.4 },
-		{ r = 0.2, g = 0.75, b = 0.2 },
-		{ r = 0.75, g = 0.5, b = 0.2 },
-		{ r = 0.75, g = 0.75, b = 0.2 },
-		{ r = 1, g = 0.2, b = 0.2 },
-		3);
+		{ r = 0.2, g = 0.75, b = 0.2 });
 	parent.HealthBar:SetHeight(self.HealthHeight);
 	parent.HealthBar:SetWidth(width);
 	parent.HealthBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight + self.ShieldHeight);
@@ -389,16 +331,6 @@ function OrlanHeal:CreateManaBar(parent, width)
 	parent.ManaBar:SetHeight(self.ManaHeight);
 	parent.ManaBar:SetWidth(width);
 	parent.ManaBar:SetPoint("BOTTOMLEFT", self.RangeWidth, 0);
-end;
-
-function OrlanHeal:CreateShieldBar(parent, width)
-	parent.ShieldBar = self:CreateStatusBar(
-		parent,
-		{ r = 0.4, g = 0.4, b = 0.4 },
-		{ r = 0.95, g = 0.75, b = 0.2 });
-	parent.ShieldBar:SetHeight(self.ShieldHeight);
-	parent.ShieldBar:SetWidth(width);
-	parent.ShieldBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
 end;
 
 function OrlanHeal:CreateUnitButton(parent)
@@ -434,7 +366,6 @@ function OrlanHeal:CreatePetWindow(parent)
 	self:CreateRangeBar(petWindow.Canvas);
 	self:CreateHealthBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateManaBar(petWindow.Canvas, self.PetStatusWidth);
-	self:CreateShieldBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateNameBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateBuffs(petWindow.Canvas, 0, 2, self.Class.PetDebuffSlots);
 	self:CreateBorder(petWindow.Canvas, 1, 1);
@@ -550,11 +481,6 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 	self:RegisterUnitEventHandler("UNIT_MAXHEALTH", unit, healthUpdate);
 	self:RegisterUnitEventHandler("UNIT_HEAL_PREDICTION", unit, healthUpdate);
 
-	local shieldUpdate = function(orlanHeal)
-		orlanHeal:UpdateShield(frame.Canvas.ShieldBar, unit);
-	end;
-	self:RegisterUnitEventHandler("UNIT_ABSORB_AMOUNT_CHANGED", unit, shieldUpdate);
-
 	local manaUpdate = function(orlanHeal)
 		orlanHeal:UpdateMana(frame.Canvas.ManaBar, unit);
 	end;
@@ -574,7 +500,6 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 
 	local allUpdate = function(orlanHeal)
 		healthUpdate(orlanHeal);
-		shieldUpdate(orlanHeal);
 		manaUpdate(orlanHeal);
 		buffUpdate(orlanHeal);
 	end;
@@ -1053,7 +978,7 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 end;
 
 function OrlanHeal:UpdateHealth(healthBar, unit)
-	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit), UnitGetIncomingHeals(unit), UnitGetIncomingHeals(unit, "player"));
+	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit));
 
 	if not UnitIsConnected(unit) then
 		self:SetStatusBarCurrentColor(healthBar, { r = 0, g = 0, b = 0 });
@@ -1069,10 +994,6 @@ function OrlanHeal:UpdateMana(manaBar, unit)
 	else
 		manaBar:Hide();
 	end;
-end;
-
-function OrlanHeal:UpdateShield(shieldBar, unit)
-	self:UpdateStatusBar(shieldBar, UnitGetTotalAbsorbs(unit), UnitHealthMax(unit));
 end;
 
 function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
@@ -1140,7 +1061,7 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	local goodBuffs = {};
 	local buffIndex = 1;
 	while true do
-		local name, icon, count, _, duration, expires, caster, _, shouldConsolidate, spellId = 
+		local name, icon, count, _, duration, expires, caster, _, _, spellId = 
 			UnitAura(unit, buffIndex, "HELPFUL");
 		if name == nil then break; end;
 
