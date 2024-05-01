@@ -215,7 +215,7 @@ OrlanHeal.Paladin.PlayerSpecificBuffCount = 1;
 
 function OrlanHeal.Paladin.GetSpecificBuffKind(orlanHeal, spellId, caster)
 	local buffKind;
-	if (spellId == 53563) and (caster ~= nil) and (UnitIsUnit(caster, "player") == 1) or -- своя Частица Света
+	if (spellId == 53563) and (caster ~= nil) and UnitIsUnit(caster, "player") or -- своя Частица Света
 			(spellId == 1022) or -- Длань защиты
 			(spellId == 5599) or -- Длань защиты
 			(spellId == 10278) or -- Длань защиты
