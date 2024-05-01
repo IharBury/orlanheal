@@ -1,0 +1,31 @@
+{
+    "Lua.diagnostics.globals": [
+        "SlashCmdList",
+        "BACKSLOT",
+        "CHESTSLOT",
+        "FEETSLOT",
+        "HANDSSLOT",
+        "HEADSLOT",
+        "LEGSSLOT",
+        "MAINHANDSLOT",
+        "NECKSLOT",
+        "SECONDARYHANDSLOT",
+        "SHIRTSLOT",
+        "SHOULDERSLOT",
+        "TABARDSLOT",
+        "WAISTSLOT",
+        "WRISTSLOT",
+        "FINGER0SLOT",
+        "FINGER1SLOT",
+        "TRINKET0SLOT",
+        "TRINKET1SLOT",
+        "UIDropDownMenu_SetWidth",
+        "UIDropDownMenu_Initialize",
+        "UIDropDownMenu_SetSelectedValue",
+        "UIDropDownMenu_SetText",
+        "UIDropDownMenu_AddButton",
+        "ToggleDropDownMenu",
+        "UIDropDownMenu_CreateInfo",
+        "UIDropDownMenu_GetSelectedValue"
+    ]
+}
