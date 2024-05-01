@@ -1,6 +1,6 @@
-## Interface: 30300
+## Interface: 40400
 ## Title: OrlanHeal
-## Version: 7.0.0-alpha-wotlk
+## Version: 7.0.0-alpha-cata
 ## Notes: 
 ## SavedVariables: OrlanHealGlobalConfig
 ## SavedVariablesPerCharacter: OrlanHealConfig
