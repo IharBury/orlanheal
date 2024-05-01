@@ -696,27 +696,5 @@ OrlanHeal.CommonCooldownOptions =
 			local _, race = UnitRace("player");
 			return race == "Troll";
 		end
-	},
-	QuakingPalm =
-	{
-		SpellId = 107079,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		IsAvailable = function()
-			local _, race = UnitRace("player");
-			return race == "Pandaren";
-		end
-	},
-	SpiritOfPreservation =
-	{
-		SpellId = 297375,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Azerite Essence"
-	},
-	ConcentratedFlame =
-	{
-		SpellId = 295373,
-		ScalingBuffId = 295378,
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = "Azerite Essence"
 	}
 };
