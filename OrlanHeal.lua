@@ -10,7 +10,6 @@ function OrlanHeal:UpdateSpells()
 end;
 
 function OrlanHeal:CreateRaidWindow()
-	local orlanHeal = self;
 	local raidWindow = CreateFrame("Frame", self.RaidWindowName, UIParent);
 
 	function raidWindow:HandleDragStop()
@@ -39,15 +38,15 @@ function OrlanHeal:CreateRaidWindow()
 	for groupIndex = 0, self.MaxGroupCount - 1, 2 do
 		raidWindow.Groups[groupIndex] = self:CreateGroupWindow(raidWindow, false);
 		raidWindow.Groups[groupIndex]:SetPoint(
-			"TOPLEFT", 
-			self.RaidOuterSpacing, 
+			"TOPLEFT",
+			self.RaidOuterSpacing,
 			-self.RaidOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * groupIndex / 2);
 	end;
 	for groupIndex = 1, self.MaxGroupCount - 1, 2 do
 		raidWindow.Groups[groupIndex] = self:CreateGroupWindow(raidWindow, true);
 		raidWindow.Groups[groupIndex]:SetPoint(
-			"TOPLEFT", 
-			self.RaidOuterSpacing + self.GroupWidth + self.GroupInnerSpacing, 
+			"TOPLEFT",
+			self.RaidOuterSpacing + self.GroupWidth + self.GroupInnerSpacing,
 			-self.RaidOuterSpacing - (self.GroupHeight + self.GroupInnerSpacing) * (groupIndex - 1) / 2);
 	end;
 
@@ -119,13 +118,13 @@ function OrlanHeal:CreateGroupWindow(parent, isOnTheRight)
 		groupWindow.Players[playerIndex] = self:CreatePlayerWindow(groupWindow, isOnTheRight);
 		if isOnTheRight then
 			groupWindow.Players[playerIndex]:SetPoint(
-				"TOPLEFT", 
-				self.GroupOuterSpacing, 
+				"TOPLEFT",
+				self.GroupOuterSpacing,
 				-self.GroupOuterSpacing - (self.PlayerHeight + self.PlayerInnerSpacing) * playerIndex);
 		else
 			groupWindow.Players[playerIndex]:SetPoint(
-				"TOPLEFT", 
-				self.GroupOuterSpacing + self.PetWidth + self.PetSpacing, 
+				"TOPLEFT",
+				self.GroupOuterSpacing + self.PetWidth + self.PetSpacing,
 				-self.GroupOuterSpacing - (self.PlayerHeight + self.PlayerInnerSpacing) * playerIndex);
 		end;
 	end;
@@ -147,8 +146,8 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateManaBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateBuffs(
-		playerWindow.Canvas, 
-		self.Class.PlayerSpecificBuffCount, 
+		playerWindow.Canvas,
+		self.Class.PlayerSpecificBuffCount,
 		self.PlayerBuffCount - self.Class.PlayerSpecificBuffCount,
 		self.Class.PlayerDebuffSlots);
 	self:CreateBorder(playerWindow.Canvas, 1, 1);
@@ -191,8 +190,8 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, debuff
 
 		for buffIndex = 0, specificBuffCount - 1 do
 			parent.SpecificBuffs[buffIndex] = self:CreateBuff(
-				parent, 
-				"TOPRIGHT", 
+				parent,
+				"TOPRIGHT",
 				-(otherBuffCount + specificBuffCount - buffIndex) * self.BuffSize,
 				0);
 		end;
@@ -203,7 +202,7 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, debuff
 	for buffIndex = 0, otherBuffCount - 1 do
 		parent.OtherBuffs[buffIndex] = self:CreateBuff(
 			parent,
-			"TOPRIGHT", 
+			"TOPRIGHT",
 			-(otherBuffCount - buffIndex) * self.BuffSize,
 			0);
 	end;
@@ -214,7 +213,7 @@ function OrlanHeal:CreateBuffs(parent, specificBuffCount, otherBuffCount, debuff
 	while debuffSlots[debuffIndex + 1] do
 		parent.Debuffs[debuffIndex] = self:CreateBuff(
 			parent,
-			"BOTTOMRIGHT", 
+			"BOTTOMRIGHT",
 			-(otherBuffCount + specificBuffCount - debuffIndex) * self.BuffSize,
 			self.BuffSize);
 
@@ -273,7 +272,8 @@ function OrlanHeal:CreateNameBar(parent, width)
 	parent.NameBar:SetTextHeight(self.NameFontHeight);
 end;
 
-function OrlanHeal:CreateStatusBar(parent, backgroundColor, currentColor, incomingColor, yourIncomingColor, overincomingColor, overincomingWidth)
+function OrlanHeal:CreateStatusBar(parent, backgroundColor, currentColor, incomingColor, yourIncomingColor,
+								   overincomingColor, overincomingWidth)
 	incomingColor = incomingColor or { r = 0, g = 0, b = 0 };
 	yourIncomingColor = yourIncomingColor or { r = 0, g = 0, b = 0 };
 	overincomingColor = overincomingColor or { r = 0, g = 0, b = 0 };
@@ -336,7 +336,7 @@ function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue, incomingValue, y
 	local yourIncomingPosition = (currentValue + incomingValue) * width / maxValue;
 
 	if currentPosition > 0 then
-		bar.Current:Show();	
+		bar.Current:Show();
 		bar.Current:SetWidth(currentPosition);
 	else
 		bar.Current:Hide();
@@ -350,7 +350,7 @@ function OrlanHeal:UpdateStatusBar(bar, currentValue, maxValue, incomingValue, y
 	else
 		bar.Incoming:SetVertexColor(1, 1, 1, 1);
 	end;
-	
+
 	bar.YourIncoming:SetPoint("TOPLEFT", incomingPosition, 0);
 	bar.YourIncoming:SetPoint("BOTTOMLEFT", incomingPosition, 0);
 	bar.YourIncoming:SetWidth(yourIncomingPosition - incomingPosition);
@@ -405,17 +405,17 @@ function OrlanHeal:CreateUnitButton(parent)
 	self.UnitButtonNumber = (self.UnitButtonNumber or 0) + 1;
 
 	parent.Button = CreateFrame(
-		"Button", 
-		self.RaidWindowName .. "_UnitButton" .. self.UnitButtonNumber, 
-		parent, 
+		"Button",
+		self.RaidWindowName .. "_UnitButton" .. self.UnitButtonNumber,
+		parent,
 		"SecureUnitButtonTemplate,SecureHandlerEnterLeaveTemplate,SecureHandlerShowHideTemplate");
 	parent.Button:SetAllPoints();
-	
+
 	parent.Button:SetAttribute(
 		"_onenter",
-		"self:ClearBindings();" ..
+		("self:ClearBindings();" ..
 			"self:SetBindingClick(0,\"MOUSEWHEELUP\",self:GetName(),\"w1\");" ..
-			"self:SetBindingClick(0,\"MOUSEWHEELDOWN\",self:GetName(),\"w2\");");
+			"self:SetBindingClick(0,\"MOUSEWHEELDOWN\",self:GetName(),\"w2\");"));
 	parent.Button:SetAttribute("_onleave", "self:ClearBindings();");
 	parent.Button:SetAttribute("_onshow", "self:ClearBindings();");
 	parent.Button:SetAttribute("_onhide", "self:ClearBindings();");
@@ -486,7 +486,7 @@ function OrlanHeal:SetAction(button, hasControl, hasShift, hasAlt, buttonBinding
 		button:SetAttribute(prefix .. "macrotext-help" .. buttonBinding, action.macrotext);
 		if action.item then
 			button:SetAttribute(
-				prefix .. "item-help" .. buttonBinding, 
+				prefix .. "item-help" .. buttonBinding,
 				GetInventorySlotInfo(action.item));
 		end;
 	elseif ((action == "") or (action == "target")) then
@@ -537,7 +537,7 @@ function OrlanHeal:SetPlayerTarget(groupNumber, groupPlayerNumber, playerUnit, p
 end;
 
 function OrlanHeal:EndsWith(s, send)
-	return #s >= #send and s:find(send, #s-#send+1, true) and true or false
+	return #s >= #send and s:find(send, #s - #send + 1, true) and true or false
 end
 
 function OrlanHeal:BindUnitFrame(frame, unit)
@@ -666,10 +666,10 @@ function OrlanHeal:FinishTankSetup()
 end;
 
 function OrlanHeal:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts)
-	if (groupNumber ~= nil) and 
-			(groupNumber ~= 0) and 
-			(groupNumber <= self.GroupCount) and 
-			(groupPlayerCounts[groupNumber] < 5) then
+	if (groupNumber ~= nil) and
+		(groupNumber ~= 0) and
+		(groupNumber <= self.GroupCount) and
+		(groupPlayerCounts[groupNumber] < 5) then
 		local unit = "raid" .. unitNumber;
 		local pet = "raidpet" .. unitNumber;
 		local unitBinding = unit;
@@ -687,9 +687,9 @@ function OrlanHeal:SetupRaidUnit(unitNumber, groupNumber, groupPlayerCounts)
 
 		groupPlayerCounts[groupNumber] = groupPlayerCounts[groupNumber] + 1;
 		self:SetPlayerTarget(
-			groupNumber, 
-			groupPlayerCounts[groupNumber], 
-			unitBinding, 
+			groupNumber,
+			groupPlayerCounts[groupNumber],
+			unitBinding,
 			petBinding);
 
 		if name and self:IsOraMainTank(name) then
@@ -732,9 +732,9 @@ function OrlanHeal:SetupFreeRaidSlot(unitNumber, groupPlayerCounts)
 				pet = "";
 			end;
 			self:SetPlayerTarget(
-				groupNumber, 
-				groupPlayerCounts[groupNumber], 
-				unit, 
+				groupNumber,
+				groupPlayerCounts[groupNumber],
+				unit,
 				pet);
 			break;
 		end;
@@ -842,13 +842,13 @@ function OrlanHeal:UpdatePlayerRoleIcon(player)
 		role = UnitGroupRolesAssigned(unit);
 		if role == "TANK" then
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
-			player.Canvas.Role:SetTexCoord(0, 19/64, 22/64, 41/64);
+			player.Canvas.Role:SetTexCoord(0, 19 / 64, 22 / 64, 41 / 64);
 		elseif role == "HEALER" then
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
-			player.Canvas.Role:SetTexCoord(20/64, 39/64, 1/64, 20/64);
+			player.Canvas.Role:SetTexCoord(20 / 64, 39 / 64, 1 / 64, 20 / 64);
 		elseif role == "DAMAGER" then
 			player.Canvas.Role:SetTexture("Interface\\LFGFrame\\UI-LFG-ICON-PORTRAITROLES");
-			player.Canvas.Role:SetTexCoord(20/64, 39/64, 22/64, 41/64);
+			player.Canvas.Role:SetTexCoord(20 / 64, 39 / 64, 22 / 64, 41 / 64);
 		else
 			player.Canvas.Role:SetColorTexture(0, 0, 0, 0);
 		end;
@@ -884,27 +884,33 @@ function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
 		window.Canvas:Hide();
 	else
 		if (displayedGroup ~= nil) and (string.sub(unit, 1, 4) == "raid") then
-			local _, _, groupNumber = GetRaidRosterInfo(string.sub(unit, 5));
-			if groupNumber > self.VisibleGroupCount then
-				window.Canvas:Hide();
-				return;
+			local raidNumber = tonumber(string.sub(unit, 5));
+			if raidNumber ~= nil then
+				local _, _, groupNumber = GetRaidRosterInfo(raidNumber);
+				if groupNumber > self.VisibleGroupCount then
+					window.Canvas:Hide();
+					return;
+				end;
 			end;
 		elseif (string.sub(unit, 1, 7) == "raidpet") then
-			local _, _, groupNumber = GetRaidRosterInfo(string.sub(unit, 8));
-			if groupNumber > self.VisibleGroupCount then
-				window.Canvas:Hide();
-				return;
+			local raidNumber = tonumber(string.sub(unit, 8));
+			if raidNumber ~= nil then
+				local _, _, groupNumber = GetRaidRosterInfo(raidNumber);
+				if groupNumber > self.VisibleGroupCount then
+					window.Canvas:Hide();
+					return;
+				end;
 			end;
-	        end;
+		end;
 
 		if UnitInBattleground("player") ~= nil then
 			if (not UnitIsConnected(unit)) or
-					UnitIsCorpse(unit) or 
-					UnitIsDeadOrGhost(unit) or
-					(not UnitInRange(unit) and not UnitIsUnit(unit, "player")) or
-					not UnitCanAssist("player", unit) then
-		                window.Canvas:Hide();
-        		        return;
+				UnitIsCorpse(unit) or
+				UnitIsDeadOrGhost(unit) or
+				(not UnitInRange(unit) and not UnitIsUnit(unit, "player")) or
+				not UnitCanAssist("player", unit) then
+				window.Canvas:Hide();
+				return;
 			end;
 		end;
 
@@ -944,19 +950,19 @@ function OrlanHeal:GetUnitCriticalDebuffSignificance(unit)
 	local result = 0;
 
 	while true do
-		local spellId = select(10, UnitAura(unit, buffIndex, "HARMFUL"));
-		if spellId == nil then break; end;
+		local aura = C_UnitAuras.GetDebuffDataByIndex(unit, buffIndex);
+		if not aura then break; end;
 
-		if self.VeryCriticalDebuffs[spellId] then
+		if self.VeryCriticalDebuffs[aura.spellId] then
 			result = 2;
 			break;
 		end;
 
-		if self.CriticalDebuffs[spellId] and (result == 0) then
+		if self.CriticalDebuffs[aura.spellId] and (result == 0) then
 			result = 1;
 		end;
 
-		if self.GoodCriticalDebuffs[spellId] then
+		if self.GoodCriticalDebuffs[aura.spellId] then
 			result = -1;
 		end;
 
@@ -971,11 +977,12 @@ function OrlanHeal:UnitCriticalDebuffDuration(unit)
 	local maxTimeSpent, minTimeLeft;
 
 	while true do
-		local _, _, _, _, duration, expiration, _, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
-		if spellId == nil then break; end;
+		local aura = C_UnitAuras.GetDebuffDataByIndex(unit, buffIndex);
+		if not aura then break; end;
 
-		if self.CriticalDebuffs[spellId] or self.VeryCriticalDebuffs[spellId] or self.GoodCriticalDebuffs[spellId] then
-			local timeSpent = duration - expiration + GetTime();
+		if self.CriticalDebuffs[aura.spellId] or self.VeryCriticalDebuffs[aura.spellId] or self.GoodCriticalDebuffs[aura.spellId] then
+			---@type integer | nil
+			local timeSpent = aura.duration - aura.expirationTime + GetTime();
 			if timeSpent > 100 then
 				timeSpent = nil;
 			end;
@@ -983,7 +990,8 @@ function OrlanHeal:UnitCriticalDebuffDuration(unit)
 				maxTimeSpent = timeSpent;
 			end;
 
-			local timeLeft = expiration - GetTime();
+			---@type integer | nil
+			local timeLeft = aura.expirationTime - GetTime();
 			if (timeLeft < 0) or (timeLeft > 100) then
 				timeLeft = nil;
 			end;
@@ -1053,7 +1061,8 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 end;
 
 function OrlanHeal:UpdateHealth(healthBar, unit)
-	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit), UnitGetIncomingHeals(unit), UnitGetIncomingHeals(unit, "player"));
+	self:UpdateStatusBar(healthBar, UnitHealth(unit), UnitHealthMax(unit), UnitGetIncomingHeals(unit),
+		UnitGetIncomingHeals(unit, "player"));
 
 	if not UnitIsConnected(unit) then
 		self:SetStatusBarCurrentColor(healthBar, { r = 0, g = 0, b = 0 });
@@ -1077,7 +1086,7 @@ end;
 
 function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 	local text = GetUnitName(unit, false);
-	
+
 	if UnitIsAFK(unit) then
 		text = "afk " .. text;
 	end;
@@ -1094,9 +1103,12 @@ function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 	end;
 
 	if (displayedGroup ~= nil) and (string.sub(unit, 1, 4) == "raid") then
-		local _, _, groupNumber = GetRaidRosterInfo(string.sub(unit, 5));
-		if displayedGroup ~= groupNumber then
-			text = "[" .. groupNumber .. "] " .. text;
+		local raidIndex = tonumber(string.sub(unit, 5))
+		if raidIndex ~= nil then
+			local _, _, groupNumber = GetRaidRosterInfo(raidIndex);
+			if displayedGroup ~= groupNumber then
+				text = "[" .. groupNumber .. "] " .. text;
+			end;
 		end;
 	end;
 
@@ -1104,11 +1116,10 @@ function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 	local class = UnitClassBase(unit);
 	local classColor = RAID_CLASS_COLORS[class];
 	if classColor == nil then
-		classColor = { r = 0.4, g = 0.4, b = 0.4 };
+		nameBar:SetTextColor(0.4, 0.4, 0.4, 1);
 	else
-		classColor = { r = classColor.r, g = classColor.g, b = classColor.b }
+		nameBar:SetTextColor(classColor.r, classColor.g, classColor.b, 1);
 	end;
-	nameBar:SetTextColor(classColor.r, classColor.g, classColor.b, 1);
 end;
 
 function OrlanHeal:UpdateBuffTimes(canvas, unit)
@@ -1140,27 +1151,26 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	local goodBuffs = {};
 	local buffIndex = 1;
 	while true do
-		local name, icon, count, _, duration, expires, caster, _, shouldConsolidate, spellId = 
-			UnitAura(unit, buffIndex, "HELPFUL");
-		if name == nil then break; end;
+		local aura = C_UnitAuras.GetBuffDataByIndex(unit, buffIndex)
+		if not aura then break; end;
 
-		local buffKind = self.Class.GetSpecificBuffKind(self, spellId, caster);
+		local buffKind = self.Class.GetSpecificBuffKind(self, aura.spellId, aura.sourceUnit);
 		if not buffKind then
-			if (self.SavingAbilities[spellId]) then
+			if (self.SavingAbilities[aura.spellId]) then
 				buffKind = -1;
-			elseif (caster ~= nil) and UnitIsUnit(caster, "player") and (duration <= 30) then
+			elseif (aura.sourceUnit ~= nil) and UnitIsUnit(aura.sourceUnit, "player") and (aura.duration <= 30) then
 				buffKind = -2;
 			end;
 		end;
 
-		if buffKind ~= nil and not self.IgnoredBuffs[spellId] then
+		if buffKind ~= nil and not self.IgnoredBuffs[aura.spellId] then
 			goodBuffCount = goodBuffCount + 1;
 			goodBuffs[goodBuffCount] =
 			{
-				Icon = icon,
-				Count = count,
-				Duration = duration,
-				Expires = expires,
+				Icon = aura.icon,
+				Count = aura.applications,
+				Duration = aura.duration,
+				Expires = aura.expirationTime,
 				Kind = buffKind
 			};
 		end;
@@ -1171,7 +1181,8 @@ function OrlanHeal:UpdateBuffs(canvas, unit)
 	if canvas.SpecificBuffs ~= nil then
 		for buffIndex = 0, 4 do
 			if canvas.SpecificBuffs[buffIndex] ~= nil then
-				canvas.SpecificBuffs[buffIndex].CurrentBuff = self:GetLastBuffOfKind(goodBuffs, goodBuffCount, buffIndex + 1);
+				canvas.SpecificBuffs[buffIndex].CurrentBuff = self:GetLastBuffOfKind(goodBuffs, goodBuffCount,
+					buffIndex + 1);
 			end;
 		end;
 	end;
@@ -1191,20 +1202,20 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 	local buffIndex = 1;
 	local canAssist = UnitCanAssist("player", unit);
 	while true do
-		local name, icon, count, dispelType, duration, expires, caster, _, _, spellId = UnitAura(unit, buffIndex, "HARMFUL");
-		if name == nil then break; end;
+		local aura = C_UnitAuras.GetDebuffDataByIndex(unit, buffIndex)
+		if not aura then break; end;
 
-		local buffKind = self.Class.GetSpecificDebuffKind(self, spellId, caster);
+		local buffKind = self.Class.GetSpecificDebuffKind(self, aura.spellId, aura.sourceUnit);
 		if not buffKind then
-			if (dispelType == "Disease") and canAssist then
+			if (aura.dispelName == "Disease") and canAssist then
 				buffKind = self.Class.DiseaseDebuffKind;
-			elseif (dispelType == "Magic") and canAssist then
+			elseif (aura.dispelName == "Magic") and canAssist then
 				buffKind = self.Class.MagicDebuffKind;
-			elseif (dispelType == "Poison") and canAssist then
+			elseif (aura.dispelName == "Poison") and canAssist then
 				buffKind = self.Class.PoisonDebuffKind;
-			elseif (dispelType == "Curse") and canAssist then
+			elseif (aura.dispelName == "Curse") and canAssist then
 				buffKind = self.Class.CurseDebuffKind;
-			elseif (self.IgnoredDebuffs[spellId]) then
+			elseif (self.IgnoredDebuffs[aura.spellId]) then
 				buffKind = nil;
 			elseif canAssist then
 				buffKind = -1;
@@ -1215,10 +1226,10 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 			specialDebuffCount = specialDebuffCount + 1;
 			specialDebuffs[specialDebuffCount] =
 			{
-				Icon = icon,
-				Count = count,
-				Duration = duration,
-				Expires = expires,
+				Icon = aura.icon,
+				Count = aura.applications,
+				Duration = aura.duration,
+				Expires = aura.expirationTime,
 				Kind = buffKind
 			};
 		end;
@@ -1228,7 +1239,8 @@ function OrlanHeal:UpdateDebuffs(canvas, unit)
 
 	local slotIndex = 0;
 	while canvas.Debuffs.Slots[slotIndex + 1] do
-		canvas.Debuffs[slotIndex].CurrentBuff = self:GetLastBuffOfKind(specialDebuffs, specialDebuffCount, canvas.Debuffs.Slots[slotIndex + 1]);
+		canvas.Debuffs[slotIndex].CurrentBuff = self:GetLastBuffOfKind(specialDebuffs, specialDebuffCount,
+			canvas.Debuffs.Slots[slotIndex + 1]);
 		slotIndex = slotIndex + 1;
 	end;
 end;
@@ -1313,12 +1325,12 @@ end;
 function OrlanHeal:PlayerHasBuff(id)
 	local index = 1;
 	while true do
-		local spellId = select(10, UnitAura("player", index));
-		if not spellId then
+		local aura = C_UnitAuras.GetBuffDataByIndex("player", index);
+		if not aura then
 			break;
 		end;
 
-		if spellId == id then
+		if aura.spellId == id then
 			return true;
 		end;
 
@@ -1331,14 +1343,13 @@ end;
 function OrlanHeal:PlayerBuffStackCount(id)
 	local index = 1;
 	while true do
-		local auraValues = {UnitAura("player", index)};
-		local spellId = auraValues[10];
-		if not spellId then
+		local aura = C_UnitAuras.GetBuffDataByIndex("player", index);
+		if not aura then
 			break;
 		end;
 
-		if spellId == id then
-			return auraValues[3];
+		if aura.spellId == id then
+			return aura.applications;
 		end;
 
 		index = index + 1;
