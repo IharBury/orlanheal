@@ -1,6 +1,6 @@
 ﻿OrlanHeal.Druid = {};
 
-OrlanHeal.Druid.IsSupported = true;
+OrlanHeal.Druid.IsSupported = false;
 
 OrlanHeal.Druid.AvailableSpells =
 {

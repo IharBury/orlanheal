@@ -1,6 +1,6 @@
 ﻿OrlanHeal.Shaman = {};
 
-OrlanHeal.Shaman.IsSupported = true;
+OrlanHeal.Shaman.IsSupported = false;
 OrlanHeal.Shaman.GiftOfTheNaaruSpellId = 59547;
 
 OrlanHeal.Shaman.AvailableSpells =

@@ -38,5 +38,13 @@ OrlanHeal.IgnoredBuffs =
     [317920] = true, -- Concentration Aura
     [324717] = true, -- Soul Remnant's Blessing
     [326396] = true, -- WoW's 16th Anniversary
-	[328136] = true -- Impressive Influence
+	[328136] = true, -- Impressive Influence
+    [359530] = true, -- WoW's 18th Anniversary
+    [362877] = true, -- Temporal Compression
+    [366646] = true, -- Familiar Skies
+    [369299] = true, -- Essence Burst
+    [372014] = true, -- Visage
+    [375583] = true, -- Ancient Flame
+    [381748] = true, -- Blessing of the Bronze
+    [390148] = true -- Flow State
 };
