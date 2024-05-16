@@ -9,7 +9,7 @@
 
 	for cooldownIndex = 0, self.MaxCooldownCount - 1 do
 		cooldowns[cooldownIndex] = self:CreateCooldown(
-			cooldowns.Frames[math.floor(cooldownIndex / self.CooldownCountPerFrame)], 
+			cooldowns.Frames[math.floor(cooldownIndex / self.CooldownCountPerFrame)],
 			cooldownIndex % self.CooldownCountPerFrame);
 	end;
 
@@ -23,6 +23,8 @@ function OrlanHeal:CreateCooldownFrame(parent)
 	return frame;
 end;
 
+---@param parent any
+---@param index integer
 function OrlanHeal:CreateCooldown(parent, index)
 	local cooldown = CreateFrame("Cooldown", nil, parent, "CooldownFrameTemplate");
 
@@ -97,6 +99,7 @@ function OrlanHeal:SetupCooldown(window, cooldown)
 	end;
 end;
 
+---@param index integer
 function OrlanHeal:GetCooldown(index)
 	local name = self.Config["cooldown" .. (index + 1)];
 	local cooldown;
@@ -160,13 +163,19 @@ end;
 function OrlanHeal:UpdatePlayerBuffCooldown(window)
 	local i = 1;
 	while true do
-		local _, _, count, _, duration, expirationTime, _, _, _, buffId = UnitBuff("player", i);
-		if (not buffId) or (buffId == (window.Cooldown.AuraId or window.Cooldown.SpellId)) then
-			self:UpdateCooldown(window, duration, expirationTime, count, window.Cooldown.AlwaysShowCount);
+		local aura = C_UnitAuras.GetBuffDataByIndex("player", i);
+		if not aura then
+			self:UpdateCooldown(window, nil, nil, nil, window.Cooldown.AlwaysShowCount);
+			return;
+		end;
+		if aura.spellId == (window.Cooldown.AuraId or window.Cooldown.SpellId) then
+			self:UpdateCooldown(window, aura.duration, aura.expirationTime, aura.applications,
+				window.Cooldown.AlwaysShowCount);
 			return;
 		end;
 		i = i + 1
-	end;end;
+	end;
+end;
 
 function OrlanHeal:UpdateMainHandTemporaryEnchantCooldown(window)
 	local hasEnchant, timeLeft = GetWeaponEnchantInfo();
@@ -187,7 +196,12 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 		return;
 	end;
 
-	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	---@type number | nil
+	local start;
+	---@type number | nil
+	local duration;
+	local enabled;
+	start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 	local currentCharges, maxCharges = GetSpellCharges(window.Cooldown.SpellId);
 	local displayedCharges = "";
 	if window.Cooldown.ScalingBuffId then
@@ -196,7 +210,7 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 	end;
 	if (maxCharges and (maxCharges > 1)) then
 		if displayedCharges == "" then
-			displayedCharges = currentCharges
+			displayedCharges = tostring(currentCharges)
 		else
 			displayedCharges = currentCharges .. " " .. displayedCharges;
 		end;
@@ -218,7 +232,12 @@ function OrlanHeal:UpdateTotemCooldown(window)
 		return;
 	end;
 
-	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	---@type number | nil
+	local start;
+	---@type number | nil
+	local duration;
+	local enabled;
+	start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 	local expirationTime, isReverse;
 	if start and (start ~= 0) and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
@@ -238,7 +257,12 @@ function OrlanHeal:UpdateTotemCooldown(window)
 end;
 
 function OrlanHeal:UpdateAbilitySequenceCooldown(window)
-	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	---@type number | nil
+	local start;
+	---@type number | nil
+	local duration;
+	local enabled;
+	start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 	local expirationTime;
 	if start and (start ~= 0) and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
@@ -248,7 +272,12 @@ function OrlanHeal:UpdateAbilitySequenceCooldown(window)
 		expirationTime = nil;
 	end;
 
-	local prefixStart, prefixDuration, prefixEnabled = GetSpellCooldown(window.Cooldown.PrefixSpellId);
+	---@type number | nil
+	local prefixStart;
+	---@type number | nil
+	local prefixDuration;
+	local prefixEnabled;
+	prefixStart, prefixDuration, prefixEnabled = GetSpellCooldown(window.Cooldown.PrefixSpellId);
 	local prefixExpirationTime;
 	if prefixStart and (prefixStart ~= 0) and prefixDuration and (prefixDuration ~= 0) and (prefixEnabled == 1) then
 		prefixExpirationTime = prefixStart + prefixDuration;
@@ -268,7 +297,12 @@ function OrlanHeal:UpdateAbilitySequenceCooldown(window)
 end;
 
 function OrlanHeal:UpdateItemCooldown(window)
-	local start, duration, enabled = GetInventoryItemCooldown("player", GetInventorySlotInfo(window.Cooldown.SlotName));
+	---@type number | nil
+	local start;
+	---@type number | nil
+	local duration;
+	local enabled;
+	start, duration, enabled = GetInventoryItemCooldown("player", GetInventorySlotInfo(window.Cooldown.SlotName));
 	local expirationTime;
 	if start and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
@@ -294,7 +328,12 @@ end;
 
 function OrlanHeal:UpdateRaidBuffAbilityCooldown(window)
 	local _, _, count = self:GetRaidBuffCooldown(window.Cooldown.AuraId or window.Cooldown.SpellId);
-	local start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
+	---@type number | nil
+	local start;
+	---@type number | nil
+	local duration;
+	local enabled;
+	start, duration, enabled = GetSpellCooldown(window.Cooldown.SpellId);
 	local expirationTime;
 	if start and (start ~= 0) and duration and (duration ~= 0) and (enabled == 1) then
 		expirationTime = start + duration;
@@ -306,6 +345,10 @@ function OrlanHeal:UpdateRaidBuffAbilityCooldown(window)
 	self:UpdateCooldown(window, duration, expirationTime, count);
 end;
 
+---@param spellId number
+---@return number | nil
+---@return number | nil
+---@return number | nil
 function OrlanHeal:GetRaidBuffCooldown(spellId)
 	local duration, expirationTime, count = self:GetPlayerCastUnitBuffCooldown("player", spellId);
 	if duration then
@@ -340,18 +383,25 @@ function OrlanHeal:GetRaidBuffCooldown(spellId)
 			return duration, expirationTime, count;
 		end;
 	end;
+
+	return nil, nil, nil
 end;
 
+---@param unit string
+---@param spellId number
+---@return number | nil
+---@return number | nil
+---@return number | nil
 function OrlanHeal:GetPlayerCastUnitBuffCooldown(unit, spellId)
 	local i = 1;
 	while true do
-		local _, _, count, _, duration, expirationTime, _, _, _, buffId = UnitBuff(unit, i, "PLAYER");
-		if not buffId then
-			return;
+		local aura = C_UnitAuras.GetAuraDataByIndex(unit, i, "PLAYER");
+		if not aura then
+			return nil, nil, nil;
 		end;
 
-		if buffId == spellId then
-			return duration, expirationTime, count;
+		if aura.spellId == spellId then
+			return aura.duration, aura.expirationTime, aura.applications;
 		end;
 
 		i = i + 1;
@@ -393,11 +443,13 @@ function OrlanHeal:GetRacialCooldown()
 	return cooldown;
 end;
 
+---@param duration number | nil
+---@param expirationTime number | nil
+---@param count number | nil
+---@param alwaysDisplayCount boolean | nil
+---@param isReverse boolean | nil
+---@param isOff boolean | nil
 function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alwaysDisplayCount, isReverse, isOff)
---	if not window:CanChangeProtectedState() then
---		return;
---	end;
-
 	if isReverse == nil then
 		isReverse = window.Cooldown.IsReverse;
 	end;
@@ -409,12 +461,12 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 	end;
 
 	local isPotentiallyUsableSpell = window.Cooldown.SpellId and
-		self:IsSpellOverridesKnown(window.Cooldown) and 
-		((duration ~= 0) or 
-			window.Cooldown.IsReverse or 
+		self:IsSpellOverridesKnown(window.Cooldown) and
+		((duration ~= 0) or
+			window.Cooldown.IsReverse or
 			IsUsableSpell(window.Cooldown.SpellId) or
 			window.Cooldown.IsAlwaysUsable);
-	local isUsableItem = window.Cooldown.SlotName and 
+	local isUsableItem = window.Cooldown.SlotName and
 		GetInventoryItemID("player", GetInventorySlotInfo(window.Cooldown.SlotName));
 	if (not isOff) and (isPotentiallyUsableSpell or isUsableItem or window.Cooldown.MacroText) then
 		window.Dark = false;
@@ -431,9 +483,9 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 		end;
 	else
 		window:SetReverse(false);
-		if not window.Dark 
-				or not window:GetCooldownDuration()
-				or window:GetCooldownDuration() == 0 then
+		if not window.Dark
+			or not window:GetCooldownDuration()
+			or window:GetCooldownDuration() == 0 then
 			local time = GetTime();
 			window.Off = time + 10000000;
 			window:SetCooldown(time, 10000000);
@@ -513,7 +565,7 @@ OrlanHeal.CommonCooldownOptions =
 		Update = OrlanHeal.UpdateItemCooldown,
 		Group = "Use"
 	},
-	Head = 
+	Head =
 	{
 		SlotName = "HeadSlot",
 		SlotCaption = HEADSLOT,
