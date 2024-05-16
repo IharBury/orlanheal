@@ -207,11 +207,6 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 10326, -- Turn Evil
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	Seraphim =
-	{
-		SpellId = 152262, -- Seraphim
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	BeaconOfVirtue =
 	{
 		SpellId = 200025, -- Beacon of Virtue

@@ -5,6 +5,7 @@ OrlanHeal.Monk.GiftOfTheNaaruSpellId = 121093;
 
 OrlanHeal.Monk.AvailableSpells =
 {
+	115175, -- Soothing Mist
 	121093, -- Gift of the Naaru
 	115450, -- Detox
 	124682, -- Enveloping Mist
