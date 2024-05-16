@@ -13,7 +13,12 @@ OrlanHeal.Paladin.AvailableSpells =
 	183998, -- Light of the Martyr
 	85673, -- Word of Glory
 	1022, -- Blessing of Protection
-	4987, -- Cleanse
+	{
+		type = "macro",
+		caption = GetSpellInfo(4987), -- Cleanse
+		macrotext = OrlanHeal:BuildMouseOverCastMacro(4987),
+		key = 4987
+	},
 	20473, -- Holy Shock
 	6940, -- Blessing of Sacrifice
 	156910, -- Beacon of Faith
