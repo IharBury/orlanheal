@@ -321,7 +321,12 @@
 	[353930] = true, -- Banshee's Bane
 	[354374] = true, -- Banshee's Bane
 	[357882] = true, -- Banshee's Bane
-	[365153] = true -- Dominating Will
+	[365153] = true, -- Dominating Will
+
+	[420856] = true, -- Poisonous Javelin
+	[420857] = true, -- Poisonous Javelin
+	[420858] = true, -- Poisonous Javelin
+	[420859] = true -- Poisonous Javelin
 };
 
 OrlanHeal.VeryCriticalDebuffs =
