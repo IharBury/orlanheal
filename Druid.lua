@@ -196,9 +196,9 @@ function OrlanHeal.Druid.GetConfigPresets(orlanHeal)
 end;
 
 function OrlanHeal.Druid.UpdateRaidBorder(orlanHeal)
-	local _, swiftmendCooldown = GetSpellCooldown(18562);
+	local swiftmendCooldown = C_Spell.GetSpellCooldown(18562).duration;
 	local _, lifebloomExpirationTime = orlanHeal:GetRaidBuffCooldown(33763);
-	local _, wildGrowthCooldown = GetSpellCooldown(48438);
+	local wildGrowthCooldown = C_Spell.GetSpellCooldown(48438).duration;
 	local isSwiftmendReady = IsSpellKnown(18562) and (swiftmendCooldown < 1.5);
 	local isWildGrowthReady = IsSpellKnown(48438) and (wildGrowthCooldown < 1.5);
 	if lifebloomExpirationTime 

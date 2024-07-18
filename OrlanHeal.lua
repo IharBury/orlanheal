@@ -874,8 +874,8 @@ function OrlanHeal:IsSpellReady(spellId)
 end;
 
 function OrlanHeal:IsSpellNotOnCooldown(spellId)
-	local start, duration = GetSpellCooldown(spellId);
-	return not ((start > 0) and (duration > 1.5)); -- cooldowns less than GCD are ignored (latency + queueing)
+	local cooldown = C_Spell.GetSpellCooldown(spellId);
+	return not ((cooldown.startTime > 0) and (cooldown.duration > 1.5)); -- cooldowns less than GCD are ignored (latency + queueing)
 end;
 
 function OrlanHeal:UpdateUnitStatus(window, displayedGroup)
