@@ -3,6 +3,7 @@
 OrlanHeal.Paladin.IsSupported = true;
 OrlanHeal.Paladin.GiftOfTheNaaruSpellId = 59542;
 
+-- TODO: Divine Toll. Holy Bulwark. Fix Blessing of the Seasons.
 OrlanHeal.Paladin.AvailableSpells =
 {
 	19750, -- Flash of Light
@@ -10,7 +11,6 @@ OrlanHeal.Paladin.AvailableSpells =
 	633, -- Lay on Hands
 	53563, -- Beacon of Light
 	1044, -- Blessing of Freedom
-	183998, -- Light of the Martyr
 	85673, -- Word of Glory
 	1022, -- Blessing of Protection
 	{
@@ -25,7 +25,6 @@ OrlanHeal.Paladin.AvailableSpells =
 	59542, -- Gift of the Naaru
 	7328, -- Redemption
 	114165, -- Holy Prism
-	223306, -- Bestow Faith
 	148039, -- Barrier of Faith
 	{
 		type = "spell",
@@ -35,6 +34,7 @@ OrlanHeal.Paladin.AvailableSpells =
 	391054 -- Intercession
 };
 
+-- TODO: Remove Azerite and Night Fae. Blessing of Summer, etc. Hand of Divinity. Holy Bulwark. Fix Cleanse. Avenging Crusader.
 OrlanHeal.Paladin.CooldownOptions =
 {
 	TyrsDeliverence =
@@ -165,16 +165,6 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 20066, -- Repentance
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	HolyAvenger =
-	{
-		SpellId = 105809, -- Holy Avenger
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	BestowFaith =
-	{
-		SpellId = 223306, -- Bestow Faith
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
 	Consecration =
 	{
 		SpellId = 26573, -- Consecration
@@ -189,16 +179,6 @@ OrlanHeal.Paladin.CooldownOptions =
 	HolyPrism =
 	{
 		SpellId = 114165, -- Holy Prism
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	LightsHammer =
-	{
-		SpellId = 114158, -- Light's Hammer
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	RuleOfLaw =
-	{
-		SpellId = 214202, -- Rule of Law
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	HammerOfWrath =
@@ -217,11 +197,6 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 200025, -- Beacon of Virtue
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		ForbidOverrides = true
-	},
-	DivineFavor =
-	{
-		SpellId = 210294, -- Divine Favor
-		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	Soulshape = {
 		SpellId = 310143, -- Soulshape
@@ -315,15 +290,15 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown1"] = "Cleanse";
 	config["cooldown2"] = "Judgment";
 	config["cooldown3"] = "HolyPrism";
-	config["cooldown4"] = "LightsHammer";
-	config["cooldown5"] = "HolyAvenger";
+	config["cooldown4"] = "";
+	config["cooldown5"] = "";
 	config["cooldown6"] = "AvengingWrath"; 
-	config["cooldown7"] = "Seraphim";
-	config["cooldown8"] = "RuleOfLaw";
+	config["cooldown7"] = "";
+	config["cooldown8"] = "";
 	config["cooldown9"] = "DivineShield"; 
 	config["cooldown10"] = "DivineProtection"; 
 	config["cooldown11"] = "AuraMastery";
-	config["cooldown12"] = "BestowFaith";
+	config["cooldown12"] = "";
 	config["cooldown13"] = "HandOfProtection";
 	config["cooldown14"] = "HandOfSacrifice";
 	config["cooldown15"] = "HandOfFreedom";
@@ -333,7 +308,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown19"] = "BlindingLight";
 	config["cooldown20"] = "TurnEvil";
 	config["cooldown21"] = "LayOnHands";
-	config["cooldown22"] = "DivineFavor";
+	config["cooldown22"] = "";
 	config["cooldown23"] = "HammerOfWrath";
 	config["cooldown24"] = "BeaconOfVirtue";
 	config["cooldown25"] = orlanHeal:GetRacialCooldown();
