@@ -383,7 +383,7 @@ OrlanHeal.Paladin.PlayerSpecificBuffCount = 3;
 OrlanHeal.Paladin.PlayerSpecificDebuffCount = 1;
 
 function OrlanHeal.Paladin.CanUseHolyPowerGenerator(self, id)
-	local usable, noMana = IsUsableSpell(id);
+	local usable, noMana = C_Spell.IsSpellUsable(id);
 	if (not usable) or noMana then
 		return false;
 	end;

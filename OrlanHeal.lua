@@ -870,7 +870,7 @@ function OrlanHeal:UpdateTargetIcon(canvas, unit)
 end;
 
 function OrlanHeal:IsSpellReady(spellId)
-	return IsUsableSpell(spellId) and self:IsSpellNotOnCooldown(spellId);
+	return C_Spell.IsSpellUsable(spellId) and self:IsSpellNotOnCooldown(spellId);
 end;
 
 function OrlanHeal:IsSpellNotOnCooldown(spellId)

@@ -464,7 +464,7 @@ function OrlanHeal:UpdateCooldown(window, duration, expirationTime, count, alway
 		self:IsSpellOverridesKnown(window.Cooldown) and
 		((duration ~= 0) or
 			window.Cooldown.IsReverse or
-			IsUsableSpell(window.Cooldown.SpellId) or
+			C_Spell.IsSpellUsable(window.Cooldown.SpellId) or
 			window.Cooldown.IsAlwaysUsable);
 	local isUsableItem = window.Cooldown.SlotName and
 		GetInventoryItemID("player", GetInventorySlotInfo(window.Cooldown.SlotName));
