@@ -197,17 +197,17 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 	end;
 
 	local cooldown = C_Spell.GetSpellCooldown(window.Cooldown.SpellId);
-	local currentCharges, maxCharges = GetSpellCharges(window.Cooldown.SpellId);
+	local charges = C_Spell.GetSpellCharges(window.Cooldown.SpellId);
 	local displayedCharges = "";
 	if window.Cooldown.ScalingBuffId then
 		local scalingBuffStackCount = self:PlayerBuffStackCount(window.Cooldown.ScalingBuffId);
 		displayedCharges = "(" .. scalingBuffStackCount .. ")";
 	end;
-	if (maxCharges and (maxCharges > 1)) then
+	if (charges and charges.maxCharges and (charges.maxCharges > 1)) then
 		if displayedCharges == "" then
-			displayedCharges = tostring(currentCharges)
+			displayedCharges = tostring(charges.currentCharges)
 		else
-			displayedCharges = currentCharges .. " " .. displayedCharges;
+			displayedCharges = charges.currentCharges .. " " .. displayedCharges;
 		end;
 	end;
 	local duration, expirationTime;
