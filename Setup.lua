@@ -456,18 +456,28 @@ end;
 
 function OrlanHeal:GetSpellCaption(spell)
 	local caption;
-	if spell == nil then
+	if (spell == nil) or (spell == "") then
 		caption = nil;
 	elseif type(spell) == "table" then
 		if spell.caption then
 			caption = spell.caption;
 		else
-			caption = C_Spell.GetSpellInfo(spell.spell).name;
+			local spellInfo = C_Spell.GetSpellInfo(spell.spell);
+			if spellInfo then
+				caption = spellInfo.name;
+			else
+				caption = "Unknown " .. spell.spell;
+			end;
 		end;
 	elseif spell == "target" then
 		caption = "Set as target";
 	else
-		caption = C_Spell.GetSpellInfo(spell).name;
+		local spellInfo = C_Spell.GetSpellInfo(spell);
+		if spellInfo then
+			caption = spellInfo.name;
+		else
+			caption = "Unknown " .. spell;
+		end;
 	end;
 	return caption;
 end;
