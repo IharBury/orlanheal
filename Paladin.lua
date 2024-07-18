@@ -396,7 +396,7 @@ function OrlanHeal.Paladin.CanUseTargetedHolyPowerGenerator(self, id)
 		return false;
 	end;
 	local name = C_Spell.GetSpellInfo(id).name
-	local inRange = IsSpellInRange(name, "target");
+	local inRange = C_Spell.IsSpellInRange(name, "target");
 	return inRange == 1;
 end;
 
