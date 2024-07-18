@@ -94,7 +94,7 @@ OrlanHeal.Druid.CooldownOptions =
 	},
 	NaturesControl =
 	{
-		MacroText = "/cast " .. GetSpellInfo(175682),
+		MacroText = "/cast " .. C_Spell.GetSpellInfo(175682).name,
 		SpellId = 175682, -- Nature's Control
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},

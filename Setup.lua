@@ -462,12 +462,12 @@ function OrlanHeal:GetSpellCaption(spell)
 		if spell.caption then
 			caption = spell.caption;
 		else
-			caption = GetSpellInfo(spell.spell);
+			caption = C_Spell.GetSpellInfo(spell.spell).name;
 		end;
 	elseif spell == "target" then
 		caption = "Set as target";
 	else
-		caption = GetSpellInfo(spell);
+		caption = C_Spell.GetSpellInfo(spell).name;
 	end;
 	return caption;
 end;
@@ -628,12 +628,7 @@ function OrlanHeal:GetCooldownCaption(cooldown)
 	else
 		local effectId = cooldown.AuraId or cooldown.SpellId;
 		if effectId then
-			local name, subName = GetSpellInfo(effectId);
-			if subName and (subName ~= "") then
-				caption = name .. " (" .. subName .. ")";
-			else
-				caption = name;
-			end;
+			caption = GetSpellInfo(effectId).name;
 		else
 			caption = cooldown.SlotCaption;
 		end;

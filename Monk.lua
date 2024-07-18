@@ -15,28 +15,28 @@ OrlanHeal.Monk.AvailableSpells =
 	116841, -- Tiger's Lust
 	{
 		type = "macro",
-		caption = "No CD " .. GetSpellInfo(115151), -- Renewing Mist
+		caption = "No CD " .. C_Spell.GetSpellInfo(115151).name, -- Renewing Mist
 		macrotext = OrlanHeal:BuildCastSequenceMacro(116680, 115151),
 		key = "116680,115151",
-		group = GetSpellInfo(116680) -- Thunder Focus Tea
+		group = C_Spell.GetSpellInfo(116680).name -- Thunder Focus Tea
 	},
 	{
 		type = "macro",
-		caption = "Instant " .. GetSpellInfo(124682), -- Enveloping Mist
+		caption = "Instant " .. C_Spell.GetSpellInfo(124682).name, -- Enveloping Mist
 		macrotext = OrlanHeal:BuildCastSequenceMacro(116680, 124682),
 		key = "116680,124682",
-		group = GetSpellInfo(116680) -- Thunder Focus Tea
+		group = C_Spell.GetSpellInfo(116680).name -- Thunder Focus Tea
 	},
 	{
 		type = "macro",
-		caption = "Free " .. GetSpellInfo(116670), -- Vivify
+		caption = "Free " .. C_Spell.GetSpellInfo(116670).name, -- Vivify
 		macrotext = OrlanHeal:BuildCastSequenceMacro(116680, 116670),
 		key = "116680,116670",
-		group = GetSpellInfo(116680) -- Thunder Focus Tea
+		group = C_Spell.GetSpellInfo(116680).name -- Thunder Focus Tea
 	},
 	{
 		type = "macro",
-		caption = GetSpellInfo(175697), -- Disabling Technique
+		caption = C_Spell.GetSpellInfo(175697).name, -- Disabling Technique
 		macrotext = OrlanHeal:BuildMouseOverCastMacro(175697),
 		key = 175697
 	},
@@ -141,7 +141,7 @@ OrlanHeal.Monk.CooldownOptions =
 	},
 	ZenPilgrimage =
 	{
-		MacroText = "/cast " .. GetSpellInfo(126892),
+		MacroText = "/cast " .. C_Spell.GetSpellInfo(126892).name,
 		SpellId = 126892,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
@@ -149,13 +149,13 @@ OrlanHeal.Monk.CooldownOptions =
 	{
 		SpellId = 101643,
 		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = GetSpellInfo(101643) -- Transcendence
+		Group = C_Spell.GetSpellInfo(101643).name -- Transcendence
 	},
 	TranscendenceTransfer =
 	{
 		SpellId = 119996,
 		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = GetSpellInfo(101643) -- Transcendence
+		Group = C_Spell.GetSpellInfo(101643).name -- Transcendence
 	},
 	RisingSunKick =
 	{
@@ -164,7 +164,7 @@ OrlanHeal.Monk.CooldownOptions =
 	},
 	DisablingTechnique =
 	{
-		MacroText = "/cast " .. GetSpellInfo(175697),
+		MacroText = "/cast " .. C_Spell.GetSpellInfo(175697).name,
 		SpellId = 175697, -- Disabling Technique
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
