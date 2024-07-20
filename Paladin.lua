@@ -3,7 +3,7 @@
 OrlanHeal.Paladin.IsSupported = true;
 OrlanHeal.Paladin.GiftOfTheNaaruSpellId = 59542;
 
--- TODO: Divine Toll. Holy Bulwark. Fix Blessing of the Seasons.
+-- TODO: Fix Blessing of the Seasons.
 OrlanHeal.Paladin.AvailableSpells =
 {
 	19750, -- Flash of Light
@@ -31,7 +31,8 @@ OrlanHeal.Paladin.AvailableSpells =
 		spell = 328620, -- Blessing of Summer
 		caption = C_Spell.GetSpellInfo(328278).name -- Blessing of the Seasons
 	},
-	391054 -- Intercession
+	391054, -- Intercession
+	432459 -- Holy Bulwark
 };
 
 -- TODO: Remove Azerite and Night Fae. Blessing of Summer, etc. Hand of Divinity. Holy Bulwark. Fix Cleanse. Avenging Crusader.
@@ -263,6 +264,10 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	Intercession = {
 		SpellId = 391054, -- Intercession
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	HolyBulwark = {
+		SpellId = 432459, -- Holy Bulwark
 		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
