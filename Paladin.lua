@@ -76,6 +76,11 @@ OrlanHeal.Paladin.CooldownOptions =
 			return race == "Draenei";
 		end
 	},
+	Daybreak =
+	{
+		SpellId = 414170, -- Daybreak
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
 	DivineProtection =
 	{
 		SpellId = 498, -- Divine Protection
