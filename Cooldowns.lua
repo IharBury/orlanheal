@@ -211,9 +211,9 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 		end;
 	end;
 	local duration, expirationTime;
-	if cooldown.startTime and (cooldown.startTime ~= 0) and cooldown.duration and (cooldown.duration ~= 0) and (cooldown.isEnabled == 1) then
+	if cooldown.startTime and (cooldown.startTime ~= 0) and cooldown.duration and (cooldown.duration ~= 0) and cooldown.isEnabled then
 		duration = cooldown.duration;
-		expirationTime = cooldown.start + duration;
+		expirationTime = cooldown.startTime + duration;
 	else
 		duration = nil;
 		expirationTime = nil;
@@ -229,7 +229,7 @@ function OrlanHeal:UpdateTotemCooldown(window)
 
 	local cooldown = C_Spell.GetSpellCooldown(window.Cooldown.SpellId);
 	local duration, expirationTime, isReverse;
-	if cooldown.startTime and (cooldown.startTime ~= 0) and cooldown.duration and (cooldown.duration ~= 0) and (cooldown.isEnabled == 1) then
+	if cooldown.startTime and (cooldown.startTime ~= 0) and cooldown.duration and (cooldown.duration ~= 0) and cooldown.isEnabled then
 		duration = cooldown.duration
 		expirationTime = cooldown.startTime + cooldown.duration;
 		isReverse = false
@@ -250,9 +250,9 @@ end;
 function OrlanHeal:UpdateAbilitySequenceCooldown(window)
 	local cooldown = C_Spell.GetSpellCooldown(window.Cooldown.SpellId);
 	local duration, expirationTime;
-	if cooldown.startTime and (cooldown.startTime ~= 0) and cooldown.duration and (cooldown.duration ~= 0) and (cooldown.isEnabled == 1) then
+	if cooldown.startTime and (cooldown.startTime ~= 0) and cooldown.duration and (cooldown.duration ~= 0) and cooldown.isEnabled then
 		duration = cooldown.duration;
-		expirationTime = cooldown.start + cooldown.duration;
+		expirationTime = cooldown.startTime + cooldown.duration;
 	else
 		duration = nil;
 		expirationTime = nil;
@@ -260,7 +260,7 @@ function OrlanHeal:UpdateAbilitySequenceCooldown(window)
 
 	local prefixCooldown = C_Spell.GetSpellCooldown(window.Cooldown.PrefixSpellId);
 	local prefixDuration, prefixExpirationTime;
-	if prefixCooldown.startTime and (prefixCooldown.startTime ~= 0) and prefixCooldown.duration and (prefixCooldown.duration ~= 0) and (prefixCooldown.isEnabled == 1) then
+	if prefixCooldown.startTime and (prefixCooldown.startTime ~= 0) and prefixCooldown.duration and (prefixCooldown.duration ~= 0) and prefixCooldown.isEnabled then
 		prefixDuration = prefixCooldown.duration
 		prefixExpirationTime = prefixCooldown.startTime + prefixCooldown.duration;
 	else
@@ -310,7 +310,7 @@ function OrlanHeal:UpdateRaidBuffAbilityCooldown(window)
 	local _, _, count = self:GetRaidBuffCooldown(window.Cooldown.AuraId or window.Cooldown.SpellId);
 	local cooldown = C_Spell.GetSpellCooldown(window.Cooldown.SpellId);
 	local duration, expirationTime;
-	if cooldown.startTime and (cooldown.startTime ~= 0) and cooldown.duration and (cooldown.duration ~= 0) and (cooldown.isEnabled == 1) then
+	if cooldown.startTime and (cooldown.startTime ~= 0) and cooldown.duration and (cooldown.duration ~= 0) and cooldown.isEnabled then
 		duration = cooldown.duration
 		expirationTime = cooldown.startTime + cooldown.duration;
 	else
