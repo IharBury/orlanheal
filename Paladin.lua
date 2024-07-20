@@ -268,7 +268,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	HolyBulwark = {
 		SpellId = 432459, -- Holy Bulwark
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateOverridableAbilityCooldown
 	}
 };
 

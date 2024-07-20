@@ -221,6 +221,13 @@ function OrlanHeal:UpdateAbilityCooldown(window)
 	self:UpdateCooldown(window, duration, expirationTime, displayedCharges, displayedCharges ~= "");
 end;
 
+function OrlanHeal:UpdateOverridableAbilityCooldown(window)
+	local overridenId = C_Spell.GetOverrideSpell(window.Cooldown.SpellId);
+	local _, texture = C_Spell.GetSpellTexture(overridenId);
+	window.Background:SetTexture(texture);
+	self:UpdateAbilityCooldown(window);
+end;
+
 function OrlanHeal:UpdateTotemCooldown(window)
 	if not self:IsSpellOverridesKnown(window.Cooldown) then
 		self:UpdateCooldown(window, nil, nil, nil, nil, nil, true);
