@@ -3,7 +3,6 @@
 OrlanHeal.Paladin.IsSupported = true;
 OrlanHeal.Paladin.GiftOfTheNaaruSpellId = 59542;
 
--- TODO: Fix Blessing of the Seasons.
 OrlanHeal.Paladin.AvailableSpells =
 {
 	19750, -- Flash of Light
@@ -26,16 +25,12 @@ OrlanHeal.Paladin.AvailableSpells =
 	7328, -- Redemption
 	114165, -- Holy Prism
 	148039, -- Barrier of Faith
-	{
-		type = "spell",
-		spell = 328620, -- Blessing of Summer
-		caption = C_Spell.GetSpellInfo(328278).name -- Blessing of the Seasons
-	},
 	391054, -- Intercession
-	432459 -- Holy Bulwark
+	432459, -- Holy Bulwark
+	388007 -- Blessing of Summer
 };
 
--- TODO: Remove Azerite and Night Fae. Blessing of Summer, etc. Hand of Divinity. Holy Bulwark. Fix Cleanse. Avenging Crusader.
+-- TODO: Avenging Crusader.
 OrlanHeal.Paladin.CooldownOptions =
 {
 	TyrsDeliverence =
@@ -114,8 +109,9 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	Cleanse =
 	{
+		MacroText = OrlanHeal:BuildCastMacro(4987),
 		SpellId = 4987, -- Cleanse
-		Update = OrlanHeal.UpdateAbilityCooldown
+		Update = OrlanHeal.UpdateOverridableAbilityCooldown
 	},
 	CrusaderStrike =
 	{
@@ -199,61 +195,6 @@ OrlanHeal.Paladin.CooldownOptions =
 		Update = OrlanHeal.UpdateAbilityCooldown,
 		ForbidOverrides = true
 	},
-	Soulshape = {
-		SpellId = 310143, -- Soulshape
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
-	},
-	Flicker = {
-		MacroText = "/cast " .. C_Spell.GetSpellInfo(324701).name, -- Flicker
-		SpellId = 324701, -- Flicker
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
-	},
-	BlessingOfWinter = {
-		MacroText = "/cast " .. C_Spell.GetSpellInfo(328281).name, -- Blessing of Winter
-		SpellId = 328281, -- Blessing of Winter
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
-	},
-	BlessingOfSpring = {
-		MacroText = "/cast " .. C_Spell.GetSpellInfo(328282).name, -- Blessing of Spring
-		SpellId = 328282, -- Blessing of Spring
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
-	},
-	BlessingOfSpringSelf = {
-		Label = "S",
-		Caption = C_Spell.GetSpellInfo(328282).name .. " (self)", -- Blessing of Spring
-		MacroText = OrlanHeal:BuildSelfCastMacro(328282), -- Blessing of Spring
-		SpellId = 328282, -- Blessing of Spring
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
-	},
-	BlessingOfSummer = {
-		SpellId = 328620, -- Blessing of Summer
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		OverridenBy = {
-			328622, -- Blessing of Autumn
-			328281, -- Blessing of Winter
-			328282 -- Blessing of Spring
-		},
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
-	},
-	BlessingOfAutumn = {
-		MacroText = "/cast " .. C_Spell.GetSpellInfo(328622).name, -- Blessing of Autumn
-		SpellId = 328622, -- Blessing of Autumn
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
-	},
-	BlessingOfAutumnSelf = {
-		Label = "S",
-		Caption = C_Spell.GetSpellInfo(328622).name .. " (self)", -- Blessing of Autumn
-		MacroText = OrlanHeal:BuildSelfCastMacro(328622), -- Blessing of Autumn
-		SpellId = 328622, -- Blessing of Autumn
-		Update = OrlanHeal.UpdateAbilityCooldown,
-		Group = C_Covenants.GetCovenantData(3).name -- Night Fae
-	},
 	Rebuke = {
 		SpellId = 96231, -- Rebuke
 		Update = OrlanHeal.UpdateAbilityCooldown
@@ -269,6 +210,19 @@ OrlanHeal.Paladin.CooldownOptions =
 	HolyBulwark = {
 		SpellId = 432459, -- Holy Bulwark
 		Update = OrlanHeal.UpdateOverridableAbilityCooldown
+	},
+	BlessingOfSummer = {
+		SpellId = 388007, -- Blessing of Summer
+		Update = OrlanHeal.UpdateOverridableAbilityCooldown
+	},
+	HandOfDivinity = {
+		SpellId = 414273, -- Hand of Divinity
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	AvengingCrusader = {
+		MacroText = OrlanHeal:BuildCastMacro(216331),
+		SpellId = 216331, -- Avenging Crusader
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -280,47 +234,27 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["3"] = 633; -- Lay on Hands
 	config["shift2"] = 53563; -- Beacon of Light
 	config["shift3"] = 1044; -- Blessing of Freedom
-	config["control1"] = 183998; -- Light of the Martyr
+	config["control1"] = 432459; -- Holy Bulwark
 	config["control2"] = 85673; -- Word of Glory
 	config["control3"] = 1022; -- Blessing of Protection
 	config["alt1"] = 4987; -- Cleanse
 	config["alt2"] = 20473; -- Holy Shock
 	config["alt3"] = 6940; -- Blessing of Sacrifice
-	config["controlalt1"] = 223306; -- Bestow Faith
-	config["controlalt2"] = 114165; -- Holy Prism
+	config["controlalt1"] = 148039; -- Barruer of Faith
 	config["controlalt3"] = 391054; -- Intercession
 	config["altshift2"] = 156910; -- Beacon of Faith
 	config["altshift3"] = 7328; -- Redemption
 
 	config["cooldown1"] = "Cleanse";
-	config["cooldown2"] = "Judgment";
-	config["cooldown3"] = "HolyPrism";
-	config["cooldown4"] = "";
-	config["cooldown5"] = "";
-	config["cooldown6"] = "AvengingWrath"; 
-	config["cooldown7"] = "";
-	config["cooldown8"] = "";
-	config["cooldown9"] = "DivineShield"; 
-	config["cooldown10"] = "DivineProtection"; 
-	config["cooldown11"] = "AuraMastery";
-	config["cooldown12"] = "";
-	config["cooldown13"] = "HandOfProtection";
-	config["cooldown14"] = "HandOfSacrifice";
-	config["cooldown15"] = "HandOfFreedom";
-	config["cooldown16"] = "HammerOfJustice";
-	config["cooldown17"] = "DivineSteed";
-	config["cooldown18"] = "Repentance";
-	config["cooldown19"] = "BlindingLight";
-	config["cooldown20"] = "TurnEvil";
-	config["cooldown21"] = "LayOnHands";
-	config["cooldown22"] = "";
-	config["cooldown23"] = "HammerOfWrath";
-	config["cooldown24"] = "BeaconOfVirtue";
-	config["cooldown25"] = orlanHeal:GetRacialCooldown();
-	config["cooldown26"] = "Trinket0";
-	config["cooldown27"] = "Trinket1";
-	config["cooldown28"] = "Rebuke";
-	config["cooldown29"] = "DivineToll";
+	config["cooldown2"] = "HolyBulwark";
+	config["cooldown3"] = "BarrierOfFaith";
+	config["cooldown4"] = "DivineToll";
+	config["cooldown5"] = "TyrsDeliverence";
+	config["cooldown6"] = "AvengingWrath";
+	config["cooldown7"] = "AuraMastery";
+	config["cooldown8"] = "Trinket0";
+	config["cooldown9"] = "Trinket1";
+	config["cooldown10"] = "LayOnHands";
 
 	return config;
 end;

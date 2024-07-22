@@ -1310,6 +1310,10 @@ function OrlanHeal:BuildSelfCastMacro(spellId)
 	return "/cast [target=player] " .. C_Spell.GetSpellInfo(spellId).name;
 end;
 
+function OrlanHeal:BuildCastMacro(spellId)
+	return "/cast " .. C_Spell.GetSpellInfo(spellId).name;
+end;
+
 function OrlanHeal:RegisterUnitEventHandler(event, unit, handler)
 	if not self.EventSubscriptions[event] then
 		self.EventFrame:RegisterEvent(event);
