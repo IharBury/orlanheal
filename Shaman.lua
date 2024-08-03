@@ -5,7 +5,12 @@ OrlanHeal.Shaman.GiftOfTheNaaruSpellId = 59547;
 
 OrlanHeal.Shaman.AvailableSpells =
 {
-	77130, -- Purify Spirit
+	{
+		type = "macro",
+		caption = C_Spell.GetSpellInfo(77130).name, -- Purify Spirit
+		macrotext = OrlanHeal:BuildMouseOverCastMacro(77130),
+		key = 77130
+	},
 	8004, -- Healing Surge
 	546, -- Water Walking
 	1064, -- Chain Heal
@@ -189,35 +194,9 @@ function OrlanHeal.Shaman.GetDefaultConfig(orlanHeal)
 	config["alt2"] = 1064; -- Chain Heal
 	config["altshift3"] = 2008; -- Ancestral Spirit
 
-	config["cooldown1"] = "Wellspring";
-	config["cooldown2"] = "WindShear";
-	config["cooldown3"] = "GustOfWind";
-	config["cooldown4"] = "CleanseSpirit";
-	config["cooldown5"] = "SpiritLinkTotem";
-	config["cooldown6"] = "HealingRain";
-	config["cooldown7"] = "UnleashLife";
-	config["cooldown8"] = "Riptide";
-	config["cooldown9"] = "SpiritwalkersGrace";
-	if UnitFactionGroup("player") == "Alliance" then
-		config["cooldown10"] = "Heroism";
-	else
-		config["cooldown10"] = "Bloodlust";
-	end;
-	config["cooldown11"] = "AncestralProtectionTotem";
-	config["cooldown12"] = "EarthenShieldTotem";
-	config["cooldown13"] = "Ascendance";
-	config["cooldown14"] = "AstralShift";
-	config["cooldown15"] = "AncestralGuidance";
-	config["cooldown16"] = "HealingTideTotem";
-	config["cooldown17"] = "WindRushTotem";
-	config["cooldown18"] = "EarthShield";
-	config["cooldown19"] = "CloudburstTotem";
-	config["cooldown20"] = "HealingStreamTotem";
-	config["cooldown21"] = "Purge";
-	config["cooldown22"] = "Hex";
-	config["cooldown23"] = orlanHeal:GetRacialCooldown();
-	config["cooldown24"] = "Trinket0";
-	config["cooldown25"] = "Trinket1";
+	config["cooldown1"] = orlanHeal:GetRacialCooldown();
+	config["cooldown2"] = "Trinket0";
+	config["cooldown3"] = "Trinket1";
 
 	return config;
 end;
