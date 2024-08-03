@@ -323,6 +323,8 @@
 	[357882] = true, -- Banshee's Bane
 	[365153] = true, -- Dominating Will
 
+	[404288] = true, -- Infinite Duress
+	[407496] = true, -- Infinite Duress
 	[420856] = true, -- Poisonous Javelin
 	[420857] = true, -- Poisonous Javelin
 	[420858] = true, -- Poisonous Javelin
