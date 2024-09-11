@@ -324,35 +324,9 @@ function OrlanHeal.Priest.GetDefaultConfig(orlanHeal)
 	config["controlalt2"] = 1706; -- Levitate
 	config["controlshift1"] = 2096; -- Mind Vision
 
-	config["cooldown1"] = "Purify";
-	config["cooldown2"] = "PowerInfusion";
-	config["cooldown3"] = "Apotheosis"; -- Holy
-	config["cooldown4"] = "PrayerOfMending"; -- Holy
-	config["cooldown5"] = "SymbolOfHope"; -- Holy
-	config["cooldown6"] = "CircleOfHealing"; -- Holy
-	config["cooldown7"] = "HolyNova";
-	config["cooldown8"] = "LeapOfFaith";
-	config["cooldown9"] = "HolyWordSanctify"; -- Holy
-	config["cooldown10"] = "DivineHymn"; -- Holy
-	config["cooldown11"] = "HolyFire"; -- Holy
-	config["cooldown12"] = "AngelicFeather";
-	config["cooldown13"] = "DesperatePrayer";
-	config["cooldown14"] = "ShiningForce";
-	config["cooldown15"] = "DispelMagic";
-	config["cooldown16"] = "HolyWordChastise"; -- Holy
-	config["cooldown17"] = "Fade";
-	config["cooldown18"] = "DivineStar";
-	config["cooldown19"] = "Halo";
-	config["cooldown20"] = "PainSuppression";
-	config["cooldown21"] = "HolyWordSerenity"; -- Holy
-	config["cooldown22"] = "MindControl";
-	config["cooldown23"] = "ShackleUndead";
-	config["cooldown24"] = "MassDispel";
-	config["cooldown25"] = "PsychicScream";
-	config["cooldown26"] = "GuardianSpirit"; -- Holy
-	config["cooldown27"] = orlanHeal:GetRacialCooldown();
-	config["cooldown28"] = "Trinket0";
-	config["cooldown29"] = "Trinket1";
+	config["cooldown1"] = orlanHeal:GetRacialCooldown();
+	config["cooldown2"] = "Trinket0";
+	config["cooldown3"] = "Trinket1";
 
 	return config;
 end;
@@ -368,17 +342,6 @@ function OrlanHeal.Priest.GetDisciplineDefaultConfig(orlanHeal)
 	config["altshift2"] = "";
 	config["control1"] = 194509; -- Power Word: Radiance
 	config["control2"] = 47540; -- Penance
-
-	config["cooldown3"] = "Penance";
-	config["cooldown4"] = "PowerWordRadiance";
-	config["cooldown5"] = "Shadowfiend";
-	config["cooldown6"] = "PowerWordSolace";
-	config["cooldown9"] = "";
-	config["cooldown10"] = "Rapture";
-	config["cooldown11"] = "Schism";
-	config["cooldown16"] = "";
-	config["cooldown21"] = "PowerWordBarrier";
-	config["cooldown26"] = "";
 
 	return config;
 end;
