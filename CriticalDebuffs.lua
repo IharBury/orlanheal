@@ -328,7 +328,27 @@
 	[420856] = true, -- Poisonous Javelin
 	[420857] = true, -- Poisonous Javelin
 	[420858] = true, -- Poisonous Javelin
-	[420859] = true -- Poisonous Javelin
+	[420859] = true, -- Poisonous Javelin
+
+	[436867] = true, -- Assassination
+	[436870] = true, -- Assassination
+	[436923] = true, -- Assassination
+	[436934] = true, -- Assassination
+	[436963] = true, -- Assassination
+	[438677] = true, -- Stinging Swarm
+	[438708] = true, -- Stinging Swarm
+	[440650] = true, -- Assassination
+
+	[441362] = true, -- Volatile Concoction
+	[443003] = true, -- Volatile Concoction
+	[448663] = true, -- Stinging Swarm
+	[438673] = true, -- Stinging Swarm
+	[438687] = true, -- Stinging Swarm
+	[450728] = true, -- Stinging Swarm
+	[452231] = true, -- Stinging Swarm
+	[452233] = true, -- Stinging Swarm
+	[456252] = true, -- Stinging Swarm
+	[460041] = true -- Stinging Swarm
 };
 
 OrlanHeal.VeryCriticalDebuffs =
@@ -368,7 +388,14 @@ OrlanHeal.VeryCriticalDebuffs =
 	[360700] = true, -- Runecarver's Deathtouch
 	[366893] = true, -- Runecarver's Deathtouch
 	[365294] = true, -- Crushing Prism
-	[365297] = true -- Crushing Prism
+	[365297] = true, -- Crushing Prism
+
+	[437342] = true, -- Queensbane
+	[437343] = true, -- Queensbane
+	[437469] = true, -- Queensbane
+	[463273] = true, -- Queensbane
+	[463276] = true, -- Queensbane
+	[470503] = true -- Queensbane
 };
 
 OrlanHeal.GoodCriticalDebuffs =
