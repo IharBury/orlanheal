@@ -6,7 +6,12 @@ OrlanHeal.Priest.GiftOfTheNaaruSpellId = 59544;
 OrlanHeal.Priest.AvailableSpells =
 {
 	1706, -- Levitate
-	527, -- Purify
+	{
+		type = "macro",
+		caption = C_Spell.GetSpellInfo(527).name, -- Purify
+		macrotext = OrlanHeal:BuildMouseOverCastMacro(527),
+		key = 527
+	},
 	17, -- Power Word: Shield
 	2061, -- Flash Heal
 	{
