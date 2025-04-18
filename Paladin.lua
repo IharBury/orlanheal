@@ -286,6 +286,8 @@ function OrlanHeal.Paladin.UpdateRaidBorder(orlanHeal)
 		else
 			orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0, 1, 0, orlanHeal.RaidBorderAlpha); -- green
 		end;
+	elseif orlanHeal:PlayerHasBuff(461471) then -- Liberation
+		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 1, 0, 0, orlanHeal.RaidBorderAlpha); -- red
 	elseif orlanHeal.Paladin:CanUseHolyPowerGenerator(20473) then -- Holy Shock
 		orlanHeal:SetBorderColor(orlanHeal.RaidWindow, 0.7, 0.7, 0, orlanHeal.RaidBorderAlpha); -- yellow
 	else
