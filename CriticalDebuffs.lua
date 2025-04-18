@@ -335,6 +335,10 @@
 	[436923] = true, -- Assassination
 	[436934] = true, -- Assassination
 	[436963] = true, -- Assassination
+	[437093] = true, -- Feast
+	[437586] = true, -- Reactive Toxin
+	[437592] = true, -- Reactive Toxin
+	[437632] = true, -- Frothy Toxin
 	[438677] = true, -- Stinging Swarm
 	[438708] = true, -- Stinging Swarm
 	[440650] = true, -- Assassination
@@ -345,8 +349,12 @@
 	[438673] = true, -- Stinging Swarm
 	[438687] = true, -- Stinging Swarm
 	[450728] = true, -- Stinging Swarm
+	[451278] = true, -- Concentrated Toxin
+	[451321] = true, -- Reactive Toxin
+	[451324] = true, -- Reactive Toxin
 	[452231] = true, -- Stinging Swarm
 	[452233] = true, -- Stinging Swarm
+	[455404] = true, -- Feast
 	[456252] = true, -- Stinging Swarm
 	[460041] = true -- Stinging Swarm
 };
@@ -393,8 +401,10 @@ OrlanHeal.VeryCriticalDebuffs =
 	[437342] = true, -- Queensbane
 	[437343] = true, -- Queensbane
 	[437469] = true, -- Queensbane
+	[440001] = true, -- Binding Webs
 	[463273] = true, -- Queensbane
 	[463276] = true, -- Queensbane
+	[464748] = true, -- Binding Webs
 	[470503] = true -- Queensbane
 };
 
