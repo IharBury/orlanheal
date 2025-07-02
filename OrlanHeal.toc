@@ -1,7 +1,5 @@
-## Interface: 40400
+## Interface: 50500
 ## Title: OrlanHeal
-## Version: 7.0.0-alpha-cata
-## Notes: 
 ## SavedVariables: OrlanHealGlobalConfig
 ## SavedVariablesPerCharacter: OrlanHealConfig
 OrlanHeal.lua
@@ -22,5 +20,6 @@ Paladin.lua
 Priest.lua
 Shaman.lua
 Druid.lua
+Monk.lua
 
 Initialize.lua

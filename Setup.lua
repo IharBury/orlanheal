@@ -572,8 +572,8 @@ function OrlanHeal.HandleCooldownInit(cooldownSelectWindow, level)
 				cooldownSelectWindow.OrlanHeal:SortedPairs(
 					cooldownSelectWindow.OrlanHeal:GetCooldownOptions(),
 					function(key1, cooldown1, key2, cooldown2)
-						return cooldownSelectWindow.OrlanHeal:GetCooldownCaption(cooldown1) <
-							cooldownSelectWindow.OrlanHeal:GetCooldownCaption(cooldown2);
+						return (cooldownSelectWindow.OrlanHeal:GetCooldownCaption(cooldown1) or key1) <
+							(cooldownSelectWindow.OrlanHeal:GetCooldownCaption(cooldown2) or key2);
 					end) do
 			if cooldown.Group then
 				if not groups[cooldown.Group] then

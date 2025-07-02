@@ -142,6 +142,7 @@ function OrlanHeal:CreatePlayerWindow(parent, isOnTheRight)
 	self:CreateBlankCanvas(playerWindow);
 	self:CreateRangeBar(playerWindow.Canvas);
 	self:CreateHealthBar(playerWindow.Canvas, self.PlayerStatusWidth);
+	self:CreateShieldBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateManaBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateNameBar(playerWindow.Canvas, self.PlayerStatusWidth);
 	self:CreateBuffs(
@@ -390,6 +391,16 @@ function OrlanHeal:CreateManaBar(parent, width)
 	parent.ManaBar:SetPoint("BOTTOMLEFT", self.RangeWidth, 0);
 end;
 
+function OrlanHeal:CreateShieldBar(parent, width)
+	parent.ShieldBar = self:CreateStatusBar(
+		parent,
+		{ r = 0.4, g = 0.4, b = 0.4 },
+		{ r = 0.95, g = 0.75, b = 0.2 });
+	parent.ShieldBar:SetHeight(self.ShieldHeight);
+	parent.ShieldBar:SetWidth(width);
+	parent.ShieldBar:SetPoint("BOTTOMLEFT", self.RangeWidth, self.ManaHeight);
+end;
+
 function OrlanHeal:CreateUnitButton(parent)
 	self.UnitButtonNumber = (self.UnitButtonNumber or 0) + 1;
 
@@ -423,6 +434,7 @@ function OrlanHeal:CreatePetWindow(parent)
 	self:CreateRangeBar(petWindow.Canvas);
 	self:CreateHealthBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateManaBar(petWindow.Canvas, self.PetStatusWidth);
+	self:CreateShieldBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateNameBar(petWindow.Canvas, self.PetStatusWidth);
 	self:CreateBuffs(petWindow.Canvas, 0, 2, self.Class.PetDebuffSlots);
 	self:CreateBorder(petWindow.Canvas, 1, 1);
@@ -538,6 +550,11 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 	self:RegisterUnitEventHandler("UNIT_MAXHEALTH", unit, healthUpdate);
 	self:RegisterUnitEventHandler("UNIT_HEAL_PREDICTION", unit, healthUpdate);
 
+	local shieldUpdate = function(orlanHeal)
+		orlanHeal:UpdateShield(frame.Canvas.ShieldBar, unit);
+	end;
+	self:RegisterUnitEventHandler("UNIT_ABSORB_AMOUNT_CHANGED", unit, shieldUpdate);
+
 	local manaUpdate = function(orlanHeal)
 		orlanHeal:UpdateMana(frame.Canvas.ManaBar, unit);
 	end;
@@ -557,6 +574,7 @@ function OrlanHeal:BindUnitFrame(frame, unit)
 
 	local allUpdate = function(orlanHeal)
 		healthUpdate(orlanHeal);
+		shieldUpdate(orlanHeal);
 		manaUpdate(orlanHeal);
 		buffUpdate(orlanHeal);
 	end;
@@ -1062,6 +1080,10 @@ function OrlanHeal:UpdateMana(manaBar, unit)
 	end;
 end;
 
+function OrlanHeal:UpdateShield(shieldBar, unit)
+	self:UpdateStatusBar(shieldBar, UnitGetTotalAbsorbs(unit), UnitHealthMax(unit));
+end;
+
 function OrlanHeal:UpdateName(nameBar, unit, displayedGroup)
 	local text = GetUnitName(unit, false);
 
@@ -1304,6 +1326,14 @@ function OrlanHeal:BuildSelfCastMacro(spellId)
 	return "/cast [target=player] " .. spellName;
 end;
 
+function OrlanHeal:BuildCastMacro(spellId)
+	local spellName = GetSpellInfo(spellId)
+	if spellName == nil then
+		return "";
+	end
+	return "/cast " .. spellName;
+end;
+
 function OrlanHeal:RegisterUnitEventHandler(event, unit, handler)
 	if not self.EventSubscriptions[event] then
 		self.EventFrame:RegisterEvent(event);
@@ -1350,4 +1380,22 @@ function OrlanHeal:PlayerBuffStackCount(id)
 	end;
 
 	return 0;
+end;
+
+function OrlanHeal:PlayerBuffExpiration(id)
+	local index = 1;
+	while true do
+		local aura = C_UnitAuras.GetBuffDataByIndex("player", index);
+		if not aura then
+			break;
+		end;
+
+		if aura.spellId == id then
+			return aura.expirationTime;
+		end;
+
+		index = index + 1;
+	end;
+
+	return nil;
 end;

@@ -747,5 +747,14 @@ OrlanHeal.CommonCooldownOptions =
 			local _, race = UnitRace("player");
 			return race == "Troll";
 		end
+	},
+	QuakingPalm =
+	{
+		SpellId = 107079,
+		Update = OrlanHeal.UpdateAbilityCooldown,
+		IsAvailable = function()
+			local _, race = UnitRace("player");
+			return race == "Pandaren";
+		end
 	}
 };
