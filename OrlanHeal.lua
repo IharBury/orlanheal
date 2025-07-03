@@ -1051,10 +1051,6 @@ function OrlanHeal:UpdateRange(rangeBar, unit)
 		rangeBar:SetColorTexture(0.2, 0.2, 0.75, 1);
 	elseif not UnitInRange(unit) and not UnitIsUnit(unit, "player") then
 		rangeBar:SetColorTexture(0.75, 0.2, 0.2, 1);
-	elseif not CheckInteractDistance(unit, 4) then
-		rangeBar:SetColorTexture(0.75, 0.45, 0.2, 1);
-	elseif not CheckInteractDistance(unit, 2) then
-		rangeBar:SetColorTexture(0.75, 0.75, 0.2, 1);
 	else
 		rangeBar:SetColorTexture(0.2, 0.75, 0.2, 1);
 	end;
