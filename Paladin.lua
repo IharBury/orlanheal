@@ -71,12 +71,7 @@ OrlanHeal.Paladin.AvailableSpells =
 	82327, -- Holy Radiance
 	20925, -- Sacred Shield
 	114039, -- Hand of Purity
-	{
-		type = "macro",
-		caption = GetSpellInfo(175699) or "", -- Weapons of Light
-		macrotext = OrlanHeal:BuildMouseOverCastMacro(175699),
-		key = 175699
-	},
+	114165, -- Holy Prism
 	114157 -- Execution Sentence
 };
 
@@ -94,7 +89,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	AvengingWrath =
 	{
-		SpellId = 31842, -- Avenging Wrath
+		SpellId = 31884, -- Avenging Wrath
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	AuraMastery =
@@ -188,7 +183,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	EternalFlame =
 	{
 		SpellId = 85673, -- Word of Glory
-		AuraId = 156322, -- Eternal Flame
+		AuraId = 114163, -- Eternal Flame
 		IsReverse = true,
 		Update = OrlanHeal.UpdateRaidBuffCooldown
 	},
@@ -204,16 +199,6 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 53563, -- Beacon of Light
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	BeaconOfFaith =
-	{
-		SpellId = 156910, -- Beacon of Faith
-		Update = OrlanHeal.UpdateAbilityCooldown
-	},
-	BeaconOfInsight =
-	{
-		SpellId = 157007, -- Beacon of Insight
-		Update = OrlanHeal.UpdateRaidBuffCooldown
-	},
 	SpeedOfLight =
 	{
 		SpellId = 85499, -- Speed of Light
@@ -224,10 +209,19 @@ OrlanHeal.Paladin.CooldownOptions =
 		SpellId = 114039, -- Hand of Purity
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
-	WeaponsOfTheLight =
+	HolyPrism =
 	{
-		MacroText = OrlanHeal:BuildCastMacro(175699),
-		SpellId = 175699, -- Weapons of the Light
+		SpellId = 114165,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	LightsHammer =
+	{
+		SpellId = 114158,
+		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	ExecutionSentence =
+	{
+		SpellId = 114157,
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	BlindingLight =
@@ -254,6 +248,11 @@ OrlanHeal.Paladin.CooldownOptions =
 	{
 		SpellId = 10326, -- Turn Evil
 		Update = OrlanHeal.UpdateAbilityCooldown
+	},
+	DivineFavor =
+	{
+		SpellId = 31842,
+		Update = OrlanHeal.UpdateAbilityCooldown
 	}
 };
 
@@ -264,7 +263,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["2"] = 19750; -- Flash of Light
 	config["3"] = 633; -- Lay on Hands
 	config["shift2"] = 53563; -- Beacon of Light
-	config["shift3"] = 157007; -- Beacon of Insight
+	config["shift3"] = 1044; -- Hand of Freedom
 	config["control1"] = 82327; -- Holy Radiance
 	config["control2"] = 85673; -- Word of Glory
 	config["control3"] = 6940; -- Hand of Sacrifice
@@ -274,15 +273,14 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["controlalt1"] = 175699; -- Weapons of Light
 	config["controlalt2"] = 20925; -- Sacred Shield
 	config["altshift1"] = 114039; -- Hand of Purity
-	config["altshift2"] = 156910; -- Beacon of Faith
 	config["altshift3"] = 7328; -- Redemption
 
 	config["cooldown1"] = "Cleanse";
-	config["cooldown2"] = "BeaconOfInsight";
+	config["cooldown2"] = "LightsHammer";
 	config["cooldown3"] = "LightOfDawn";
 	config["cooldown4"] = "SpeedOfLight";
 	config["cooldown5"] = "SacredShield";
-	config["cooldown6"] = "HolyAvenger";
+	config["cooldown6"] = "DivineFavor";
 	config["cooldown7"] = "AvengingWrath"; 
 	config["cooldown8"] = "DivineShield"; 
 	config["cooldown9"] = "DivineProtection"; 
@@ -292,7 +290,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 	config["cooldown13"] = "HandOfSacrifice";
 	config["cooldown14"] = "HandOfFreedom";
 	config["cooldown15"] = "HammerOfJustice";
-	config["cooldown16"] = "WeaponsOfTheLight";
+	config["cooldown16"] = "HolyAvenger";
 	config["cooldown17"] = "Repentance";
 	config["cooldown18"] = "BlindingLight";
 	config["cooldown19"] = "LayOnHands";
