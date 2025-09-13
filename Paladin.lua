@@ -7,7 +7,7 @@ OrlanHeal.Paladin.AvailableSpells =
 {
 	19750, -- Flash of Light
 	82326, -- Holy Light
-	633, -- Lay on Hands
+	471195, -- Lay on Hands
 	53563, -- Beacon of Light
 	1044, -- Blessing of Freedom
 	85673, -- Word of Glory
@@ -50,7 +50,7 @@ OrlanHeal.Paladin.CooldownOptions =
 	},
 	LayOnHands =
 	{
-		SpellId = 633, -- Lay on Hands
+		SpellId = 471195, -- Lay on Hands
 		Update = OrlanHeal.UpdateAbilityCooldown
 	},
 	AvengingWrath =
@@ -231,7 +231,7 @@ function OrlanHeal.Paladin.GetDefaultConfig(orlanHeal)
 
 	config["1"] = 82326; -- Holy Light
 	config["2"] = 19750; -- Flash of Light
-	config["3"] = 633; -- Lay on Hands
+	config["3"] = 471195; -- Lay on Hands
 	config["shift2"] = 53563; -- Beacon of Light
 	config["shift3"] = 1044; -- Blessing of Freedom
 	config["control1"] = 432459; -- Holy Bulwark
